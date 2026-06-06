@@ -10,7 +10,7 @@ Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` as the fill-in evidence pack
 
 Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` as the fill-in evidence packet for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review gates.
 
-Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase project creation, native app config files, Google OAuth, Firebase Auth domains and email templates, backend deploys, endpoint smoke tests, production env preflight, and EAS secret push.
+Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase project creation, native app config files, Google OAuth, Firebase Auth domains and email templates, backend deploys, endpoint smoke tests, production env preflight, and EAS production environment push.
 
 Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` as the fill-in evidence packet for RevenueCat apps, Ryvro Pro entitlement, App Store and Google Play subscription products, default offering, SDK key copying, env preflight, and sandbox purchase QA.
 
@@ -69,7 +69,7 @@ firebase use <ryvro-project-id>
 firebase deploy --only functions
 ```
 
-Configure new production app and EAS secrets with both Ryvro HTTPS function URLs:
+Configure the new production app and EAS production environment with both Ryvro HTTPS function URLs:
 
 - `RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain`
 - `RYVRO_BRAIN_TIMEOUT=30000`

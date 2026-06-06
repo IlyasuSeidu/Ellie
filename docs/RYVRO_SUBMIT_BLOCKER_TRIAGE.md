@@ -23,8 +23,8 @@ The latest checked blocker families are:
 - Google Play title, package, app creation, service account, internal testing, Android QA, and Play submission
 - Domain control for `getryvro.com`, DNS, HTTPS, live privacy, terms, support, and account deletion pages
 - Social handle reservation
-- Firebase Auth email templates, OpenAI quota or billing, backend provider smokes, production env, and EAS secret push
-- Production `.env`, `npm run release:env:check`, and EAS secret push
+- Firebase Auth email templates, OpenAI quota or billing, backend provider smokes, production env, and EAS production environment push
+- Production `.env`, `npm run release:env:check`, and EAS production environment push
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
 - App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
 
@@ -72,7 +72,7 @@ Do this before rebuilding production binaries.
 - Rerun backend smoke tests after quota is fixed, including one valid non-heuristic parser prompt and one valid voice request.
 - Fill real production `.env` values.
 - Run `npm run release:env:check`.
-- Push project secrets with `eas secret:push --scope project --env-file .env`.
+- Push checked production values to EAS with `npm run release:env:push`.
 
 Evidence source: `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md`.
 
@@ -92,7 +92,7 @@ Evidence source: `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md`.
 
 ### 5. Rebuild, Test, Screenshot, Then Submit
 
-Do this only after real Firebase, OAuth, RevenueCat, legal URLs, backend URLs, and EAS secrets exist.
+Do this only after real Firebase, OAuth, RevenueCat, legal URLs, backend URLs, and EAS production environment values exist.
 
 - Run `npm run release:versions:get` and confirm the current EAS remote values.
 - If iOS `buildNumber` is still `1` or Android `versionCode` is still `1`, run `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` before rebuilding. The current checked EAS remote values are iOS build number `1` and Android versionCode `1`.

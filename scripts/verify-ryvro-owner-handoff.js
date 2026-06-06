@@ -73,7 +73,7 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['ryvro_pro_annual', releaseTasks],
   ['Enroll Apple Developer account', releaseTasks],
   ['Run `eas login` then `eas init`', releaseTasks],
-  ['Run `npm run release:env:check`, then push `.env` secrets to EAS', releaseTasks],
+  ['Run `npm run release:env:push`', releaseTasks],
   ['npm run release:submit:check', releaseTasks],
   ['Build production iOS binary', releaseTasks],
   ['Build production Android AAB', releaseTasks],
@@ -409,7 +409,7 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['OpenAI provider calls currently return `429` quota exceeded', firebaseOauthBackendHandoff],
   ['npm run release:native:check', firebaseOauthBackendHandoff],
   ['npm run release:env:check', firebaseOauthBackendHandoff],
-  ['eas secret:push --scope project --env-file .env', firebaseOauthBackendHandoff],
+  ['npm run release:env:push', firebaseOauthBackendHandoff],
   ['Do not store Firebase service-file contents', firebaseOauthBackendHandoff],
 ].forEach(([expected, content]) =>
   requireIncludes(content, expected, 'Firebase OAuth backend handoff')

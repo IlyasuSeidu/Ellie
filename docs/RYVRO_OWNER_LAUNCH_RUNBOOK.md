@@ -32,7 +32,7 @@ Do not submit to App Store review or Google Play production until all of these a
 - App Store Connect EU trader status is complete if the app will be submitted for EU distribution.
 - The owner has reserved or created Google Play app title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - The launch domain is purchased, controlled, and serving privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion instructions.
-- Firebase, Google OAuth, Apple Sign-In, RevenueCat, and EAS secrets are created for `com.ryvro.shiftplanner`.
+- Firebase, Google OAuth, Apple Sign-In, RevenueCat, and EAS production environment values are created for `com.ryvro.shiftplanner`.
 - `npm run release:env:check` passes with the real production `.env`.
 - Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints are deployed and smoke-tested.
 - RevenueCat products, entitlement `pro`, and offering `default` are connected to App Store and Play subscription products.
@@ -103,7 +103,7 @@ Evidence to record:
 Owner-only steps:
 
 - Create or rename the production Firebase project to a Ryvro-visible name.
-- Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase, OAuth, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secrets.
+- Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase, OAuth, Auth domains, backend deploys, smoke tests, production env preflight, and EAS production environment values.
 - Refresh Firebase CLI auth with `firebase login --reauth`, then verify access with `firebase projects:list`.
 - When Google shows `Firebase CLI wants to access your Google Account`, approve it only if you are ready for Firebase CLI to administer Firebase settings and access Google Cloud data for the owner account.
 - Firebase project creation was completed on 2026-06-05 as `Ryvro Shift Planner` / `ryvro-shift-planner`; `firebase projects:list --json` confirmed state `ACTIVE`, project number `1002666052675`, and hosting site `ryvro-shift-planner`. The tracked `.firebaserc` default now points to `ryvro-shift-planner`.
@@ -142,10 +142,10 @@ curl -i -X POST "$SHIFT_SCHEDULE_PARSER_URL" \
 
 The parser smoke test must return `200` with a draft schedule before launch. A `400` from an intentionally invalid parser body proves reachability only; missing secret, provider, Firebase project, auth, or network errors are not launch-ready.
 
-- Push secrets to EAS only after the preflight passes:
+- Push checked production values to EAS only after the preflight passes:
 
 ```bash
-eas secret:push --scope project --env-file .env
+npm run release:env:push
 ```
 
 Evidence to record:
@@ -155,7 +155,7 @@ Evidence to record:
 - OAuth client IDs.
 - `npm run release:native:check` output.
 - `npm run release:env:check` output.
-- EAS secret push confirmation.
+- EAS production environment push confirmation.
 - `curl` smoke-test output for `RYVRO_BRAIN_URL`.
 - `curl` smoke-test output for `SHIFT_SCHEDULE_PARSER_URL` with a minimal schedule prompt.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.

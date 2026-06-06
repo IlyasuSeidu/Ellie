@@ -206,7 +206,7 @@ npm run release:env:check
 After `npm run release:env:check` passes, push the checked `.env` values to EAS:
 
 ```bash
-eas secret:push --scope project --env-file .env
+npm run release:env:push
 ```
 
 Do not commit `.env`, service account keys, keystores, provisioning profiles, or real Firebase config copied from the consoles.

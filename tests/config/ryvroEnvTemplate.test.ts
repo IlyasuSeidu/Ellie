@@ -885,6 +885,8 @@ describe('Ryvro environment template', () => {
   it('keeps the Ryvro production env preflight command available before EAS builds', () => {
     const scriptPath = path.join(process.cwd(), 'scripts/verify-ryvro-production-env.js');
     const script = fs.readFileSync(scriptPath, 'utf8');
+    const pushScriptPath = path.join(process.cwd(), 'scripts/push-ryvro-eas-env.js');
+    const pushScript = fs.readFileSync(pushScriptPath, 'utf8');
     const externalSetup = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
       'utf8'
@@ -897,6 +899,10 @@ describe('Ryvro environment template', () => {
     expect(packageJson.scripts?.['release:env:check']).toBe(
       'node scripts/verify-ryvro-production-env.js'
     );
+    expect(packageJson.scripts?.['release:env:push']).toBe('node scripts/push-ryvro-eas-env.js');
+    expect(fs.existsSync(pushScriptPath)).toBe(true);
+    expect(pushScript).toContain("run('node', ['scripts/verify-ryvro-production-env.js'");
+    expect(pushScript).toContain("'eas-cli', 'env:push', 'production', '--path'");
     expect(script).toContain('APP_ENV');
     expect(script).toContain('EAS_PROJECT_ID');
     expect(script).toContain('FIREBASE_API_KEY');
@@ -1727,7 +1733,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain(
       '`.env.production.example` when the key is required for release builds'
     );
-    expect(deploymentGuide).toContain('eas secret:push --scope project --env-file .env');
+    expect(deploymentGuide).toContain('npm run release:env:push');
     expect(deploymentGuide).toContain('Do not replace the committed `eas.json`');
     expect(deploymentGuide).toContain('"version": ">= 12.0.0"');
     expect(deploymentGuide).toContain('"node": "20.19.4"');
@@ -3008,7 +3014,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain(
       'Completed `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` packet'
     );
-    expect(ownerRunbook).toContain('eas secret:push --scope project --env-file .env');
+    expect(ownerRunbook).toContain('npm run release:env:push');
     expect(ownerRunbook).toContain('RYVRO_BRAIN_URL');
     expect(ownerRunbook).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(ownerRunbook).toContain('parseShiftScheduleDescription');
@@ -3200,7 +3206,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('OpenAI `429` quota exceeded');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('minimal prompt smoke');
-    expect(launchEvidenceLog).toContain('EAS secret push confirmation');
+    expect(launchEvidenceLog).toContain('EAS production environment push confirmation');
     expect(launchEvidenceLog).toContain('created project `Ryvro`');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
     expect(launchEvidenceLog).toContain('category `Productivity`');
@@ -3580,9 +3586,7 @@ describe('Ryvro environment template', () => {
     );
     expect(firebaseOauthBackendHandoff).toContain('npm run release:native:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:check');
-    expect(firebaseOauthBackendHandoff).toContain(
-      'eas secret:push --scope project --env-file .env'
-    );
+    expect(firebaseOauthBackendHandoff).toContain('npm run release:env:push');
     expect(firebaseOauthBackendHandoff).toContain('Do not store Firebase service-file contents');
     expect(firebaseOauthBackendHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i

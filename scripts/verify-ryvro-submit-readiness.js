@@ -142,7 +142,7 @@ const requiredEvidenceItems = [
   'Backend deploy - parser',
   'Shift parser smoke',
   'Production env preflight',
-  'EAS secret push',
+  'EAS production environment push',
   'RevenueCat apps',
   'Entitlement',
   'App Store products',

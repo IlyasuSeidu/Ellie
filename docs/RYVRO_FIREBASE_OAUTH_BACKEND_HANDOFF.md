@@ -184,14 +184,14 @@ npm run release:env:check
 Push secrets only after both checks pass:
 
 ```bash
-eas secret:push --scope project --env-file .env
+npm run release:env:push
 ```
 
 Record:
 
 - `npm run release:native:check` pass output
 - `npm run release:env:check` pass output
-- EAS secret push confirmation
+- EAS production environment push confirmation
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`
 
 ## Evidence Log Updates
@@ -211,6 +211,6 @@ Mark rows `Passed` only when the evidence is complete:
 - `Backend deploy - parser`
 - `Shift parser smoke`
 - `Production env preflight`
-- `EAS secret push`
+- `EAS production environment push`
 
 Keep rows as `Pending owner evidence` or `Failed - needs fix` until the matching production evidence exists.

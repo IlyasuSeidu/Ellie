@@ -119,7 +119,7 @@ Run:
 npm run release:env:check
 ```
 
-The check must pass before EAS secrets are pushed or production binaries are rebuilt.
+The check must pass before EAS production environment values are pushed or production binaries are rebuilt.
 
 ## Sandbox Purchase QA
 
