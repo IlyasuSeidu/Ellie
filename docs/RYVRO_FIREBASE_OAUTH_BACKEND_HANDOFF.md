@@ -57,8 +57,11 @@ Fresh Firebase apps for the final bundle/package were created and verified.
 - Android app nickname: `Ryvro Android`
 - Android package name: `com.ryvro.shiftplanner`
 - Android app ID: `1:1002666052675:android:735fd0ef9443ddf76b98f6`
+- Web app nickname: `Ryvro Web`
+- Web app ID: `1:1002666052675:web:c5f220238c9282686b98f6`
 - The fresh iOS file was downloaded as `GoogleService-Info.plist`.
 - The fresh Android file was downloaded as `google-services.json`.
+- The Web SDK config was downloaded to `/private/tmp/ryvro-web-sdkconfig.js` for local-only env filling and metadata verification.
 - Both files are placed at the repo root only: `./GoogleService-Info.plist` and `./google-services.json`.
 - Both files are ignored by Git.
 - The current ignored root files were refreshed after OAuth client creation and Android SHA registration on 2026-06-06, then refreshed again after Google and Apple sign-in provider enablement on 2026-06-07.
@@ -185,12 +188,12 @@ Record:
 
 Fill `.env` from `.env.production.example` only after Firebase, OAuth, legal URLs, backend URLs, and RevenueCat keys are ready.
 
-The committed `.env.production.example` now contains the non-secret Ryvro project IDs, Google OAuth client IDs, and deployed Firebase Functions URLs. Keep actual Firebase API keys, Firebase app IDs, RevenueCat SDK keys, and any provider keys out of Git.
+The committed `.env.production.example` now contains the non-secret Ryvro project IDs, Firebase Web app ID, Google OAuth client IDs, and deployed Firebase Functions URLs. Keep actual Firebase API keys, RevenueCat SDK keys, and any provider keys out of Git.
 
-Current non-secret template dry-run on 2026-06-06:
+Current non-secret template dry-run on 2026-06-07:
 
 - `npm run release:env:check -- --env-file .env.production.example` still fails as expected because it contains committed placeholders instead of owner-only secrets.
-- The remaining template-only failures are `FIREBASE_API_KEY`, `FIREBASE_APP_ID`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`.
+- The remaining template-only failures are `FIREBASE_API_KEY`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`.
 - Do not replace those placeholders in Git. Copy the template to `.env`, fill the real owner-only values locally, then run `npm run release:env:check`.
 
 Run:

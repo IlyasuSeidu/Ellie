@@ -997,6 +997,9 @@ describe('Ryvro environment template', () => {
     expect(productionEnvExample).toContain('APP_ENV=production');
     expect(productionEnvExample).toContain('EAS_PROJECT_ID=b306643e-1688-448e-8acd-f72bf74312c3');
     expect(productionEnvExample).toContain('FIREBASE_PROJECT_ID=ryvro-shift-planner');
+    expect(productionEnvExample).toContain(
+      'FIREBASE_APP_ID=1:1002666052675:web:c5f220238c9282686b98f6'
+    );
     expect(productionEnvExample).toContain('API_BASE_URL=https://api.getryvro.com');
     expect(productionEnvExample).toContain(
       'RYVRO_BRAIN_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain'
@@ -1036,7 +1039,9 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'it must fail the preflight until every placeholder is replaced'
     );
-    expect(externalSetup).toContain('known non-secret Ryvro OAuth client IDs');
+    expect(externalSetup).toContain(
+      'known non-secret Ryvro Firebase Web app ID and OAuth client IDs'
+    );
     expect(externalSetup).toContain(
       'rejects retired Ellie/ShiftSync Firebase project IDs, retired `ELLIE_BRAIN_*` env keys'
     );
@@ -3643,6 +3648,7 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
     );
+    expect(firebaseOauthBackendHandoff).toContain('1:1002666052675:web:c5f220238c9282686b98f6');
     expect(firebaseOauthBackendHandoff).toContain(
       '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
     );
@@ -3725,7 +3731,7 @@ describe('Ryvro environment template', () => {
       'npm run release:env:check -- --env-file .env.production.example'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'The remaining template-only failures are `FIREBASE_API_KEY`, `FIREBASE_APP_ID`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`'
+      'The remaining template-only failures are `FIREBASE_API_KEY`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`'
     );
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:push');
     expect(firebaseOauthBackendHandoff).toContain('Do not store Firebase service-file contents');
