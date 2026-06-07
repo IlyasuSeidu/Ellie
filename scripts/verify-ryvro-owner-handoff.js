@@ -605,12 +605,12 @@ requireMatches(
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
 [
-  ['CI run `27088420404`', readme],
-  ['commit `6c73ae9`', readme],
-  ['CI run `27088420404`', readinessReport],
-  ['commit `6c73ae9`', readinessReport],
-  ['CI run `27088420404`', ownerRunbook],
-  ['commit `6c73ae9`', ownerRunbook],
+  ['CI run `27088916084`', readme],
+  ['commit `685c611`', readme],
+  ['CI run `27088916084`', readinessReport],
+  ['commit `685c611`', readinessReport],
+  ['CI run `27088916084`', ownerRunbook],
+  ['commit `685c611`', ownerRunbook],
   ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', readme],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],

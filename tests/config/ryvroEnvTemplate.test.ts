@@ -732,8 +732,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27088420404`');
-    expect(script).toContain('commit `6c73ae9`');
+    expect(script).toContain('CI run `27088916084`');
+    expect(script).toContain('commit `685c611`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1591,10 +1591,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `27088420404`');
-    expect(readme).toContain('commit `6c73ae9`');
-    expect(readme).toContain('CI run `27088292991`');
-    expect(readme).toContain('commit `022b638`');
+    expect(readme).toContain('GitHub Actions CI run `27088916084`');
+    expect(readme).toContain('commit `685c611`');
+    expect(readme).toContain('CI run `27088658834`');
+    expect(readme).toContain('commit `2e52a2f`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
@@ -1871,7 +1871,7 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('domain cart evidence');
     expect(releaseTasks).toContain('owner runbook verification refresh');
     expect(releaseTasks).toContain('verified `getryvro.com` domain control');
-    expect(releaseTasks).toContain('CI pass `27085208539` on `9eddecf`');
+    expect(releaseTasks).toContain('CI pass `27088916084` on `685c611`');
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
     expect(releaseTasks).toContain('latest public evidence: 2026-06-06 13:11Z');
@@ -2160,8 +2160,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27088420404`');
-    expect(readinessReport).toContain('commit `6c73ae9`');
+    expect(readinessReport).toContain('CI run `27088916084`');
+    expect(readinessReport).toContain('commit `685c611`');
     expect(readinessReport).toContain('launch-readiness evidence report');
     expect(readinessReport).toContain('README release snapshot');
     expect(readinessReport).toContain('CI run `27011414391`');
@@ -2290,7 +2290,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'the remaining Google account verification tasks before `Create app` is enabled'
     );
-    expect(readinessReport).toContain('CI run `27088158284`');
+    expect(readinessReport).toContain('CI run `27088916084`');
     expect(readinessReport).toContain(
       '`npm run release:submit:check` still intentionally fails on 2026-06-07'
     );
@@ -3138,10 +3138,10 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
     expect(ownerRunbook).toContain('refreshing the launch-readiness evidence report');
-    expect(ownerRunbook).toContain('CI run `27088420404`');
-    expect(ownerRunbook).toContain('commit `6c73ae9`');
-    expect(ownerRunbook).toContain('CI run `27088292991`');
-    expect(ownerRunbook).toContain('commit `022b638`');
+    expect(ownerRunbook).toContain('CI run `27088916084`');
+    expect(ownerRunbook).toContain('commit `685c611`');
+    expect(ownerRunbook).toContain('CI run `27088658834`');
+    expect(ownerRunbook).toContain('commit `2e52a2f`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
