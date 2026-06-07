@@ -6,7 +6,7 @@ These templates are repo-side launch assets. They are not legal advice. Publish 
 
 Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
 
-Static HTML launch pages now live in `web/launch` and are published at `https://getryvro.com`. Privacy and terms pages use effective date `June 6, 2026`, and live HTTPS checks have passed. Owner legal/content review, support mailbox delivery proof, Firebase Auth email-template verification, and store-console use of these URLs are still required before submission.
+Static HTML launch pages now live in `web/launch` and are published at `https://getryvro.com`. Privacy and terms pages use effective date `June 6, 2026`, and live HTTPS checks have passed. The support mailbox delivery proof is complete: Gmail received a Google Play Console verification email addressed to `support@getryvro.com` on 2026-06-07, and the one-time code was not recorded in the repo. Owner legal/content review, Firebase Auth email-template verification, and store-console use of these URLs are still required before submission.
 
 ## Required Public URLs
 

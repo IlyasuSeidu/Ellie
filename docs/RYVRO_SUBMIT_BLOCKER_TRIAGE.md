@@ -16,7 +16,7 @@ npm run release:submit:check
 
 Expected current result: the command fails until the owner evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are no longer `Pending owner evidence`, the Android service account key exists locally at `./google-play-key.json`, and production EAS submit values are real.
 
-Latest checked on 2026-06-07: `Domain control for getryvro.com` no longer appears in the submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, and live HTTPS checks were recorded as passed.
+Latest checked on 2026-06-07: `Domain control for getryvro.com` and `Support page/mailbox` no longer appear in the submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, and Google Play Console email-delivery proof to `support@getryvro.com` were recorded as passed.
 
 The remaining checked blocker families are:
 
@@ -24,7 +24,7 @@ The remaining checked blocker families are:
 - Formal trademark/legal clearance for `Ryvro`
 - Google Play title, package, app creation, service account, internal testing, Android QA, and Play submission
 - Social handle reservation
-- Privacy and terms owner content review, support mailbox delivery proof, and store-console use of the live `getryvro.com` URLs
+- Privacy and terms owner content review plus store-console use of the live `getryvro.com` URLs
 - Firebase Auth email templates, production env preflight, and EAS production environment push
 - Production `.env`, `npm run release:env:check`, and EAS production environment push
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
@@ -37,8 +37,8 @@ The remaining checked blocker families are:
 Complete these before spending more time on store metadata:
 
 - Formal trademark/legal clearance for `Ryvro`
-- Create `support@getryvro.com`
-- Publish reviewed privacy, terms, support, and account deletion pages at `getryvro.com`
+- Keep the passed support mailbox evidence current: `support@getryvro.com` received a Google Play Console verification email on 2026-06-07, and the one-time code was not recorded in the repo.
+- Publish owner-reviewed privacy, terms, support, and account deletion pages at `getryvro.com`
 - Reserve social handles or approved fallbacks
 
 Evidence source: `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md`.
