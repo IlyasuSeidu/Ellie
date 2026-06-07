@@ -148,13 +148,13 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
-  ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
+  ['Firebase project `ryvro-shift-planner`, iOS app, Android app', readinessReport],
   ['real root-level Firebase native service files', readinessReport],
   [
-    'Production Firebase deploy and smoke tests for both `ryvroBrain` and `parseShiftScheduleDescription`',
+    'deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests',
     readinessReport,
   ],
-  ['valid-prompt `SHIFT_SCHEDULE_PARSER_URL` `200` draft response', readinessReport],
+  ['The remaining Firebase blocker is email-template evidence', readinessReport],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'owner launch handoff'));
 
 [

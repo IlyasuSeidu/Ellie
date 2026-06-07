@@ -726,7 +726,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('Manual smoke tests pass on 2 physical devices');
     expect(script).toContain('Physical iOS and Android smoke tests');
     expect(script).toContain('Store screenshots, app privacy, data safety, content rating');
-    expect(script).toContain('Production Firebase deploy and smoke test');
+    expect(script).toContain('deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`');
     expect(script).toContain(
       'launch is not complete until the account-only and physical-device checks above are done'
     );
@@ -2285,6 +2285,21 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('Owner launch runbook now sequences clearance');
     expect(readinessReport).toContain(
+      'Google Play verification and app setup, Firebase email templates and production env'
+    );
+    expect(readinessReport).toContain(
+      'the remaining Google account verification tasks before `Create app` is enabled'
+    );
+    expect(readinessReport).toContain('CI run `27088158284`');
+    expect(readinessReport).toContain(
+      '`npm run release:submit:check` still intentionally fails on 2026-06-07'
+    );
+    expect(readinessReport).toContain(
+      'Already recorded account-side evidence that should not be reopened as generic blockers'
+    );
+    expect(readinessReport).toContain('ASC app ID `6776994726`');
+    expect(readinessReport).toContain('The remaining Firebase blocker is email-template evidence');
+    expect(readinessReport).toContain(
       'deriving the Google Sign-In iOS URL scheme from the Ryvro OAuth client ID'
     );
     expect(readinessReport).toContain(
@@ -2331,11 +2346,9 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('RYVRO_BRAIN_*');
     expect(readinessReport).toContain('ryvroBrain');
     expect(readinessReport).toContain(
-      'Production Firebase deploy and smoke tests for both `ryvroBrain` and `parseShiftScheduleDescription`'
+      'deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests'
     );
-    expect(readinessReport).toContain(
-      'valid-prompt `SHIFT_SCHEDULE_PARSER_URL` `200` draft response'
-    );
+    expect(readinessReport).toContain('The remaining Firebase blocker is email-template evidence');
     expect(readinessReport).toContain(
       'Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy'
     );

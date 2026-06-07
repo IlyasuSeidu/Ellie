@@ -23,11 +23,11 @@ Completed and guarded in the current branch:
 - Static launch pages now exist in `web/launch` for the required public landing, privacy, terms, support, account-deletion, and Firebase Auth action-handler URLs. They are published on the verified `getryvro.com` Firebase Hosting custom domain, privacy and terms use effective date `June 6, 2026`, and live HTTPS checks passed. The support mailbox delivery proof is now a Google Play Console verification email addressed to `support@getryvro.com`, proving inbound delivery without recording the one-time code. The pages still require owner legal/content review, Firebase Auth template verification, and store-console URL evidence before the submit gate can pass.
 - Owner launch runbook now sequences clearance, console setup, Firebase/OAuth/backend secrets, RevenueCat products, legal/support publication, production builds, device QA, and store submission evidence.
 - Clearance/domain/social handoff now provides a non-secret evidence packet for formal trademark/legal clearance, `getryvro.com` purchase, DNS/HTTPS proof, support mailbox, live legal/support pages, and social handle reservation.
-- Submit blocker triage now groups the current `npm run release:submit:check` failures into the owner workflow order: legal/social, Google Play, Firebase/OAuth/backend, RevenueCat/store products, legal-review/mailbox/store forms, then rebuild, device QA, screenshots, and submission.
+- Submit blocker triage now groups the current `npm run release:submit:check` failures into the owner workflow order: legal/social, Google Play verification and app setup, Firebase email templates and production env, RevenueCat/store products, legal-review/store forms, then rebuild, device QA, screenshots, and submission.
 - App Store/TestFlight handoff now provides a non-secret evidence packet for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review gates.
 - Firebase/OAuth/backend handoff now provides a non-secret evidence packet for Ryvro Firebase project creation, root-level native service files, Google OAuth clients, Firebase Auth domains and email templates, backend deploys, endpoint smoke tests, `npm run release:env:check`, and `npm run release:env:push`.
 - RevenueCat products handoff now provides a non-secret evidence packet for Ryvro Pro entitlement `pro`, App Store and Google Play products `ryvro_pro_monthly` and `ryvro_pro_annual`, RevenueCat offering `default`, SDK key copying into `.env`, `npm run release:env:check`, and sandbox purchase/cancel/restore QA.
-- Google Play internal-testing handoff now documents Play developer enrollment, `Ryvro Shift Planner` app creation, package `com.ryvro.shiftplanner`, least-privilege service account JSON handling at `./google-play-key.json`, Android `eas submit --platform android --latest`, internal-track evidence, and Android production-promotion stop gates.
+- Google Play internal-testing handoff now documents the completed developer-account creation, the remaining Google account verification tasks before `Create app` is enabled, `Ryvro Shift Planner` app creation, package `com.ryvro.shiftplanner`, least-privilege service account JSON handling at `./google-play-key.json`, Android `eas submit --platform android --latest`, internal-track evidence, and Android production-promotion stop gates.
 - Device QA evidence template now gives the owner a fill-in packet for TestFlight iPhone, Android physical/internal-track QA, sandbox purchase, installed identity proof, failure records, and store screenshot evidence.
 - Screenshot capture checklist now defines store-ready App Store and Google Play screenshot file names, device sizes, capture preconditions, native-build-only rules, and evidence-log fields for the account owner.
 - Store readiness preflight now runs inside `npm run release:check`; it validates tracked App Store/Google Play copy limits, required screenshot specs, reviewer/support values, RevenueCat product IDs, data-safety draft anchors, and forbidden claim patterns before store metadata is copied into the consoles.
@@ -81,8 +81,10 @@ Completed and guarded in the current branch:
 
 ## Verification Completed
 
+- Local focused verification on 2026-06-07 passed `npm test -- --runTestsByPath tests/config/ryvroEnvTemplate.test.ts`, `npm run release:owner:check`, and `git diff --check` after clarifying the Google Play verification blocker. `npm run release:submit:check` still failed intentionally on the current owner evidence and local Android service-account key blockers.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `32cd9c3`: CI run `27088158284` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Local release verification on 2026-06-06 passed `npm run release:check` after refreshing the launch-readiness evidence report, README release snapshot, owner launch runbook, and release task tracker. The release check included TypeScript, 110 Jest suites / 1,784 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
-- Recent pushed GitHub Actions check for PR #1 passed on commit `9e31a32`: CI run `27063524476` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
+- Pushed GitHub Actions check for PR #1 passed on commit `9e31a32`: CI run `27063524476` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - `npm test -- ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after the latest public-content guard update.
 - Focused Phase 9 automated QA passed on 2026-05-29:
   - `npm test -- AuthService SignInScreen ShiftScheduleParserService universalShiftEdgeCases MonthlyCalendarCard ShiftSettingsPanel PremiumWelcomeScreen SmartReminderService --runInBand`: 8 suites, 162 tests.
@@ -131,7 +133,7 @@ Completed and guarded in the current branch:
 - Local release verification on 2026-05-31 passed `git diff --check`, `npm run lint`, and `npm run release:check` after adding Profile legal/support link coverage for support, account deletion, privacy, and terms. The release check included TypeScript, 110 Jest suites / 1,760 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - Local release verification on 2026-06-01 passed `npm run release:check` after the iPhone 16e small-screen proof hardening and Firebase E2E bootstrap repair. The release check included TypeScript, 110 Jest suites / 1,779 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - GitHub Actions CI for PR #1 passed on commit `7a51dc6`: CI run `26776633987` passed Release Check, Build Check, Lint and Type Check, and Unit Tests.
-- `npm run release:submit:check` still intentionally fails on 2026-06-01 because EAS submit values are placeholders and the owner-only launch evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are still `Pending owner evidence`.
+- `npm run release:submit:check` still intentionally fails on 2026-06-07 because `./google-play-key.json` is not present locally for Android submit, Google Play app/package evidence is blocked on Google account verification, and the remaining owner-only launch evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are still `Pending owner evidence`.
 - iPhone 16e Detox work on 2026-06-01 exposed a repo-side seed-targeting bug and a small-screen builder template clipping issue; both were fixed in commit `63cbbef`. A fresh iPhone 16e proof still needs a clean local CoreSimulator session because `simctl` stopped listing devices after CoreSimulatorService became unhealthy during the failed run.
 - Local release verification on 2026-05-31 passed focused screenshot-checklist/config tests, `git diff --check`, and `npm run release:check` after adding the store screenshot capture checklist. The release check included TypeScript, 110 Jest suites / 1,760 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused submit-readiness/config tests, `npm run release:submit:check` with the expected owner-evidence failure, `git diff --check`, and `npm run release:check` after adding the final EAS submit readiness guard. The release check included TypeScript, 110 Jest suites / 1,761 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
@@ -254,16 +256,22 @@ Still pending:
 
 ## Account-Only Work
 
-These items cannot be proven from the repo alone:
+These items cannot be finished from the repo alone:
 
 - Formal trademark/legal clearance in launch markets.
-- App Store Connect app-name reservation for `Ryvro Shift Planner`.
-- Google Play Console app-title and `com.ryvro.shiftplanner` package reservation.
-- Registrar purchase/reservation for the preferred domain, with `getryvro.com` still the cleanest public candidate.
+- Google account verification in Play Console, then Google Play app-title and `com.ryvro.shiftplanner` package reservation. The developer account exists, but Play Console still blocks `Create app` until identity verification, Android mobile device access verification, and contact phone verification are complete.
 - Logged-in social handle reservation.
-- Fresh Firebase iOS/Android app configs and OAuth clients for `com.ryvro.shiftplanner`.
-- RevenueCat dashboard display-name, product, offering, and entitlement cleanup if production still contains retired Ellie/miner names.
-- Production Firebase deploy and smoke tests for both `ryvroBrain` and `parseShiftScheduleDescription`; the launch backend should not deploy or configure the retired `ellieBrain` compatibility endpoint. Parser evidence must include a valid-prompt `SHIFT_SCHEDULE_PARSER_URL` `200` draft response.
+- Firebase Auth email-template evidence for sender `Ryvro Support`, reply-to `support@getryvro.com`, and action domain `getryvro.com`.
+- Real production `.env` values, `npm run release:env:check`, and `npm run release:env:push`.
+- RevenueCat iOS app completion, entitlement `pro`, App Store and Google Play subscription products, offering `default`, and sandbox purchase/cancel/restore QA.
+- Owner legal/content review for the live privacy and terms pages, plus store-console use of the live `getryvro.com` URLs.
+- App Store privacy form, Google Play Data safety form, content rating, export compliance, EU trader status, reviewer account evidence, store screenshots, TestFlight iPhone QA, physical Android QA, and final store submission evidence.
+
+Already recorded account-side evidence that should not be reopened as generic blockers:
+
+- App Store Connect app-name reservation is complete for `Ryvro Shift Planner` with ASC app ID `6776994726`.
+- `getryvro.com` is purchased, DNS-controlled, on Firebase Hosting with active HTTPS, and serving launch pages.
+- Firebase project `ryvro-shift-planner`, iOS app, Android app, native service-file metadata, OAuth/Auth setup evidence, deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests are recorded in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`. The remaining Firebase blocker is email-template evidence plus production env/EAS push evidence, not project or backend creation.
 
 ## Merge Readiness
 
