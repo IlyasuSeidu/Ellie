@@ -1861,11 +1861,12 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(releaseTasks).toContain('Last updated: June 6, 2026');
+    expect(releaseTasks).toContain('Last updated: June 7, 2026');
     expect(releaseTasks).toContain('latest public clearance evidence at 13:11Z');
     expect(releaseTasks).toContain('domain cart evidence');
     expect(releaseTasks).toContain('owner runbook verification refresh');
-    expect(releaseTasks).toContain('CI pass `27063524476` on `9e31a32`');
+    expect(releaseTasks).toContain('verified `getryvro.com` domain control');
+    expect(releaseTasks).toContain('CI pass `27085208539` on `9eddecf`');
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
     expect(releaseTasks).toContain('latest public evidence: 2026-06-06 13:11Z');
@@ -2029,9 +2030,12 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(readinessReport).toContain('Date: 2026-06-06');
+    expect(readinessReport).toContain('Date: 2026-06-07');
     expect(readinessReport).not.toContain('Date: 2026-06-01');
     expect(readinessReport).toContain('2026-06-06T13:11:48.530Z');
+    expect(readinessReport).toContain('privacy and terms use effective date `June 6, 2026`');
+    expect(readinessReport).toContain('live HTTPS checks passed');
+    expect(readinessReport).toContain('a 2026-06-07 recheck confirmed `getryvro.com`');
     expect(readinessReport).toContain('visible fuzzy names were `Rydoo` and `Rydora`');
     expect(readinessReport).toContain('Spaceship showed `getryvro.com` as available');
     expect(readinessReport).toContain('visible total `$9.08`');
@@ -2750,7 +2754,11 @@ describe('Ryvro environment template', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
 
     expect(privacySupport).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
-    expect(privacySupport).toContain('Static HTML launch-page drafts now live in `web/launch`');
+    expect(privacySupport).toContain(
+      'Static HTML launch pages now live in `web/launch` and are published at `https://getryvro.com`'
+    );
+    expect(privacySupport).toContain('Privacy and terms pages use effective date `June 6, 2026`');
+    expect(privacySupport).toContain('support mailbox delivery proof');
     expect(privacySupport).toContain('web/launch/privacy/index.html');
     expect(privacySupport).toContain('web/launch/terms/index.html');
     expect(privacySupport).toContain('web/launch/support/index.html');

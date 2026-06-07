@@ -144,7 +144,7 @@ Firebase Hosting progress from 2026-06-06:
 Before publishing:
 
 - Review all legal/support copy.
-- Set final effective dates.
+- Confirm the live effective dates still match the owner-approved privacy and terms copy.
 - Repeat the HTTPS checks against the production domain.
 - Confirm subscription, RevenueCat, Firebase, AI provider, microphone, calendar import/export, analytics, diagnostics, and account deletion behavior match the shipped build.
 - Confirm the pages do not claim Ryvro is live before App Store and Google Play evidence exists.

@@ -190,7 +190,7 @@ evidenceRows.forEach(([item, requiredEvidence, status, notes]) => {
   'eas submit --platform ios --latest',
   'eas submit --platform android --latest',
   'Take screenshots',
-  'Privacy Policy published and URL live',
+  'Privacy Policy live URL and owner review complete',
   'Manual smoke tests pass on physical iOS + Android devices',
 ].forEach((expected) => requireIncludes(releaseTasks, expected, 'release task submit gate'));
 

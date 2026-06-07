@@ -1,12 +1,12 @@
 # Ryvro Privacy And Support Templates
 
-Last updated: 2026-05-31
+Last updated: 2026-06-07
 
 These templates are repo-side launch assets. They are not legal advice. Publish final versions on the production website or hosted policy pages before App Store Connect and Google Play submission.
 
 Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
 
-Static HTML launch-page drafts now live in `web/launch`. Review them, set final effective dates, connect the production domain, and verify the live HTTPS URLs before using them in App Store Connect, Google Play Console, RevenueCat, Firebase Auth email templates, or in-app legal links.
+Static HTML launch pages now live in `web/launch` and are published at `https://getryvro.com`. Privacy and terms pages use effective date `June 6, 2026`, and live HTTPS checks have passed. Owner legal/content review, support mailbox delivery proof, Firebase Auth email-template verification, and store-console use of these URLs are still required before submission.
 
 ## Required Public URLs
 
@@ -16,7 +16,7 @@ Static HTML launch-page drafts now live in `web/launch`. Review them, set final 
 - Account deletion URL: `https://getryvro.com/delete-account`
 - Support email: `support@getryvro.com`
 
-If `getryvro.com` is not secured, use the final purchased Ryvro domain and update this file, App Store Connect, Google Play Console, RevenueCat, website footer, and in-app legal links together.
+Use these exact URLs in App Store Connect, Google Play Console, RevenueCat, Firebase Auth templates, website footer links, and in-app legal links after owner legal/content review is complete.
 
 Repo-side page paths:
 
@@ -30,7 +30,7 @@ Repo-side page paths:
 
 ## Firebase Auth Action Handler
 
-Use this custom action URL in Firebase Authentication email templates after `getryvro.com` is connected to Firebase Hosting and verified:
+Use this custom action URL in Firebase Authentication email templates. `getryvro.com` is connected to Firebase Hosting and verified, but Firebase template readback must still confirm the action URL persists:
 
 ```text
 https://getryvro.com/auth/action/

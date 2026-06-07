@@ -186,9 +186,9 @@ Evidence to record:
 
 Owner-only steps:
 
-- Publish privacy policy, terms, support, and the `https://getryvro.com/delete-account` account-deletion page on the controlled launch domain.
+- Review the live privacy policy, terms, support, and `https://getryvro.com/delete-account` account-deletion page on the controlled launch domain.
 - Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` for live domain, DNS/HTTPS, support mailbox, static launch page, and social profile evidence.
-- Review and publish the repo static launch pages in `web/launch` after setting final effective dates and domain-specific links.
+- Confirm the repo static launch pages in `web/launch` still match the owner-approved legal/support copy now that final effective dates and `getryvro.com` links are live.
 - Publish the launch landing page using the source copy in `docs/RYVRO_STORE_LISTING.md`.
 - Apply the reserved social handle bios, display names, and links from `docs/RYVRO_STORE_LISTING.md` after account reservation.
 - Configure Firebase Auth verification and password-reset email templates with Ryvro copy.
