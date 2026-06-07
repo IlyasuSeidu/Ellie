@@ -42,6 +42,7 @@ firebase projects:list
 - OAuth clients were created on 2026-06-06 in the Ryvro Google Cloud project. Web client ID: `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`; iOS client ID: `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com`; Android client ID: `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com`. The Web client secret was shown by Google Cloud but was not recorded in the repo, docs, chat, or tests.
 - EAS production Android credentials check on 2026-06-06 displayed the EAS-managed keystore fingerprints used for the Android OAuth client and Firebase Android app: SHA-1 `D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF` and SHA-256 `07:31:46:00:75:14:2E:55:32:DF:34:76:5F:B2:83:A1:5C:E9:EB:CF:EB:03:74:9B:C0:1A:D2:6E:ED:C7:D2:9C`.
 - Firebase Android app signing fingerprints were registered on 2026-06-06 with `firebase apps:android:sha:create` for both SHA-1 and SHA-256. Fresh ignored root config files were then re-downloaded. Metadata-only verification confirmed the iOS config includes `CLIENT_ID` `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com` and `REVERSED_CLIENT_ID` `com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io`; the Android config includes OAuth client type `1` with `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com` and type `3` with `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`.
+- Google and Apple sign-in providers were enabled in Firebase Console on 2026-06-07. Fresh ignored root config files were re-downloaded again after those provider changes. Metadata-only verification confirmed the iOS config still targets bundle ID `com.ryvro.shiftplanner`, Google app ID `1:1002666052675:ios:bf72c1cc611308a76b98f6`, iOS client ID `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com`, and reversed client ID `com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io`. Metadata-only verification confirmed the Android config still targets package `com.ryvro.shiftplanner`, mobile SDK app ID `1:1002666052675:android:735fd0ef9443ddf76b98f6`, project ID `ryvro-shift-planner`, OAuth client type `1` `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com`, and Firebase Web SDK OAuth client type `3` `1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com`. Use that type `3` client for `GOOGLE_WEB_CLIENT_ID` and `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` in the next production env push.
 - If Google Analytics terms or other legal terms appear, the owner must review and accept them directly.
 - Record only the Firebase project ID, visible display name, Analytics property name if enabled, and owner account used.
 - Do not record web API keys or full app config contents in the evidence log.
@@ -60,9 +61,9 @@ Fresh Firebase apps for the final bundle/package were created and verified.
 - The fresh Android file was downloaded as `google-services.json`.
 - Both files are placed at the repo root only: `./GoogleService-Info.plist` and `./google-services.json`.
 - Both files are ignored by Git.
-- The current ignored root files were refreshed after OAuth client creation and Android SHA registration on 2026-06-06.
+- The current ignored root files were refreshed after OAuth client creation and Android SHA registration on 2026-06-06, then refreshed again after Google and Apple sign-in provider enablement on 2026-06-07.
 - The iOS root file metadata includes the Ryvro iOS OAuth client ID and reversed client ID.
-- The Android root file metadata includes the Ryvro Android OAuth client ID and Ryvro Web OAuth client ID.
+- The Android root file metadata includes the Ryvro Android OAuth client ID and the Firebase Web SDK OAuth client ID.
 - Do not point production `.env` at generated `ios/` or `android/` service-file paths.
 - Do not use tracked local placeholders under `config/firebase/` for production builds.
 
@@ -77,7 +78,8 @@ Record:
 
 Create or confirm OAuth clients in the same Ryvro Google Cloud/Firebase project.
 
-- Web OAuth client for Firebase/Auth and Expo runtime values: `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`
+- Web OAuth client originally created in Google Cloud: `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`
+- Firebase Web SDK OAuth client currently present in the refreshed Android config and used for Expo runtime values: `1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com`
 - iOS OAuth client for `com.ryvro.shiftplanner`: `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com`
 - Android OAuth client for `com.ryvro.shiftplanner`: `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com`
 - Android release signing SHA-1 and SHA-256 fingerprints are recorded here as non-secret launch evidence.
@@ -87,10 +89,11 @@ Create or confirm OAuth clients in the same Ryvro Google Cloud/Firebase project.
 - Firebase Auth was enabled on 2026-06-06 in the logged-in Firebase Console.
 - Firebase Auth authorized domain: `getryvro.com`
 - Metadata-only Identity Toolkit Admin API verification on 2026-06-06 confirmed `authorizedDomains` contains `localhost`, `ryvro-shift-planner.firebaseapp.com`, `ryvro-shift-planner.web.app`, and `getryvro.com`.
+- Email/Password provider was verified enabled on 2026-06-07. Metadata-only Identity Toolkit Admin API readback showed `signIn.email.enabled` `true` and `signIn.email.passwordRequired` `true`, and the logged-in Firebase Console provider list showed Email/Password with `check_circle` and status `Enabled`.
 - Google sign-in provider was enabled in the logged-in Firebase Console on 2026-06-07, and the provider list showed Google with `check_circle` and status `Enabled`.
-- After Google sign-in was enabled, Firebase showed the reminder to download fresh app configuration files because enabling Google sign-in can add OAuth clients to `google-services.json` and `GoogleService-Info.plist`; refresh the ignored root files before the next production-auth-ready EAS build.
-- Email/Password was inspected again on 2026-06-07 and was still off in the Firebase provider form, so it still needs to be saved and verified before creating the reviewer account.
-- Apple sign-in was prepared on 2026-06-07 with the `Enable apple sign-in` switch on and the Firebase Save button enabled. The final Save was not clicked because it still needed action-time owner confirmation. Firebase showed the native Apple setup note plus the optional Services ID and optional OAuth code-flow configuration with callback URL `https://ryvro-shift-planner.firebaseapp.com/__/auth/handler`.
+- Apple sign-in provider was enabled in the logged-in Firebase Console on 2026-06-07, and the provider list showed Apple with `check_circle` and status `Enabled`.
+- After provider enablement, the ignored root Firebase config files were refreshed again and metadata-only verification confirmed they still target `com.ryvro.shiftplanner`.
+- Firebase Auth reviewer account `reviewer@getryvro.com` exists. On 2026-06-07 its password was rotated through the Identity Toolkit Admin API and copied to the local clipboard only; do not write the password to Git, docs, screenshots, or chat. The temporary outside test account `seiduilyasu@tmail.com` was also created for owner-requested external auth testing.
 - Firebase Auth email templates are still pending. The earlier metadata-only verification showed default sender and reply-to values before the console edits. Later logged-in Firebase Console work on 2026-06-06 saved Email address verification and Password reset with sender `Ryvro Support` and reply-to `support@getryvro.com`. The repo now includes a Firebase Hosting action handler at `web/launch/auth/action/index.html` and `web/launch/auth/action/handler.js`, and live `https://getryvro.com/auth/action/` returns HTTP `200` with `Cache-Control: no-store`. After the custom domain went live, Firebase Console accepted the custom action URL dialog without a visible error, but the password reset preview still showed `https://ryvro-shift-planner.firebaseapp.com/__/auth/action`. A metadata-only Identity Toolkit Admin API readback confirmed `callbackUri` is still `https://ryvro-shift-planner.firebaseapp.com/__/auth/action`; an API patch attempt for `https://getryvro.com/auth/action/` returned `EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED`.
 - Required Firebase Auth sender name: `Ryvro Support`
 - Required Firebase Auth reply-to email: `support@getryvro.com`
@@ -105,6 +108,7 @@ Record only:
 - Google sign-in provider enabled confirmation
 - Email/Password provider saved confirmation
 - Apple sign-in provider saved confirmation
+- Reviewer account exists confirmation, without password
 - Firebase Auth template completion note
 
 ## Backend Deploy

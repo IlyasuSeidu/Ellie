@@ -398,6 +398,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
     firebaseOauthBackendHandoff,
   ],
   [
+    '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com',
+    firebaseOauthBackendHandoff,
+  ],
+  [
     '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com',
     firebaseOauthBackendHandoff,
   ],

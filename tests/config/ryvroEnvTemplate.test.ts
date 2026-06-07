@@ -1005,10 +1005,10 @@ describe('Ryvro environment template', () => {
       'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/parseShiftScheduleDescription'
     );
     expect(productionEnvExample).toContain(
-      'GOOGLE_WEB_CLIENT_ID=1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
+      'GOOGLE_WEB_CLIENT_ID=1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
     );
     expect(productionEnvExample).toContain(
-      'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
+      'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
     );
     expect(productionEnvExample).toContain(
       'GOOGLE_IOS_CLIENT_ID=1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
@@ -3123,7 +3123,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('ownership cannot be changed after creation');
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('App Store content rating and export compliance');
-    expect(launchEvidenceLog).toContain('reviewer account exists');
+    expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('build `2` through submission');
     expect(launchEvidenceLog).toContain('`Ryvro iPhone QA` internal group');
@@ -3216,6 +3216,9 @@ describe('Ryvro environment template', () => {
       '1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
     );
     expect(launchEvidenceLog).toContain(
+      '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
+    );
+    expect(launchEvidenceLog).toContain(
       '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
     );
     expect(launchEvidenceLog).toContain(
@@ -3226,7 +3229,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('both were registered on the Firebase Android app');
     expect(launchEvidenceLog).toContain('iOS `CLIENT_ID` / `REVERSED_CLIENT_ID`');
     expect(launchEvidenceLog).toContain('Android OAuth client type `1`');
-    expect(launchEvidenceLog).toContain('Web OAuth client type `3`');
+    expect(launchEvidenceLog).toContain('Firebase Web SDK OAuth client type `3`');
     expect(launchEvidenceLog).toContain(
       'D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF'
     );
@@ -3243,13 +3246,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('A metadata-only Identity Toolkit Admin API read');
     expect(launchEvidenceLog).toContain('authorizedDomains');
     expect(launchEvidenceLog).toContain('getryvro.com');
-    expect(launchEvidenceLog).toContain('2026-06-07 enabled the Google sign-in provider');
-    expect(launchEvidenceLog).toContain('Google with `check_circle` and status `Enabled`');
     expect(launchEvidenceLog).toContain(
-      'fresh `google-services.json` and `GoogleService-Info.plist`'
+      'Identity Toolkit Admin API readback showed Email/Password'
     );
-    expect(launchEvidenceLog).toContain('Email/Password was inspected again and was still off');
-    expect(launchEvidenceLog).toContain('Apple sign-in was prepared in the Firebase provider form');
+    expect(launchEvidenceLog).toContain(
+      'Email/Password, Google, and Apple provider rows all with `check_circle` and status `Enabled`'
+    );
+    expect(launchEvidenceLog).toContain('ignored root Firebase config files were refreshed');
     expect(launchEvidenceLog).toContain('email-template row remains pending');
     expect(launchEvidenceLog).toContain('Backend deploy - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
@@ -3290,11 +3293,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
     expect(launchEvidenceLog).toContain('account deletion request-flow evidence');
+    expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
     expect(launchEvidenceLog).toContain(
-      'the Add user dialog was opened with `reviewer@getryvro.com` filled'
+      'password was rotated through the Identity Toolkit Admin API'
     );
     expect(launchEvidenceLog).toContain(
-      'no password was entered and the final Add user action was not clicked'
+      'owner-requested outside auth test account `seiduilyasu@tmail.com`'
     );
     expect(launchEvidenceLog).toContain('TestFlight iPhone QA');
     expect(launchEvidenceLog).toContain('Physical Android QA');
@@ -3464,10 +3468,10 @@ describe('Ryvro environment template', () => {
     );
     expect(appStoreTestFlightHandoff).toContain('Reviewer account email: `reviewer@getryvro.com`');
     expect(appStoreTestFlightHandoff).toContain(
-      'the Add user dialog was opened with `reviewer@getryvro.com` filled'
+      'Firebase Auth confirmed `reviewer@getryvro.com` already existed'
     );
     expect(appStoreTestFlightHandoff).toContain(
-      'no password was entered and the final Add user action was not clicked'
+      'Store the password only in App Store Connect and Google Play Console reviewer-access fields'
     );
     expect(appStoreTestFlightHandoff).toContain(
       'EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`'
@@ -3637,6 +3641,9 @@ describe('Ryvro environment template', () => {
       '1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
     );
     expect(firebaseOauthBackendHandoff).toContain(
+      '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
       '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
     );
     expect(firebaseOauthBackendHandoff).toContain(
@@ -3677,13 +3684,16 @@ describe('Ryvro environment template', () => {
       'Google sign-in provider was enabled in the logged-in Firebase Console on 2026-06-07'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'refresh the ignored root files before the next production-auth-ready EAS build'
+      'Apple sign-in provider was enabled in the logged-in Firebase Console on 2026-06-07'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Email/Password was inspected again on 2026-06-07 and was still off'
+      'metadata-only verification confirmed they still target `com.ryvro.shiftplanner`'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Apple sign-in was prepared on 2026-06-07 with the `Enable apple sign-in` switch on'
+      'Email/Password provider was verified enabled on 2026-06-07'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Firebase Auth reviewer account `reviewer@getryvro.com` exists'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase Auth email templates are still pending'
