@@ -1,6 +1,6 @@
 # Ryvro Clearance, Domain, And Social Handoff
 
-Last updated: 2026-06-06
+Last updated: 2026-06-07
 
 Use this checklist for the external clearance and public ownership work that must happen before Ryvro can be treated as launch-ready. It covers formal trademark/legal clearance, App Store and Google Play name checks, domain purchase, DNS and HTTPS proof, support mailbox setup, legal page publication, and social handle reservation.
 
@@ -190,5 +190,7 @@ Only mark rows `Passed` when the matching evidence is complete:
 - `Terms page`
 - `Support page/mailbox`
 - `Account deletion page`
+
+Domain control is limited to owner purchase confirmation, DNS control, Firebase custom-domain activation, certificate activation, and live HTTPS routing. Keep support mailbox delivery, privacy and terms owner review, social handles, and store-console URL use in their own evidence rows.
 
 Keep rows as `Pending owner evidence` until the owner evidence exists and `npm run release:submit:check` no longer reports those rows.

@@ -3187,7 +3187,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(launchEvidenceLog).toContain('service account JSON handling');
     expect(launchEvidenceLog).toContain('Domain control for `getryvro.com`');
-    expect(launchEvidenceLog).toContain('domain, DNS, HTTPS, support mailbox');
+    expect(launchEvidenceLog).toContain('Owner purchase confirmation, DNS control proof');
+    expect(launchEvidenceLog).toContain(
+      'This row now tracks only owner domain purchase confirmation'
+    );
+    expect(launchEvidenceLog).toContain(
+      'Support mailbox delivery remains tracked by `Support page/mailbox`'
+    );
     expect(launchEvidenceLog).toContain('Social handles');
     expect(launchEvidenceLog).toContain('social handle evidence');
     expect(launchEvidenceLog).toContain('project dashboard URL');
