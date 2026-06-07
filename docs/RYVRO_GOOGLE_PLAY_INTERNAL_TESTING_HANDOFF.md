@@ -38,7 +38,7 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - The developer registration fee was completed and Play Console now shows `Developer account created`.
 - The Play Console dashboard is reachable for developer account `Ryvro`.
 - Google still blocks app creation until account verification is finished. The dashboard lists identity verification, Android mobile device access verification, and contact phone verification. `Create app` is disabled with the message `Complete account verifications to create new apps`.
-- Latest Chrome progress on 2026-06-07 reached Google's proof-of-address verification step after the mobile-device continuation. The verification panel showed `Upload a proof of address document` and `Running a quick check`. App creation is still not enabled until Google finishes or advances this verification flow.
+- Latest Chrome progress on 2026-06-07 shows documents were uploaded for identity verification. Google says the account owner will receive an email when verification is complete and that it may take a few days. The page still lists Android mobile device access verification, and contact phone verification is unavailable until the identity documents are approved. App creation is still not enabled until Google finishes account verification.
 - Do not record the payments profile address, payment details, or full profile contents.
 - Next owner action: complete the Google account verification tasks, then continue to app creation and package reservation.
 
