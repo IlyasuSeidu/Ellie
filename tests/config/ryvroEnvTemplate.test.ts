@@ -3060,6 +3060,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain(
       'contact phone verification is unavailable until the identity documents are approved'
     );
+    expect(ownerRunbook).toContain('Android emulator verification was attempted');
+    expect(ownerRunbook).toContain('Pixel_9_Pro');
+    expect(ownerRunbook).toContain(
+      "You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer."
+    );
+    expect(ownerRunbook).toContain('Use a physical Android 10 or newer device');
     expect(ownerRunbook).toContain('Do not store the private payments-profile values in the repo');
     expect(ownerRunbook).toContain(
       'ownership cannot be changed after the developer account is created'

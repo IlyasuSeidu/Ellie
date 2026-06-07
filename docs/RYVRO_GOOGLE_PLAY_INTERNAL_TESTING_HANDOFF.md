@@ -39,6 +39,7 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - The Play Console dashboard is reachable for developer account `Ryvro`.
 - Google still blocks app creation until account verification is finished. The dashboard lists identity verification, Android mobile device access verification, and contact phone verification. `Create app` is disabled with the message `Complete account verifications to create new apps`.
 - Latest Chrome progress on 2026-06-07 shows documents were uploaded for identity verification. Google says the account owner will receive an email when verification is complete and that it may take a few days. The page still lists Android mobile device access verification, and contact phone verification is unavailable until the identity documents are approved. App creation is still not enabled until Google finishes account verification.
+- Android emulator attempt on 2026-06-07 used the Play Console Android app on `Pixel_9_Pro` / Android API 36, selected `Ryvro`, and tapped `Verify`. Google rejected the emulator with `You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.` Treat this as requiring a physical Android 10 or newer device signed into the owner Google account.
 - Do not record the payments profile address, payment details, or full profile contents.
 - Next owner action: complete the Google account verification tasks, then continue to app creation and package reservation.
 
