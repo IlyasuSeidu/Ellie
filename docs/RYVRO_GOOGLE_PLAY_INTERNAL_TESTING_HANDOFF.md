@@ -1,6 +1,6 @@
 # Ryvro Google Play Internal Testing Handoff
 
-Last updated: 2026-06-05
+Last updated: 2026-06-07
 
 Use this checklist after the Play Console developer account is enrolled and before any Android production rollout. It covers the Android owner/account path that cannot be completed from the repo alone.
 
@@ -25,6 +25,21 @@ Complete this in Play Console while signed in as the owner.
 - Complete identity, payment, contact, and verification steps.
 - Confirm the owner understands that Google warns the developer-account owner cannot be changed after account creation.
 - Record only non-secret evidence: chosen account type, enrollment status, payment completion note without payment details, and verification status.
+
+Current non-secret progress from logged-in Chrome on 2026-06-07:
+
+- Account path selected: `Yourself`.
+- Google account shown as the owner account: `seiduilyasu94@gmail.com`.
+- Public developer name entered: `Ryvro`.
+- The owner created and linked the intended payments profile.
+- Google says the payments profile is used to collect and verify legal name and address.
+- The public developer profile step used public email `support@getryvro.com`; Google sent a six-digit code to that mailbox and the code was verified.
+- The `About you` step now has the Ryvro Android/Play Console experience text filled and website `https://getryvro.com` entered.
+- The developer registration fee was completed and Play Console now shows `Developer account created`.
+- The Play Console dashboard is reachable for developer account `Ryvro`.
+- Google still blocks app creation until account verification is finished. The dashboard lists identity verification, Android mobile device access verification, and contact phone verification. `Create app` is disabled with the message `Complete account verifications to create new apps`.
+- Do not record the payments profile address, payment details, or full profile contents.
+- Next owner action: complete the Google account verification tasks, then continue to app creation and package reservation.
 
 ## App Creation
 

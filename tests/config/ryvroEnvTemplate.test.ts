@@ -3029,9 +3029,20 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('ASC app ID `6776994726`');
     expect(ownerRunbook).toContain('EU trader status');
     expect(ownerRunbook).toContain('App Store Connect app-record, EU trader');
-    expect(ownerRunbook).toContain('Creating a Play Console developer account');
-    expect(ownerRunbook).toContain('To get started, choose an account type');
-    expect(ownerRunbook).toContain('`An organization` and `Yourself`');
+    expect(ownerRunbook).toContain('selected the `Yourself` developer-account path');
+    expect(ownerRunbook).toContain('entered public developer name `Ryvro`');
+    expect(ownerRunbook).toContain('selected `Create new payments profile`');
+    expect(ownerRunbook).toContain('owner created and linked the payments profile');
+    expect(ownerRunbook).toContain('public email `support@getryvro.com`');
+    expect(ownerRunbook).toContain('the code was verified');
+    expect(ownerRunbook).toContain('website `https://getryvro.com` entered');
+    expect(ownerRunbook).toContain('Developer account created');
+    expect(ownerRunbook).toContain('dashboard is reachable for developer account `Ryvro`');
+    expect(ownerRunbook).toContain('identity verification');
+    expect(ownerRunbook).toContain('Android mobile device access verification');
+    expect(ownerRunbook).toContain('contact phone verification');
+    expect(ownerRunbook).toContain('Complete account verifications to create new apps');
+    expect(ownerRunbook).toContain('Do not store the private payments-profile values in the repo');
     expect(ownerRunbook).toContain(
       'ownership cannot be changed after the developer account is created'
     );
@@ -3123,9 +3134,20 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('ASC app ID: `6776994726`');
     expect(launchEvidenceLog).toContain('Apple Developer Program License Agreement accepted');
     expect(launchEvidenceLog).toContain('explicit bundle ID `com.ryvro.shiftplanner`');
-    expect(launchEvidenceLog).toContain('Logged-in Chrome Play Console check');
-    expect(launchEvidenceLog).toContain('`An organization` and `Yourself`');
-    expect(launchEvidenceLog).toContain('ownership cannot be changed after creation');
+    expect(launchEvidenceLog).toContain('Logged-in Chrome Play Console progress');
+    expect(launchEvidenceLog).toContain('selected the `Yourself` account path');
+    expect(launchEvidenceLog).toContain('selected `Create new payments profile`');
+    expect(launchEvidenceLog).toContain('owner created and linked the payments profile');
+    expect(launchEvidenceLog).toContain('public email `support@getryvro.com`');
+    expect(launchEvidenceLog).toContain('the code was verified');
+    expect(launchEvidenceLog).toContain('website `https://getryvro.com` entered');
+    expect(launchEvidenceLog).toContain('Developer account created');
+    expect(launchEvidenceLog).toContain('dashboard is reachable for developer account `Ryvro`');
+    expect(launchEvidenceLog).toContain('identity verification');
+    expect(launchEvidenceLog).toContain('Android mobile device access verification');
+    expect(launchEvidenceLog).toContain('contact phone verification');
+    expect(launchEvidenceLog).toContain('Complete account verifications to create new apps');
+    expect(launchEvidenceLog).toContain('Do not record the payments profile address');
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('App Store content rating and export compliance');
     expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
