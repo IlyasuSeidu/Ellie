@@ -43,11 +43,12 @@ Complete these before spending more time on store metadata:
 
 Evidence source: `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md`.
 
-### 2. Finish Google Play Enrollment
+### 2. Finish Google Play Verification And App Setup
 
 Google Play blocks Android submission and RevenueCat Android product linkage.
 
-- Finish Play Console developer-account enrollment.
+- Finish the Google account verification tasks now shown on the Play Console dashboard: identity verification, Android mobile device access verification, and contact phone verification.
+- Return to Play Console after verification and confirm `Create app` is enabled.
 - Create the `Ryvro Shift Planner` app.
 - Confirm package `com.ryvro.shiftplanner`.
 - Create a least-privilege service account.

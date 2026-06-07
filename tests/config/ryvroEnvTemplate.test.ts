@@ -764,7 +764,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('eas build:version:set --platform android --profile production');
     expect(script).toContain('# Ryvro Submit Blocker Triage');
     expect(script).toContain('Recommended Order');
-    expect(script).toContain('Finish Google Play Enrollment');
+    expect(script).toContain('Finish Google Play Verification And App Setup');
     expect(script).toContain('Finish Firebase Email Templates And Production Env');
     expect(script).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(script).toContain('Social handles');
@@ -3458,7 +3458,7 @@ describe('Ryvro environment template', () => {
       'Android service account key path `./google-play-key.json`'
     );
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
-    expect(submitBlockerTriage).toContain('Finish Google Play Enrollment');
+    expect(submitBlockerTriage).toContain('Finish Google Play Verification And App Setup');
     expect(submitBlockerTriage).toContain('Finish Firebase Email Templates And Production Env');
     expect(submitBlockerTriage).toContain('backend provider smoke tests have passed');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');

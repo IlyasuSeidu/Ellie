@@ -72,7 +72,7 @@ const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
   ['Recommended Order', submitBlockerTriage],
   ['Android service account key path `./google-play-key.json`', submitBlockerTriage],
   ['Formal trademark/legal clearance for `Ryvro`', submitBlockerTriage],
-  ['Finish Google Play Enrollment', submitBlockerTriage],
+  ['Finish Google Play Verification And App Setup', submitBlockerTriage],
   ['Finish Firebase Email Templates And Production Env', submitBlockerTriage],
   ['Finish RevenueCat And Store Products', submitBlockerTriage],
   ['Rebuild, Test, Screenshot, Then Submit', submitBlockerTriage],

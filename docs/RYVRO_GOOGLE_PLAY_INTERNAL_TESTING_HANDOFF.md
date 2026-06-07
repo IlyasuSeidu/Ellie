@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-07
 
-Use this checklist after the Play Console developer account is enrolled and before any Android production rollout. It covers the Android owner/account path that cannot be completed from the repo alone.
+Use this checklist after the Play Console developer account exists and before any Android production rollout. It covers the Android owner/account path that cannot be completed from the repo alone.
 
 Do not store the Google Play service account JSON, upload key material, passwords, payment details, or private tester passwords in Git, docs, screenshots, or chat.
 

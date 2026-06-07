@@ -284,7 +284,7 @@ Required before submit:
 
 Service account and internal testing:
 
-- Complete Play Console developer-account enrollment before creating the app.
+- Complete the remaining Play Console account verification tasks before creating the app. The developer account now exists, but Play Console still requires identity verification, Android mobile device access verification, and contact phone verification before `Create app` is enabled.
 - Create the Play app as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`.
 - Set first release track to Internal testing.
 - Create a least-privilege Google Play service account for EAS Submit and RevenueCat access.
