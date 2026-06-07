@@ -93,20 +93,18 @@ describe('SignUpScreen', () => {
   it('triggers social sign-up and sign-in navigation link', async () => {
     mockSignInWithGoogle.mockResolvedValueOnce(undefined);
     mockSignInWithApple.mockResolvedValueOnce(undefined);
-    const { getByTestId, queryByTestId } = render(<SignUpScreen />);
+    const { getByTestId } = render(<SignUpScreen />);
 
     fireEvent.press(getByTestId('google-sign-up-button'));
     await waitFor(() => {
       expect(mockSignInWithGoogle).toHaveBeenCalledTimes(1);
     });
 
-    const appleButton = queryByTestId('apple-sign-up-button');
-    if (appleButton) {
-      fireEvent.press(appleButton);
-      await waitFor(() => {
-        expect(mockSignInWithApple).toHaveBeenCalledTimes(1);
-      });
-    }
+    const appleButton = getByTestId('apple-sign-up-button');
+    fireEvent.press(appleButton);
+    await waitFor(() => {
+      expect(mockSignInWithApple).toHaveBeenCalledTimes(1);
+    });
 
     fireEvent.press(getByTestId('sign-in-link'));
     expect(mockNavigate).toHaveBeenCalledWith('SignIn');

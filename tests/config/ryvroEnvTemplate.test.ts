@@ -3243,6 +3243,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('A metadata-only Identity Toolkit Admin API read');
     expect(launchEvidenceLog).toContain('authorizedDomains');
     expect(launchEvidenceLog).toContain('getryvro.com');
+    expect(launchEvidenceLog).toContain('2026-06-07 enabled the Google sign-in provider');
+    expect(launchEvidenceLog).toContain('Google with `check_circle` and status `Enabled`');
+    expect(launchEvidenceLog).toContain(
+      'fresh `google-services.json` and `GoogleService-Info.plist`'
+    );
+    expect(launchEvidenceLog).toContain('Email/Password was inspected again and was still off');
+    expect(launchEvidenceLog).toContain('Apple sign-in was prepared in the Firebase provider form');
     expect(launchEvidenceLog).toContain('email-template row remains pending');
     expect(launchEvidenceLog).toContain('Backend deploy - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
@@ -3283,6 +3290,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
     expect(launchEvidenceLog).toContain('account deletion request-flow evidence');
+    expect(launchEvidenceLog).toContain(
+      'the Add user dialog was opened with `reviewer@getryvro.com` filled'
+    );
+    expect(launchEvidenceLog).toContain(
+      'no password was entered and the final Add user action was not clicked'
+    );
     expect(launchEvidenceLog).toContain('TestFlight iPhone QA');
     expect(launchEvidenceLog).toContain('Physical Android QA');
     expect(launchEvidenceLog).toContain('71fde2ff-aa36-4741-aa69-e4f11ba30acd');
@@ -3330,6 +3343,13 @@ describe('Ryvro environment template', () => {
     expect(deviceQaTemplate).toContain('Sandbox purchase QA');
     expect(deviceQaTemplate).toContain('Installed bundle/package proof');
     expect(deviceQaTemplate).toContain('Must-Pass Smoke Matrix');
+    expect(deviceQaTemplate).toContain('Authentication End-To-End Gate');
+    expect(deviceQaTemplate).toContain('AuthService.socialCredentials.test.ts');
+    expect(deviceQaTemplate).toContain('Google provider enabled in Firebase');
+    expect(deviceQaTemplate).toContain('Apple provider enabled in Firebase');
+    expect(deviceQaTemplate).toContain(
+      'Fresh GoogleService-Info.plist downloaded after provider changes'
+    );
     expect(deviceQaTemplate).toContain(
       'Fresh install from TestFlight or Play/internal store channel'
     );
@@ -3443,6 +3463,12 @@ describe('Ryvro environment template', () => {
       'EAS submit command: `eas submit --platform ios --latest`'
     );
     expect(appStoreTestFlightHandoff).toContain('Reviewer account email: `reviewer@getryvro.com`');
+    expect(appStoreTestFlightHandoff).toContain(
+      'the Add user dialog was opened with `reviewer@getryvro.com` filled'
+    );
+    expect(appStoreTestFlightHandoff).toContain(
+      'no password was entered and the final Add user action was not clicked'
+    );
     expect(appStoreTestFlightHandoff).toContain(
       'EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`'
     );
@@ -3646,6 +3672,18 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain('Firebase Auth was enabled on 2026-06-06');
     expect(firebaseOauthBackendHandoff).toContain(
       'Metadata-only Identity Toolkit Admin API verification on 2026-06-06'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Google sign-in provider was enabled in the logged-in Firebase Console on 2026-06-07'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'refresh the ignored root files before the next production-auth-ready EAS build'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Email/Password was inspected again on 2026-06-07 and was still off'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Apple sign-in was prepared on 2026-06-07 with the `Enable apple sign-in` switch on'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase Auth email templates are still pending'

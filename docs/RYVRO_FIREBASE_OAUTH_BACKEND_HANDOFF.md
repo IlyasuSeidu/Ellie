@@ -1,6 +1,6 @@
 # Ryvro Firebase, OAuth, And Backend Handoff
 
-Last updated: 2026-06-06
+Last updated: 2026-06-07
 
 Use this checklist after the owner creates the production Firebase project and before rebuilding Ryvro production binaries. It turns the Firebase, OAuth, backend, and EAS-secret launch blockers into one evidence packet.
 
@@ -87,6 +87,10 @@ Create or confirm OAuth clients in the same Ryvro Google Cloud/Firebase project.
 - Firebase Auth was enabled on 2026-06-06 in the logged-in Firebase Console.
 - Firebase Auth authorized domain: `getryvro.com`
 - Metadata-only Identity Toolkit Admin API verification on 2026-06-06 confirmed `authorizedDomains` contains `localhost`, `ryvro-shift-planner.firebaseapp.com`, `ryvro-shift-planner.web.app`, and `getryvro.com`.
+- Google sign-in provider was enabled in the logged-in Firebase Console on 2026-06-07, and the provider list showed Google with `check_circle` and status `Enabled`.
+- After Google sign-in was enabled, Firebase showed the reminder to download fresh app configuration files because enabling Google sign-in can add OAuth clients to `google-services.json` and `GoogleService-Info.plist`; refresh the ignored root files before the next production-auth-ready EAS build.
+- Email/Password was inspected again on 2026-06-07 and was still off in the Firebase provider form, so it still needs to be saved and verified before creating the reviewer account.
+- Apple sign-in was prepared on 2026-06-07 with the `Enable apple sign-in` switch on and the Firebase Save button enabled. The final Save was not clicked because it still needed action-time owner confirmation. Firebase showed the native Apple setup note plus the optional Services ID and optional OAuth code-flow configuration with callback URL `https://ryvro-shift-planner.firebaseapp.com/__/auth/handler`.
 - Firebase Auth email templates are still pending. The earlier metadata-only verification showed default sender and reply-to values before the console edits. Later logged-in Firebase Console work on 2026-06-06 saved Email address verification and Password reset with sender `Ryvro Support` and reply-to `support@getryvro.com`. The repo now includes a Firebase Hosting action handler at `web/launch/auth/action/index.html` and `web/launch/auth/action/handler.js`, and live `https://getryvro.com/auth/action/` returns HTTP `200` with `Cache-Control: no-store`. After the custom domain went live, Firebase Console accepted the custom action URL dialog without a visible error, but the password reset preview still showed `https://ryvro-shift-planner.firebaseapp.com/__/auth/action`. A metadata-only Identity Toolkit Admin API readback confirmed `callbackUri` is still `https://ryvro-shift-planner.firebaseapp.com/__/auth/action`; an API patch attempt for `https://getryvro.com/auth/action/` returned `EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED`.
 - Required Firebase Auth sender name: `Ryvro Support`
 - Required Firebase Auth reply-to email: `support@getryvro.com`
@@ -98,6 +102,9 @@ Record only:
 - OAuth client IDs
 - Android SHA-1/SHA-256 fingerprint notes
 - Authorized-domain confirmation
+- Google sign-in provider enabled confirmation
+- Email/Password provider saved confirmation
+- Apple sign-in provider saved confirmation
 - Firebase Auth template completion note
 
 ## Backend Deploy

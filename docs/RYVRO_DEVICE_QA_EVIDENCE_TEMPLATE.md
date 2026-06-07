@@ -1,6 +1,6 @@
 # Ryvro Device QA Evidence Template
 
-Last updated: 2026-06-05
+Last updated: 2026-06-07
 
 Use this template when testing the production-equivalent Ryvro build on TestFlight iPhone and Android physical device or Play internal testing. Store only non-secret evidence here or in a copied QA packet. Do not record passwords, private keys, service-account JSON, signing material, full Firebase config contents, RevenueCat SDK keys, or private payment details.
 
@@ -68,6 +68,39 @@ Installed identity proof should show:
 | Pending sync        | Make an offline change where supported                                                                                 | Pending-sync status appears and clears after reconnect                          |        |               |
 | Legal links         | Open privacy, terms, support, and account deletion from Profile/paywall                                                | Links open live HTTPS pages on the controlled Ryvro domain                      |        |               |
 | Screenshots         | Capture required store frames                                                                                          | File names and sizes match `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`         |        |               |
+
+## Authentication End-To-End Gate
+
+Local automated coverage now proves the app-side auth wiring before device QA:
+
+- `src/services/__tests__/AuthService.socialCredentials.test.ts` verifies Email/Password calls Firebase Auth create/sign-in APIs, Google native sign-in exchanges a Google ID token through `GoogleAuthProvider.credential`, Apple native sign-in exchanges an Apple identity token through `OAuthProvider('apple.com')`, and both social providers stop before Firebase when the native SDK does not return the required token.
+- `src/contexts/__tests__/AuthContext.test.tsx` verifies auth actions are blocked while offline and Google Sign-In is configured with the Ryvro web and iOS client IDs.
+- `src/screens/auth/__tests__/SignInScreen.test.tsx` and `src/screens/auth/__tests__/SignUpScreen.test.tsx` verify the Email/Password forms and both Google and Apple buttons call the auth context.
+- `tests/services/AuthService.test.ts` preserves broad behavior coverage for password rules, sign-in failures, email verification, reset, session state, and account operations.
+
+Device QA must still prove the real provider path against the production Ryvro Firebase project:
+
+```text
+Email/Password provider saved in Firebase:
+Reviewer account created:
+Google provider enabled in Firebase:
+Apple provider enabled in Firebase:
+Fresh GoogleService-Info.plist downloaded after provider changes:
+Fresh google-services.json downloaded after provider changes:
+iPhone TestFlight build number:
+Android internal-test build versionCode:
+```
+
+Run these auth-specific checks on the production-equivalent builds:
+
+| Provider       | Platform                         | Required live check                                                                              | Result | Evidence note |
+| -------------- | -------------------------------- | ------------------------------------------------------------------------------------------------ | ------ | ------------- |
+| Email/Password | iPhone and Android               | Create or sign in with `reviewer@getryvro.com`; verify the user appears in Firebase Auth         |        |               |
+| Google Sign-In | iPhone and Android where allowed | Complete native Google flow; verify Firebase Auth user provider includes `google.com`            |        |               |
+| Apple Sign-In  | iPhone                           | Complete native Apple flow; verify Firebase Auth user provider includes `apple.com`              |        |               |
+| Sign out       | iPhone and Android               | Sign out after each provider and confirm the next app open returns to auth/onboarding safely     |        |               |
+| Offline guard  | iPhone and Android               | Disable network before each auth action and confirm the app blocks the action with a clear error |        |               |
+| Recovery       | iPhone and Android               | Re-enable network and complete sign-in again without reinstalling or clearing app data           |        |               |
 
 ## Store Screenshot Evidence
 
