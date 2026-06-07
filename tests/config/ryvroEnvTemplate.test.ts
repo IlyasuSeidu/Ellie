@@ -3055,6 +3055,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Android mobile device access verification');
     expect(ownerRunbook).toContain('contact phone verification');
     expect(ownerRunbook).toContain('Complete account verifications to create new apps');
+    expect(ownerRunbook).toContain('Upload a proof of address document');
+    expect(ownerRunbook).toContain('Running a quick check');
     expect(ownerRunbook).toContain('Do not store the private payments-profile values in the repo');
     expect(ownerRunbook).toContain(
       'ownership cannot be changed after the developer account is created'
