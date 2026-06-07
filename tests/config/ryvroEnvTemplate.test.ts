@@ -765,7 +765,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('# Ryvro Submit Blocker Triage');
     expect(script).toContain('Recommended Order');
     expect(script).toContain('Finish Google Play Enrollment');
-    expect(script).toContain('Create Production Firebase And OAuth');
+    expect(script).toContain('Finish Firebase Email Templates And Production Env');
     expect(script).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(script).toContain('Social handles');
     expect(script).toContain('Backend deploy - ryvroBrain');
@@ -3422,8 +3422,8 @@ describe('Ryvro environment template', () => {
     );
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(submitBlockerTriage).toContain('Finish Google Play Enrollment');
-    expect(submitBlockerTriage).toContain('Create Production Firebase And OAuth');
-    expect(submitBlockerTriage).toContain('OpenAI quota or billing');
+    expect(submitBlockerTriage).toContain('Finish Firebase Email Templates And Production Env');
+    expect(submitBlockerTriage).toContain('backend provider smoke tests have passed');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(submitBlockerTriage).toContain('npm run release:versions:get');

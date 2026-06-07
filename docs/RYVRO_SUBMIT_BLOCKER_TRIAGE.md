@@ -25,7 +25,7 @@ The remaining checked blocker families are:
 - Google Play title, package, app creation, service account, internal testing, Android QA, and Play submission
 - Social handle reservation
 - Privacy and terms owner content review, support mailbox delivery proof, and store-console use of the live `getryvro.com` URLs
-- Firebase Auth email templates, OpenAI quota or billing, backend provider smokes, production env, and EAS production environment push
+- Firebase Auth email templates, production env preflight, and EAS production environment push
 - Production `.env`, `npm run release:env:check`, and EAS production environment push
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
 - App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
@@ -57,19 +57,17 @@ Google Play blocks Android submission and RevenueCat Android product linkage.
 
 Evidence source: `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md`.
 
-### 3. Create Production Firebase And OAuth
+### 3. Finish Firebase Email Templates And Production Env
 
 Do this before rebuilding production binaries.
 
 - Ryvro Firebase project `ryvro-shift-planner` is created.
-- Firebase iOS app `Ryvro iOS` is active for `com.ryvro.shiftplanner`, and root-level `GoogleService-Info.plist` is downloaded as an ignored local file.
-- Firebase Android app `Ryvro Android` is active for `com.ryvro.shiftplanner`, and root-level `google-services.json` is downloaded as an ignored local file.
+- Firebase iOS app `Ryvro iOS` is active for `com.ryvro.shiftplanner`, and root-level `GoogleService-Info.plist` is refreshed as an ignored local file after Google and Apple sign-in provider changes.
+- Firebase Android app `Ryvro Android` is active for `com.ryvro.shiftplanner`, and root-level `google-services.json` is refreshed as an ignored local file after Google and Apple sign-in provider changes.
 - Web, iOS, and Android OAuth clients are created.
-- Firebase Auth is enabled, and `getryvro.com` is added as a Firebase Auth authorized domain.
-- Configure Firebase Auth email templates with `Ryvro Support`, `support@getryvro.com`, and `getryvro.com`.
-- `OPENAI_API_KEY` is now stored in Firebase Secret Manager and both `ryvroBrain` and `parseShiftScheduleDescription` are deployed.
-- Fix OpenAI project quota or billing. Current provider calls return OpenAI `429` quota exceeded, so AI voice and non-heuristic parser behavior are not launch-ready.
-- Rerun backend smoke tests after quota is fixed, including one valid non-heuristic parser prompt and one valid voice request.
+- Firebase Auth Email/Password, Google, and Apple providers are enabled, and `getryvro.com` is confirmed as a Firebase Auth authorized domain.
+- `OPENAI_API_KEY` is stored in Firebase Secret Manager, both `ryvroBrain` and `parseShiftScheduleDescription` are deployed, and backend provider smoke tests have passed.
+- Finish Firebase Auth email-template evidence for the custom action URL or action domain. The remaining problem is that the console save produced an error and the API patch returned `EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED`, so this still needs owner-console or support resolution evidence before submission.
 - Fill real production `.env` values.
 - Run `npm run release:env:check`.
 - Push checked production values to EAS with `npm run release:env:push`.
@@ -92,7 +90,7 @@ Evidence source: `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md`.
 
 ### 5. Rebuild, Test, Screenshot, Then Submit
 
-Do this only after real Firebase, OAuth, RevenueCat, legal URLs, backend URLs, and EAS production environment values exist.
+Do this only after real RevenueCat, legal URLs, backend URLs, and EAS production environment values exist.
 
 - Run `npm run release:versions:get` and confirm the current EAS remote values.
 - App Store Connect already has version `1.0.0`, build `2`, from EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, and TestFlight visual inspection showed build `2` as `Ready to Submit`.
