@@ -2763,7 +2763,7 @@ describe('Ryvro environment template', () => {
       'Static HTML launch pages now live in `web/launch` and are published at `https://getryvro.com`'
     );
     expect(privacySupport).toContain('Privacy and terms pages use effective date `June 6, 2026`');
-    expect(privacySupport).toContain('support mailbox delivery proof');
+    expect(privacySupport).toContain('support mailbox');
     expect(privacySupport).toContain('web/launch/privacy/index.html');
     expect(privacySupport).toContain('web/launch/terms/index.html');
     expect(privacySupport).toContain('web/launch/support/index.html');
@@ -3229,6 +3229,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Support mailbox delivery remains tracked by `Support page/mailbox`'
     );
+    expect(launchEvidenceLog).toContain(
+      'Google Play Console verification email from Google addressed to `support@getryvro.com`'
+    );
+    expect(launchEvidenceLog).toContain('Do not record one-time verification codes in the repo');
     expect(launchEvidenceLog).toContain('Social handles');
     expect(launchEvidenceLog).toContain('social handle evidence');
     expect(launchEvidenceLog).toContain('project dashboard URL');
@@ -3433,6 +3437,12 @@ describe('Ryvro environment template', () => {
     );
     expect(clearanceDomainSocialHandoff).toContain('Spaceship showed `getryvro.com` as available');
     expect(clearanceDomainSocialHandoff).toContain('visible total `$9.08`');
+    expect(clearanceDomainSocialHandoff).toContain(
+      'Google Play Console verification email from Google addressed to `support@getryvro.com`'
+    );
+    expect(clearanceDomainSocialHandoff).toContain(
+      'Do not record one-time verification codes in the repo'
+    );
     expect(clearanceDomainSocialHandoff).toContain('Domain Reservation And DNS');
     expect(clearanceDomainSocialHandoff).toContain('Static Launch Pages');
     expect(clearanceDomainSocialHandoff).toContain('Social Handle Reservation');
