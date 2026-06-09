@@ -1,6 +1,6 @@
 # Ryvro Release Readiness Report
 
-Date: 2026-06-07
+Date: 2026-06-09
 Branch: `codex/ryvro-rebrand-rollout`
 Open PR: `https://github.com/IlyasuSeidu/Ellie/pull/1`
 
@@ -82,9 +82,10 @@ Completed and guarded in the current branch:
 
 ## Verification Completed
 
-- Local focused verification on 2026-06-07 passed `npm test -- --runTestsByPath tests/config/ryvroEnvTemplate.test.ts`, `npm run release:owner:check`, and `git diff --check` after recording the Play Console physical-device verification blocker and refreshing current pushed CI evidence references. `npm run release:submit:check` still failed intentionally on the current owner evidence and local Android service-account key blockers.
-- Latest pushed GitHub Actions check for PR #1 passed on commit `d2fa476`: CI run `27210693971` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
-- Local release verification on 2026-06-09 passed `npm run release:check` after tightening Android physical-device QA evidence and auth/error-copy coverage. The release check included TypeScript, 112 Jest suites / 1,803 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Local focused verification on 2026-06-09 passed `npm test -- --runTestsByPath src/services/firebase/__tests__/authSdk.providers.test.ts src/services/__tests__/AuthService.socialCredentials.test.ts --no-cache`, `npm run type-check`, and `git diff --check` after fixing native Apple Firebase credential creation. `npm run release:submit:check` still failed intentionally on the current owner evidence and local Android service-account key blockers.
+- Latest pushed GitHub Actions check for PR #1 passed on commit `052d9d3`: CI run `27212496473` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
+- Local release verification on 2026-06-09 passed `npm run release:check` after fixing native Apple Firebase credentials and adding provider-wrapper coverage. The release check included TypeScript, 113 Jest suites / 1,805 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Previous pushed GitHub Actions check for PR #1 passed on commit `d2fa476`: CI run `27210693971` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Pushed GitHub Actions check for PR #1 passed on commit `88e0c62`: CI run `27208791655` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Pushed GitHub Actions check for PR #1 passed on commit `2e52a2f`: CI run `27088658834` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Pushed GitHub Actions check for PR #1 passed on commit `6c73ae9`: CI run `27088420404` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
@@ -262,7 +263,7 @@ Still pending:
 These items cannot be finished from the repo alone:
 
 - Formal trademark/legal clearance in launch markets.
-- Google account verification in Play Console, then Google Play app-title and `com.ryvro.shiftplanner` package reservation. The developer account exists, but Play Console still blocks `Create app` until identity verification, Android mobile device access verification, and contact phone verification are complete.
+- Google Play app-title and `com.ryvro.shiftplanner` package reservation. The developer account exists and Play Console now says `Your identity has been verified successfully`, but Play Console still blocks `Create app` until Android mobile device access verification on a physical Android 10 or newer device and contact phone verification are complete.
 - Logged-in social handle reservation.
 - Firebase Auth email-template evidence for sender `Ryvro Support`, reply-to `support@getryvro.com`, and action domain `getryvro.com`.
 - Real production `.env` values, `npm run release:env:check`, and `npm run release:env:push`.
