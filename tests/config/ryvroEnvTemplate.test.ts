@@ -5099,6 +5099,14 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/components/shift-builder/AiDraftReviewSheet.tsx'),
       'utf8'
     );
+    const shiftDefinitionPalette = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/ShiftDefinitionPalette.tsx'),
+      'utf8'
+    );
+    const builderValidationBanner = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/BuilderValidationBanner.tsx'),
+      'utf8'
+    );
     const guardedLocaleKeys: Record<string, string[]> = {
       'common.json': ['subscription.paywall.plans.weeklySuffix'],
       'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
@@ -5132,6 +5140,17 @@ describe('Ryvro environment template', () => {
         'shiftBuilder.review.followUpLabel',
         'shiftBuilder.review.followUpPlaceholder',
         'shiftBuilder.review.useDraftA11y',
+        'shiftBuilder.palette.createNewA11y',
+        'shiftBuilder.palette.newType',
+        'shiftBuilder.palette.emptyTitle',
+        'shiftBuilder.palette.cannotDeleteTitle',
+        'shiftBuilder.palette.cannotDeleteMessage',
+        'shiftBuilder.palette.addToSequenceA11y',
+        'shiftBuilder.palette.deleteBlockedHint',
+        'shiftBuilder.validation.fixBeforeSaving',
+        'shiftBuilder.validation.reviewBeforeSaving',
+        'shiftBuilder.validation.toggleA11y',
+        'shiftBuilder.validation.dismissWarnings',
       ],
     };
 
@@ -5161,6 +5180,19 @@ describe('Ryvro environment template', () => {
     expect(aiDraftReviewSheet).not.toContain('AI Draft</Text>');
     expect(aiDraftReviewSheet).not.toContain('Questions for you');
     expect(aiDraftReviewSheet).not.toContain('Sequence preview');
+    expect(shiftDefinitionPalette).toContain("useTranslation('onboarding')");
+    expect(shiftDefinitionPalette).toContain("t('shiftBuilder.palette.createNewA11y')");
+    expect(shiftDefinitionPalette).toContain("t('shiftBuilder.palette.addToSequenceA11y'");
+    expect(shiftDefinitionPalette).not.toContain('accessibilityLabel="Create new shift type"');
+    expect(shiftDefinitionPalette).not.toContain('No shift types yet.');
+    expect(shiftDefinitionPalette).not.toContain('Tap New type to create your first shift.');
+    expect(shiftDefinitionPalette).not.toContain('This shift type will be permanently removed.');
+    expect(builderValidationBanner).toContain("useTranslation('onboarding')");
+    expect(builderValidationBanner).toContain("t('shiftBuilder.validation.fixBeforeSaving'");
+    expect(builderValidationBanner).toContain("t('shiftBuilder.validation.dismissWarnings')");
+    expect(builderValidationBanner).not.toContain('accessibilityLabel="Dismiss warnings"');
+    expect(builderValidationBanner).not.toContain('Dismiss warnings</Text>');
+    expect(builderValidationBanner).not.toContain('review before saving');
 
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const locales = fs.readdirSync(localeRoot).filter((locale) => locale !== 'en');

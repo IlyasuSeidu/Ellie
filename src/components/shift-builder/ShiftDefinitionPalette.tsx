@@ -8,6 +8,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Animated, { FadeInUp, FadeOutDown, Layout } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
@@ -31,6 +32,7 @@ export const ShiftDefinitionPalette: React.FC<ShiftDefinitionPaletteProps> = ({
   onDelete,
   onCreateNew,
 }) => {
+  const { t } = useTranslation('onboarding');
   const usageMap = useMemo(() => {
     const counts = new Map<string, number>();
     for (const item of sequence) {
@@ -60,25 +62,29 @@ export const ShiftDefinitionPalette: React.FC<ShiftDefinitionPaletteProps> = ({
       const count = usageMap.get(def.id) ?? 0;
       if (count > 0) {
         Alert.alert(
-          'Cannot delete',
-          `"${def.name}" is used ${count} time${count !== 1 ? 's' : ''} in your sequence. Remove it from the sequence first.`,
-          [{ text: 'OK' }]
+          t('shiftBuilder.palette.cannotDeleteTitle'),
+          t('shiftBuilder.palette.cannotDeleteMessage', { name: def.name, count }),
+          [{ text: t('shiftBuilder.palette.ok') }]
         );
         return;
       }
-      Alert.alert(`Delete "${def.name}"?`, 'This shift type will be permanently removed.', [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-            onDelete(def.id);
+      Alert.alert(
+        t('shiftBuilder.palette.deleteTitle', { name: def.name }),
+        t('shiftBuilder.palette.deleteMessage'),
+        [
+          { text: t('shiftBuilder.palette.cancelDelete'), style: 'cancel' },
+          {
+            text: t('shiftBuilder.palette.confirmDelete'),
+            style: 'destructive',
+            onPress: () => {
+              void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+              onDelete(def.id);
+            },
           },
-        },
-      ]);
+        ]
+      );
     },
-    [usageMap, onDelete]
+    [usageMap, onDelete, t]
   );
 
   const handleCreateNew = useCallback(() => {
@@ -89,23 +95,23 @@ export const ShiftDefinitionPalette: React.FC<ShiftDefinitionPaletteProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Shift Types</Text>
+        <Text style={styles.headerTitle}>{t('shiftBuilder.palette.title')}</Text>
         <TouchableOpacity
           style={styles.createButton}
           onPress={handleCreateNew}
-          accessibilityLabel="Create new shift type"
+          accessibilityLabel={t('shiftBuilder.palette.createNewA11y')}
           accessibilityRole="button"
         >
           <Ionicons name="add" size={16} color={theme.colors.sacredGold} />
-          <Text style={styles.createButtonText}>New type</Text>
+          <Text style={styles.createButtonText}>{t('shiftBuilder.palette.newType')}</Text>
         </TouchableOpacity>
       </View>
 
       {definitions.length === 0 ? (
         <Animated.View entering={FadeInUp} style={styles.emptyState}>
           <Ionicons name="layers-outline" size={32} color={theme.colors.shadow} />
-          <Text style={styles.emptyText}>No shift types yet.</Text>
-          <Text style={styles.emptySubtext}>Tap New type to create your first shift.</Text>
+          <Text style={styles.emptyText}>{t('shiftBuilder.palette.emptyTitle')}</Text>
+          <Text style={styles.emptySubtext}>{t('shiftBuilder.palette.emptyMessage')}</Text>
         </Animated.View>
       ) : (
         <View>
@@ -174,7 +180,9 @@ export const ShiftDefinitionPalette: React.FC<ShiftDefinitionPaletteProps> = ({
                       },
                     ]}
                     onPress={() => handleAdd(def)}
-                    accessibilityLabel={`Add ${def.name} to sequence`}
+                    accessibilityLabel={t('shiftBuilder.palette.addToSequenceA11y', {
+                      name: def.name,
+                    })}
                     accessibilityRole="button"
                   >
                     <Ionicons name="add-circle" size={22} color={display.color} />
@@ -183,7 +191,7 @@ export const ShiftDefinitionPalette: React.FC<ShiftDefinitionPaletteProps> = ({
                   <TouchableOpacity
                     style={styles.controlButton}
                     onPress={() => handleEdit(def)}
-                    accessibilityLabel={`Edit ${def.name}`}
+                    accessibilityLabel={t('shiftBuilder.palette.editA11y', { name: def.name })}
                     accessibilityRole="button"
                   >
                     <Ionicons name="pencil" size={18} color={display.color} />
@@ -192,8 +200,8 @@ export const ShiftDefinitionPalette: React.FC<ShiftDefinitionPaletteProps> = ({
                   <TouchableOpacity
                     style={[styles.controlButton, isInUse && styles.controlButtonDisabled]}
                     onPress={() => handleDelete(def)}
-                    accessibilityLabel={`Delete ${def.name}`}
-                    accessibilityHint={isInUse ? 'Cannot delete — in use in sequence' : ''}
+                    accessibilityLabel={t('shiftBuilder.palette.deleteA11y', { name: def.name })}
+                    accessibilityHint={isInUse ? t('shiftBuilder.palette.deleteBlockedHint') : ''}
                     accessibilityRole="button"
                   >
                     <Ionicons

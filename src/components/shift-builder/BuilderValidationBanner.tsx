@@ -8,6 +8,7 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
@@ -23,6 +24,7 @@ export const BuilderValidationBanner: React.FC<BuilderValidationBannerProps> = (
   warnings,
   onDismissWarnings,
 }) => {
+  const { t } = useTranslation('onboarding');
   const [expanded, setExpanded] = useState(false);
 
   const hasErrors = errors.length > 0;
@@ -51,8 +53,8 @@ export const BuilderValidationBanner: React.FC<BuilderValidationBannerProps> = (
   const iconName = mode === 'error' ? 'alert-circle' : 'warning';
   const headline =
     mode === 'error'
-      ? `Fix ${count} issue${count !== 1 ? 's' : ''} before saving`
-      : `${count} warning${count !== 1 ? 's' : ''} — review before saving`;
+      ? t('shiftBuilder.validation.fixBeforeSaving', { count })
+      : t('shiftBuilder.validation.reviewBeforeSaving', { count });
 
   return (
     <Animated.View
@@ -66,7 +68,12 @@ export const BuilderValidationBanner: React.FC<BuilderValidationBannerProps> = (
       <TouchableOpacity
         style={styles.headerRow}
         onPress={handleToggleExpand}
-        accessibilityLabel={`${headline}. Tap to ${expanded ? 'collapse' : 'expand'} list.`}
+        accessibilityLabel={t('shiftBuilder.validation.toggleA11y', {
+          headline,
+          state: expanded
+            ? t('shiftBuilder.validation.collapse')
+            : t('shiftBuilder.validation.expand'),
+        })}
         accessibilityRole="button"
       >
         <Ionicons name={iconName} size={16} color={bannerColor} />
@@ -90,7 +97,9 @@ export const BuilderValidationBanner: React.FC<BuilderValidationBannerProps> = (
           {hasErrors && hasWarnings && (
             <>
               <View style={[styles.divider, { backgroundColor: theme.colors.warningBg }]} />
-              <Text style={styles.warningsHeader}>Warnings:</Text>
+              <Text style={styles.warningsHeader}>
+                {t('shiftBuilder.validation.warningsHeader')}
+              </Text>
               {warnings.map((w, i) => (
                 <View key={`w${i}`} style={styles.listRow}>
                   <View style={[styles.listBullet, { backgroundColor: theme.colors.warning }]} />
@@ -105,10 +114,10 @@ export const BuilderValidationBanner: React.FC<BuilderValidationBannerProps> = (
             <TouchableOpacity
               style={styles.dismissButton}
               onPress={handleDismissWarnings}
-              accessibilityLabel="Dismiss warnings"
+              accessibilityLabel={t('shiftBuilder.validation.dismissWarningsA11y')}
               accessibilityRole="button"
             >
-              <Text style={styles.dismissText}>Dismiss warnings</Text>
+              <Text style={styles.dismissText}>{t('shiftBuilder.validation.dismissWarnings')}</Text>
             </TouchableOpacity>
           )}
         </View>
