@@ -2,7 +2,14 @@
 
 ## Overview
 
-This document outlines our comprehensive testing strategy for the Ryvro application. We follow a testing pyramid approach with multiple layers of testing to ensure code quality, reliability, and maintainability.
+This document outlines the current testing strategy for the Ryvro application. It combines the normal testing pyramid with launch-specific gates for the Ryvro rebrand, the `com.ryvro.shiftplanner` native identity, the Universal Shift Builder, authentication, subscriptions, reminders, exceptions, calendar import/export, and the owner handoff work that cannot be completed inside the repository.
+
+Current release evidence on June 9, 2026:
+
+- `npm run release:check` passes TypeScript, 112 Jest suites / 1,795 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- The PR CI pipeline must pass Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job before launch-readiness evidence is treated as current.
+- Simulator E2E coverage includes fresh onboarding into the Universal Shift Builder, dashboard color/icon checks, profile navigation into builder settings, and mobile-fit coverage.
+- Release is still not complete until the account-only store setup, production environment push, TestFlight/internal-track install proof, subscription sandbox QA, screenshots, and physical iOS/Android device smoke tests are recorded in the launch evidence log.
 
 ## Testing Pyramid
 
@@ -39,7 +46,7 @@ The Universal Shift Builder rollout adds explicit coverage for:
 - Performance sanity test:
   - `tests/utils/shiftUtils.performance.test.ts` (included in full suite)
 
-### 1. Unit Tests (70% of tests)
+### 1. Unit Tests
 
 **Purpose**: Test individual functions, components, and hooks in isolation.
 
@@ -95,31 +102,34 @@ describe('validateEmail', () => {
 **Example**:
 
 ```typescript
-// src/screens/__tests__/LoginScreen.test.tsx
+// src/screens/auth/__tests__/SignInScreen.test.tsx
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import LoginScreen from '../LoginScreen';
-import { AuthProvider } from '@/hooks/useAuth';
+import { SignInScreen } from '../SignInScreen';
+import { AuthProvider } from '@/contexts/AuthContext';
 
-describe('LoginScreen', () => {
-  it('should login user with valid credentials', async () => {
+describe('SignInScreen', () => {
+  it('shows launch authentication options and submits email/password input', async () => {
     const { getByPlaceholderText, getByText } = render(
       <AuthProvider>
-        <LoginScreen />
+        <SignInScreen />
       </AuthProvider>
     );
 
+    expect(getByText('Continue with Google')).toBeTruthy();
+    expect(getByText('Continue with Apple')).toBeTruthy();
+
     fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
     fireEvent.changeText(getByPlaceholderText('Password'), 'password123');
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByText('Sign in'));
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('Home');
+      expect(mockSignIn).toHaveBeenCalledWith('test@example.com', 'password123');
     });
   });
 });
 ```
 
-### 3. End-to-End Tests (10% of tests)
+### 3. End-to-End Tests
 
 **Purpose**: Test complete user workflows in a real environment.
 
@@ -138,10 +148,10 @@ describe('LoginScreen', () => {
 **Example**:
 
 ```typescript
-// e2e/auth-flow.test.ts
+// e2e/dashboard.test.ts
 import { device, element, by, expect as detoxExpect } from 'detox';
 
-describe('Authentication Flow', () => {
+describe('Dashboard launch smoke', () => {
   beforeAll(async () => {
     await device.launchApp();
   });
@@ -150,12 +160,11 @@ describe('Authentication Flow', () => {
     await device.reloadReactNative();
   });
 
-  it('should complete login flow', async () => {
-    await element(by.id('email-input')).typeText('test@example.com');
-    await element(by.id('password-input')).typeText('password123');
-    await element(by.id('login-button')).tap();
-
-    await detoxExpect(element(by.id('home-screen'))).toBeVisible();
+  it('renders the shipped dashboard and Universal Shift status icon', async () => {
+    await element(by.id('tab-home')).tap();
+    await detoxExpect(element(by.id('dashboard-scroll-view'))).toBeVisible();
+    await detoxExpect(element(by.id('dashboard-shift-status'))).toBeVisible();
+    await detoxExpect(element(by.id('shift-status-universal-icon'))).toBeVisible();
   });
 });
 ```
@@ -190,10 +199,10 @@ src/
 ```
 src/
 └── screens/
-    └── LoginScreen/
-        ├── LoginScreen.tsx
+    └── auth/
+        ├── SignInScreen.tsx
         └── __tests__/
-            └── LoginScreen.test.tsx
+            └── SignInScreen.test.tsx
 ```
 
 **Naming Pattern**: `{ScreenName}.test.tsx`
@@ -263,7 +272,7 @@ it('should set loading state to true', () => {
 
 ```typescript
 it('should show loading spinner while authenticating', () => {
-  const { getByTestId } = render(<LoginScreen />);
+  const { getByTestId } = render(<SignInScreen />);
   expect(getByTestId('loading-spinner')).toBeVisible();
 });
 ```
@@ -400,13 +409,11 @@ jobs:
     - Run Jest tests
     - Generate coverage report
     - Upload coverage to Codecov
-    - Fail if coverage < 70%
-
-  e2e-tests:
-    - Build app for testing
-    - Run Detox tests on iOS
-    - Run Detox tests on Android
-    - Upload test artifacts
+  release-check:
+    - Run npm run release:check
+    - Verify Ryvro native scaffold and bundle/package identity
+    - Verify store readiness handoff files
+    - Verify owner handoff blockers remain visible
 ```
 
 ### Pre-commit Hooks
@@ -508,7 +515,7 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 expect.extend(toHaveNoViolations);
 
 it('should have no accessibility violations', async () => {
-  const { container } = render(<LoginScreen />);
+  const { container } = render(<SignInScreen />);
   const results = await axe(container);
   expect(results).toHaveNoViolations();
 });
