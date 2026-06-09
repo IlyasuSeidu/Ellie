@@ -324,6 +324,9 @@ function main() {
       const parsed = JSON.parse(content);
       const projectId = parsed?.project_info?.project_id;
       const projectNumber = parsed?.project_info?.project_number;
+      const mobileSdkAppIds =
+        parsed?.client?.map((client) => client?.client_info?.mobilesdk_app_id).filter(Boolean) ||
+        [];
       const packageNames =
         parsed?.client
           ?.map((client) => client?.client_info?.android_client_info?.package_name)
@@ -335,6 +338,14 @@ function main() {
 
       if (projectNumber !== env.FIREBASE_MESSAGING_SENDER_ID) {
         throw new Error('project_info.project_number must match FIREBASE_MESSAGING_SENDER_ID');
+      }
+
+      if (
+        !mobileSdkAppIds.some((appId) =>
+          appId.startsWith(`1:${env.FIREBASE_MESSAGING_SENDER_ID}:android:`)
+        )
+      ) {
+        throw new Error('client_info.mobilesdk_app_id must match FIREBASE_MESSAGING_SENDER_ID');
       }
 
       if (!packageNames.includes('com.ryvro.shiftplanner')) {

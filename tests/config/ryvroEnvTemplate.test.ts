@@ -157,11 +157,17 @@ describe('Ryvro environment template', () => {
     ].join(''),
   ].join('\n');
 
-  const runProductionEnvCheck = (envContent: string) => {
+  const runProductionEnvCheck = (
+    envContent: string,
+    nativeConfig: {
+      iosPlistContent?: string;
+      androidServicesJson?: Record<string, unknown>;
+    } = {}
+  ) => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ryvro-env-check-'));
     const envPath = path.join(tempDir, '.env.production');
-    fs.writeFileSync(
-      path.join(tempDir, 'GoogleService-Info.plist'),
+    const iosPlistContent =
+      nativeConfig.iosPlistContent ??
       [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<plist version="1.0">',
@@ -174,33 +180,31 @@ describe('Ryvro environment template', () => {
         '<string>1:123456789012:ios:abcdef1234567890</string>',
         '</dict>',
         '</plist>',
-      ].join('\n')
-    );
+      ].join('\n');
+    const androidServicesJson = nativeConfig.androidServicesJson ?? {
+      project_info: {
+        project_number: '123456789012',
+        project_id: 'ryvro-prod',
+        storage_bucket: 'ryvro-prod.firebasestorage.app',
+      },
+      client: [
+        {
+          client_info: {
+            mobilesdk_app_id: '1:123456789012:android:abcdef1234567890',
+            android_client_info: {
+              package_name: 'com.ryvro.shiftplanner',
+            },
+          },
+          api_key: [{ current_key: 'AIzaSyRyvroProd1234567890abcdefghiJKLMN' }],
+        },
+      ],
+      configuration_version: '1',
+    };
+
+    fs.writeFileSync(path.join(tempDir, 'GoogleService-Info.plist'), iosPlistContent);
     fs.writeFileSync(
       path.join(tempDir, 'google-services.json'),
-      JSON.stringify(
-        {
-          project_info: {
-            project_number: '123456789012',
-            project_id: 'ryvro-prod',
-            storage_bucket: 'ryvro-prod.firebasestorage.app',
-          },
-          client: [
-            {
-              client_info: {
-                mobilesdk_app_id: '1:123456789012:android:abcdef1234567890',
-                android_client_info: {
-                  package_name: 'com.ryvro.shiftplanner',
-                },
-              },
-              api_key: [{ current_key: 'AIzaSyRyvroProd1234567890abcdefghiJKLMN' }],
-            },
-          ],
-          configuration_version: '1',
-        },
-        null,
-        2
-      )
+      JSON.stringify(androidServicesJson, null, 2)
     );
     fs.writeFileSync(envPath, envContent);
 
@@ -1192,6 +1196,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must match FIREBASE_PROJECT_ID as a Firebase Storage bucket');
     expect(script).toContain('must be the Ryvro Firebase project ID');
     expect(script).toContain('must match FIREBASE_MESSAGING_SENDER_ID');
+    expect(script).toContain('client_info.mobilesdk_app_id');
     expect(script).toContain('same Firebase messaging sender ID');
     expect(script).toContain('scoped to a Ryvro Firebase project');
     expect(script).toContain('retired Ellie/ShiftSync');
@@ -1537,6 +1542,54 @@ describe('Ryvro environment template', () => {
     expect(localPlaceholderResult.status).toBe(1);
     expect(localPlaceholderResult.stderr).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE');
     expect(localPlaceholderResult.stderr).toContain('must not use tracked local placeholder');
+  });
+
+  it('rejects production env files with native Firebase app IDs from a different project number', () => {
+    const iosResult = runProductionEnvCheck(validProductionEnv, {
+      iosPlistContent: [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<plist version="1.0">',
+        '<dict>',
+        '<key>BUNDLE_ID</key>',
+        '<string>com.ryvro.shiftplanner</string>',
+        '<key>PROJECT_ID</key>',
+        '<string>ryvro-prod</string>',
+        '<key>GOOGLE_APP_ID</key>',
+        '<string>1:999999999999:ios:abcdef1234567890</string>',
+        '</dict>',
+        '</plist>',
+      ].join('\n'),
+    });
+
+    expect(iosResult.status).toBe(1);
+    expect(iosResult.stderr).toContain('GOOGLE_APP_ID');
+    expect(iosResult.stderr).toContain('must match FIREBASE_MESSAGING_SENDER_ID');
+
+    const androidResult = runProductionEnvCheck(validProductionEnv, {
+      androidServicesJson: {
+        project_info: {
+          project_number: '123456789012',
+          project_id: 'ryvro-prod',
+          storage_bucket: 'ryvro-prod.firebasestorage.app',
+        },
+        client: [
+          {
+            client_info: {
+              mobilesdk_app_id: '1:999999999999:android:abcdef1234567890',
+              android_client_info: {
+                package_name: 'com.ryvro.shiftplanner',
+              },
+            },
+            api_key: [{ current_key: 'AIzaSyRyvroProd1234567890abcdefghiJKLMN' }],
+          },
+        ],
+        configuration_version: '1',
+      },
+    });
+
+    expect(androidResult.status).toBe(1);
+    expect(androidResult.stderr).toContain('client_info.mobilesdk_app_id');
+    expect(androidResult.stderr).toContain('must match FIREBASE_MESSAGING_SENDER_ID');
   });
 
   it('rejects production env files with retired Cloud Function project hosts', () => {
