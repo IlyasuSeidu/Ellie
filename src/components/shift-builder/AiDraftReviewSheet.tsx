@@ -19,6 +19,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
@@ -35,10 +36,12 @@ export interface AiDraftReviewSheetProps {
   isFollowUpLoading: boolean;
 }
 
-function confidenceLabel(c: number): { text: string; color: string } {
-  if (c >= 0.8) return { text: 'High confidence', color: theme.colors.success };
-  if (c >= 0.5) return { text: 'Medium confidence', color: theme.colors.warning };
-  return { text: 'Low confidence', color: theme.colors.error };
+type ConfidenceKey = 'high' | 'medium' | 'low';
+
+function confidenceLabel(c: number): { text: ConfidenceKey; color: string } {
+  if (c >= 0.8) return { text: 'high', color: theme.colors.success };
+  if (c >= 0.5) return { text: 'medium', color: theme.colors.warning };
+  return { text: 'low', color: theme.colors.error };
 }
 
 export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
@@ -50,6 +53,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
   onFollowUp,
   isFollowUpLoading,
 }) => {
+  const { t } = useTranslation('onboarding');
   const [followUpText, setFollowUpText] = useState('');
 
   const handleAccept = useCallback(() => {
@@ -99,12 +103,12 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                 <View style={styles.aiIconBadge}>
                   <Ionicons name="sparkles" size={18} color={theme.colors.sacredGold} />
                 </View>
-                <Text style={styles.headerTitle}>AI Draft</Text>
+                <Text style={styles.headerTitle}>{t('shiftBuilder.review.aiDraft')}</Text>
               </View>
               <View style={[styles.confidenceBadge, { borderColor: confidence.color }]}>
                 <View style={[styles.confidenceDot, { backgroundColor: confidence.color }]} />
                 <Text style={[styles.confidenceText, { color: confidence.color }]}>
-                  {confidence.text}
+                  {t(`shiftBuilder.review.confidence.${confidence.text}`)}
                 </Text>
               </View>
             </View>
@@ -115,7 +119,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                 <View style={styles.clarificationBanner}>
                   <Ionicons name="help-circle" size={18} color={theme.colors.warning} />
                   <Text style={styles.clarificationText}>
-                    I need a bit more info to build this accurately
+                    {t('shiftBuilder.review.clarificationBanner')}
                   </Text>
                 </View>
               )}
@@ -123,7 +127,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
               {/* Summary */}
               {result.summary ? (
                 <View style={styles.section}>
-                  <Text style={styles.sectionLabel}>What I understood</Text>
+                  <Text style={styles.sectionLabel}>{t('shiftBuilder.review.summary')}</Text>
                   <Text style={styles.summaryText}>{result.summary}</Text>
                 </View>
               ) : null}
@@ -132,7 +136,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
               {needsClarification && result.questions.length > 0 && (
                 <View style={styles.section}>
                   <Text style={[styles.sectionLabel, { color: theme.colors.warning }]}>
-                    Questions for you
+                    {t('shiftBuilder.review.questionsForYou')}
                   </Text>
                   {result.questions.map((q, i) => (
                     <View key={i} style={styles.questionRow}>
@@ -146,7 +150,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
               {/* Assumptions */}
               {result.assumptions.length > 0 && (
                 <View style={styles.section}>
-                  <Text style={styles.sectionLabel}>Assumptions</Text>
+                  <Text style={styles.sectionLabel}>{t('shiftBuilder.review.assumptions')}</Text>
                   {result.assumptions.map((a, i) => (
                     <View key={i} style={styles.bulletRow}>
                       <View style={styles.bullet} />
@@ -160,7 +164,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
               {result.warnings.length > 0 && (
                 <View style={styles.section}>
                   <Text style={[styles.sectionLabel, { color: theme.colors.warning }]}>
-                    Heads up
+                    {t('shiftBuilder.review.headsUp')}
                   </Text>
                   {result.warnings.map((w, i) => (
                     <View key={i} style={styles.warningRow}>
@@ -175,10 +179,12 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                 </View>
               )}
 
-              {/* Sequence preview chips */}
+              {/* Draft sequence chips */}
               {draft && draft.sequence.length > 0 && (
                 <View style={styles.section}>
-                  <Text style={styles.sectionLabel}>Sequence preview</Text>
+                  <Text style={styles.sectionLabel}>
+                    {t('shiftBuilder.review.sequencePreview')}
+                  </Text>
                   <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -194,7 +200,10 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                             styles.chip,
                             { backgroundColor: def.color + '33', borderColor: def.color },
                           ]}
-                          accessibilityLabel={`Day ${i + 1}: ${def.name}`}
+                          accessibilityLabel={t('shiftBuilder.review.dayA11y', {
+                            day: i + 1,
+                            name: def.name,
+                          })}
                         >
                           <Ionicons
                             name={def.icon as keyof typeof Ionicons.glyphMap}
@@ -205,7 +214,9 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                       );
                     })}
                   </ScrollView>
-                  <Text style={styles.chipLegend}>{draft.sequence.length}-day cycle</Text>
+                  <Text style={styles.chipLegend}>
+                    {t('shiftBuilder.review.cycleLength', { count: draft.sequence.length })}
+                  </Text>
 
                   {/* Chip legend */}
                   <View style={styles.defLegend}>
@@ -221,19 +232,19 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
 
               {/* Follow-up input */}
               <View style={styles.section}>
-                <Text style={styles.sectionLabel}>Ask a follow-up</Text>
+                <Text style={styles.sectionLabel}>{t('shiftBuilder.review.followUpLabel')}</Text>
                 <View style={styles.followUpRow}>
                   <TextInput
                     style={styles.followUpInput}
                     value={followUpText}
                     onChangeText={setFollowUpText}
-                    placeholder="e.g. Make it 8-hour shifts instead"
+                    placeholder={t('shiftBuilder.review.followUpPlaceholder')}
                     placeholderTextColor={theme.colors.shadow}
                     multiline={false}
                     returnKeyType="send"
                     onSubmitEditing={handleFollowUp}
                     editable={!isFollowUpLoading}
-                    accessibilityLabel="Follow-up question for AI"
+                    accessibilityLabel={t('shiftBuilder.review.followUpA11y')}
                   />
                   <TouchableOpacity
                     style={[
@@ -242,7 +253,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                     ]}
                     onPress={handleFollowUp}
                     disabled={!followUpText.trim() || isFollowUpLoading}
-                    accessibilityLabel="Send follow-up"
+                    accessibilityLabel={t('shiftBuilder.review.sendFollowUpA11y')}
                     accessibilityRole="button"
                   >
                     {isFollowUpLoading ? (
@@ -263,7 +274,7 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                 style={[styles.primaryCta, !hasDraft && styles.primaryCtaDisabled]}
                 onPress={handleAccept}
                 disabled={!hasDraft}
-                accessibilityLabel="Use this AI draft"
+                accessibilityLabel={t('shiftBuilder.review.useDraftA11y')}
                 accessibilityRole="button"
               >
                 <Ionicons
@@ -272,26 +283,26 @@ export const AiDraftReviewSheet: React.FC<AiDraftReviewSheetProps> = ({
                   color={hasDraft ? theme.colors.deepVoid : theme.colors.shadow}
                 />
                 <Text style={[styles.primaryCtaText, !hasDraft && styles.primaryCtaTextDisabled]}>
-                  Use this draft
+                  {t('shiftBuilder.review.useDraft')}
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.secondaryCta}
                 onPress={handleEditManually}
-                accessibilityLabel="Edit schedule manually instead"
+                accessibilityLabel={t('shiftBuilder.review.editManuallyA11y')}
                 accessibilityRole="button"
               >
-                <Text style={styles.secondaryCtaText}>Edit manually</Text>
+                <Text style={styles.secondaryCtaText}>{t('shiftBuilder.review.editManually')}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.discardLink}
                 onPress={handleDiscard}
-                accessibilityLabel="Discard AI draft"
+                accessibilityLabel={t('shiftBuilder.review.discardDraftA11y')}
                 accessibilityRole="button"
               >
-                <Text style={styles.discardText}>Discard</Text>
+                <Text style={styles.discardText}>{t('shiftBuilder.review.discardDraft')}</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -5095,6 +5095,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/components/shift-builder/ShiftInspectorSheet.tsx'),
       'utf8'
     );
+    const aiDraftReviewSheet = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/AiDraftReviewSheet.tsx'),
+      'utf8'
+    );
     const guardedLocaleKeys: Record<string, string[]> = {
       'common.json': ['subscription.paywall.plans.weeklySuffix'],
       'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
@@ -5119,6 +5123,15 @@ describe('Ryvro environment template', () => {
         'shiftBuilder.inspector.nameRequiredTitle',
         'shiftBuilder.inspector.remindersTitle',
         'shiftBuilder.inspector.travelRemindersTitle',
+        'shiftBuilder.review.aiDraft',
+        'shiftBuilder.review.clarificationBanner',
+        'shiftBuilder.review.summary',
+        'shiftBuilder.review.questionsForYou',
+        'shiftBuilder.review.headsUp',
+        'shiftBuilder.review.sequencePreview',
+        'shiftBuilder.review.followUpLabel',
+        'shiftBuilder.review.followUpPlaceholder',
+        'shiftBuilder.review.useDraftA11y',
       ],
     };
 
@@ -5141,6 +5154,13 @@ describe('Ryvro environment template', () => {
     expect(shiftInspectorSheet).not.toContain('Times required');
     expect(shiftInspectorSheet).not.toContain('Reminders for this shift');
     expect(shiftInspectorSheet).not.toContain('Travel reminders');
+    expect(aiDraftReviewSheet).toContain("useTranslation('onboarding')");
+    expect(aiDraftReviewSheet).toContain("t('shiftBuilder.review.aiDraft')");
+    expect(aiDraftReviewSheet).toContain("t('shiftBuilder.review.followUpPlaceholder')");
+    expect(aiDraftReviewSheet).not.toContain('placeholder="e.g. Make it 8-hour shifts instead"');
+    expect(aiDraftReviewSheet).not.toContain('AI Draft</Text>');
+    expect(aiDraftReviewSheet).not.toContain('Questions for you');
+    expect(aiDraftReviewSheet).not.toContain('Sequence preview');
 
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const locales = fs.readdirSync(localeRoot).filter((locale) => locale !== 'en');
