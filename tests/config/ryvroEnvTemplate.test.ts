@@ -3483,6 +3483,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
     );
+    expect(launchEvidenceLog).toContain('metadata readback proves the callback URI persists');
+    expect(launchEvidenceLog).toContain('owner records an approved fallback that keeps Firebase');
+    expect(launchEvidenceLog).toContain(
+      'end-to-end email verification plus password reset smoke results'
+    );
+    expect(launchEvidenceLog).toContain('Do not mark passed from console save toasts alone');
     expect(launchEvidenceLog).toContain(
       'Firebase Authentication for project `ryvro-shift-planner`'
     );
@@ -3959,6 +3965,16 @@ describe('Ryvro environment template', () => {
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'Required Firebase Auth sender name: `Ryvro Support`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Final evidence must be either metadata readback proving `callbackUri` persists'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('owner-approved first-release fallback');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'end-to-end email verification plus password reset smoke results'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Do not mark passed from console save toasts alone'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'firebase deploy --only functions:ryvro-brain:ryvroBrain,functions:ryvro-brain:parseShiftScheduleDescription'
