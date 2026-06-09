@@ -14,6 +14,7 @@ const warnings = [];
 const retiredVisibleIdentityPattern =
   /(Ellie Shift Planner|Hey Ellie|EllieMinerShiftAssistant|com\.ellie|com\.ilyasuseidu\.ellie|MineShift|ShiftSync)/i;
 const retiredFirebaseProjectPattern = /(ellie|shiftsync|mineshift)/i;
+const iosFirebaseAppIdPattern = /^1:\d+:ios:[a-f0-9]+$/i;
 
 function readRequiredJson(relativePath) {
   const absolutePath = path.join(root, relativePath);
@@ -42,6 +43,88 @@ function assertAbsent(content, pattern, label) {
   if (content && pattern.test(content)) {
     addError(`${label} still contains retired Ellie-era identity`);
   }
+}
+
+function getPlistStringValue(content, key) {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = content?.match(new RegExp(`<key>${escapedKey}</key>\\s*<string>([^<]*)</string>`));
+
+  return match?.[1] ?? '';
+}
+
+function validateIosGoogleService(content, label) {
+  if (!content) {
+    addError(`${label} is missing`);
+    return;
+  }
+
+  const bundleId = getPlistStringValue(content, 'BUNDLE_ID');
+  const projectId = getPlistStringValue(content, 'PROJECT_ID');
+  const appId = getPlistStringValue(content, 'GOOGLE_APP_ID');
+  const senderId = getPlistStringValue(content, 'GCM_SENDER_ID');
+
+  assertEqual(bundleId, 'com.ryvro.shiftplanner', `${label} BUNDLE_ID`);
+
+  if (!projectId || /placeholder|local/i.test(projectId)) {
+    addError(
+      `${label} PROJECT_ID must be a real Firebase project; received ${projectId || '<missing>'}`
+    );
+  }
+
+  if (retiredFirebaseProjectPattern.test(projectId)) {
+    addError(`${label} PROJECT_ID still points at a retired Firebase project: ${projectId}`);
+  }
+
+  if (
+    !iosFirebaseAppIdPattern.test(appId) ||
+    appId.includes('000000000000') ||
+    /placeholder|local/i.test(appId)
+  ) {
+    addError(
+      `${label} GOOGLE_APP_ID must be a real iOS Firebase app id; received ${appId || '<missing>'}`
+    );
+  }
+
+  if (!/^\d+$/.test(senderId) || senderId === '000000000000') {
+    addError(
+      `${label} GCM_SENDER_ID must be a real numeric sender id; received ${senderId || '<missing>'}`
+    );
+  }
+}
+
+function validateTrackedIosLocalGoogleService(content) {
+  const label = 'Tracked iOS GoogleService-Info.local.plist';
+
+  if (!content) {
+    addError(`${label} is missing`);
+    return;
+  }
+
+  const bundleId = getPlistStringValue(content, 'BUNDLE_ID');
+  const projectId = getPlistStringValue(content, 'PROJECT_ID');
+  const apiKey = getPlistStringValue(content, 'API_KEY');
+  const appId = getPlistStringValue(content, 'GOOGLE_APP_ID');
+  const senderId = getPlistStringValue(content, 'GCM_SENDER_ID');
+
+  assertEqual(bundleId, 'com.ryvro.shiftplanner', `${label} BUNDLE_ID`);
+
+  if (projectId !== 'ryvro-local') {
+    addError(`${label} PROJECT_ID must stay on the local placeholder project`);
+  }
+
+  if (apiKey !== 'local-ryvro-placeholder') {
+    addError(`${label} API_KEY must remain a placeholder and must not store real Firebase keys`);
+  }
+
+  if (appId !== '1:000000000000:ios:localryvroplaceholder') {
+    addError(`${label} GOOGLE_APP_ID must remain the local placeholder app id`);
+  }
+
+  if (senderId !== '000000000000') {
+    addError(`${label} GCM_SENDER_ID must remain the local placeholder sender id`);
+  }
+
+  assertAbsent(content, retiredFirebaseProjectPattern, label);
 }
 
 function getDynamicExpoConfig() {
@@ -104,6 +187,9 @@ assertEqual(dynamicExpo.web?.favicon, './assets/favicon.png', 'app.config.js web
 
 assertAbsent(readOptional('app.json'), retiredVisibleIdentityPattern, 'app.json');
 assertAbsent(readOptional('app.config.js'), retiredVisibleIdentityPattern, 'app.config.js');
+validateTrackedIosLocalGoogleService(
+  readOptional('config/firebase/GoogleService-Info.local.plist')
+);
 
 if (fs.existsSync(path.join(root, 'app.config.js.backup'))) {
   addError(
@@ -139,9 +225,7 @@ if (generatedXcodeProject) {
 
 const generatedIosGoogleService = readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist');
 if (generatedIosGoogleService) {
-  if (!generatedIosGoogleService.includes('<string>com.ryvro.shiftplanner</string>')) {
-    addError('Generated iOS GoogleService-Info.plist must target com.ryvro.shiftplanner');
-  }
+  validateIosGoogleService(generatedIosGoogleService, 'Generated iOS GoogleService-Info.plist');
   if (retiredFirebaseProjectPattern.test(generatedIosGoogleService)) {
     const message =
       'Generated iOS GoogleService-Info.plist still appears to point at a retired Firebase project; replace it with fresh Ryvro Firebase config before production builds.';

@@ -10,7 +10,69 @@ try {
   // dotenv is optional in some environments
 }
 
+const fs = require('node:fs');
+const path = require('node:path');
+
 const GOOGLE_IOS_CLIENT_SUFFIX = '.apps.googleusercontent.com';
+const IOS_FIREBASE_APP_ID_PATTERN = /^1:\d+:ios:[a-f0-9]+$/i;
+
+function resolveProjectPath(filePath) {
+  return path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
+}
+
+function readOptionalFile(filePath) {
+  if (!filePath) {
+    return '';
+  }
+
+  try {
+    return fs.readFileSync(resolveProjectPath(filePath), 'utf8');
+  } catch (_error) {
+    return '';
+  }
+}
+
+function readPlistStringValues(filePath) {
+  const content = readOptionalFile(filePath);
+  const values = {};
+  const pattern = /<key>([^<]+)<\/key>\s*<string>([^<]*)<\/string>/g;
+  let match;
+
+  while ((match = pattern.exec(content)) !== null) {
+    values[match[1]] = match[2];
+  }
+
+  return values;
+}
+
+function isValidIosFirebaseAppId(appId) {
+  return (
+    IOS_FIREBASE_APP_ID_PATTERN.test(appId || '') &&
+    !appId.includes('000000000000') &&
+    !/placeholder|local/i.test(appId)
+  );
+}
+
+function buildFirebaseConfigFromIosGoogleServicesFile(filePath) {
+  const values = readPlistStringValues(filePath);
+
+  if (
+    values.BUNDLE_ID !== 'com.ryvro.shiftplanner' ||
+    !isValidIosFirebaseAppId(values.GOOGLE_APP_ID)
+  ) {
+    return null;
+  }
+
+  return {
+    apiKey: values.API_KEY || '',
+    authDomain: values.PROJECT_ID ? `${values.PROJECT_ID}.firebaseapp.com` : '',
+    projectId: values.PROJECT_ID || '',
+    storageBucket: values.STORAGE_BUCKET || '',
+    messagingSenderId: values.GCM_SENDER_ID || '',
+    appId: values.GOOGLE_APP_ID || '',
+    googleIosClientId: values.CLIENT_ID || '',
+  };
+}
 
 function getGoogleIosUrlScheme(googleIosClientId) {
   if (!googleIosClientId || !googleIosClientId.endsWith(GOOGLE_IOS_CLIENT_SUFFIX)) {
@@ -46,13 +108,7 @@ function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
 }
 
 module.exports = ({ config = {} }) => {
-  const firebaseProjectId = process.env.FIREBASE_PROJECT_ID || '';
-  const defaultRyvroBrainUrl = firebaseProjectId
-    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/ryvroBrain`
-    : '';
-  const defaultShiftScheduleParserUrl = firebaseProjectId
-    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/parseShiftScheduleDescription`
-    : '';
+  const envFirebaseProjectId = process.env.FIREBASE_PROJECT_ID || '';
   const ryvroIdentity = {
     name: 'Ryvro Shift Planner',
     slug: 'ryvro',
@@ -79,6 +135,7 @@ module.exports = ({ config = {} }) => {
     NSSpeechRecognitionUsageDescription:
       'Ryvro needs speech recognition to understand your questions.',
     NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
+    UIBackgroundModes: ['fetch', 'remote-notification'],
     ITSAppUsesNonExemptEncryption: false,
   };
   const ryvroPlugins = [
@@ -135,8 +192,19 @@ module.exports = ({ config = {} }) => {
     process.env.ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE ||
     (appEnv === 'production' ? undefined : './config/firebase/google-services.local.json');
+  const iosFirebaseConfig = buildFirebaseConfigFromIosGoogleServicesFile(iosGoogleServicesFile);
+  const firebaseProjectId = iosFirebaseConfig?.projectId || envFirebaseProjectId;
+  const defaultRyvroBrainUrl = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/ryvroBrain`
+    : '';
+  const defaultShiftScheduleParserUrl = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/parseShiftScheduleDescription`
+    : '';
   const googleIosClientId =
-    process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '';
+    iosFirebaseConfig?.googleIosClientId ||
+    process.env.GOOGLE_IOS_CLIENT_ID ||
+    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
+    '';
   const googleIosUrlScheme = getGoogleIosUrlScheme(googleIosClientId);
 
   if (!expoUpdates.url && easProjectId) {
@@ -200,21 +268,29 @@ module.exports = ({ config = {} }) => {
     extra: {
       ...configExtra,
       APP_ENV: appEnv,
-      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
-      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
+      FIREBASE_API_KEY: iosFirebaseConfig?.apiKey || process.env.FIREBASE_API_KEY || '',
+      FIREBASE_AUTH_DOMAIN: iosFirebaseConfig?.authDomain || process.env.FIREBASE_AUTH_DOMAIN || '',
       FIREBASE_PROJECT_ID: firebaseProjectId,
-      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
-      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
-      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+      FIREBASE_STORAGE_BUCKET:
+        iosFirebaseConfig?.storageBucket || process.env.FIREBASE_STORAGE_BUCKET || '',
+      FIREBASE_MESSAGING_SENDER_ID:
+        iosFirebaseConfig?.messagingSenderId || process.env.FIREBASE_MESSAGING_SENDER_ID || '',
+      FIREBASE_APP_ID: iosFirebaseConfig?.appId || process.env.FIREBASE_APP_ID || '',
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
       EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID:
         process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || process.env.GOOGLE_WEB_CLIENT_ID || '',
       GOOGLE_WEB_CLIENT_ID:
         process.env.GOOGLE_WEB_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
       EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID:
-        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || process.env.GOOGLE_IOS_CLIENT_ID || '',
+        googleIosClientId ||
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
+        process.env.GOOGLE_IOS_CLIENT_ID ||
+        '',
       GOOGLE_IOS_CLIENT_ID:
-        process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
+        googleIosClientId ||
+        process.env.GOOGLE_IOS_CLIENT_ID ||
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
+        '',
       EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID:
         process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
         process.env.GOOGLE_ANDROID_CLIENT_ID ||

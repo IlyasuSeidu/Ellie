@@ -306,7 +306,7 @@ describe('Ryvro environment template', () => {
     const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
     const previousRyvroBrainTimeout = process.env.RYVRO_BRAIN_TIMEOUT;
     const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
-    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './GoogleService-Info.plist';
+    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './missing-GoogleService-Info.plist';
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './google-services.json';
     delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.RYVRO_BRAIN_URL;
@@ -324,7 +324,7 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.splash?.image).toBe('./assets/splash-icon.png');
       expect(dynamicConfig.ios?.bundleIdentifier).toBe('com.ryvro.shiftplanner');
       expect(dynamicConfig.ios?.buildNumber).toBe('1');
-      expect(dynamicConfig.ios?.googleServicesFile).toBe('./GoogleService-Info.plist');
+      expect(dynamicConfig.ios?.googleServicesFile).toBe('./missing-GoogleService-Info.plist');
       expect(dynamicConfig.ios?.supportsTablet).toBe(true);
       expect(dynamicConfig.ios?.usesAppleSignIn).toBe(true);
       expect(dynamicConfig.ios?.infoPlist).toMatchObject({
@@ -418,6 +418,120 @@ describe('Ryvro environment template', () => {
     ]) {
       const matches = appConfigSource.match(new RegExp(`\\b${key}:`, 'g')) || [];
       expect(matches).toHaveLength(1);
+    }
+  });
+
+  it('derives Firebase and iOS OAuth launch values from a real iOS service file when provided', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const buildAppConfig = require(path.join(process.cwd(), 'app.config.js')) as ({
+      config,
+    }: {
+      config?: Record<string, unknown>;
+    }) => { extra?: Record<string, unknown>; ios?: { googleServicesFile?: string } };
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ryvro-ios-service-'));
+    const serviceFile = path.join(tempDir, 'GoogleService-Info.plist');
+    const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
+    const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
+    const previousFirebaseApiKey = process.env.FIREBASE_API_KEY;
+    const previousGoogleIosClientId = process.env.GOOGLE_IOS_CLIENT_ID;
+    const previousExpoGoogleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+    const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
+    const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
+
+    fs.writeFileSync(
+      serviceFile,
+      [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<plist version="1.0">',
+        '<dict>',
+        '<key>API_KEY</key><string>AIzaSyRyvroRealShape1234567890abcdefghi</string>',
+        '<key>BUNDLE_ID</key><string>com.ryvro.shiftplanner</string>',
+        '<key>CLIENT_ID</key><string>1002666052675-iosreal.apps.googleusercontent.com</string>',
+        '<key>GCM_SENDER_ID</key><string>1002666052675</string>',
+        '<key>GOOGLE_APP_ID</key><string>1:1002666052675:ios:bf72c1cc611308a76b98f6</string>',
+        '<key>PROJECT_ID</key><string>ryvro-shift-planner</string>',
+        '<key>STORAGE_BUCKET</key><string>ryvro-shift-planner.firebasestorage.app</string>',
+        '</dict>',
+        '</plist>',
+      ].join('\n')
+    );
+
+    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = serviceFile;
+    process.env.FIREBASE_PROJECT_ID = 'wrong-env-project';
+    process.env.FIREBASE_API_KEY = 'wrong-env-key';
+    process.env.GOOGLE_IOS_CLIENT_ID = 'wrong-env-ios.apps.googleusercontent.com';
+    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = 'wrong-public-ios.apps.googleusercontent.com';
+    delete process.env.RYVRO_BRAIN_URL;
+    delete process.env.SHIFT_SCHEDULE_PARSER_URL;
+
+    try {
+      const dynamicConfig = buildAppConfig({ config: {} });
+
+      expect(dynamicConfig.ios?.googleServicesFile).toBe(serviceFile);
+      expect(dynamicConfig.extra?.FIREBASE_API_KEY).toBe('AIzaSyRyvroRealShape1234567890abcdefghi');
+      expect(dynamicConfig.extra?.FIREBASE_AUTH_DOMAIN).toBe('ryvro-shift-planner.firebaseapp.com');
+      expect(dynamicConfig.extra?.FIREBASE_PROJECT_ID).toBe('ryvro-shift-planner');
+      expect(dynamicConfig.extra?.FIREBASE_STORAGE_BUCKET).toBe(
+        'ryvro-shift-planner.firebasestorage.app'
+      );
+      expect(dynamicConfig.extra?.FIREBASE_MESSAGING_SENDER_ID).toBe('1002666052675');
+      expect(dynamicConfig.extra?.FIREBASE_APP_ID).toBe(
+        '1:1002666052675:ios:bf72c1cc611308a76b98f6'
+      );
+      expect(dynamicConfig.extra?.GOOGLE_IOS_CLIENT_ID).toBe(
+        '1002666052675-iosreal.apps.googleusercontent.com'
+      );
+      expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID).toBe(
+        '1002666052675-iosreal.apps.googleusercontent.com'
+      );
+      expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
+        'https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain'
+      );
+      expect(dynamicConfig.extra?.SHIFT_SCHEDULE_PARSER_URL).toBe(
+        'https://us-central1-ryvro-shift-planner.cloudfunctions.net/parseShiftScheduleDescription'
+      );
+    } finally {
+      if (previousIosGoogleServices === undefined) {
+        delete process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
+      } else {
+        process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = previousIosGoogleServices;
+      }
+
+      if (previousFirebaseProjectId === undefined) {
+        delete process.env.FIREBASE_PROJECT_ID;
+      } else {
+        process.env.FIREBASE_PROJECT_ID = previousFirebaseProjectId;
+      }
+
+      if (previousFirebaseApiKey === undefined) {
+        delete process.env.FIREBASE_API_KEY;
+      } else {
+        process.env.FIREBASE_API_KEY = previousFirebaseApiKey;
+      }
+
+      if (previousGoogleIosClientId === undefined) {
+        delete process.env.GOOGLE_IOS_CLIENT_ID;
+      } else {
+        process.env.GOOGLE_IOS_CLIENT_ID = previousGoogleIosClientId;
+      }
+
+      if (previousExpoGoogleIosClientId === undefined) {
+        delete process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+      } else {
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = previousExpoGoogleIosClientId;
+      }
+
+      if (previousRyvroBrainUrl === undefined) {
+        delete process.env.RYVRO_BRAIN_URL;
+      } else {
+        process.env.RYVRO_BRAIN_URL = previousRyvroBrainUrl;
+      }
+
+      if (previousShiftScheduleParserUrl === undefined) {
+        delete process.env.SHIFT_SCHEDULE_PARSER_URL;
+      } else {
+        process.env.SHIFT_SCHEDULE_PARSER_URL = previousShiftScheduleParserUrl;
+      }
     }
   });
 
@@ -669,6 +783,9 @@ describe('Ryvro environment template', () => {
     expect(script).not.toContain("readOptional('ios/Ryvro/");
     expect(script).not.toContain("readOptional('ios/Ryvro.xcodeproj");
     expect(script).toContain('ios/RyvroShiftPlanner/GoogleService-Info.plist');
+    expect(script).toContain('validateTrackedIosLocalGoogleService');
+    expect(script).toContain('API_KEY must remain a placeholder');
+    expect(script).toContain('GOOGLE_APP_ID must remain the local placeholder app id');
     expect(script).toContain('--strict-generated');
     expect(script).toContain('--strict-generated-services');
     expect(script).toContain('retired Firebase project');
