@@ -3,7 +3,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { AuthService } from '@/services/AuthService';
 import {
   GoogleAuthProvider,
-  OAuthProvider,
+  AppleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithCredential,
   signInWithEmailAndPassword,
@@ -43,12 +43,10 @@ jest.mock('@/services/firebase/authSdk', () => {
     idToken,
     accessToken,
   }));
-  const OAuthProviderMock = jest.fn().mockImplementation((providerId: string) => ({
-    providerId,
-    credential: jest.fn((options: { idToken?: string }) => ({
-      providerId,
-      ...options,
-    })),
+  const appleCredential = jest.fn((idToken?: string | null, rawNonce?: string | null) => ({
+    providerId: 'apple.com',
+    idToken,
+    rawNonce,
   }));
 
   return {
@@ -68,7 +66,9 @@ jest.mock('@/services/firebase/authSdk', () => {
     GoogleAuthProvider: {
       credential: googleCredential,
     },
-    OAuthProvider: OAuthProviderMock,
+    AppleAuthProvider: {
+      credential: appleCredential,
+    },
     signInWithCredential: jest.fn(),
   };
 });
@@ -165,10 +165,11 @@ describe('AuthService native auth provider credential flows', () => {
         AppleAuthentication.AppleAuthenticationScope.EMAIL,
       ],
     });
-    expect(OAuthProvider).toHaveBeenCalledWith('apple.com');
+    expect(AppleAuthProvider.credential).toHaveBeenCalledWith('apple-identity-token');
     expect(signInWithCredential).toHaveBeenCalledWith(auth, {
       providerId: 'apple.com',
       idToken: 'apple-identity-token',
+      rawNonce: undefined,
     });
   });
 
@@ -180,7 +181,7 @@ describe('AuthService native auth provider credential flows', () => {
     });
 
     expect(AppleAuthentication.signInAsync).not.toHaveBeenCalled();
-    expect(OAuthProvider).not.toHaveBeenCalled();
+    expect(AppleAuthProvider.credential).not.toHaveBeenCalled();
     expect(signInWithCredential).not.toHaveBeenCalled();
   });
 
@@ -193,7 +194,7 @@ describe('AuthService native auth provider credential flows', () => {
       code: 'apple/no-identity-token',
     });
 
-    expect(OAuthProvider).not.toHaveBeenCalled();
+    expect(AppleAuthProvider.credential).not.toHaveBeenCalled();
     expect(signInWithCredential).not.toHaveBeenCalled();
   });
 });

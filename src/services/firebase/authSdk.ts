@@ -46,6 +46,9 @@ function loadFirebaseJsAuthSdk(): typeof FirebaseAuthWeb {
     GoogleAuthProvider: {
       credential: () => ({}),
     },
+    AppleAuthProvider: {
+      credential: () => ({}),
+    },
     OAuthProvider: class {
       credential() {
         return {};
@@ -244,15 +247,43 @@ export const GoogleAuthProvider = {
   },
 };
 
+export const AppleAuthProvider = {
+  credential(idToken?: string | null, rawNonce?: string | null): unknown {
+    const sdk = resolveSdk() as unknown as {
+      AppleAuthProvider?: {
+        credential: (idTokenArg?: string | null, rawNonceArg?: string | null) => unknown;
+      };
+      OAuthProvider: new (providerIdArg: string) => {
+        credential: (options: { idToken?: string; rawNonce?: string }) => unknown;
+      };
+    };
+
+    if (sdk.AppleAuthProvider?.credential) {
+      return sdk.AppleAuthProvider.credential(idToken, rawNonce);
+    }
+
+    return new sdk.OAuthProvider('apple.com').credential({
+      idToken: idToken ?? undefined,
+      rawNonce: rawNonce ?? undefined,
+    });
+  },
+};
+
 export class OAuthProvider {
+  private readonly providerId: string;
   private readonly provider: {
-    credential: (options: { idToken?: string; accessToken?: string; rawNonce?: string }) => unknown;
-  };
+    credential?: (options: {
+      idToken?: string;
+      accessToken?: string;
+      rawNonce?: string;
+    }) => unknown;
+  } | null;
 
   constructor(providerId: string) {
+    this.providerId = providerId;
     const sdk = resolveSdk() as unknown as {
       OAuthProvider: new (providerIdArg: string) => {
-        credential: (options: {
+        credential?: (options: {
           idToken?: string;
           accessToken?: string;
           rawNonce?: string;
@@ -263,7 +294,32 @@ export class OAuthProvider {
   }
 
   credential(options: { idToken?: string; accessToken?: string; rawNonce?: string }): unknown {
-    return this.provider.credential(options);
+    if (this.provider?.credential) {
+      return this.provider.credential(options);
+    }
+
+    const sdk = resolveSdk() as unknown as {
+      OAuthProvider?: {
+        credential: (idTokenArg?: string | null, accessTokenArg?: string | null) => unknown;
+      };
+      OIDCAuthProvider?: {
+        credential: (providerIdArg: string, idTokenArg: string) => unknown;
+      };
+    };
+
+    if (this.providerId === 'apple.com' && options.idToken) {
+      return AppleAuthProvider.credential(options.idToken, options.rawNonce);
+    }
+
+    if (sdk.OAuthProvider?.credential) {
+      return sdk.OAuthProvider.credential(options.idToken ?? null, options.accessToken ?? null);
+    }
+
+    if (sdk.OIDCAuthProvider?.credential && options.idToken) {
+      return sdk.OIDCAuthProvider.credential(this.providerId, options.idToken);
+    }
+
+    throw new Error(`OAuth provider ${this.providerId} does not support credential creation.`);
   }
 }
 

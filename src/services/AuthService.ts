@@ -21,8 +21,8 @@ import {
   EmailAuthProvider,
   onAuthStateChanged as firebaseOnAuthStateChanged,
   GoogleAuthProvider,
+  AppleAuthProvider,
   signInWithCredential,
-  OAuthProvider,
 } from '@/services/firebase/authSdk';
 import {
   AppState,
@@ -271,10 +271,7 @@ export class AuthService {
         throw new AuthenticationError('No identity token from Apple', 'apple/no-identity-token');
       }
 
-      const provider = new OAuthProvider('apple.com');
-      const credential = provider.credential({
-        idToken: appleCredential.identityToken,
-      });
+      const credential = AppleAuthProvider.credential(appleCredential.identityToken);
       const userCredential = await signInWithCredential(this.auth, credential);
 
       this.resetInactivityTimer();
