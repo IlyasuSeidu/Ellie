@@ -130,12 +130,15 @@ Only mark `Physical Android QA` as `Passed` after the Play/internal install pass
 
 Do not promote the Android release beyond internal testing until all of these are true:
 
-- `npm run release:submit:check` passes.
+- `npm run release:submit:check` passes on the exact commit being submitted.
+- GitHub CI is green for that commit.
 - Google Play Data safety, content rating, target audience, app access, privacy policy, account deletion, and subscription declarations are complete.
 - RevenueCat Android app, entitlement `pro`, products, and offering `default` are complete.
 - Sandbox purchase and restore pass on Android.
 - Physical Android QA passes from the internal testing install.
 - Store screenshots are captured from production-equivalent builds.
+- The Play release ID, track name, track status, Android versionCode, rollout percentage or internal-only note, submit date, and owner approval note are recorded.
+- Any reviewer feedback, policy warning, or rejected release note is recorded without passwords, service-account JSON, private keys, payment details, or private tester passwords.
 - The owner approves production rollout timing.
 
 After promotion, update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the Play release ID, production track status, and rollout note.

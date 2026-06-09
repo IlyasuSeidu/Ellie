@@ -160,7 +160,7 @@ Record:
 
 ## EAS Submit And App Review
 
-Submit only after `npm run release:submit:check` passes.
+Submit only after `npm run release:submit:check` passes on the exact commit being submitted and GitHub CI is green for that commit.
 
 ```bash
 eas submit --platform ios --latest
@@ -172,6 +172,8 @@ After upload:
 - Select the correct build for version `1.0.0`.
 - Confirm app metadata, screenshots, privacy, ratings, reviewer notes, subscriptions, and EU trader status are complete.
 - Add the app version and subscription products to the same App Review submission if App Store Connect requires them to be reviewed together.
+- Confirm TestFlight iPhone QA passed on the selected build and the evidence is recorded in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
+- Confirm production screenshots were captured from TestFlight or a production-equivalent native build, not Expo Go or a local development client.
 - Click `Submit for Review` only after the owner approves.
 
 Record:
@@ -180,6 +182,9 @@ Record:
 - App Store Connect build number selected for version `1.0.0`
 - App Review submission ID or dashboard note
 - Submission status
+- Exact commit SHA submitted
+- GitHub CI run URL and result for that commit
+- Owner approval note
 - Any rejection or missing-metadata notes
 
 ## Production App Store Gate
@@ -192,6 +197,7 @@ Do not treat iOS as launch-ready until all of these are true:
 - App Store privacy form, export compliance, content rating, EU trader status, screenshots, and reviewer notes are complete.
 - RevenueCat iOS products and sandbox purchase or restore pass.
 - `npm run release:submit:check` passes.
+- GitHub CI is green for the submitted commit.
 - The owner has clicked `Submit for Review` and App Store Connect shows the submitted status.
 
 After App Review status changes, update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret status, submission ID or dashboard note, and any reviewer feedback.

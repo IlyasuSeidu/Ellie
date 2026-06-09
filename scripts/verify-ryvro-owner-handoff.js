@@ -285,6 +285,13 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['RevenueCat sandbox purchase and restore result', launchEvidenceLog],
   ['Do not mark this row `Passed` from an Android emulator', launchEvidenceLog],
   ['Store submission', launchEvidenceLog],
+  ['exact commit being submitted', launchEvidenceLog],
+  ['GitHub CI is green for that commit', launchEvidenceLog],
+  ['App Store submission ID or dashboard note', launchEvidenceLog],
+  ['Google Play release ID, track name, track status', launchEvidenceLog],
+  ['rollout percentage or internal-only note', launchEvidenceLog],
+  ['owner approval note', launchEvidenceLog],
+  ['Do not mark this row `Passed` from a draft console form', launchEvidenceLog],
   ['Pending owner evidence', launchEvidenceLog],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'launch evidence log'));
 
@@ -407,6 +414,12 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['EAS Submit And App Review', appStoreTestFlightHandoff],
   ['Production App Store Gate', appStoreTestFlightHandoff],
   ['npm run release:submit:check', appStoreTestFlightHandoff],
+  ['exact commit being submitted', appStoreTestFlightHandoff],
+  ['GitHub CI is green for that commit', appStoreTestFlightHandoff],
+  ['Confirm TestFlight iPhone QA passed on the selected build', appStoreTestFlightHandoff],
+  ['Exact commit SHA submitted', appStoreTestFlightHandoff],
+  ['GitHub CI run URL and result for that commit', appStoreTestFlightHandoff],
+  ['Owner approval note', appStoreTestFlightHandoff],
   ['Do not store Apple ID passwords', appStoreTestFlightHandoff],
 ].forEach(([expected, content]) =>
   requireIncludes(content, expected, 'App Store TestFlight handoff')
@@ -560,6 +573,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['Failed or retaken steps without passwords', playInternalTestingHandoff],
   ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', playInternalTestingHandoff],
   ['Production Promotion Gate', playInternalTestingHandoff],
+  ['exact commit being submitted', playInternalTestingHandoff],
+  ['GitHub CI is green for that commit', playInternalTestingHandoff],
+  ['rollout percentage or internal-only note', playInternalTestingHandoff],
+  ['policy warning, or rejected release note', playInternalTestingHandoff],
   ['npm run release:submit:check', playInternalTestingHandoff],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'Google Play handoff'));
 

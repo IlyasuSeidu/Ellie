@@ -3607,6 +3607,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('RevenueCat sandbox purchase and restore result');
     expect(launchEvidenceLog).toContain('Do not mark this row `Passed` from an Android emulator');
     expect(launchEvidenceLog).toContain('Store submission');
+    expect(launchEvidenceLog).toContain('exact commit being submitted');
+    expect(launchEvidenceLog).toContain('GitHub CI is green for that commit');
+    expect(launchEvidenceLog).toContain('App Store submission ID or dashboard note');
+    expect(launchEvidenceLog).toContain('Google Play release ID, track name, track status');
+    expect(launchEvidenceLog).toContain('rollout percentage or internal-only note');
+    expect(launchEvidenceLog).toContain('owner approval note');
+    expect(launchEvidenceLog).toContain('Do not mark this row `Passed` from a draft console form');
     expect(launchEvidenceLog).toContain('Pending owner evidence');
     expect(launchEvidenceLog).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(launchEvidenceLog).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
@@ -3855,6 +3862,14 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain('EAS Submit And App Review');
     expect(appStoreTestFlightHandoff).toContain('Production App Store Gate');
     expect(appStoreTestFlightHandoff).toContain('npm run release:submit:check');
+    expect(appStoreTestFlightHandoff).toContain('exact commit being submitted');
+    expect(appStoreTestFlightHandoff).toContain('GitHub CI is green for that commit');
+    expect(appStoreTestFlightHandoff).toContain(
+      'Confirm TestFlight iPhone QA passed on the selected build'
+    );
+    expect(appStoreTestFlightHandoff).toContain('Exact commit SHA submitted');
+    expect(appStoreTestFlightHandoff).toContain('GitHub CI run URL and result for that commit');
+    expect(appStoreTestFlightHandoff).toContain('Owner approval note');
     expect(appStoreTestFlightHandoff).toContain('Do not store Apple ID passwords');
     expect(appStoreTestFlightHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
@@ -4105,6 +4120,10 @@ describe('Ryvro environment template', () => {
     expect(googlePlayInternalTestingHandoff).toContain('Failed or retaken steps without passwords');
     expect(googlePlayInternalTestingHandoff).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(googlePlayInternalTestingHandoff).toContain('Production Promotion Gate');
+    expect(googlePlayInternalTestingHandoff).toContain('exact commit being submitted');
+    expect(googlePlayInternalTestingHandoff).toContain('GitHub CI is green for that commit');
+    expect(googlePlayInternalTestingHandoff).toContain('rollout percentage or internal-only note');
+    expect(googlePlayInternalTestingHandoff).toContain('policy warning, or rejected release note');
     expect(googlePlayInternalTestingHandoff).toContain('npm run release:submit:check');
     expect(googlePlayInternalTestingHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
