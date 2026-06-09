@@ -144,6 +144,7 @@ const requiredEvidenceItems = [
   'Apple Developer account',
   'Apple App ID',
   'Google Play app',
+  'Google Play service account',
   'EAS project',
   'iOS signing',
   'Android release signing',

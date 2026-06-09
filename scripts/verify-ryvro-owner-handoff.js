@@ -125,6 +125,7 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', externalSetup],
   ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', launchEvidenceLog],
+  ['Google Play service account', launchEvidenceLog],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', storeListing],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', launchEvidenceLog],
   ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', launchEvidenceLog],
