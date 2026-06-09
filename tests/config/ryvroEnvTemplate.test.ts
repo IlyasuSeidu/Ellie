@@ -3363,6 +3363,12 @@ describe('Ryvro environment template', () => {
       'Record only non-secret completion notes or console status references'
     );
     expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
+    expect(launchEvidenceLog).toContain('reviewer-access fields');
+    expect(launchEvidenceLog).toContain('production-auth-ready build');
+    expect(launchEvidenceLog).toContain('completes onboarding with a non-mining sample schedule');
+    expect(launchEvidenceLog).toContain('reaches the dashboard/calendar');
+    expect(launchEvidenceLog).toContain('sandbox purchase or restore path');
+    expect(launchEvidenceLog).toContain('do not record the password, one-time email links');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('build `2` through submission');
     expect(launchEvidenceLog).toContain('`Ryvro iPhone QA` internal group');
@@ -3737,6 +3743,11 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'Store the password only in App Store Connect and Google Play Console reviewer-access fields'
     );
+    expect(appStoreTestFlightHandoff).toContain('production-auth-ready build');
+    expect(appStoreTestFlightHandoff).toContain('non-mining sample schedule');
+    expect(appStoreTestFlightHandoff).toContain('dashboard/calendar smoke result');
+    expect(appStoreTestFlightHandoff).toContain('paywall smoke result');
+    expect(appStoreTestFlightHandoff).toContain('sandbox purchase or restore result');
     expect(appStoreTestFlightHandoff).toContain(
       'EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`'
     );

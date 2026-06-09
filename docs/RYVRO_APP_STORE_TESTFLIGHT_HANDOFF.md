@@ -123,8 +123,8 @@ Complete before pressing `Submit for Review`.
 - Complete content rating and age rating.
 - Complete app access notes.
 - Create reviewer account `reviewer@getryvro.com` only after production Firebase Auth exists.
-- Store the reviewer password only in App Store Connect, not in Git, docs, screenshots, or chat.
-- Confirm the reviewer account can complete onboarding and reach the paywall.
+- Store the reviewer password only in App Store Connect and Google Play Console reviewer-access fields, not in Git, docs, screenshots, or chat.
+- Confirm the reviewer account signs in on a production-auth-ready build, completes onboarding with a non-mining sample schedule, reaches the dashboard/calendar, opens the Ryvro Pro paywall, and can exercise the sandbox purchase or restore path.
 - Add review notes from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
 
 Record:
@@ -132,7 +132,7 @@ Record:
 - App Store privacy form completion note
 - Export compliance completion note
 - Content rating completion note
-- Reviewer account exists note
+- Reviewer account exists note, production-auth-ready build sign-in result, onboarding status, dashboard/calendar smoke result, paywall smoke result, and sandbox purchase or restore result
 - Reviewer notes pasted note
 - Privacy/support/account deletion live URL checks
 
