@@ -1614,7 +1614,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('112 Jest suites / 1,795 tests / 4 snapshots');
+    expect(readme).toContain('112 Jest suites / 1,796 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1636,7 +1636,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,795 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,796 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1645,9 +1645,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,795 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,796 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-06-09 release check)');
-    expect(readme).toContain('Total Tests**: 1,795 passing (112 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,796 passing (112 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1670,7 +1670,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(testingStrategy).toContain('Current release evidence on June 9, 2026');
-    expect(testingStrategy).toContain('112 Jest suites / 1,795 tests / 4 snapshots');
+    expect(testingStrategy).toContain('112 Jest suites / 1,796 tests / 4 snapshots');
     expect(testingStrategy).toContain('The PR CI pipeline must pass');
     expect(testingStrategy).toContain('the dedicated Release Check job');
     expect(testingStrategy).toContain('the Ryvro native scaffold preflight');
@@ -1690,6 +1690,27 @@ describe('Ryvro environment template', () => {
     expect(testingStrategy).not.toContain('End-to-End Tests (10% of tests)');
     expect(testingStrategy).not.toContain('Run Detox tests on iOS');
     expect(testingStrategy).not.toContain('Run Detox tests on Android');
+  });
+
+  it('keeps the architecture guide aligned with current Ryvro screen names', () => {
+    const architecture = fs.readFileSync(path.join(process.cwd(), 'docs/ARCHITECTURE.md'), 'utf8');
+
+    expect(architecture).toContain('Universal Shift Builder Architecture');
+    expect(architecture).toContain('MainDashboardScreen.tsx');
+    expect(architecture).toContain('UniversalShiftBuilderScreen.tsx');
+    expect(architecture).toContain('ProfileScreen.tsx');
+    expect(architecture).toContain('SignInScreen.tsx');
+    expect(architecture).toContain('function SignInScreen()');
+    expect(architecture).toContain('DashboardTab');
+    expect(architecture).toContain('BuilderTab');
+    expect(architecture).toContain('CenterVoiceAction');
+    expect(architecture).toContain("import('@/screens/main/ProfileScreen')");
+    expect(architecture).not.toContain('LoginScreen');
+    expect(architecture).not.toContain('HomeScreen');
+    expect(architecture).not.toContain('DetailsScreen');
+    expect(architecture).not.toContain('SettingsTab');
+    expect(architecture).not.toContain('PreferencesScreen');
+    expect(architecture).not.toContain("import('@/screens/ProfileScreen')");
   });
 
   it('keeps the offline-first strategy aligned with the current NetInfo implementation', () => {
@@ -2220,7 +2241,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,781 tests');
-    expect(readinessReport).toContain('112 Jest suites / 1,795 tests');
+    expect(readinessReport).toContain('112 Jest suites / 1,796 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2237,7 +2258,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `27194912370`');
     expect(readinessReport).toContain('commit `c796574`');
     expect(readinessReport).toContain(
-      'aligning the active testing strategy with current Ryvro launch gates'
+      'aligning the active architecture guide with current Ryvro screen names'
     );
     expect(readinessReport).toContain('CI run `27011414391`');
     expect(readinessReport).toContain('commit `6fcced7`');
@@ -3209,7 +3230,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('112 Jest suites, 1,795 tests');
+    expect(ownerRunbook).toContain('112 Jest suites, 1,796 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
@@ -3217,7 +3238,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
     expect(ownerRunbook).toContain(
-      'aligning the active testing strategy with current Ryvro launch gates'
+      'aligning the active architecture guide with current Ryvro screen names'
     );
     expect(ownerRunbook).toContain('CI run `27194912370`');
     expect(ownerRunbook).toContain('commit `c796574`');

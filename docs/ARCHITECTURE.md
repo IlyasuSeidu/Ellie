@@ -64,7 +64,7 @@ Core architecture points:
 
 - **Screens**: Full-page views that represent different app sections
   - Location: `src/screens/`
-  - Examples: `HomeScreen.tsx`, `ProfileScreen.tsx`, `LoginScreen.tsx`
+  - Examples: `MainDashboardScreen.tsx`, `UniversalShiftBuilderScreen.tsx`, `ProfileScreen.tsx`, `SignInScreen.tsx`
 
 - **Components**: Reusable UI building blocks
   - Location: `src/components/`
@@ -246,7 +246,7 @@ function useAuth() {
 }
 
 // 3. Use in components
-function LoginScreen() {
+function SignInScreen() {
   const { signIn, loading } = useAuth();
   // Component logic
 }
@@ -259,21 +259,20 @@ function LoginScreen() {
 ```
 RootNavigator (Stack)
 ├── AuthNavigator (Stack) - When not authenticated
-│   ├── LoginScreen
+│   ├── SignInScreen
 │   ├── SignUpScreen
 │   └── ForgotPasswordScreen
 │
 └── AppNavigator (Stack) - When authenticated
     ├── MainTabNavigator (Bottom Tabs)
-    │   ├── HomeTab (Stack)
-    │   │   ├── HomeScreen
-    │   │   └── DetailsScreen
+    │   ├── DashboardTab
+    │   │   └── MainDashboardScreen
+    │   ├── BuilderTab
+    │   │   └── UniversalShiftBuilderScreen
     │   ├── ProfileTab (Stack)
     │   │   ├── ProfileScreen
-    │   │   └── EditProfileScreen
-    │   └── SettingsTab (Stack)
-    │       ├── SettingsScreen
-    │       └── PreferencesScreen
+    │   │   └── UniversalShiftBuilderScreen (settings entry)
+    │   └── CenterVoiceAction
     │
     └── ModalStack (Stack)
         ├── NotificationModal
@@ -375,14 +374,14 @@ import { User } from '@/types/user';
 Separate data fetching (container) from presentation (presenter).
 
 ```typescript
-// Container (HomeScreen.tsx)
-export function HomeScreen() {
-  const { data, loading } = useHomeData();
-  return <HomeView data={data} loading={loading} />;
+// Container (MainDashboardScreen.tsx)
+export function MainDashboardScreen() {
+  const { schedule, loading } = useDashboardData();
+  return <DashboardView schedule={schedule} loading={loading} />;
 }
 
-// Presenter (HomeView.tsx)
-export function HomeView({ data, loading }: HomeViewProps) {
+// Presenter (DashboardView.tsx)
+export function DashboardView({ schedule, loading }: DashboardViewProps) {
   // Pure presentational logic
 }
 ```
@@ -439,7 +438,7 @@ const memoizedCallback = useCallback(() => doSomething(a, b), [a, b]);
 Use dynamic imports for code splitting.
 
 ```typescript
-const ProfileScreen = React.lazy(() => import('@/screens/ProfileScreen'));
+const ProfileScreen = React.lazy(() => import('@/screens/main/ProfileScreen'));
 ```
 
 ### 3. List Optimization
