@@ -30,6 +30,19 @@
     },
     "cancel": "Batal"
   },
+  "e2eSwipeControls": {
+    "status": "Simulasi",
+    "statusWithAction": "Simulasi • {{action}}",
+    "select": "Pilih",
+    "nextA11y": "Pindah ke opsi berikutnya",
+    "selectA11y": "Pilih opsi saat ini",
+    "infoA11y": "Buka informasi opsi",
+    "actions": {
+      "select": "pilih",
+      "next": "berikutnya",
+      "info": "informasi"
+    }
+  },
   "intro": {
     "welcome": "Selamat datang di Ryvro! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
     "askName": "Siapa namamu?",

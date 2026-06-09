@@ -30,6 +30,19 @@
     },
     "cancel": "Cancelar"
   },
+  "e2eSwipeControls": {
+    "status": "Simulador",
+    "statusWithAction": "Simulador • {{action}}",
+    "select": "Seleccionar",
+    "nextA11y": "Ir a la siguiente opción",
+    "selectA11y": "Seleccionar la opción actual",
+    "infoA11y": "Abrir información de la opción",
+    "actions": {
+      "select": "seleccionar",
+      "next": "siguiente",
+      "info": "información"
+    }
+  },
   "intro": {
     "welcome": "Bienvenido a Ryvro! Estoy aqui para ayudarte a configurar tu calendario de turnos. Empecemos con tus datos.",
     "askName": "Como te llamas?",

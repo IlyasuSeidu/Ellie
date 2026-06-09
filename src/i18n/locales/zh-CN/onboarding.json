@@ -30,6 +30,19 @@
     },
     "cancel": "取消"
   },
+  "e2eSwipeControls": {
+    "status": "模拟器",
+    "statusWithAction": "模拟器 • {{action}}",
+    "select": "选择",
+    "nextA11y": "移至下一个选项",
+    "selectA11y": "选择当前选项",
+    "infoA11y": "打开选项信息",
+    "actions": {
+      "select": "选择",
+      "next": "下一个",
+      "info": "信息"
+    }
+  },
   "intro": {
     "welcome": "欢迎来到 Ryvro！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
     "askName": "你叫什么名字？",

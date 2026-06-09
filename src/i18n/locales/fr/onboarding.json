@@ -30,6 +30,19 @@
     },
     "cancel": "Annuler"
   },
+  "e2eSwipeControls": {
+    "status": "Simulateur",
+    "statusWithAction": "Simulateur • {{action}}",
+    "select": "Sélectionner",
+    "nextA11y": "Passer à l'option suivante",
+    "selectA11y": "Sélectionner l'option actuelle",
+    "infoA11y": "Ouvrir les informations de l'option",
+    "actions": {
+      "select": "sélectionner",
+      "next": "suivant",
+      "info": "information"
+    }
+  },
   "intro": {
     "welcome": "Bienvenue à Ryvro! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
     "askName": "Quel est ton nom?",

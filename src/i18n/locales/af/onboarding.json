@@ -30,6 +30,19 @@
     },
     "cancel": "Kanselleer"
   },
+  "e2eSwipeControls": {
+    "status": "Simulasie",
+    "statusWithAction": "Simulasie • {{action}}",
+    "select": "Kies",
+    "nextA11y": "Skuif na volgende opsie",
+    "selectA11y": "Kies huidige opsie",
+    "infoA11y": "Maak opsie-inligting oop",
+    "actions": {
+      "select": "kies",
+      "next": "volgende",
+      "info": "inligting"
+    }
+  },
   "intro": {
     "welcome": "Welkom aan Ryvro! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
     "askName": "Wat is jou naam?",

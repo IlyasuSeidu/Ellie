@@ -5107,6 +5107,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/components/shift-builder/BuilderValidationBanner.tsx'),
       'utf8'
     );
+    const e2eSwipeControls = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/onboarding/premium/E2ESwipeControls.tsx'),
+      'utf8'
+    );
     const guardedLocaleKeys: Record<string, string[]> = {
       'common.json': ['subscription.paywall.plans.weeklySuffix'],
       'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
@@ -5151,6 +5155,12 @@ describe('Ryvro environment template', () => {
         'shiftBuilder.validation.reviewBeforeSaving',
         'shiftBuilder.validation.toggleA11y',
         'shiftBuilder.validation.dismissWarnings',
+        'e2eSwipeControls.status',
+        'e2eSwipeControls.statusWithAction',
+        'e2eSwipeControls.select',
+        'e2eSwipeControls.nextA11y',
+        'e2eSwipeControls.selectA11y',
+        'e2eSwipeControls.infoA11y',
       ],
     };
 
@@ -5193,6 +5203,13 @@ describe('Ryvro environment template', () => {
     expect(builderValidationBanner).not.toContain('accessibilityLabel="Dismiss warnings"');
     expect(builderValidationBanner).not.toContain('Dismiss warnings</Text>');
     expect(builderValidationBanner).not.toContain('review before saving');
+    expect(e2eSwipeControls).toContain("useTranslation('onboarding')");
+    expect(e2eSwipeControls).toContain("t('e2eSwipeControls.select')");
+    expect(e2eSwipeControls).toContain("t('e2eSwipeControls.nextA11y')");
+    expect(e2eSwipeControls).not.toContain('accessibilityLabel="Move to next option"');
+    expect(e2eSwipeControls).not.toContain('accessibilityLabel="Select current option"');
+    expect(e2eSwipeControls).not.toContain('accessibilityLabel="Open option information"');
+    expect(e2eSwipeControls).not.toContain('>Select</Text>');
 
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const locales = fs.readdirSync(localeRoot).filter((locale) => locale !== 'en');

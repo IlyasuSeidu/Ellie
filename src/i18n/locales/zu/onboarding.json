@@ -30,6 +30,19 @@
     },
     "cancel": "Khansela"
   },
+  "e2eSwipeControls": {
+    "status": "Isilingisi",
+    "statusWithAction": "Isilingisi • {{action}}",
+    "select": "Khetha",
+    "nextA11y": "Yiya enkethweni elandelayo",
+    "selectA11y": "Khetha inketho yamanje",
+    "infoA11y": "Vula imininingwane yenketho",
+    "actions": {
+      "select": "khetha",
+      "next": "okulandelayo",
+      "info": "imininingwane"
+    }
+  },
   "intro": {
     "welcome": "Siyakwamukela ku- Ryvro! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
     "askName": "Ubani igama lakho?",

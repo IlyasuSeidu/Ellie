@@ -49,6 +49,19 @@
     },
     "cancel": "Cancel"
   },
+  "e2eSwipeControls": {
+    "status": "Simulator",
+    "statusWithAction": "Simulator • {{action}}",
+    "select": "Select",
+    "nextA11y": "Move to next option",
+    "selectA11y": "Select current option",
+    "infoA11y": "Open option information",
+    "actions": {
+      "select": "select",
+      "next": "next",
+      "info": "info"
+    }
+  },
   "chatInput": {
     "submitA11y": "Submit response"
   },

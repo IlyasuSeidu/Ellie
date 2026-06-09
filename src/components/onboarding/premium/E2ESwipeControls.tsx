@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { IS_E2E_TEST_MODE } from '@/utils/e2e';
@@ -17,6 +18,7 @@ export const E2ESwipeControls: React.FC<E2ESwipeControlsProps> = ({
   onNext,
   onInfo,
 }) => {
+  const { t } = useTranslation('onboarding');
   const [lastAction, setLastAction] = useState<'select' | 'next' | 'info' | null>(null);
 
   const handleSelect = useCallback(() => {
@@ -42,7 +44,11 @@ export const E2ESwipeControls: React.FC<E2ESwipeControlsProps> = ({
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.label} testID={`${prefix}-e2e-status-label`}>
-          {lastAction ? `Simulator • ${lastAction}` : 'Simulator'}
+          {lastAction
+            ? t('e2eSwipeControls.statusWithAction', {
+                action: t(`e2eSwipeControls.actions.${lastAction}`),
+              })
+            : t('e2eSwipeControls.status')}
         </Text>
         <View style={styles.row}>
           {onNext ? (
@@ -51,7 +57,7 @@ export const E2ESwipeControls: React.FC<E2ESwipeControlsProps> = ({
               style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
               testID={`${prefix}-e2e-next-button`}
               accessibilityRole="button"
-              accessibilityLabel="Move to next option"
+              accessibilityLabel={t('e2eSwipeControls.nextA11y')}
               hitSlop={8}
             >
               <Ionicons name="arrow-forward" size={16} color={theme.colors.paper} />
@@ -62,10 +68,10 @@ export const E2ESwipeControls: React.FC<E2ESwipeControlsProps> = ({
             style={({ pressed }) => [styles.selectButton, pressed && styles.selectButtonPressed]}
             testID={`${prefix}-e2e-select-button`}
             accessibilityRole="button"
-            accessibilityLabel="Select current option"
+            accessibilityLabel={t('e2eSwipeControls.selectA11y')}
             hitSlop={8}
           >
-            <Text style={styles.selectButtonText}>Select</Text>
+            <Text style={styles.selectButtonText}>{t('e2eSwipeControls.select')}</Text>
           </Pressable>
           {onInfo ? (
             <Pressable
@@ -73,7 +79,7 @@ export const E2ESwipeControls: React.FC<E2ESwipeControlsProps> = ({
               style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
               testID={`${prefix}-e2e-info-button`}
               accessibilityRole="button"
-              accessibilityLabel="Open option information"
+              accessibilityLabel={t('e2eSwipeControls.infoA11y')}
               hitSlop={8}
             >
               <Ionicons name="information" size={16} color={theme.colors.paper} />
