@@ -784,6 +784,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('Backend smoke - ryvroBrain');
     expect(script).toContain('Backend deploy - parser');
     expect(script).toContain('Shift parser smoke');
+    expect(script).toContain('EU trader status');
     expect(script).toContain('Store submission');
     expect(script).toContain('Pending owner evidence');
     expect(script).toContain('submit.production.android.track must stay on internal');

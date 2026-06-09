@@ -172,6 +172,7 @@ const requiredEvidenceItems = [
   'App Store privacy form',
   'Google Play Data safety form',
   'Content rating and export compliance',
+  'EU trader status',
   'Reviewer account',
   'iOS production build',
   'Android production AAB',
