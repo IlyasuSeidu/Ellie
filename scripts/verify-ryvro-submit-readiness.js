@@ -162,6 +162,7 @@ const requiredEvidenceItems = [
   'EAS production environment push',
   'RevenueCat apps',
   'App Store Connect in-app purchase key',
+  'RevenueCat SDK keys',
   'Entitlement',
   'App Store products',
   'Google Play products',

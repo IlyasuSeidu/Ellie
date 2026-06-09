@@ -232,6 +232,7 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['schedule name `2-week roster`', launchEvidenceLog],
   ['## RevenueCat And Store Products', launchEvidenceLog],
   ['App Store Connect in-app purchase key', launchEvidenceLog],
+  ['RevenueCat SDK keys', launchEvidenceLog],
   ['Entitlement ID `pro`, display name `Ryvro Pro`', launchEvidenceLog],
   ['`ryvro_pro_monthly` and `ryvro_pro_annual`', launchEvidenceLog],
   ['## Legal, Support, And Store Forms', launchEvidenceLog],

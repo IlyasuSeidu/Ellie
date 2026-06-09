@@ -757,6 +757,7 @@ describe('Ryvro environment template', () => {
     expect(result.stderr).toContain(
       'App Store Connect in-app purchase key still has pending owner evidence'
     );
+    expect(result.stderr).toContain('RevenueCat SDK keys still has pending owner evidence');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
@@ -786,6 +787,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('Social handles');
     expect(script).toContain('Google Play service account');
     expect(script).toContain('App Store Connect in-app purchase key');
+    expect(script).toContain('RevenueCat SDK keys');
     expect(script).toContain('Backend deploy - ryvroBrain');
     expect(script).toContain('Backend smoke - ryvroBrain');
     expect(script).toContain('Backend deploy - parser');
@@ -3493,6 +3495,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('App Store Connect in-app purchase key');
     expect(launchEvidenceLog).toContain('Key ID and Issuer ID presence in RevenueCat only');
     expect(launchEvidenceLog).toContain('`.p8` private key kept out of Git');
+    expect(launchEvidenceLog).toContain('RevenueCat SDK keys');
+    expect(launchEvidenceLog).toContain('iOS `appl_...` and Android `goog_...` keys');
+    expect(launchEvidenceLog).toContain('native and Expo public mirrors match');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d');
     expect(launchEvidenceLog).toContain('REST API identifier `appab0f4b628d`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
