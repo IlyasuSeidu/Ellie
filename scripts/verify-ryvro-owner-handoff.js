@@ -573,6 +573,25 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'screenshot checklist'));
 
 [
+  ['Store screenshots', launchEvidenceLog],
+  ['real native builds only', launchEvidenceLog],
+  ['app-store-iphone-01-template-start.png', launchEvidenceLog],
+  ['app-store-ipad-03-paywall.png', launchEvidenceLog],
+  ['google-play-phone-02-dashboard-calendar.png', launchEvidenceLog],
+  ['google-play-phone-03-paywall.png', launchEvidenceLog],
+  ['device model, OS version, build number or versionCode', launchEvidenceLog],
+  ['rejected or retaken frames', launchEvidenceLog],
+  ['avoid private employer names, workplace names, personal notifications', launchEvidenceLog],
+  ['price claims, ranking claims, testimonials', launchEvidenceLog],
+  ['real user email addresses outside the reviewer account', launchEvidenceLog],
+  ['ryvro_pro_monthly', launchEvidenceLog],
+  ['ryvro_pro_annual', launchEvidenceLog],
+  ['entitlement `pro`, offering `default`', launchEvidenceLog],
+].forEach(([expected, content]) =>
+  requireIncludes(content, expected, 'launch evidence screenshot row')
+);
+
+[
   ['Ryvro Shift Planner', launchHome],
   ['FIFO crews, healthcare teams, security staff', launchHome],
   ['It does not replace an employer roster', launchHome],

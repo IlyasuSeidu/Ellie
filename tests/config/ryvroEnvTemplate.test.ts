@@ -2750,6 +2750,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md'),
       'utf8'
     );
+    const launchEvidenceLog = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_LAUNCH_EVIDENCE_LOG.md'),
+      'utf8'
+    );
 
     expect(storeListing).toContain('reviewer@getryvro.com');
     expect(storeListing).toContain('support@getryvro.com');
@@ -2825,6 +2829,20 @@ describe('Ryvro environment template', () => {
     expect(screenshotChecklist).toContain('1080 x 1920 or higher');
     expect(screenshotChecklist).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(screenshotChecklist).toContain('Keep the screenshot files out of Git');
+    expect(launchEvidenceLog).toContain('Store screenshots');
+    expect(launchEvidenceLog).toContain('real native builds only');
+    expect(launchEvidenceLog).toContain('app-store-iphone-01-template-start.png');
+    expect(launchEvidenceLog).toContain('app-store-ipad-03-paywall.png');
+    expect(launchEvidenceLog).toContain('google-play-phone-02-dashboard-calendar.png');
+    expect(launchEvidenceLog).toContain('google-play-phone-03-paywall.png');
+    expect(launchEvidenceLog).toContain('device model, OS version, build number or versionCode');
+    expect(launchEvidenceLog).toContain('rejected or retaken frames');
+    expect(launchEvidenceLog).toContain(
+      'avoid private employer names, workplace names, personal notifications'
+    );
+    expect(launchEvidenceLog).toContain('price claims, ranking claims, testimonials');
+    expect(launchEvidenceLog).toContain('real user email addresses outside the reviewer account');
+    expect(launchEvidenceLog).toContain('entitlement `pro`, offering `default`');
   });
 
   it('keeps RevenueCat launch guidance free of retired Ellie entitlement aliases', () => {
