@@ -106,16 +106,23 @@ Record:
 
 Install from the Play internal testing channel on a physical Android device. Do not use Expo Go or a debug build for final Android QA.
 
+The Play Console account-verification emulator rejection is separate from release QA, but it sets the same owner-device expectation: use a real physical Android 10 / SDK 29 or newer phone or tablet signed into the owner or tester Google account. Do not use an Android emulator, even if the emulator reports SDK 29 or newer.
+
 Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` and record:
 
 - Device model
 - Android version
+- Android SDK level if the device reports it
 - Installed package proof for `com.ryvro.shiftplanner`
 - Version code
+- Play internal release ID or opt-in link
 - Tester account
+- Install source
+- Test date
 - Smoke matrix result
 - Sandbox purchase result
 - Screenshot evidence from `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`
+- Failed or retaken steps without passwords, private emails, or personal data
 
 Only mark `Physical Android QA` as `Passed` after the Play/internal install passes the full smoke matrix.
 

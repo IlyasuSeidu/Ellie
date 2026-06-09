@@ -3598,6 +3598,14 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for the Play internal testing track'
     );
+    expect(launchEvidenceLog).toContain(
+      'real physical Android 10 / SDK 29 or newer phone or tablet'
+    );
+    expect(launchEvidenceLog).toContain('not an emulator');
+    expect(launchEvidenceLog).toContain('package proof for `com.ryvro.shiftplanner`');
+    expect(launchEvidenceLog).toContain('Play internal release ID or opt-in link');
+    expect(launchEvidenceLog).toContain('RevenueCat sandbox purchase and restore result');
+    expect(launchEvidenceLog).toContain('Do not mark this row `Passed` from an Android emulator');
     expect(launchEvidenceLog).toContain('Store submission');
     expect(launchEvidenceLog).toContain('Pending owner evidence');
     expect(launchEvidenceLog).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
@@ -4085,6 +4093,16 @@ describe('Ryvro environment template', () => {
     expect(googlePlayInternalTestingHandoff).toContain('Internal Testing Track');
     expect(googlePlayInternalTestingHandoff).toContain('Track: Internal testing');
     expect(googlePlayInternalTestingHandoff).toContain('Physical Android QA');
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'real physical Android 10 / SDK 29 or newer phone or tablet'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain('Do not use an Android emulator');
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Android SDK level if the device reports it'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain('Play internal release ID or opt-in link');
+    expect(googlePlayInternalTestingHandoff).toContain('Install source');
+    expect(googlePlayInternalTestingHandoff).toContain('Failed or retaken steps without passwords');
     expect(googlePlayInternalTestingHandoff).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(googlePlayInternalTestingHandoff).toContain('Production Promotion Gate');
     expect(googlePlayInternalTestingHandoff).toContain('npm run release:submit:check');
