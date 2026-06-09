@@ -3336,6 +3336,15 @@ describe('Ryvro environment template', () => {
       'match the live privacy policy, Firebase, RevenueCat, Google Play billing, AI provider, voice, analytics, diagnostics, account deletion, data deletion, and subscription behavior'
     );
     expect(launchEvidenceLog).toContain('Do not mark passed from the draft alone');
+    expect(launchEvidenceLog).toContain('Content rating and export compliance');
+    expect(launchEvidenceLog).toContain('Google Play content rating, Google Play target audience');
+    expect(launchEvidenceLog).toContain('working-adult productivity app with subscriptions');
+    expect(launchEvidenceLog).toContain('AI-assisted schedule drafting');
+    expect(launchEvidenceLog).toContain('no child-directed audience, no gambling, no dating');
+    expect(launchEvidenceLog).toContain('standard HTTPS/TLS encryption only');
+    expect(launchEvidenceLog).toContain(
+      'Record only non-secret completion notes or console status references'
+    );
     expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('build `2` through submission');
