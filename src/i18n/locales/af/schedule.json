@@ -135,6 +135,11 @@
     "scheduleName": "Skedulenaam",
     "scheduleNameA11y": "Skedulenaam",
     "saveScheduleA11y": "Stoor skedule",
-    "saveSchedule": "Stoor skedule"
+    "saveSchedule": "Stoor skedule",
+    "holidayCountryPlaceholder": "ZA",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "JJJJ-MM-DD",
+    "calendarExportStartPlaceholder": "Begin JJJJ-MM-DD",
+    "calendarExportEndPlaceholder": "Einde JJJJ-MM-DD"
   }
 }

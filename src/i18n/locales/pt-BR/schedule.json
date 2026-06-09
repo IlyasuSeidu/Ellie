@@ -135,6 +135,11 @@
     "scheduleName": "Nome da escala",
     "scheduleNameA11y": "Nome da escala",
     "saveScheduleA11y": "Salvar escala",
-    "saveSchedule": "Salvar escala"
+    "saveSchedule": "Salvar escala",
+    "holidayCountryPlaceholder": "BR",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "AAAA-MM-DD",
+    "calendarExportStartPlaceholder": "Inicio AAAA-MM-DD",
+    "calendarExportEndPlaceholder": "Fim AAAA-MM-DD"
   }
 }

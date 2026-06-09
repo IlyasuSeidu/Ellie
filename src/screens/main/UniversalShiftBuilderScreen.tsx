@@ -1542,7 +1542,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               style={styles.holidayCountryInput}
               value={holidayCountry}
               onChangeText={(text) => setHolidayCountry(text.slice(0, 2).toUpperCase())}
-              placeholder="US"
+              placeholder={t('builder.holidayCountryPlaceholder')}
               placeholderTextColor={theme.colors.shadow}
               autoCapitalize="characters"
               maxLength={2}
@@ -1552,7 +1552,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               style={styles.holidayYearInput}
               value={holidayYear}
               onChangeText={(text) => setHolidayYear(text.replace(/\D/g, '').slice(0, 4))}
-              placeholder="2026"
+              placeholder={t('builder.holidayYearPlaceholder')}
               placeholderTextColor={theme.colors.shadow}
               keyboardType="number-pad"
               maxLength={4}
@@ -1591,7 +1591,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               style={styles.holidayDateInput}
               value={holidayDraftDate}
               onChangeText={(text) => setHolidayDraftDate(text.slice(0, 10))}
-              placeholder="YYYY-MM-DD"
+              placeholder={t('builder.dateFormatPlaceholder')}
               placeholderTextColor={theme.colors.shadow}
               maxLength={10}
               keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
@@ -1702,7 +1702,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               style={styles.holidayDateInput}
               value={oneOffDraftDate}
               onChangeText={(text) => setOneOffDraftDate(text.slice(0, 10))}
-              placeholder="YYYY-MM-DD"
+              placeholder={t('builder.dateFormatPlaceholder')}
               placeholderTextColor={theme.colors.shadow}
               maxLength={10}
               keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
@@ -1851,7 +1851,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             style={styles.calendarDateInput}
             value={calendarExportStart}
             onChangeText={(text) => setCalendarExportStart(text.slice(0, 10))}
-            placeholder="Start YYYY-MM-DD"
+            placeholder={t('builder.calendarExportStartPlaceholder')}
             placeholderTextColor={theme.colors.shadow}
             maxLength={10}
             keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
@@ -1861,7 +1861,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             style={styles.calendarDateInput}
             value={calendarExportEnd}
             onChangeText={(text) => setCalendarExportEnd(text.slice(0, 10))}
-            placeholder="End YYYY-MM-DD"
+            placeholder={t('builder.calendarExportEndPlaceholder')}
             placeholderTextColor={theme.colors.shadow}
             maxLength={10}
             keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
@@ -1968,7 +1968,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               setAnchorDraft(text);
               setAnchorDraftError(null);
             }}
-            placeholder="YYYY-MM-DD"
+            placeholder={t('builder.dateFormatPlaceholder')}
             placeholderTextColor={theme.colors.shadow}
             keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
             autoCapitalize="none"

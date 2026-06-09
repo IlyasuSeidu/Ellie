@@ -135,6 +135,11 @@
     "scheduleName": "Название графика",
     "scheduleNameA11y": "Название графика",
     "saveScheduleA11y": "Сохранить график",
-    "saveSchedule": "Сохранить график"
+    "saveSchedule": "Сохранить график",
+    "holidayCountryPlaceholder": "RU",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "ГГГГ-ММ-ДД",
+    "calendarExportStartPlaceholder": "Начало ГГГГ-ММ-ДД",
+    "calendarExportEndPlaceholder": "Конец ГГГГ-ММ-ДД"
   }
 }

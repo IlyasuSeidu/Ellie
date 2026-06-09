@@ -135,6 +135,11 @@
     "scheduleName": "排班名称",
     "scheduleNameA11y": "排班名称",
     "saveScheduleA11y": "保存排班",
-    "saveSchedule": "保存排班"
+    "saveSchedule": "保存排班",
+    "holidayCountryPlaceholder": "CN",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "YYYY-MM-DD",
+    "calendarExportStartPlaceholder": "开始 YYYY-MM-DD",
+    "calendarExportEndPlaceholder": "结束 YYYY-MM-DD"
   }
 }

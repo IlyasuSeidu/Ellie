@@ -135,6 +135,11 @@
     "scheduleName": "Nom du planning",
     "scheduleNameA11y": "Nom du planning",
     "saveScheduleA11y": "Enregistrer le planning",
-    "saveSchedule": "Enregistrer le planning"
+    "saveSchedule": "Enregistrer le planning",
+    "holidayCountryPlaceholder": "FR",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "AAAA-MM-JJ",
+    "calendarExportStartPlaceholder": "Debut AAAA-MM-JJ",
+    "calendarExportEndPlaceholder": "Fin AAAA-MM-JJ"
   }
 }

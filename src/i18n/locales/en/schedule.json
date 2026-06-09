@@ -135,6 +135,11 @@
     "scheduleName": "Schedule Name",
     "scheduleNameA11y": "Schedule name",
     "saveScheduleA11y": "Save schedule",
-    "saveSchedule": "Save schedule"
+    "saveSchedule": "Save schedule",
+    "holidayCountryPlaceholder": "US",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "YYYY-MM-DD",
+    "calendarExportStartPlaceholder": "Start YYYY-MM-DD",
+    "calendarExportEndPlaceholder": "End YYYY-MM-DD"
   }
 }

@@ -135,6 +135,11 @@
     "scheduleName": "اسم الجدول",
     "scheduleNameA11y": "اسم الجدول",
     "saveScheduleA11y": "حفظ الجدول",
-    "saveSchedule": "حفظ الجدول"
+    "saveSchedule": "حفظ الجدول",
+    "holidayCountryPlaceholder": "SA",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "YYYY-MM-DD",
+    "calendarExportStartPlaceholder": "البداية YYYY-MM-DD",
+    "calendarExportEndPlaceholder": "النهاية YYYY-MM-DD"
   }
 }

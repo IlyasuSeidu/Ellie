@@ -135,6 +135,11 @@
     "scheduleName": "शेड्यूल का नाम",
     "scheduleNameA11y": "शेड्यूल का नाम",
     "saveScheduleA11y": "शेड्यूल सहेजें",
-    "saveSchedule": "शेड्यूल सहेजें"
+    "saveSchedule": "शेड्यूल सहेजें",
+    "holidayCountryPlaceholder": "IN",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "YYYY-MM-DD",
+    "calendarExportStartPlaceholder": "शुरू YYYY-MM-DD",
+    "calendarExportEndPlaceholder": "समाप्त YYYY-MM-DD"
   }
 }

@@ -135,6 +135,11 @@
     "scheduleName": "Nombre del horario",
     "scheduleNameA11y": "Nombre del horario",
     "saveScheduleA11y": "Guardar horario",
-    "saveSchedule": "Guardar horario"
+    "saveSchedule": "Guardar horario",
+    "holidayCountryPlaceholder": "ES",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "AAAA-MM-DD",
+    "calendarExportStartPlaceholder": "Inicio AAAA-MM-DD",
+    "calendarExportEndPlaceholder": "Fin AAAA-MM-DD"
   }
 }

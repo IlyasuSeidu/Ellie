@@ -135,6 +135,11 @@
     "scheduleName": "Igama leshejuli",
     "scheduleNameA11y": "Igama leshejuli",
     "saveScheduleA11y": "Londoloza ishejuli",
-    "saveSchedule": "Londoloza ishejuli"
+    "saveSchedule": "Londoloza ishejuli",
+    "holidayCountryPlaceholder": "ZA",
+    "holidayYearPlaceholder": "2026",
+    "dateFormatPlaceholder": "YYYY-MM-DD",
+    "calendarExportStartPlaceholder": "Qala YYYY-MM-DD",
+    "calendarExportEndPlaceholder": "Phela YYYY-MM-DD"
   }
 }

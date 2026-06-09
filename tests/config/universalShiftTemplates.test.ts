@@ -257,6 +257,11 @@ describe('Universal shift templates', () => {
       'calendarHint',
       'calendarExport',
       'calendarImport',
+      'holidayCountryPlaceholder',
+      'holidayYearPlaceholder',
+      'dateFormatPlaceholder',
+      'calendarExportStartPlaceholder',
+      'calendarExportEndPlaceholder',
     ]) {
       expect(builderScreen).toContain(`t('builder.${key}'`);
     }
@@ -267,6 +272,11 @@ describe('Universal shift templates', () => {
       'Calendar import/export',
       'Export this schedule as an .ics calendar',
       'Reason, e.g. swapped with Alex',
+      'placeholder="US"',
+      'placeholder="2026"',
+      'placeholder="YYYY-MM-DD"',
+      'placeholder="Start YYYY-MM-DD"',
+      'placeholder="End YYYY-MM-DD"',
     ]) {
       expect(builderScreen).not.toContain(retiredLiteral);
     }
@@ -454,12 +464,15 @@ describe('Universal shift templates', () => {
       'holidayImportFailedMessage',
       'holidayManualError',
       'holidayCountryA11y',
+      'holidayCountryPlaceholder',
       'holidayYearA11y',
+      'holidayYearPlaceholder',
       'holidayImportA11y',
       'import',
       'holidayNamePlaceholder',
       'holidayNameA11y',
       'holidayDateA11y',
+      'dateFormatPlaceholder',
       'holidayAddA11y',
       'holidayListSubtitle',
       'removeHolidayA11y',
@@ -495,6 +508,8 @@ describe('Universal shift templates', () => {
       'calendarImportFailedMessage',
       'calendarExportStartA11y',
       'calendarExportEndA11y',
+      'calendarExportStartPlaceholder',
+      'calendarExportEndPlaceholder',
       'calendarIncludeOffA11y',
       'calendarIncludeOff',
       'calendarExportA11y',
