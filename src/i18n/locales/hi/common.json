@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "इस डिवाइस पर Google Play सेवाएँ उपलब्ध नहीं हैं।",
       "googleMissingIdToken": "Google साइन-इन पूरा नहीं हो सका. कृपया पुन: प्रयास करें।",
       "appleMissingIdentityToken": "Apple साइन-इन पूरा नहीं हो सका. कृपया पुन: प्रयास करें।",
+      "appleUnavailable": "इस डिवाइस पर Apple साइन-इन उपलब्ध नहीं है. कृपया Google या ईमेल साइन-इन का उपयोग करें।",
       "actionSignInFailed": "अभी साइन इन करने में असमर्थ. कृपया पुन: प्रयास करें।",
       "actionSignUpFailed": "अभी आपका खाता बनाने में असमर्थ. कृपया पुन: प्रयास करें।",
       "actionSocialSignInFailed": "सामाजिक साइन-इन अभी उपलब्ध नहीं है. कृपया ईमेल साइन-इन का प्रयास करें.",

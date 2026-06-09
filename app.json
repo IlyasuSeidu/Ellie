@@ -43,6 +43,7 @@
       "expo-localization",
       "expo-font",
       "expo-asset",
+      "expo-apple-authentication",
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       [

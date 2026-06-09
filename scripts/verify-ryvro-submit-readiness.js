@@ -46,6 +46,47 @@ function parseEvidenceRows(markdown) {
     .filter(([item]) => item !== 'Item');
 }
 
+function looksLikePlaceholderToken(value) {
+  const compactValue = value.replace(/[^A-Za-z0-9]/g, '').toLowerCase();
+  return (
+    compactValue.length === 0 ||
+    /^(x+|example|placeholder|replace|redacted|todo|tbd|yourkey|yourtoken)$/.test(compactValue) ||
+    compactValue.includes('xxxxxxxx') ||
+    compactValue.includes('replace') ||
+    compactValue.includes('redacted') ||
+    compactValue.includes('placeholder')
+  );
+}
+
+function scanEvidenceForSecrets(files) {
+  const literalSecretPatterns = [
+    ['private key block', /-----BEGIN (?:[A-Z ]+)?PRIVATE KEY-----/],
+    ['Google service-account private key JSON', /"private_key"\s*:/],
+    ['Google service-account private key ID JSON', /"private_key_id"\s*:/],
+    ['EAS access token', /\beas_[A-Za-z0-9_-]{20,}\b/],
+  ];
+  const tokenSecretPatterns = [
+    ['Firebase API key', /\bAIza[0-9A-Za-z_-]{20,}\b/g],
+    ['RevenueCat SDK key', /\b(?:appl|goog)_[A-Za-z0-9]{12,}\b/g],
+  ];
+
+  files.forEach(([relativePath, content]) => {
+    literalSecretPatterns.forEach(([label, pattern]) => {
+      if (pattern.test(content)) {
+        addError(`${relativePath} appears to contain ${label}; record only non-secret evidence`);
+      }
+    });
+
+    tokenSecretPatterns.forEach(([label, pattern]) => {
+      Array.from(content.matchAll(pattern)).forEach(([value]) => {
+        if (!looksLikePlaceholderToken(value)) {
+          addError(`${relativePath} appears to contain ${label}; record only non-secret evidence`);
+        }
+      });
+    });
+  });
+}
+
 const easJson = JSON.parse(read('eas.json'));
 const evidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const ownerRunbook = read('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
@@ -55,6 +96,27 @@ const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
 const deploymentGuide = read('docs/DEPLOYMENT.md');
 const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
 const deviceQaTemplate = read('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
+
+scanEvidenceForSecrets([
+  ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', evidenceLog],
+  ['docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md', ownerRunbook],
+  ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', submitBlockerTriage],
+  [
+    'docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md',
+    read('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md'),
+  ],
+  [
+    'docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md',
+    read('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md'),
+  ],
+  [
+    'docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md',
+    read('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md'),
+  ],
+  ['docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md', read('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md')],
+  ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', playInternalTestingHandoff],
+  ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', deviceQaTemplate],
+]);
 
 [
   [

@@ -382,6 +382,8 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['backend provider smoke tests have passed', submitBlockerTriage],
   ['Finish RevenueCat And Store Products', submitBlockerTriage],
   ['Rebuild, Test, Screenshot, Then Submit', submitBlockerTriage],
+  ['scans the owner evidence packet for high-risk secret material', submitBlockerTriage],
+  ['rotate the exposed key in the owning console', submitBlockerTriage],
   ['Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`', submitBlockerTriage],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'submit blocker triage'));
 

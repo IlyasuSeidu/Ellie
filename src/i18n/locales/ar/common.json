@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "خدمات Google Play غير متاحة على هذا الجهاز.",
       "googleMissingIdToken": "تعذر إكمال تسجيل الدخول إلى Google. يرجى المحاولة مرة أخرى.",
       "appleMissingIdentityToken": "تعذر إكمال تسجيل الدخول إلى Apple. يرجى المحاولة مرة أخرى.",
+      "appleUnavailable": "تسجيل الدخول باستخدام Apple غير متاح على هذا الجهاز. استخدم Google أو البريد الإلكتروني.",
       "actionSignInFailed": "غير قادر على تسجيل الدخول الآن. يرجى المحاولة مرة أخرى.",
       "actionSignUpFailed": "غير قادر على إنشاء حسابك الآن. يرجى المحاولة مرة أخرى.",
       "actionSocialSignInFailed": "تسجيل الدخول الاجتماعي غير متاح الآن. يرجى محاولة تسجيل الدخول عبر البريد الإلكتروني.",

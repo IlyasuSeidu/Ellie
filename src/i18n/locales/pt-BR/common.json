@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "O Google Play Services não está disponível neste dispositivo.",
       "googleMissingIdToken": "Não foi possível concluir o login do Google. Por favor, tente novamente.",
       "appleMissingIdentityToken": "Não foi possível concluir o login da Apple. Por favor, tente novamente.",
+      "appleUnavailable": "O login com Apple não está disponível neste dispositivo. Use Google ou e-mail.",
       "actionSignInFailed": "Não é possível fazer login no momento. Por favor, tente novamente.",
       "actionSignUpFailed": "Não é possível criar sua conta no momento. Por favor, tente novamente.",
       "actionSocialSignInFailed": "O login social não está disponível no momento. Tente fazer login por e-mail.",

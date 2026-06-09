@@ -15,6 +15,13 @@ const path = require('node:path');
 
 const GOOGLE_IOS_CLIENT_SUFFIX = '.apps.googleusercontent.com';
 const IOS_FIREBASE_APP_ID_PATTERN = /^1:\d+:ios:[a-f0-9]+$/i;
+const RYVRO_GOOGLE_PROJECT_NUMBER = '1002666052675';
+const RYVRO_GOOGLE_WEB_CLIENT_ID =
+  '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com';
+const RYVRO_GOOGLE_IOS_CLIENT_ID =
+  '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com';
+const RYVRO_GOOGLE_ANDROID_CLIENT_ID =
+  '1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com';
 
 function resolveProjectPath(filePath) {
   return path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
@@ -29,6 +36,20 @@ function readOptionalFile(filePath) {
     return fs.readFileSync(resolveProjectPath(filePath), 'utf8');
   } catch (_error) {
     return '';
+  }
+}
+
+function readOptionalJsonFile(filePath) {
+  const content = readOptionalFile(filePath);
+
+  if (!content) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(content);
+  } catch (_error) {
+    return null;
   }
 }
 
@@ -74,6 +95,39 @@ function buildFirebaseConfigFromIosGoogleServicesFile(filePath) {
   };
 }
 
+function buildFirebaseConfigFromAndroidGoogleServicesFile(filePath) {
+  const values = readOptionalJsonFile(filePath);
+  const projectInfo = values?.project_info || {};
+  const client = Array.isArray(values?.client)
+    ? values.client.find(
+        (entry) =>
+          entry?.client_info?.android_client_info?.package_name === 'com.ryvro.shiftplanner'
+      )
+    : null;
+
+  if (
+    !client ||
+    projectInfo.project_id !== 'ryvro-shift-planner' ||
+    projectInfo.project_number !== RYVRO_GOOGLE_PROJECT_NUMBER
+  ) {
+    return null;
+  }
+
+  const oauthClients = Array.isArray(client.oauth_client) ? client.oauth_client : [];
+  const androidOAuthClient = oauthClients.find((entry) => entry?.client_type === 1);
+  const webOAuthClient = oauthClients.find((entry) => entry?.client_type === 3);
+
+  return {
+    apiKey: client.api_key?.[0]?.current_key || '',
+    authDomain: projectInfo.project_id ? `${projectInfo.project_id}.firebaseapp.com` : '',
+    projectId: projectInfo.project_id || '',
+    storageBucket: projectInfo.storage_bucket || '',
+    messagingSenderId: projectInfo.project_number || '',
+    googleAndroidClientId: androidOAuthClient?.client_id || '',
+    googleWebClientId: webOAuthClient?.client_id || '',
+  };
+}
+
 function getGoogleIosUrlScheme(googleIosClientId) {
   if (!googleIosClientId || !googleIosClientId.endsWith(GOOGLE_IOS_CLIENT_SUFFIX)) {
     return '';
@@ -87,16 +141,43 @@ function getOAuthClientProjectNumber(clientId) {
   return match?.[1] || '';
 }
 
-function getCompatibleGoogleWebClientId(iosFirebaseConfig) {
-  const webClientId =
-    process.env.GOOGLE_WEB_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '';
-  const iosSenderId = iosFirebaseConfig?.messagingSenderId || '';
-
-  if (!webClientId || !iosSenderId) {
-    return webClientId;
+function isCompatibleGoogleOAuthClientId(clientId, projectNumber) {
+  if (!clientId) {
+    return false;
   }
 
-  return getOAuthClientProjectNumber(webClientId) === iosSenderId ? webClientId : '';
+  if (!projectNumber) {
+    return true;
+  }
+
+  return getOAuthClientProjectNumber(clientId) === projectNumber;
+}
+
+function getCompatibleGoogleWebClientId(projectNumber, androidFirebaseConfig) {
+  const candidates = [
+    process.env.GOOGLE_WEB_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    androidFirebaseConfig?.googleWebClientId,
+    projectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_WEB_CLIENT_ID : '',
+  ];
+
+  for (const clientId of candidates) {
+    if (isCompatibleGoogleOAuthClientId(clientId, projectNumber)) {
+      return clientId;
+    }
+  }
+
+  return '';
+}
+
+function getCompatibleGoogleClientId(projectNumber, candidates, fallbackClientId) {
+  for (const clientId of [...candidates, fallbackClientId]) {
+    if (isCompatibleGoogleOAuthClientId(clientId, projectNumber)) {
+      return clientId;
+    }
+  }
+
+  return '';
 }
 
 function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
@@ -159,6 +240,7 @@ module.exports = ({ config = {} }) => {
     'expo-localization',
     'expo-font',
     'expo-asset',
+    'expo-apple-authentication',
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
     [
@@ -212,7 +294,17 @@ module.exports = ({ config = {} }) => {
     process.env.GOOGLE_SERVICES_FILE ||
     (appEnv === 'production' ? undefined : './config/firebase/google-services.local.json');
   const iosFirebaseConfig = buildFirebaseConfigFromIosGoogleServicesFile(iosGoogleServicesFile);
-  const firebaseProjectId = iosFirebaseConfig?.projectId || envFirebaseProjectId;
+  const androidFirebaseConfig =
+    buildFirebaseConfigFromAndroidGoogleServicesFile(androidGoogleServicesFile);
+  const firebaseProjectId =
+    iosFirebaseConfig?.projectId || androidFirebaseConfig?.projectId || envFirebaseProjectId;
+  const firebaseMessagingSenderId =
+    iosFirebaseConfig?.messagingSenderId ||
+    androidFirebaseConfig?.messagingSenderId ||
+    process.env.FIREBASE_MESSAGING_SENDER_ID ||
+    '';
+  const googleOAuthProjectNumber =
+    iosFirebaseConfig?.messagingSenderId || androidFirebaseConfig?.messagingSenderId || '';
   const defaultRyvroBrainUrl = firebaseProjectId
     ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/ryvroBrain`
     : '';
@@ -221,10 +313,22 @@ module.exports = ({ config = {} }) => {
     : '';
   const googleIosClientId =
     iosFirebaseConfig?.googleIosClientId ||
-    process.env.GOOGLE_IOS_CLIENT_ID ||
-    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
-    '';
-  const googleWebClientId = getCompatibleGoogleWebClientId(iosFirebaseConfig);
+    getCompatibleGoogleClientId(
+      googleOAuthProjectNumber,
+      [process.env.GOOGLE_IOS_CLIENT_ID, process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID],
+      googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_IOS_CLIENT_ID : ''
+    );
+  const googleAndroidClientId =
+    androidFirebaseConfig?.googleAndroidClientId ||
+    getCompatibleGoogleClientId(
+      googleOAuthProjectNumber,
+      [process.env.GOOGLE_ANDROID_CLIENT_ID, process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID],
+      googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_ANDROID_CLIENT_ID : ''
+    );
+  const googleWebClientId = getCompatibleGoogleWebClientId(
+    googleOAuthProjectNumber,
+    androidFirebaseConfig
+  );
   const googleIosUrlScheme = getGoogleIosUrlScheme(googleIosClientId);
 
   if (!expoUpdates.url && easProjectId) {
@@ -288,13 +392,23 @@ module.exports = ({ config = {} }) => {
     extra: {
       ...configExtra,
       APP_ENV: appEnv,
-      FIREBASE_API_KEY: iosFirebaseConfig?.apiKey || process.env.FIREBASE_API_KEY || '',
-      FIREBASE_AUTH_DOMAIN: iosFirebaseConfig?.authDomain || process.env.FIREBASE_AUTH_DOMAIN || '',
+      FIREBASE_API_KEY:
+        iosFirebaseConfig?.apiKey ||
+        androidFirebaseConfig?.apiKey ||
+        process.env.FIREBASE_API_KEY ||
+        '',
+      FIREBASE_AUTH_DOMAIN:
+        iosFirebaseConfig?.authDomain ||
+        androidFirebaseConfig?.authDomain ||
+        process.env.FIREBASE_AUTH_DOMAIN ||
+        '',
       FIREBASE_PROJECT_ID: firebaseProjectId,
       FIREBASE_STORAGE_BUCKET:
-        iosFirebaseConfig?.storageBucket || process.env.FIREBASE_STORAGE_BUCKET || '',
-      FIREBASE_MESSAGING_SENDER_ID:
-        iosFirebaseConfig?.messagingSenderId || process.env.FIREBASE_MESSAGING_SENDER_ID || '',
+        iosFirebaseConfig?.storageBucket ||
+        androidFirebaseConfig?.storageBucket ||
+        process.env.FIREBASE_STORAGE_BUCKET ||
+        '',
+      FIREBASE_MESSAGING_SENDER_ID: firebaseMessagingSenderId,
       FIREBASE_APP_ID: iosFirebaseConfig?.appId || process.env.FIREBASE_APP_ID || '',
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
       EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: googleWebClientId,
@@ -310,10 +424,12 @@ module.exports = ({ config = {} }) => {
         process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
         '',
       EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID:
+        googleAndroidClientId ||
         process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
         process.env.GOOGLE_ANDROID_CLIENT_ID ||
         '',
       GOOGLE_ANDROID_CLIENT_ID:
+        googleAndroidClientId ||
         process.env.GOOGLE_ANDROID_CLIENT_ID ||
         process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
         '',

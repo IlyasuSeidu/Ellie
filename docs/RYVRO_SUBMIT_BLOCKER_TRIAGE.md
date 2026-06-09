@@ -16,6 +16,8 @@ npm run release:submit:check
 
 Expected current result: the command fails until the owner evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are no longer `Pending owner evidence`, the Android service account key exists locally at `./google-play-key.json`, and production EAS submit values are real.
 
+The same command scans the owner evidence packet for high-risk secret material, including service-account private-key JSON fields, private-key blocks, Firebase API keys, RevenueCat SDK keys, and EAS access tokens. If it fails for a secret scan item, remove the secret from the tracked file, rotate the exposed key in the owning console, and replace the evidence with a non-secret screenshot reference or dashboard note.
+
 Latest checked on 2026-06-07: `Domain control for getryvro.com` and `Support page/mailbox` no longer appear in the submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, and Google Play Console email-delivery proof to `support@getryvro.com` were recorded as passed.
 
 The remaining checked blocker families are:

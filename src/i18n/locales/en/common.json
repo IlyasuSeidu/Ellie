@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
       "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
       "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "appleUnavailable": "Apple sign-in is unavailable on this device. Please use Google or email sign-in.",
       "actionSignInFailed": "Unable to sign in right now. Please try again.",
       "actionSignUpFailed": "Unable to create your account right now. Please try again.",
       "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",

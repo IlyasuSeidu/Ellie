@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "此设备上无法使用 Google Play 服务。",
       "googleMissingIdToken": "无法完成 Google 登录。请再试一次。",
       "appleMissingIdentityToken": "Apple 登录无法完成。请再试一次。",
+      "appleUnavailable": "此设备无法使用 Apple 登录。请使用 Google 或电子邮件登录。",
       "actionSignInFailed": "现在无法登录。请再试一次。",
       "actionSignUpFailed": "现在无法创建您的帐户。请再试一次。",
       "actionSocialSignInFailed": "目前无法使用社交登录。请尝试使用电子邮件登录。",

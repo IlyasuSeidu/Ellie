@@ -33,6 +33,7 @@ jest.mock('expo-apple-authentication', () => ({
     FULL_NAME: 'FULL_NAME',
     EMAIL: 'EMAIL',
   },
+  isAvailableAsync: jest.fn(),
   signInAsync: jest.fn(),
 }));
 
@@ -95,6 +96,7 @@ describe('AuthService native auth provider credential flows', () => {
     jest.mocked(AppleAuthentication.signInAsync).mockResolvedValue({
       identityToken: 'apple-identity-token',
     } as never);
+    jest.mocked(AppleAuthentication.isAvailableAsync).mockResolvedValue(true);
   });
 
   afterEach(() => {
@@ -124,14 +126,19 @@ describe('AuthService native auth provider credential flows', () => {
   it('exchanges the native Google ID token for a Firebase credential', async () => {
     await expect(service.signInWithGoogle()).resolves.toBe(googleUser);
 
-    expect(GoogleSignin.hasPlayServices).toHaveBeenCalledTimes(1);
+    expect(GoogleSignin.hasPlayServices).toHaveBeenCalledWith({
+      showPlayServicesUpdateDialog: true,
+    });
     expect(GoogleSignin.signIn).toHaveBeenCalledTimes(1);
     expect(GoogleSignin.getTokens).toHaveBeenCalledTimes(1);
-    expect(GoogleAuthProvider.credential).toHaveBeenCalledWith('google-id-token');
+    expect(GoogleAuthProvider.credential).toHaveBeenCalledWith(
+      'google-id-token',
+      'google-access-token'
+    );
     expect(signInWithCredential).toHaveBeenCalledWith(auth, {
       providerId: 'google.com',
       idToken: 'google-id-token',
-      accessToken: undefined,
+      accessToken: 'google-access-token',
     });
   });
 
@@ -151,6 +158,7 @@ describe('AuthService native auth provider credential flows', () => {
 
     await expect(service.signInWithApple()).resolves.toBe(appleUser);
 
+    expect(AppleAuthentication.isAvailableAsync).toHaveBeenCalledTimes(1);
     expect(AppleAuthentication.signInAsync).toHaveBeenCalledWith({
       requestedScopes: [
         AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
@@ -162,6 +170,18 @@ describe('AuthService native auth provider credential flows', () => {
       providerId: 'apple.com',
       idToken: 'apple-identity-token',
     });
+  });
+
+  it('rejects Apple sign-in before Firebase when Apple auth is unavailable', async () => {
+    jest.mocked(AppleAuthentication.isAvailableAsync).mockResolvedValue(false);
+
+    await expect(service.signInWithApple()).rejects.toMatchObject({
+      code: 'apple/not-available',
+    });
+
+    expect(AppleAuthentication.signInAsync).not.toHaveBeenCalled();
+    expect(OAuthProvider).not.toHaveBeenCalled();
+    expect(signInWithCredential).not.toHaveBeenCalled();
   });
 
   it('rejects Apple sign-in before Firebase when Apple does not return an identity token', async () => {

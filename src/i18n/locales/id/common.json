@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Layanan Google Play tidak tersedia di perangkat ini.",
       "googleMissingIdToken": "Proses masuk dengan Google tidak dapat diselesaikan. Silakan coba lagi.",
       "appleMissingIdentityToken": "Proses masuk Apple tidak dapat diselesaikan. Silakan coba lagi.",
+      "appleUnavailable": "Masuk dengan Apple tidak tersedia di perangkat ini. Gunakan Google atau email.",
       "actionSignInFailed": "Tidak dapat masuk sekarang. Silakan coba lagi.",
       "actionSignUpFailed": "Tidak dapat membuat akun Anda sekarang. Silakan coba lagi.",
       "actionSocialSignInFailed": "Login sosial tidak tersedia saat ini. Silakan coba masuk email.",

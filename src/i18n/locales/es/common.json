@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Los servicios de Google Play no están disponibles en este dispositivo.",
       "googleMissingIdToken": "No se pudo completar el inicio de sesión de Google. Por favor inténtalo de nuevo.",
       "appleMissingIdentityToken": "No se pudo completar el inicio de sesión de Apple. Por favor inténtalo de nuevo.",
+      "appleUnavailable": "El inicio de sesión con Apple no está disponible en este dispositivo. Use Google o correo electrónico.",
       "actionSignInFailed": "No se puede iniciar sesión en este momento. Por favor inténtalo de nuevo.",
       "actionSignUpFailed": "No se puede crear su cuenta en este momento. Por favor inténtalo de nuevo.",
       "actionSocialSignInFailed": "El inicio de sesión social no está disponible en este momento. Intente iniciar sesión por correo electrónico.",

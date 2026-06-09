@@ -245,15 +245,25 @@ export const GoogleAuthProvider = {
 };
 
 export class OAuthProvider {
+  private readonly provider: {
+    credential: (options: { idToken?: string; accessToken?: string; rawNonce?: string }) => unknown;
+  };
+
   constructor(providerId: string) {
     const sdk = resolveSdk() as unknown as {
-      OAuthProvider: new (providerIdArg: string) => unknown;
+      OAuthProvider: new (providerIdArg: string) => {
+        credential: (options: {
+          idToken?: string;
+          accessToken?: string;
+          rawNonce?: string;
+        }) => unknown;
+      };
     };
-    return new sdk.OAuthProvider(providerId) as OAuthProvider;
+    this.provider = new sdk.OAuthProvider(providerId);
   }
 
-  credential(_options: { idToken?: string; accessToken?: string; rawNonce?: string }): unknown {
-    return undefined;
+  credential(options: { idToken?: string; accessToken?: string; rawNonce?: string }): unknown {
+    return this.provider.credential(options);
   }
 }
 

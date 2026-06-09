@@ -24,6 +24,9 @@ function getCodeFromMessage(message: string): string | null {
 
   if (/google\/no-id-token/i.test(message)) return 'google/no-id-token';
   if (/apple\/no-identity-token/i.test(message)) return 'apple/no-identity-token';
+  if (/apple sign-in .*unavailable|apple sign-in .*only available/i.test(message)) {
+    return 'apple/not-available';
+  }
   if (/play services/i.test(message)) return 'google/play-services-not-available';
   if (/cancelled|canceled|aborted/i.test(message)) return 'auth/popup-closed-by-user';
 
@@ -165,6 +168,11 @@ export function getAuthErrorMessage(error: unknown, action: AuthAction): string 
       return tCommon(
         'errors.auth.appleMissingIdentityToken',
         'Apple sign-in could not be completed. Please try again.'
+      );
+    case 'apple/not-available':
+      return tCommon(
+        'errors.auth.appleUnavailable',
+        'Apple sign-in is unavailable on this device. Please use Google or email sign-in.'
       );
     default:
       return getActionFallback(action);

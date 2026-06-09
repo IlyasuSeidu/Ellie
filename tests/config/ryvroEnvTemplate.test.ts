@@ -313,7 +313,7 @@ describe('Ryvro environment template', () => {
     const previousRyvroBrainTimeout = process.env.RYVRO_BRAIN_TIMEOUT;
     const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './missing-GoogleService-Info.plist';
-    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './google-services.json';
+    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './missing-google-services.json';
     delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.RYVRO_BRAIN_URL;
     delete process.env.RYVRO_BRAIN_TIMEOUT;
@@ -348,13 +348,14 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.android?.adaptiveIcon?.foregroundImage).toBe(
         './assets/adaptive-icon.png'
       );
-      expect(dynamicConfig.android?.googleServicesFile).toBe('./google-services.json');
+      expect(dynamicConfig.android?.googleServicesFile).toBe('./missing-google-services.json');
       expect(dynamicConfig.web?.favicon).toBe('./assets/favicon.png');
       expect(dynamicConfig.plugins).toEqual(
         expect.arrayContaining([
           'expo-localization',
           'expo-font',
           'expo-asset',
+          'expo-apple-authentication',
           '@react-native-firebase/app',
           '@react-native-firebase/auth',
           expect.arrayContaining(['expo-build-properties']),
@@ -497,8 +498,12 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID).toBe(
         '1002666052675-iosreal.apps.googleusercontent.com'
       );
-      expect(dynamicConfig.extra?.GOOGLE_WEB_CLIENT_ID).toBe('');
-      expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID).toBe('');
+      expect(dynamicConfig.extra?.GOOGLE_WEB_CLIENT_ID).toBe(
+        '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
+      );
+      expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID).toBe(
+        '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com'
+      );
       expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
         'https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain'
       );
@@ -942,6 +947,14 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('Backend smoke - ryvroBrain');
     expect(script).toContain('Backend deploy - parser');
     expect(script).toContain('Shift parser smoke');
+    expect(script).toContain('scanEvidenceForSecrets');
+    expect(script).toContain('BEGIN (?:[A-Z ]+)?PRIVATE KEY');
+    expect(script).toContain('"private_key"');
+    expect(script).toContain('"private_key_id"');
+    expect(script).toContain('AIza');
+    expect(script).toContain('appl');
+    expect(script).toContain('goog');
+    expect(script).toContain('eas_');
     expect(script).toContain('EU trader status');
     expect(script).toContain('Store submission');
     expect(script).toContain('Pending owner evidence');
@@ -1915,7 +1928,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('112 Jest suites / 1,801 tests / 4 snapshots');
+    expect(readme).toContain('112 Jest suites / 1,803 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1935,7 +1948,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,801 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,803 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1944,9 +1957,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,801 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,803 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-06-09 release check)');
-    expect(readme).toContain('Total Tests**: 1,801 passing (112 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,803 passing (112 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1969,7 +1982,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(testingStrategy).toContain('Current release evidence on June 9, 2026');
-    expect(testingStrategy).toContain('112 Jest suites / 1,801 tests / 4 snapshots');
+    expect(testingStrategy).toContain('112 Jest suites / 1,803 tests / 4 snapshots');
     expect(testingStrategy).toContain('The PR CI pipeline must pass');
     expect(testingStrategy).toContain('the dedicated Release Check job');
     expect(testingStrategy).toContain('the Ryvro native scaffold preflight');
@@ -2558,7 +2571,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,781 tests');
-    expect(readinessReport).toContain('112 Jest suites / 1,801 tests');
+    expect(readinessReport).toContain('112 Jest suites / 1,803 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -3563,7 +3576,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('112 Jest suites, 1,801 tests');
+    expect(ownerRunbook).toContain('112 Jest suites, 1,803 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
@@ -3574,6 +3587,14 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('CI run `27208791655`');
     expect(ownerRunbook).toContain('commit `88e0c62`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
+    expect(submitBlockerTriage).toContain(
+      'scans the owner evidence packet for high-risk secret material'
+    );
+    expect(submitBlockerTriage).toContain('service-account private-key JSON fields');
+    expect(submitBlockerTriage).toContain('Firebase API keys');
+    expect(submitBlockerTriage).toContain('RevenueCat SDK keys');
+    expect(submitBlockerTriage).toContain('EAS access tokens');
+    expect(submitBlockerTriage).toContain('rotate the exposed key in the owning console');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
     expect(phaseSevenTenReport).toContain('Historical pre-Ryvro rollout report');

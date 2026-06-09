@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Izinsiza ze-Google Play azitholakali kule divayisi.",
       "googleMissingIdToken": "Ukungena ngemvume kwe-Google akukwazanga ukuqedelwa. Sicela uzame futhi.",
       "appleMissingIdentityToken": "Ukungena ngemvume kwe-Apple akukwazanga ukuqedelwa. Sicela uzame futhi.",
+      "appleUnavailable": "Ukungena nge-Apple akutholakali kule divayisi. Sebenzisa i-Google noma i-imeyili.",
       "actionSignInFailed": "Ayikwazi ukungena ngemvume njengamanje. Sicela uzame futhi.",
       "actionSignUpFailed": "Ayikwazi ukudala i-akhawunti yakho njengamanje. Sicela uzame futhi.",
       "actionSocialSignInFailed": "Ukungena ngemvume komphakathi akutholakali okwamanje. Sicela uzame ukungena ngemvume nge-imeyili.",

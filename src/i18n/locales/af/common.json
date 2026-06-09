@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Google Play Dienste is nie op hierdie toestel beskikbaar nie.",
       "googleMissingIdToken": "Google-aanmelding kon nie voltooi word nie. Probeer asseblief weer.",
       "appleMissingIdentityToken": "Apple-aanmelding kon nie voltooi word nie. Probeer asseblief weer.",
+      "appleUnavailable": "Apple-aanmelding is nie op hierdie toestel beskikbaar nie. Gebruik Google of e-pos.",
       "actionSignInFailed": "Kan nie nou aanmeld nie. Probeer asseblief weer.",
       "actionSignUpFailed": "Kan nie jou rekening op die oomblik skep nie. Probeer asseblief weer.",
       "actionSocialSignInFailed": "Sosiale aanmelding is tans nie beskikbaar nie. Probeer asseblief e-posaanmelding.",

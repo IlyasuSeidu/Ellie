@@ -83,6 +83,15 @@ const RATE_LIMIT_CONFIG = {
   lockoutDurationMs: 15 * 60 * 1000, // 15 minutes
 };
 
+type GoogleNativeSignInResult = {
+  idToken?: string | null;
+  accessToken?: string | null;
+  data?: {
+    idToken?: string | null;
+    accessToken?: string | null;
+  } | null;
+};
+
 /**
  * Inactivity configuration
  */
@@ -198,15 +207,26 @@ export class AuthService {
     logger.info('Signing in with Google (native)');
 
     try {
-      await GoogleSignin.hasPlayServices();
-      await GoogleSignin.signIn();
-      const { idToken } = await GoogleSignin.getTokens();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const signInResult = (await GoogleSignin.signIn()) as GoogleNativeSignInResult;
+      let idToken = signInResult.data?.idToken ?? signInResult.idToken ?? null;
+      let accessToken = signInResult.data?.accessToken ?? signInResult.accessToken ?? null;
+
+      try {
+        const tokens = await GoogleSignin.getTokens();
+        idToken = tokens.idToken ?? idToken;
+        accessToken = tokens.accessToken ?? accessToken;
+      } catch (tokenError) {
+        logger.warn('Google sign in token retrieval failed after native sign in', {
+          error: tokenError instanceof Error ? tokenError.message : String(tokenError),
+        });
+      }
 
       if (!idToken) {
         throw new AuthenticationError('No ID token from Google', 'google/no-id-token');
       }
 
-      const credential = GoogleAuthProvider.credential(idToken);
+      const credential = GoogleAuthProvider.credential(idToken, accessToken);
       const userCredential = await signInWithCredential(this.auth, credential);
 
       this.resetInactivityTimer();
@@ -225,6 +245,21 @@ export class AuthService {
     logger.info('Signing in with Apple (native)');
 
     try {
+      if (Platform.OS !== 'ios') {
+        throw new AuthenticationError(
+          'Apple sign-in is only available on iOS',
+          'apple/not-available'
+        );
+      }
+
+      const appleSignInAvailable = await AppleAuthentication.isAvailableAsync();
+      if (!appleSignInAvailable) {
+        throw new AuthenticationError(
+          'Apple sign-in is unavailable on this device',
+          'apple/not-available'
+        );
+      }
+
       const appleCredential = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
@@ -692,6 +727,8 @@ export class AuthService {
       case 'google/no-id-token':
       case 'apple/no-identity-token':
         return new AuthenticationError('Sign in could not be completed', code);
+      case 'apple/not-available':
+        return new AuthenticationError('Apple sign-in is unavailable on this device', code);
       case 'auth/requires-recent-login':
         return new AuthenticationError(
           'This operation requires recent authentication. Please sign in again',
