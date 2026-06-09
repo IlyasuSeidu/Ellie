@@ -1898,13 +1898,26 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(releaseTasks).toContain('Last updated: June 7, 2026');
+    expect(releaseTasks).toContain('Last updated: June 9, 2026');
+    expect(releaseTasks).toContain(
+      'Legend: ✅ Done · 🔧 Repo or build task · 👤 Owner/account step'
+    );
     expect(releaseTasks).toContain('latest public clearance evidence at 13:11Z');
     expect(releaseTasks).toContain('domain cart evidence');
     expect(releaseTasks).toContain('owner runbook verification refresh');
     expect(releaseTasks).toContain('verified `getryvro.com` domain control');
-    expect(releaseTasks).toContain('CI pass `27193632188` on `7778334`');
+    expect(releaseTasks).toContain('historical rollout report status clarification');
+    expect(releaseTasks).toContain(
+      'current pushed CI evidence recorded in `README.md`, `docs/RYVRO_RELEASE_READINESS_REPORT.md`, and `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`'
+    );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
+    expect(releaseTasks).toContain(
+      '## Phase 4 — Subscription: RevenueCat + Store Products (Owner/account)'
+    );
+    expect(releaseTasks).toContain('## Phase 5 — Accounts + External Setup (Owner/account)');
+    expect(releaseTasks).toContain('## Phase 8 — Store Submission (Owner/account)');
+    expect(releaseTasks).not.toContain('Manual — you do these');
+    expect(releaseTasks).not.toContain('Manual step (you do this)');
     expect(releaseTasks).toContain('npm run release:clearance');
     expect(releaseTasks).toContain('latest public evidence: 2026-06-06 13:11Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-06-05 13:31Z');
