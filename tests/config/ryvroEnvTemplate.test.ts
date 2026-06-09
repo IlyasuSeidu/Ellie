@@ -1879,6 +1879,17 @@ describe('Ryvro environment template', () => {
     );
     expect(deploymentGuide).toContain('eas submit --platform ios --latest');
     expect(deploymentGuide).toContain('eas submit --platform android --latest');
+    expect(deploymentGuide).toContain('Submit to TestFlight first');
+    expect(deploymentGuide).toContain('TestFlight install QA passes on a real iPhone');
+    expect(deploymentGuide).toContain('Google account verification');
+    expect(deploymentGuide).toContain('physical Android 10+ device access verification');
+    expect(deploymentGuide).toContain('The emulator is not acceptable');
+    expect(deploymentGuide).toContain('Go to "Internal testing"');
+    expect(deploymentGuide).toContain('Upload to the internal testing track');
+    expect(deploymentGuide).toContain('Promote from internal testing to production only after');
+    expect(deploymentGuide).toContain('./google-play-key.json');
+    expect(deploymentGuide).not.toContain('Go to "Production" → "Create new release"');
+    expect(deploymentGuide).not.toContain('Upload to production track');
     expect(deploymentGuide).not.toContain('eas submit --platform ios --profile production');
     expect(deploymentGuide).not.toContain('eas submit --platform android --profile production');
     expect(deploymentGuide).toContain('ryvro-upload-key.keystore');

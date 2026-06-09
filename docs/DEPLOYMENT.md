@@ -388,6 +388,8 @@ Edit `eas.json` for Android-specific settings:
 
 ### 3. Submit to App Store
 
+Submit to TestFlight first. Do not submit for App Review until `npm run release:submit:check` passes, a production-auth-ready build is uploaded, TestFlight install QA passes on a real iPhone, App Store privacy/forms/subscriptions are complete, and non-secret evidence is recorded in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
+
 #### Option 1: Using EAS Submit
 
 ```bash
@@ -400,7 +402,8 @@ eas submit --platform ios --latest
 1. Download IPA from EAS build
 2. Use Transporter app or Xcode to upload
 3. Go to App Store Connect
-4. Select build and submit for review
+4. Select build for TestFlight processing and internal testing
+5. Submit for App Review only after the submit-readiness guard and TestFlight QA evidence pass
 
 ### 4. App Store Review Checklist
 
@@ -416,6 +419,8 @@ eas submit --platform ios --latest
 ## Google Play Deployment
 
 ### 1. Prepare Google Play Console
+
+Google Play app creation is still blocked until Google account verification, contact phone verification, and physical Android 10+ device access verification are complete. The emulator is not acceptable for that Play Console verification step.
 
 1. **Create Application**:
    - Go to [Google Play Console](https://play.google.com/console/)
@@ -436,12 +441,14 @@ eas submit --platform ios --latest
 
 ### 2. Create Release
 
-1. Go to "Production" → "Create new release"
+1. Go to "Internal testing" → "Create new release"
 2. Upload AAB file from EAS build
 3. Fill in release notes
-4. Set rollout percentage (optional)
+4. Add internal testers and keep the release off production until physical Android QA passes
 
 ### 3. Submit to Google Play
+
+Submit to the internal track first. Do not promote to production until `npm run release:submit:check` passes, the local `./google-play-key.json` exists outside Git, Play Console app/package evidence is complete, internal-track Android install QA passes on a physical Android device, and the evidence log is updated.
 
 #### Option 1: Using EAS Submit
 
@@ -454,9 +461,10 @@ eas submit --platform android --latest
 
 1. Download AAB from EAS build
 2. Go to Google Play Console
-3. Upload to production track
+3. Upload to the internal testing track
 4. Fill in release details
-5. Review and rollout
+5. Review and start internal testing
+6. Promote from internal testing to production only after all submit-readiness and physical-device QA gates pass
 
 ### 4. Content Rating
 
