@@ -121,6 +121,9 @@ Complete before pressing `Submit for Review`.
 - Confirm the live privacy policy matches Firebase, RevenueCat, app-store billing, AI provider, voice, analytics, diagnostics, and account deletion behavior.
 - Complete export compliance; current Expo config says `ITSAppUsesNonExemptEncryption` is `false`.
 - Complete content rating and age rating.
+- Complete Digital Services Act / EU trader status before App Review submission if the app will be available in any EU storefront.
+- If the owner selects trader status, confirm the public trader contact details are correct in App Store Connect before submission.
+- If the owner selects non-trader status or excludes EU storefronts, record the owner-approved reason and storefront scope.
 - Complete app access notes.
 - Create reviewer account `reviewer@getryvro.com` only after production Firebase Auth exists.
 - Store the reviewer password only in App Store Connect and Google Play Console reviewer-access fields, not in Git, docs, screenshots, or chat.
@@ -132,9 +135,12 @@ Record:
 - App Store privacy form completion note
 - Export compliance completion note
 - Content rating completion note
+- EU trader status path selected, EU storefront scope, public contact details reviewed note, completion status, and owner approval note
 - Reviewer account exists note, production-auth-ready build sign-in result, onboarding status, dashboard/calendar smoke result, paywall smoke result, and sandbox purchase or restore result
 - Reviewer notes pasted note
 - Privacy/support/account deletion live URL checks
+
+Do not record personal addresses, tax identifiers, identity-document numbers, payment details, Apple ID passwords, or screenshots that expose private account details. Keep only non-secret status references in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
 
 ## Subscription And In-App Purchase Review
 

@@ -3575,6 +3575,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
     expect(launchEvidenceLog).toContain('account deletion request-flow evidence');
+    expect(launchEvidenceLog).toContain('EU trader status');
+    expect(launchEvidenceLog).toContain('selected trader or non-trader path');
+    expect(launchEvidenceLog).toContain('EU storefront scope');
+    expect(launchEvidenceLog).toContain('public contact details reviewed note');
+    expect(launchEvidenceLog).toContain('owner-approved reason and storefront scope');
+    expect(launchEvidenceLog).toContain('Do not record personal addresses, tax identifiers');
     expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
     expect(launchEvidenceLog).toContain(
       'password was rotated through the Identity Toolkit Admin API'
@@ -3852,6 +3858,14 @@ describe('Ryvro environment template', () => {
       'Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`'
     );
     expect(appStoreTestFlightHandoff).toContain('EU trader-status warning');
+    expect(appStoreTestFlightHandoff).toContain('Digital Services Act / EU trader status');
+    expect(appStoreTestFlightHandoff).toContain('public trader contact details are correct');
+    expect(appStoreTestFlightHandoff).toContain(
+      'EU trader status path selected, EU storefront scope'
+    );
+    expect(appStoreTestFlightHandoff).toContain(
+      'Do not record personal addresses, tax identifiers'
+    );
     expect(appStoreTestFlightHandoff).toContain('local placeholder Firebase/OAuth URL schemes');
     expect(appStoreTestFlightHandoff).toContain('App Store Connect App Record');
     expect(appStoreTestFlightHandoff).toContain('TestFlight Internal Testing');
