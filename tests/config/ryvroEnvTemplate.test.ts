@@ -887,8 +887,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27208791655`');
-    expect(script).toContain('commit `88e0c62`');
+    expect(script).toContain('CI run `27210693971`');
+    expect(script).toContain('commit `d2fa476`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1937,8 +1937,8 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27208791655`');
-    expect(readme).toContain('commit `88e0c62`');
+    expect(readme).toContain('GitHub Actions CI run `27210693971`');
+    expect(readme).toContain('commit `d2fa476`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
@@ -2585,6 +2585,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `27210693971`');
+    expect(readinessReport).toContain('commit `d2fa476`');
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain('commit `88e0c62`');
     expect(readinessReport).toContain('tightening Android physical-device QA evidence');
@@ -3584,8 +3586,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Latest pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).toContain('tightening Android physical-device QA evidence');
-    expect(ownerRunbook).toContain('CI run `27208791655`');
-    expect(ownerRunbook).toContain('commit `88e0c62`');
+    expect(ownerRunbook).toContain('CI run `27210693971`');
+    expect(ownerRunbook).toContain('commit `d2fa476`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(submitBlockerTriage).toContain(
       'scans the owner evidence packet for high-risk secret material'
