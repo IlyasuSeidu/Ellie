@@ -887,8 +887,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27212496473`');
-    expect(script).toContain('commit `052d9d3`');
+    expect(script).toContain('CI run `27213105262`');
+    expect(script).toContain('commit `89a2899`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1937,8 +1937,8 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27212496473`');
-    expect(readme).toContain('commit `052d9d3`');
+    expect(readme).toContain('GitHub Actions CI run `27213105262`');
+    expect(readme).toContain('commit `89a2899`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
@@ -2585,8 +2585,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27212496473`');
-    expect(readinessReport).toContain('commit `052d9d3`');
+    expect(readinessReport).toContain('CI run `27213105262`');
+    expect(readinessReport).toContain('commit `89a2899`');
     expect(readinessReport).toContain('CI run `27210693971`');
     expect(readinessReport).toContain('commit `d2fa476`');
     expect(readinessReport).toContain('CI run `27208791655`');
@@ -2720,7 +2720,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain(
-      '`npm run release:submit:check` still intentionally fails on 2026-06-07'
+      '`npm run release:submit:check` still intentionally fails on 2026-06-09'
     );
     expect(readinessReport).toContain(
       'Already recorded account-side evidence that should not be reopened as generic blockers'
@@ -3587,8 +3587,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Latest pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).toContain('fixing native Apple Firebase credentials');
-    expect(ownerRunbook).toContain('CI run `27212496473`');
-    expect(ownerRunbook).toContain('commit `052d9d3`');
+    expect(ownerRunbook).toContain('CI run `27213105262`');
+    expect(ownerRunbook).toContain('commit `89a2899`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(submitBlockerTriage).toContain(
       'scans the owner evidence packet for high-risk secret material'
