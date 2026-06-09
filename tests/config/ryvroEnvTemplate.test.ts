@@ -2716,7 +2716,7 @@ describe('Ryvro environment template', () => {
       'Google Play verification and app setup, Firebase email templates and production env'
     );
     expect(readinessReport).toContain(
-      'the remaining Google account verification tasks before `Create app` is enabled'
+      'the physical Android mobile device access verification and contact phone verification required before `Create app` is enabled'
     );
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain(
@@ -4486,6 +4486,9 @@ describe('Ryvro environment template', () => {
     expect(googlePlayInternalTestingHandoff).toContain('Developer Account Enrollment');
     expect(googlePlayInternalTestingHandoff).toContain(
       'Your identity has been verified successfully'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Next owner action: complete Android mobile device access verification in the Google Play Console app on a real physical Android 10 or newer device'
     );
     expect(googlePlayInternalTestingHandoff).toContain('only the account owner can complete it');
     expect(googlePlayInternalTestingHandoff).toContain(

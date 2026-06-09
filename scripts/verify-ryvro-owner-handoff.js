@@ -634,6 +634,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['Your identity has been verified successfully', playInternalTestingHandoff],
   ['only the account owner can complete it', playInternalTestingHandoff],
   ['Google Play Console app on a real Android mobile device', playInternalTestingHandoff],
+  [
+    'Next owner action: complete Android mobile device access verification in the Google Play Console app on a real physical Android 10 or newer device',
+    playInternalTestingHandoff,
+  ],
   ['contact phone verification details page', playInternalTestingHandoff],
   ['Service Account And API Access', playInternalTestingHandoff],
   ['least-privilege Google Play service account', playInternalTestingHandoff],
