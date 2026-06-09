@@ -3329,6 +3329,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Do not record the payments profile address');
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('App Store content rating and export compliance');
+    expect(launchEvidenceLog).toContain('Google Play Data safety form');
+    expect(launchEvidenceLog).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+    expect(launchEvidenceLog).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
+    expect(launchEvidenceLog).toContain(
+      'match the live privacy policy, Firebase, RevenueCat, Google Play billing, AI provider, voice, analytics, diagnostics, account deletion, data deletion, and subscription behavior'
+    );
+    expect(launchEvidenceLog).toContain('Do not mark passed from the draft alone');
     expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('build `2` through submission');
