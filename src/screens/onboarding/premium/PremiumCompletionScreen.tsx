@@ -389,8 +389,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       // Sync onboarding data to Firestore if user is authenticated.
       if (user) {
         try {
-          await userService.createOrSyncUserProfile(user.uid, data);
-          await userService.updateUser(user.uid, { email: user.email ?? '' });
+          await userService.createOrSyncUserProfile(user.uid, data, user.email);
           logger.info('Onboarding data synced to Firestore', { userId: user.uid });
         } catch (syncError) {
           // Do not block completion flow if sync fails; local onboarding save already succeeded.

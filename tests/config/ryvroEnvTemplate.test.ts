@@ -841,6 +841,38 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('creates onboarding user profiles with the authenticated email before using a fallback', () => {
+    const userServiceSource = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/UserService.ts'),
+      'utf8'
+    );
+    const premiumCompletionSource = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/onboarding/premium/PremiumCompletionScreen.tsx'),
+      'utf8'
+    );
+
+    expect(userServiceSource).toContain('authEmail?: string | null');
+    expect(userServiceSource).toContain(
+      'const normalizedAuthEmail = this.normalizeOptionalEmail(authEmail)'
+    );
+    expect(userServiceSource).toContain('profileUpdates.email = normalizedAuthEmail');
+    expect(userServiceSource).toContain(
+      'email: normalizedAuthEmail ?? `pending+${userId}@ryvro.local`'
+    );
+    expect(userServiceSource).toContain('private normalizeOptionalEmail');
+    expect(userServiceSource).not.toContain('Replaced after auth-sync in PremiumCompletionScreen');
+    expect(userServiceSource).not.toContain(
+      'missing user: create with onboarding values and placeholder email'
+    );
+
+    expect(premiumCompletionSource).toContain(
+      'userService.createOrSyncUserProfile(user.uid, data, user.email)'
+    );
+    expect(premiumCompletionSource).not.toContain(
+      "userService.updateUser(user.uid, { email: user.email ?? '' })"
+    );
+  });
+
   it('pins tracked Expo assets to Ryvro launch assets', () => {
     expect(appJson.expo?.icon).toBe('./assets/icon.png');
     expect(appJson.expo?.splash?.image).toBe('./assets/splash-icon.png');

@@ -574,11 +574,16 @@ export class UserService extends FirebaseService {
    *
    * This is safe to call multiple times:
    * - existing user: update changed onboarding fields
-   * - missing user: create with onboarding values and placeholder email
+   * - missing user: create with onboarding values and the authenticated email when available
    */
-  async createOrSyncUserProfile(userId: string, onboarding: OnboardingData): Promise<void> {
+  async createOrSyncUserProfile(
+    userId: string,
+    onboarding: OnboardingData,
+    authEmail?: string | null
+  ): Promise<void> {
     const now = new Date().toISOString();
     const normalizedCountry = this.normalizeCountryCode(onboarding.country);
+    const normalizedAuthEmail = this.normalizeOptionalEmail(authEmail);
 
     const profileUpdates: Partial<UserProfile> = {
       id: userId,
@@ -592,6 +597,10 @@ export class UserService extends FirebaseService {
     const cycle = buildShiftCycle(onboarding);
     if (cycle) {
       profileUpdates.shiftCycle = cycle;
+    }
+
+    if (normalizedAuthEmail) {
+      profileUpdates.email = normalizedAuthEmail;
     }
 
     try {
@@ -609,8 +618,7 @@ export class UserService extends FirebaseService {
         occupation: profileUpdates.occupation ?? 'Unknown',
         company: profileUpdates.company ?? 'Unknown',
         country: profileUpdates.country ?? 'US',
-        // Replaced after auth-sync in PremiumCompletionScreen.
-        email: `pending+${userId}@ryvro.local`,
+        email: normalizedAuthEmail ?? `pending+${userId}@ryvro.local`,
         createdAt: now,
         updatedAt: now,
         shiftCycle: profileUpdates.shiftCycle,
@@ -674,6 +682,11 @@ export class UserService extends FirebaseService {
   private normalizeRequiredText(value: string | undefined, fallback: string): string {
     const normalized = value?.trim();
     return normalized && normalized.length > 0 ? normalized : fallback;
+  }
+
+  private normalizeOptionalEmail(value: string | null | undefined): string | undefined {
+    const normalized = value?.trim();
+    return normalized && normalized.includes('@') ? normalized : undefined;
   }
 
   private normalizeCountryCode(value: string | undefined): string {
