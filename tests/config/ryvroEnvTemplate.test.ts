@@ -3049,6 +3049,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md'),
       'utf8'
     );
+    const phaseSevenTenReport = fs.readFileSync(
+      path.join(process.cwd(), 'docs/PHASE_7_10_EXECUTION_REPORT.md'),
+      'utf8'
+    );
     const firebaseRc = fs.readFileSync(path.join(process.cwd(), '.firebaserc'), 'utf8');
 
     expect(ownerRunbook).toContain('Do not submit to App Store review or Google Play production');
@@ -3178,6 +3182,20 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
+    expect(phaseSevenTenReport).toContain('Historical pre-Ryvro rollout report');
+    expect(phaseSevenTenReport).toContain('not as the current launch checklist');
+    expect(phaseSevenTenReport).toContain('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
+    expect(phaseSevenTenReport).toContain('docs/RYVRO_RELEASE_READINESS_REPORT.md');
+    expect(phaseSevenTenReport).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
+    expect(phaseSevenTenReport).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
+    expect(phaseSevenTenReport).toContain('Historical readiness at the time of this report');
+    expect(phaseSevenTenReport).toContain('Historical rollout order');
+    expect(phaseSevenTenReport).toContain(
+      'Do not use this historical rollout order as approval to ship Ryvro'
+    );
+    expect(phaseSevenTenReport).toContain(
+      'current Ryvro launch remains gated by the owner/account/device evidence'
+    );
 
     expect(launchEvidenceLog).toContain('# Ryvro Launch Evidence Log');
     expect(launchEvidenceLog).toContain('Do not paste passwords, private keys');
