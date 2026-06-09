@@ -3327,6 +3327,23 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('contact phone verification');
     expect(launchEvidenceLog).toContain('Complete account verifications to create new apps');
     expect(launchEvidenceLog).toContain('Do not record the payments profile address');
+    expect(launchEvidenceLog).toContain(
+      'owner legal/content review confirms the live policy matches'
+    );
+    expect(launchEvidenceLog).toContain(
+      'Firebase Auth, Firestore, Firebase Hosting, Cloud Functions'
+    );
+    expect(launchEvidenceLog).toContain(
+      'calendar import/export, reminders, and subscription behavior'
+    );
+    expect(launchEvidenceLog).toContain('owner legal/content review confirms the live terms match');
+    expect(launchEvidenceLog).toContain(
+      'subscription terms, trial behavior, cancellation/renewal wording'
+    );
+    expect(launchEvidenceLog).toContain('not-for-safety-critical-decisions warning');
+    expect(launchEvidenceLog).toContain(
+      'Record only the approval note, reviewer name or role, review date'
+    );
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('App Store content rating and export compliance');
     expect(launchEvidenceLog).toContain('Google Play Data safety form');
