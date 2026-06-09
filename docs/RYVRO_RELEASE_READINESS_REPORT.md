@@ -82,7 +82,7 @@ Completed and guarded in the current branch:
 ## Verification Completed
 
 - Local focused verification on 2026-06-07 passed `npm test -- --runTestsByPath tests/config/ryvroEnvTemplate.test.ts`, `npm run release:owner:check`, and `git diff --check` after recording the Play Console physical-device verification blocker and refreshing current pushed CI evidence references. `npm run release:submit:check` still failed intentionally on the current owner evidence and local Android service-account key blockers.
-- Recent pushed GitHub Actions check for PR #1 passed on commit `c796574`: CI run `27194912370` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `3cc24e5`: CI run `27197394587` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Local release verification on 2026-06-09 passed `npm run release:check` after aligning the active architecture guide with current Ryvro screen names. The release check included TypeScript, 112 Jest suites / 1,796 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Pushed GitHub Actions check for PR #1 passed on commit `2e52a2f`: CI run `27088658834` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Pushed GitHub Actions check for PR #1 passed on commit `6c73ae9`: CI run `27088420404` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.

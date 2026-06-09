@@ -732,8 +732,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27194912370`');
-    expect(script).toContain('commit `c796574`');
+    expect(script).toContain('CI run `27197394587`');
+    expect(script).toContain('commit `3cc24e5`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1623,10 +1623,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `27194912370`');
-    expect(readme).toContain('commit `c796574`');
-    expect(readme).toContain('CI run `27194468960`');
-    expect(readme).toContain('commit `71b2b1d`');
+    expect(readme).toContain('GitHub Actions CI run `27197394587`');
+    expect(readme).toContain('commit `3cc24e5`');
+    expect(readme).toContain('CI run `27196966313`');
+    expect(readme).toContain('commit `e5b5fa9`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
@@ -2262,8 +2262,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27194912370`');
-    expect(readinessReport).toContain('commit `c796574`');
+    expect(readinessReport).toContain('CI run `27197394587`');
+    expect(readinessReport).toContain('commit `3cc24e5`');
     expect(readinessReport).toContain(
       'aligning the active architecture guide with current Ryvro screen names'
     );
@@ -2393,7 +2393,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'the remaining Google account verification tasks before `Create app` is enabled'
     );
-    expect(readinessReport).toContain('CI run `27194912370`');
+    expect(readinessReport).toContain('CI run `27197394587`');
     expect(readinessReport).toContain(
       '`npm run release:submit:check` still intentionally fails on 2026-06-07'
     );
@@ -3247,10 +3247,10 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain(
       'aligning the active architecture guide with current Ryvro screen names'
     );
-    expect(ownerRunbook).toContain('CI run `27194912370`');
-    expect(ownerRunbook).toContain('commit `c796574`');
-    expect(ownerRunbook).toContain('CI run `27194468960`');
-    expect(ownerRunbook).toContain('commit `71b2b1d`');
+    expect(ownerRunbook).toContain('CI run `27197394587`');
+    expect(ownerRunbook).toContain('commit `3cc24e5`');
+    expect(ownerRunbook).toContain('CI run `27196966313`');
+    expect(ownerRunbook).toContain('commit `e5b5fa9`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
