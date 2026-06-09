@@ -2585,6 +2585,11 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `27213964871`');
+    expect(readinessReport).toContain('commit `13e1810`');
+    expect(readinessReport).toContain(
+      'Latest pushed GitHub Actions check for PR #1 passed on commit `13e1810`'
+    );
     expect(readinessReport).toContain('CI run `27213105262`');
     expect(readinessReport).toContain('commit `89a2899`');
     expect(readinessReport).toContain('CI run `27210693971`');
