@@ -759,12 +759,24 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
     expect(script).toContain('eas submit --platform ios --latest');
     expect(script).toContain('eas submit --platform android --latest');
+    expect(script).toContain('TestFlight install QA passes on a real iPhone');
+    expect(script).toContain('Submit to TestFlight first');
+    expect(script).toContain('Submit to the internal track first');
+    expect(script).toContain('The emulator is not acceptable');
     expect(script).toContain('npm run release:versions:get');
     expect(script).toContain('eas build:version:set --platform ios --profile production');
     expect(script).toContain('eas build:version:set --platform android --profile production');
     expect(script).toContain('# Ryvro Submit Blocker Triage');
     expect(script).toContain('Recommended Order');
     expect(script).toContain('Finish Google Play Verification And App Setup');
+    expect(script).toContain('Android mobile device access verification');
+    expect(script).toContain('physical Android 10 or newer device');
+    expect(script).toContain(
+      "You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer."
+    );
+    expect(script).toContain(
+      'Treat this as requiring a physical Android 10 or newer device signed into the owner Google account'
+    );
     expect(script).toContain('Finish Firebase Email Templates And Production Env');
     expect(script).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(script).toContain('Social handles');

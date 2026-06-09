@@ -48,6 +48,7 @@ Evidence source: `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md`.
 Google Play blocks Android submission and RevenueCat Android product linkage.
 
 - Finish the Google account verification tasks now shown on the Play Console dashboard: identity verification, Android mobile device access verification, and contact phone verification.
+- Complete Android mobile device access verification on a physical Android 10 or newer device signed into the owner Google account; the emulator is not accepted for this Play Console verification step.
 - Return to Play Console after verification and confirm `Create app` is enabled.
 - Create the `Ryvro Shift Planner` app.
 - Confirm package `com.ryvro.shiftplanner`.

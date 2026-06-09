@@ -52,6 +52,8 @@ const ownerRunbook = read('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
 const releaseTasks = read('RYVRO_RELEASE_TASKS.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
 const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
+const deploymentGuide = read('docs/DEPLOYMENT.md');
+const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
 
 [
   [
@@ -67,6 +69,10 @@ const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
   ['google-play-phone-02-dashboard-calendar.png', screenshotChecklist],
   ['eas submit --platform ios --latest', ownerRunbook],
   ['eas submit --platform android --latest', ownerRunbook],
+  ['TestFlight install QA passes on a real iPhone', deploymentGuide],
+  ['Submit to TestFlight first', deploymentGuide],
+  ['Submit to the internal track first', deploymentGuide],
+  ['The emulator is not acceptable', deploymentGuide],
   ['# Ryvro Submit Blocker Triage', submitBlockerTriage],
   ['Current Submit Gate', submitBlockerTriage],
   ['Recommended Order', submitBlockerTriage],
@@ -79,6 +85,16 @@ const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
   ['npm run release:versions:get', submitBlockerTriage],
   ['eas build:version:set --platform ios --profile production', submitBlockerTriage],
   ['eas build:version:set --platform android --profile production', submitBlockerTriage],
+  ['Android mobile device access verification', submitBlockerTriage],
+  ['physical Android 10 or newer device', submitBlockerTriage],
+  [
+    "You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.",
+    playInternalTestingHandoff,
+  ],
+  [
+    'Treat this as requiring a physical Android 10 or newer device signed into the owner Google account',
+    playInternalTestingHandoff,
+  ],
   ['Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`', submitBlockerTriage],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'submit readiness handoff'));
 
