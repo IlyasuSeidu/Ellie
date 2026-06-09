@@ -111,7 +111,7 @@ export interface AppConfig {
   env: Environment;
   firebase: FirebaseConfig;
   google: {
-    webClientId: string;
+    webClientId?: string;
     iosClientId?: string;
     androidClientId?: string;
   };
@@ -350,7 +350,7 @@ function buildAppConfig(): AppConfig {
     env,
     firebase,
     google: {
-      webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID') as string,
+      webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID', false),
       iosClientId: getEnvVar('GOOGLE_IOS_CLIENT_ID', false),
       androidClientId: getEnvVar('GOOGLE_ANDROID_CLIENT_ID', false),
     },
@@ -438,11 +438,6 @@ function validateConfig(config: AppConfig): void {
 
   if (!config.firebase.projectId) {
     throw new Error('Firebase project ID is required');
-  }
-
-  // Validate Google config
-  if (!config.google.webClientId) {
-    throw new Error('Google web client ID is required');
   }
 
   // Validate API config

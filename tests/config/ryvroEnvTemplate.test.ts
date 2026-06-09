@@ -436,6 +436,8 @@ describe('Ryvro environment template', () => {
     const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
     const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
     const previousFirebaseApiKey = process.env.FIREBASE_API_KEY;
+    const previousGoogleWebClientId = process.env.GOOGLE_WEB_CLIENT_ID;
+    const previousExpoGoogleWebClientId = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
     const previousGoogleIosClientId = process.env.GOOGLE_IOS_CLIENT_ID;
     const previousExpoGoogleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
     const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
@@ -463,6 +465,9 @@ describe('Ryvro environment template', () => {
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './stale-GoogleService-Info.plist';
     process.env.FIREBASE_PROJECT_ID = 'wrong-env-project';
     process.env.FIREBASE_API_KEY = 'wrong-env-key';
+    process.env.GOOGLE_WEB_CLIENT_ID = '999999999999-staleweb.apps.googleusercontent.com';
+    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID =
+      '999999999999-stalepublicweb.apps.googleusercontent.com';
     process.env.GOOGLE_IOS_CLIENT_ID = 'wrong-env-ios.apps.googleusercontent.com';
     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = 'wrong-public-ios.apps.googleusercontent.com';
     delete process.env.RYVRO_BRAIN_URL;
@@ -488,6 +493,8 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID).toBe(
         '1002666052675-iosreal.apps.googleusercontent.com'
       );
+      expect(dynamicConfig.extra?.GOOGLE_WEB_CLIENT_ID).toBe('');
+      expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID).toBe('');
       expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
         'https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain'
       );
@@ -517,6 +524,18 @@ describe('Ryvro environment template', () => {
         delete process.env.FIREBASE_API_KEY;
       } else {
         process.env.FIREBASE_API_KEY = previousFirebaseApiKey;
+      }
+
+      if (previousGoogleWebClientId === undefined) {
+        delete process.env.GOOGLE_WEB_CLIENT_ID;
+      } else {
+        process.env.GOOGLE_WEB_CLIENT_ID = previousGoogleWebClientId;
+      }
+
+      if (previousExpoGoogleWebClientId === undefined) {
+        delete process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
+      } else {
+        process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID = previousExpoGoogleWebClientId;
       }
 
       if (previousGoogleIosClientId === undefined) {

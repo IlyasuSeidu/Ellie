@@ -74,16 +74,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const maybeIosClientId = (googleConfig as { iosClientId?: string }).iosClientId;
 
     const googleSignInConfig: {
-      webClientId: string;
+      webClientId?: string;
       offlineAccess: boolean;
       iosClientId?: string;
     } = {
-      webClientId: googleConfig.webClientId,
       offlineAccess: false,
     };
 
+    if (googleConfig.webClientId) {
+      googleSignInConfig.webClientId = googleConfig.webClientId;
+    }
+
     if (maybeIosClientId) {
       googleSignInConfig.iosClientId = maybeIosClientId;
+    }
+
+    if (!googleSignInConfig.webClientId && !googleSignInConfig.iosClientId) {
+      logger.warn('Google Sign-In is not configured in this build');
+      return;
     }
 
     GoogleSignin.configure({

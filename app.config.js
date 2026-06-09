@@ -82,6 +82,23 @@ function getGoogleIosUrlScheme(googleIosClientId) {
   return `com.googleusercontent.apps.${googleIosClientId.slice(0, -GOOGLE_IOS_CLIENT_SUFFIX.length)}`;
 }
 
+function getOAuthClientProjectNumber(clientId) {
+  const match = String(clientId || '').match(/^(\d+)-/);
+  return match?.[1] || '';
+}
+
+function getCompatibleGoogleWebClientId(iosFirebaseConfig) {
+  const webClientId =
+    process.env.GOOGLE_WEB_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '';
+  const iosSenderId = iosFirebaseConfig?.messagingSenderId || '';
+
+  if (!webClientId || !iosSenderId) {
+    return webClientId;
+  }
+
+  return getOAuthClientProjectNumber(webClientId) === iosSenderId ? webClientId : '';
+}
+
 function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
   if (!iosUrlScheme) {
     return plugins;
@@ -207,6 +224,7 @@ module.exports = ({ config = {} }) => {
     process.env.GOOGLE_IOS_CLIENT_ID ||
     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
     '';
+  const googleWebClientId = getCompatibleGoogleWebClientId(iosFirebaseConfig);
   const googleIosUrlScheme = getGoogleIosUrlScheme(googleIosClientId);
 
   if (!expoUpdates.url && easProjectId) {
@@ -279,10 +297,8 @@ module.exports = ({ config = {} }) => {
         iosFirebaseConfig?.messagingSenderId || process.env.FIREBASE_MESSAGING_SENDER_ID || '',
       FIREBASE_APP_ID: iosFirebaseConfig?.appId || process.env.FIREBASE_APP_ID || '',
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
-      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID:
-        process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || process.env.GOOGLE_WEB_CLIENT_ID || '',
-      GOOGLE_WEB_CLIENT_ID:
-        process.env.GOOGLE_WEB_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
+      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: googleWebClientId,
+      GOOGLE_WEB_CLIENT_ID: googleWebClientId,
       EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID:
         googleIosClientId ||
         process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||

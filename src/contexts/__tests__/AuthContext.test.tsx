@@ -131,6 +131,41 @@ describe('AuthContext', () => {
     expect(mockLatestService?.cleanup).toHaveBeenCalled();
   });
 
+  it('configures Google sign-in when only the iOS client is available', async () => {
+    const envModule = jest.requireMock('@/config/env') as {
+      googleConfig: {
+        webClientId?: string;
+        iosClientId?: string;
+      };
+    };
+    const previousGoogleConfig = { ...envModule.googleConfig };
+    envModule.googleConfig.webClientId = undefined;
+    envModule.googleConfig.iosClientId = 'mock-google-ios-client-id';
+
+    const AuthStateProbe: React.FC = () => {
+      const { isLoading } = useAuth();
+      return <Text testID="loading">{String(isLoading)}</Text>;
+    };
+
+    try {
+      render(
+        <AuthProvider>
+          <AuthStateProbe />
+        </AuthProvider>
+      );
+
+      await waitFor(() => {
+        expect(GoogleSignin.configure).toHaveBeenCalledWith({
+          iosClientId: 'mock-google-ios-client-id',
+          offlineAccess: false,
+        });
+      });
+    } finally {
+      envModule.googleConfig.webClientId = previousGoogleConfig.webClientId;
+      envModule.googleConfig.iosClientId = previousGoogleConfig.iosClientId;
+    }
+  });
+
   it('sets and clears user-friendly auth error when sign-in fails', async () => {
     const ErrorProbe: React.FC = () => {
       const { error, signIn, clearError } = useAuth();
