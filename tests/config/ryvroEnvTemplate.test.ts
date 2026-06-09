@@ -3498,15 +3498,14 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('the code was verified');
     expect(ownerRunbook).toContain('website `https://getryvro.com` entered');
     expect(ownerRunbook).toContain('Developer account created');
-    expect(ownerRunbook).toContain('dashboard is reachable for developer account `Ryvro`');
-    expect(ownerRunbook).toContain('identity verification');
+    expect(ownerRunbook).toContain('Your identity has been verified successfully');
     expect(ownerRunbook).toContain('Android mobile device access verification');
     expect(ownerRunbook).toContain('contact phone verification');
     expect(ownerRunbook).toContain('Complete account verifications to create new apps');
-    expect(ownerRunbook).toContain('documents were uploaded for identity verification');
-    expect(ownerRunbook).toContain('may take a few days');
+    expect(ownerRunbook).toContain('only the account owner can complete it');
+    expect(ownerRunbook).toContain('Google Play Console app on a real Android mobile device');
     expect(ownerRunbook).toContain(
-      'contact phone verification is unavailable until the identity documents are approved'
+      'Contact phone verification remains blocked until Android mobile device access verification is complete'
     );
     expect(ownerRunbook).toContain('Android emulator verification was attempted');
     expect(ownerRunbook).toContain('Pixel_9_Pro');
@@ -3634,11 +3633,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('the code was verified');
     expect(launchEvidenceLog).toContain('website `https://getryvro.com` entered');
     expect(launchEvidenceLog).toContain('Developer account created');
-    expect(launchEvidenceLog).toContain('dashboard is reachable for developer account `Ryvro`');
-    expect(launchEvidenceLog).toContain('identity verification');
+    expect(launchEvidenceLog).toContain('Your identity has been verified successfully');
     expect(launchEvidenceLog).toContain('Android mobile device access verification');
     expect(launchEvidenceLog).toContain('contact phone verification');
     expect(launchEvidenceLog).toContain('Complete account verifications to create new apps');
+    expect(launchEvidenceLog).toContain(
+      'Contact phone verification remains blocked until Android mobile device access verification is complete'
+    );
     expect(launchEvidenceLog).toContain('Do not record the payments profile address');
     expect(launchEvidenceLog).toContain(
       'owner legal/content review confirms the live policy matches'
@@ -4481,6 +4482,16 @@ describe('Ryvro environment template', () => {
       'EAS submit service account key path: `./google-play-key.json`'
     );
     expect(googlePlayInternalTestingHandoff).toContain('Developer Account Enrollment');
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Your identity has been verified successfully'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain('only the account owner can complete it');
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Google Play Console app on a real Android mobile device'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'phone verification cannot be completed until the other Play Console verification tasks are complete'
+    );
     expect(googlePlayInternalTestingHandoff).toContain('Service Account And API Access');
     expect(googlePlayInternalTestingHandoff).toContain(
       'least-privilege Google Play service account'
