@@ -193,7 +193,7 @@ cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
 cp .env.production.example .env
 ```
 
-Fill `.env` with the remaining real production values for Firebase web API/app IDs, RevenueCat SDK keys, legal/support URLs, EAS project ID, `RYVRO_BRAIN_URL`, and `SHIFT_SCHEDULE_PARSER_URL`. The committed production example already includes the known non-secret Ryvro Google web, iOS, and Android OAuth client IDs. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json`. The production example still intentionally contains owner-only placeholders and should fail `npm run release:env:check` until those values are replaced locally.
+Fill `.env` with the remaining real production values for Firebase web API/app IDs, RevenueCat SDK keys, legal/support URLs, EAS project ID, `RYVRO_BRAIN_URL`, and `SHIFT_SCHEDULE_PARSER_URL`. The committed production example already includes the known non-secret Ryvro Google web, iOS, and Android OAuth client IDs. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json` for local preflight. The production example still intentionally contains owner-only placeholders and should fail `npm run release:env:check` until those values are replaced locally.
 
 Before pushing secrets to EAS or starting production builds, run:
 
@@ -208,6 +208,15 @@ After `npm run release:env:check` passes, push the checked `.env` values to EAS:
 ```bash
 npm run release:env:push
 ```
+
+Then create or refresh the Firebase native service files as EAS file variables, because `.easignore` excludes the root files from the cloud build archive:
+
+```bash
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
+
+`app.config.js` prefers those EAS file-variable paths over the plain `EXPO_*_GOOGLE_SERVICES_FILE` local paths during cloud builds.
 
 Do not commit `.env`, service account keys, keystores, provisioning profiles, or real Firebase config copied from the consoles.
 

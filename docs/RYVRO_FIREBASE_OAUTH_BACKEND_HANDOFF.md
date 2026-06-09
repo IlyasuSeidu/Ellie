@@ -69,6 +69,14 @@ Fresh Firebase apps for the final bundle/package were created and verified.
 - The Android root file metadata includes the Ryvro Android OAuth client ID and the Firebase Web SDK OAuth client ID.
 - Do not point production `.env` at generated `ios/` or `android/` service-file paths.
 - Do not use tracked local placeholders under `config/firebase/` for production builds.
+- Before starting EAS cloud production builds, upload the ignored root service files as EAS file variables because `.easignore` excludes the raw files from the build archive:
+
+```bash
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
+
+- `app.config.js` prefers `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` over the plain `EXPO_*_GOOGLE_SERVICES_FILE` paths, so EAS can provide temporary secure file paths during cloud builds.
 
 Record:
 
@@ -208,7 +216,8 @@ npm run release:env:check
 - `APP_ENV=production`.
 - EAS project ID is `b306643e-1688-448e-8acd-f72bf74312c3`.
 - Firebase project ID is `ryvro-shift-planner`.
-- Root service-file paths are `./GoogleService-Info.plist` and `./google-services.json`, and both files exist locally.
+- Root service-file paths are `./GoogleService-Info.plist` and `./google-services.json`, and both files exist locally for preflight.
+- EAS production has file-type environment variables `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` created from those ignored root files.
 - iOS bundle ID and Android package ID are `com.ryvro.shiftplanner`.
 - Google OAuth native IDs match their Expo public mirrors.
 - RevenueCat iOS and Android SDK keys match their Expo public mirrors and entitlement ID is `pro`.

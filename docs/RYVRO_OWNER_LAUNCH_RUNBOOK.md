@@ -111,6 +111,13 @@ Owner-only steps:
 - Firebase native app creation was completed on 2026-06-05. `firebase apps:list --project ryvro-shift-planner --json` confirmed `Ryvro iOS` app ID `1:1002666052675:ios:bf72c1cc611308a76b98f6` and `Ryvro Android` app ID `1:1002666052675:android:735fd0ef9443ddf76b98f6`, both active with namespace `com.ryvro.shiftplanner`.
 - Fresh root-level Firebase native service files were downloaded as ignored local files at `GoogleService-Info.plist` and `google-services.json`; metadata-only verification confirmed both target `ryvro-shift-planner` and `com.ryvro.shiftplanner`.
 - Keep the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
+- Create or refresh EAS production file variables from those ignored root files before cloud builds because `.easignore` excludes the raw files from the build archive:
+
+```bash
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
+
 - Create Google OAuth web, iOS, and Android clients in the same project.
 - Deploy backend functions to the Ryvro Firebase project.
 - Configure `.env` from `.env.production.example` with real values.
@@ -156,6 +163,7 @@ Evidence to record:
 - `npm run release:native:check` output.
 - `npm run release:env:check` output.
 - EAS production environment push confirmation.
+- EAS file-variable confirmation for `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON`, without recording file contents.
 - `curl` smoke-test output for `RYVRO_BRAIN_URL`.
 - `curl` smoke-test output for `SHIFT_SCHEDULE_PARSER_URL` with a minimal schedule prompt.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.

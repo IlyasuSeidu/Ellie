@@ -206,7 +206,7 @@ const config = {
    - iOS: `GoogleService-Info.plist` to `<repo-root>/GoogleService-Info.plist`
    - Android: `google-services.json` to `<repo-root>/google-services.json`
 
-Keep both service files at the repo root and out of Git; the Expo config uses `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` so clean native prebuilds can copy them into generated projects.
+Keep both service files at the repo root and out of Git; the Expo config uses `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` for local preflight so clean native prebuilds can copy them into generated projects. For EAS cloud builds, upload the same files as file-type environment variables named `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON`; `app.config.js` prefers those secure temporary paths when they are present.
 
 Use `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` as the console setup source of truth. Do not reuse config files from the old app identity.
 

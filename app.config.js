@@ -183,11 +183,13 @@ module.exports = ({ config = {} }) => {
   };
   const isE2ETestMode = process.env.E2E_TEST_MODE === '1' || process.env.E2E_TEST_MODE === 'true';
   const iosGoogleServicesFile =
+    process.env.GOOGLE_SERVICES_PLIST ||
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
     process.env.IOS_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE ||
     (appEnv === 'production' ? undefined : './config/firebase/GoogleService-Info.local.plist');
   const androidGoogleServicesFile =
+    process.env.GOOGLE_SERVICES_JSON ||
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE ||

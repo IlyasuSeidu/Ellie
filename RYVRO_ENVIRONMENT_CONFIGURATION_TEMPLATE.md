@@ -26,6 +26,10 @@ FIREBASE_MEASUREMENT_ID=
 EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist
 EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json
 
+# EAS cloud builds should upload those same files as file variables:
+
+# GOOGLE_SERVICES_PLIST and GOOGLE_SERVICES_JSON
+
 # Google Sign-In Configuration
 
 # Get this from Google Cloud Console > APIs & Services > Credentials

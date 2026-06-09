@@ -75,11 +75,17 @@ function resolveEnvPath(envPath, value) {
   return path.isAbsolute(value) ? value : path.resolve(path.dirname(envPath), value);
 }
 
-function requireNativeServiceFile(errors, env, envPath, key, expectedFileName, validate) {
-  const value = env[key]?.trim();
+function requireNativeServiceFile(errors, env, envPath, keys, expectedFileName, validate) {
+  const serviceKeys = Array.isArray(keys) ? keys : [keys];
+  const key = serviceKeys.find((candidate) => {
+    const value = env[candidate]?.trim();
+    return value && !isPlaceholder(value);
+  });
+  const value = key ? env[key]?.trim() : '';
+  const label = serviceKeys.join(' or ');
 
   if (!value || isPlaceholder(value)) {
-    errors.push(`${key}: must point to the real ${expectedFileName} file downloaded for Ryvro`);
+    errors.push(`${label}: must point to the real ${expectedFileName} file downloaded for Ryvro`);
     return;
   }
 
@@ -258,7 +264,7 @@ function main() {
     errors,
     env,
     envPath,
-    'EXPO_IOS_GOOGLE_SERVICES_FILE',
+    ['GOOGLE_SERVICES_PLIST', 'EXPO_IOS_GOOGLE_SERVICES_FILE'],
     'GoogleService-Info.plist',
     (content) => {
       if (hasRetiredRyvroName(content) || content.includes('ryvro-local')) {
@@ -286,7 +292,7 @@ function main() {
     errors,
     env,
     envPath,
-    'EXPO_ANDROID_GOOGLE_SERVICES_FILE',
+    ['GOOGLE_SERVICES_JSON', 'EXPO_ANDROID_GOOGLE_SERVICES_FILE'],
     'google-services.json',
     (content) => {
       if (hasRetiredRyvroName(content) || content.includes('ryvro-local')) {

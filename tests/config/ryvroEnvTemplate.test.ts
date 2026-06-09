@@ -235,12 +235,14 @@ describe('Ryvro environment template', () => {
     expect(productionEnvExample).toContain(
       'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json'
     );
+    expect(productionEnvExample).toContain('GOOGLE_SERVICES_PLIST and GOOGLE_SERVICES_JSON');
     expect(envConfigurationTemplate).toContain(
       'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist'
     );
     expect(envConfigurationTemplate).toContain(
       'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json'
     );
+    expect(envConfigurationTemplate).toContain('GOOGLE_SERVICES_PLIST and GOOGLE_SERVICES_JSON');
     expect(envExample).toContain('WAKE_WORD_PHRASE=Ryvro');
     expect(envConfigurationTemplate).toContain('WAKE_WORD_PHRASE=Ryvro');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn');
@@ -430,6 +432,7 @@ describe('Ryvro environment template', () => {
     }) => { extra?: Record<string, unknown>; ios?: { googleServicesFile?: string } };
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ryvro-ios-service-'));
     const serviceFile = path.join(tempDir, 'GoogleService-Info.plist');
+    const previousGoogleServicesPlist = process.env.GOOGLE_SERVICES_PLIST;
     const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
     const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
     const previousFirebaseApiKey = process.env.FIREBASE_API_KEY;
@@ -456,7 +459,8 @@ describe('Ryvro environment template', () => {
       ].join('\n')
     );
 
-    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = serviceFile;
+    process.env.GOOGLE_SERVICES_PLIST = serviceFile;
+    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './stale-GoogleService-Info.plist';
     process.env.FIREBASE_PROJECT_ID = 'wrong-env-project';
     process.env.FIREBASE_API_KEY = 'wrong-env-key';
     process.env.GOOGLE_IOS_CLIENT_ID = 'wrong-env-ios.apps.googleusercontent.com';
@@ -495,6 +499,12 @@ describe('Ryvro environment template', () => {
         delete process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
       } else {
         process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = previousIosGoogleServices;
+      }
+
+      if (previousGoogleServicesPlist === undefined) {
+        delete process.env.GOOGLE_SERVICES_PLIST;
+      } else {
+        process.env.GOOGLE_SERVICES_PLIST = previousGoogleServicesPlist;
       }
 
       if (previousFirebaseProjectId === undefined) {
@@ -1081,6 +1091,8 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('FIREBASE_STORAGE_BUCKET');
     expect(script).toContain('FIREBASE_MESSAGING_SENDER_ID');
     expect(script).toContain('FIREBASE_APP_ID');
+    expect(script).toContain('GOOGLE_SERVICES_PLIST');
+    expect(script).toContain('GOOGLE_SERVICES_JSON');
     expect(script).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE');
     expect(script).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE');
     expect(script).toContain('GoogleService-Info.plist');
@@ -1221,16 +1233,37 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'generated native-folder service-file paths under `ios/` or `android/`'
     );
+    expect(externalSetup).toContain('GOOGLE_SERVICES_PLIST');
+    expect(externalSetup).toContain('GOOGLE_SERVICES_JSON');
     expect(externalSetup).toContain('live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`');
     expect(externalSetup).toContain('`ACCOUNT_DELETION_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
+    expect(releaseTasks).toContain('GOOGLE_SERVICES_PLIST');
+    expect(releaseTasks).toContain('GOOGLE_SERVICES_JSON');
     expect(releaseTasks).toContain('Reject retired Ellie/ShiftSync Firebase project IDs');
     expect(releaseTasks).toContain('live HTTPS Ryvro-owned legal/support/account deletion URLs');
   });
 
   it('accepts a production env only when Expo public service values mirror native values', () => {
     const result = runProductionEnvCheck(validProductionEnv);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Ryvro production env check passed');
+  });
+
+  it('accepts EAS file-variable paths for Firebase native service files', () => {
+    const result = runProductionEnvCheck(
+      validProductionEnv
+        .replace(
+          'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist',
+          'GOOGLE_SERVICES_PLIST=./GoogleService-Info.plist'
+        )
+        .replace(
+          'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json',
+          'GOOGLE_SERVICES_JSON=./google-services.json'
+        )
+    );
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('Ryvro production env check passed');

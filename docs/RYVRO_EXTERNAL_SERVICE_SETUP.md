@@ -52,6 +52,14 @@ Repo placement:
 - Android source path before native generation: `./google-services.json`
 - Keep both files at the repo root and ignored by Git so `npx expo prebuild --clean` can copy them into the generated native projects without deleting the source files first.
 - Local prebuilds fall back to tracked Ryvro-shaped placeholder files in `config/firebase/`; production `.env` must set the root-level `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` paths after the owner downloads real Firebase configs.
+- EAS cloud builds must receive the same files through file-type environment variables because `.easignore` excludes the root service files from the build archive:
+
+```bash
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
+
+- `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` intentionally win over the plain `EXPO_*_GOOGLE_SERVICES_FILE` paths in `app.config.js`, so EAS temporary file paths can be used during cloud builds without committing or archiving the service files.
 
 Important:
 
@@ -126,7 +134,7 @@ cp .env.production.example .env
 npm run release:env:check
 ```
 
-The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, root-level real Firebase native service files referenced by `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE`, live HTTPS `API_BASE_URL`, real Google web, iOS, and Android OAuth client IDs, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, and live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, `SUPPORT_URL`, and `ACCOUNT_DELETION_URL` values with matching privacy, terms/legal, support/help, and account deletion paths. The committed production example now includes the known non-secret Ryvro Firebase Web app ID and OAuth client IDs, but it still intentionally keeps Firebase API key and RevenueCat SDK keys as owner-controlled launch checks. It also rejects retired Ellie/ShiftSync Firebase project IDs, retired `ELLIE_BRAIN_*` env keys, Cloud Function hosts for `ryvroBrain` and `parseShiftScheduleDescription`, tracked local service-file placeholders under `config/firebase/`, generated native-folder service-file paths under `ios/` or `android/`, and service files whose project ID or bundle/package does not match `FIREBASE_PROJECT_ID` and `com.ryvro.shiftplanner`. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
+The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, real Firebase native service files referenced by either local `EXPO_IOS_GOOGLE_SERVICES_FILE` / `EXPO_ANDROID_GOOGLE_SERVICES_FILE` paths or EAS file-variable paths `GOOGLE_SERVICES_PLIST` / `GOOGLE_SERVICES_JSON`, live HTTPS `API_BASE_URL`, real Google web, iOS, and Android OAuth client IDs, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, and live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, `SUPPORT_URL`, and `ACCOUNT_DELETION_URL` values with matching privacy, terms/legal, support/help, and account deletion paths. The committed production example now includes the known non-secret Ryvro Firebase Web app ID and OAuth client IDs, but it still intentionally keeps Firebase API key and RevenueCat SDK keys as owner-controlled launch checks. It also rejects retired Ellie/ShiftSync Firebase project IDs, retired `ELLIE_BRAIN_*` env keys, Cloud Function hosts for `ryvroBrain` and `parseShiftScheduleDescription`, tracked local service-file placeholders under `config/firebase/`, generated native-folder service-file paths under `ios/` or `android/`, and service files whose project ID or bundle/package does not match `FIREBASE_PROJECT_ID` and `com.ryvro.shiftplanner`. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
 
 Verification:
 
