@@ -1920,6 +1920,13 @@ describe('Ryvro environment template', () => {
     expect(apiReference).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
     expect(apiReference).toContain('Constants.expoConfig?.extra?.FIREBASE_API_KEY');
     expect(apiReference).toContain('Constants.expoConfig?.extra?.RYVRO_BRAIN_URL');
+    expect(apiReference).toContain('Email/Password, Google Sign-In, Apple Sign-In');
+    expect(apiReference).toContain('#### Sign In with Google');
+    expect(apiReference).toContain('GoogleAuthProvider.credential');
+    expect(apiReference).toContain('#### Sign In with Apple');
+    expect(apiReference).toContain("OAuthProvider('apple.com')");
+    expect(apiReference).toContain('signInWithGoogle(): Promise<User>');
+    expect(apiReference).toContain('signInWithApple(): Promise<User>');
     expect(apiReference).not.toContain('ryvro-brain-REGION-PROJECT');
     expect(apiReference).not.toContain('your_project_id.appspot.com');
     expect(apiReference).not.toContain('Constants.expoConfig?.extra?.firebaseApiKey');

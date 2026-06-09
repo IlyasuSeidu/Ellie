@@ -212,7 +212,7 @@ Use `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` as the console setup source of truth.
 
 #### 2. Enable Firebase Services
 
-- **Authentication**: Email/Password, Google Sign-In
+- **Authentication**: Email/Password, Google Sign-In, Apple Sign-In
 - **Cloud Firestore**: NoSQL database
 - **Cloud Storage**: File storage
 - **Cloud Functions**: Serverless functions
@@ -277,6 +277,45 @@ async function signIn(email: string, password: string) {
     return userCredential.user;
   } catch (error) {
     throw new Error(`Sign in failed: ${error.message}`);
+  }
+}
+```
+
+#### Sign In with Google
+
+Ryvro's native app uses the Google ID token from Expo Auth Session and exchanges it for a Firebase credential through `GoogleAuthProvider.credential`.
+
+```typescript
+import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth } from '@/config/firebase';
+
+async function signInWithGoogle(idToken: string) {
+  try {
+    const credential = GoogleAuthProvider.credential(idToken);
+    const userCredential = await signInWithCredential(auth, credential);
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(`Google sign in failed: ${error.message}`);
+  }
+}
+```
+
+#### Sign In with Apple
+
+Ryvro's iOS app uses Expo Apple Authentication and exchanges the Apple identity token for a Firebase credential through `OAuthProvider('apple.com')`.
+
+```typescript
+import { OAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth } from '@/config/firebase';
+
+async function signInWithApple(identityToken: string, nonce?: string) {
+  try {
+    const provider = new OAuthProvider('apple.com');
+    const credential = provider.credential({ idToken: identityToken, rawNonce: nonce });
+    const userCredential = await signInWithCredential(auth, credential);
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(`Apple sign in failed: ${error.message}`);
   }
 }
 ```
@@ -485,6 +524,8 @@ async function deleteProfileImage(userId: string) {
 interface AuthService {
   signUp(email: string, password: string): Promise<User>;
   signIn(email: string, password: string): Promise<User>;
+  signInWithGoogle(): Promise<User>;
+  signInWithApple(): Promise<User>;
   signOut(): Promise<void>;
   resetPassword(email: string): Promise<void>;
   getCurrentUser(): User | null;
