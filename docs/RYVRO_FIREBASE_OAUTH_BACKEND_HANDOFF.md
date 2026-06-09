@@ -203,11 +203,26 @@ npm run release:native:check
 npm run release:env:check
 ```
 
+`npm run release:env:check` must pass from the local `.env` that will be pushed to EAS, not from `.env.example` or `.env.production.example`. Before marking the evidence complete, confirm the pass output covers all of these non-secret facts:
+
+- `APP_ENV=production`.
+- EAS project ID is `b306643e-1688-448e-8acd-f72bf74312c3`.
+- Firebase project ID is `ryvro-shift-planner`.
+- Root service-file paths are `./GoogleService-Info.plist` and `./google-services.json`, and both files exist locally.
+- iOS bundle ID and Android package ID are `com.ryvro.shiftplanner`.
+- Google OAuth native IDs match their Expo public mirrors.
+- RevenueCat iOS and Android SDK keys match their Expo public mirrors and entitlement ID is `pro`.
+- `RYVRO_BRAIN_URL` and `SHIFT_SCHEDULE_PARSER_URL` point at the deployed Ryvro Firebase Functions URLs.
+- Privacy, terms, support, and account-deletion URLs use `https://getryvro.com`.
+- The output rejects retired Ellie or ShiftSync project IDs, bundle IDs, package IDs, EAS project IDs, backend URLs, and `ELLIE_BRAIN_*` keys.
+
 Push secrets only after both checks pass:
 
 ```bash
 npm run release:env:push
 ```
+
+`npm run release:env:push` must push to the `production` environment for EAS project `@ilyasu/ryvro` / `b306643e-1688-448e-8acd-f72bf74312c3`. Record only non-secret confirmation: command timestamp, target environment, EAS project ID, variable names updated, visibility classes, and confirmation that no placeholder values were uploaded. Do not record Firebase API keys, RevenueCat SDK keys, provider keys, EAS tokens, service-file contents, or full `.env` output.
 
 Record:
 
@@ -215,6 +230,9 @@ Record:
 - `npm run release:env:check` pass output
 - EAS production environment push confirmation
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`
+- Target environment `production`
+- Variable-name list and visibility classes only
+- Placeholder rejection or no-placeholder confirmation
 
 ## Evidence Log Updates
 

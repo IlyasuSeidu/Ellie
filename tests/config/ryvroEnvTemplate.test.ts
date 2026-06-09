@@ -3542,9 +3542,21 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('firebase login --reauth');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('minimal prompt smoke');
+    expect(launchEvidenceLog).toContain('Production env preflight');
     expect(launchEvidenceLog).toContain('EAS production environment push confirmation');
     expect(launchEvidenceLog).toContain('No variables found for this environment');
     expect(launchEvidenceLog).toContain('did not upload placeholder values');
+    expect(launchEvidenceLog).toContain('local `.env` that will be pushed to EAS passes');
+    expect(launchEvidenceLog).toContain('APP_ENV=production');
+    expect(launchEvidenceLog).toContain('b306643e-1688-448e-8acd-f72bf74312c3');
+    expect(launchEvidenceLog).toContain(
+      'root service-file paths `./GoogleService-Info.plist` and `./google-services.json`'
+    );
+    expect(launchEvidenceLog).toContain('mirrored native and Expo public Google OAuth IDs');
+    expect(launchEvidenceLog).toContain('mirrored native and Expo public RevenueCat SDK keys');
+    expect(launchEvidenceLog).toContain('rejection of retired Ellie or ShiftSync IDs');
+    expect(launchEvidenceLog).toContain('variable names updated, visibility classes');
+    expect(launchEvidenceLog).toContain('Do not record API keys, SDK key values');
     expect(launchEvidenceLog).toContain('created project `Ryvro`');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
     expect(launchEvidenceLog).toContain('category `Productivity`');
@@ -4069,6 +4081,24 @@ describe('Ryvro environment template', () => {
       'The remaining template-only failures are `FIREBASE_API_KEY`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`'
     );
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:push');
+    expect(firebaseOauthBackendHandoff).toContain('local `.env` that will be pushed to EAS');
+    expect(firebaseOauthBackendHandoff).toContain('APP_ENV=production');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'EAS project ID is `b306643e-1688-448e-8acd-f72bf74312c3`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Root service-file paths are `./GoogleService-Info.plist` and `./google-services.json`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Google OAuth native IDs match their Expo public mirrors'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'RevenueCat iOS and Android SDK keys match their Expo public mirrors'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('variable names updated, visibility classes');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Do not record Firebase API keys, RevenueCat SDK keys'
+    );
     expect(firebaseOauthBackendHandoff).toContain('Do not store Firebase service-file contents');
     expect(firebaseOauthBackendHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
