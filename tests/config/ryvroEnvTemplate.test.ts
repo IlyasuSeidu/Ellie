@@ -3581,6 +3581,19 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('RevenueCat offering `default`');
     expect(launchEvidenceLog).toContain('sandbox trial or purchase');
     expect(launchEvidenceLog).toContain('Google developer notifications remain pending');
+    expect(launchEvidenceLog).toContain('not Test Store only');
+    expect(launchEvidenceLog).toContain(
+      'both RevenueCat apps are saved against real App Store Connect and Google Play products'
+    );
+    expect(launchEvidenceLog).toContain('Google Play service account connected status');
+    expect(launchEvidenceLog).toContain('offering `default` references packages that grant it');
+    expect(launchEvidenceLog).toContain('paywall screenshot metadata if required');
+    expect(launchEvidenceLog).toContain('active for the testing track');
+    expect(launchEvidenceLog).toContain('package identifier, pricing metadata, trial metadata');
+    expect(launchEvidenceLog).toContain(
+      'Do not mark passed from web dashboards, RevenueCat Test Store'
+    );
+    expect(launchEvidenceLog).toContain('offering/package tested, paywall metadata shown');
     expect(launchEvidenceLog).toContain('`Ryvro (App Store)`');
     expect(launchEvidenceLog).toContain('In-App Purchase Key ID and In-App Purchase Issuer ID');
     expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
@@ -4123,6 +4136,27 @@ describe('Ryvro environment template', () => {
     expect(revenueCatProductsHandoff).toContain('Sandbox Purchase QA');
     expect(revenueCatProductsHandoff).toContain('RevenueCat entitlement `pro` becomes active');
     expect(revenueCatProductsHandoff).toContain('Restore Purchases works');
+    expect(revenueCatProductsHandoff).toContain('not Test Store only');
+    expect(revenueCatProductsHandoff).toContain(
+      'RevenueCat is connected to real App Store Connect and Google Play products'
+    );
+    expect(revenueCatProductsHandoff).toContain(
+      'offering `default` has Monthly and Annual packages'
+    );
+    expect(revenueCatProductsHandoff).toContain(
+      'package identifiers, pricing metadata, and trial metadata'
+    );
+    expect(revenueCatProductsHandoff).toContain(
+      'entitlement ID `pro` mirrored into `EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID`'
+    );
+    expect(revenueCatProductsHandoff).toContain(
+      'Offering ID `default` and package identifier tested'
+    );
+    expect(revenueCatProductsHandoff).toContain('Paywall metadata shown to the tester');
+    expect(revenueCatProductsHandoff).toContain(
+      'Do not mark sandbox purchase QA as passed from web dashboards'
+    );
+    expect(revenueCatProductsHandoff).toContain('production-equivalent iOS and Android binaries');
     expect(revenueCatProductsHandoff).toContain('Do not store RevenueCat SDK keys');
     expect(revenueCatProductsHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i

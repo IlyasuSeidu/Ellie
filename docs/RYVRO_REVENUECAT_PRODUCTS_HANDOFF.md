@@ -99,6 +99,9 @@ Record:
 - Entitlement `pro` status
 - Product attachment status
 - Offering `default` package status
+- Confirmation that RevenueCat is connected to real App Store Connect and Google Play products, not Test Store only
+- Confirmation that `ryvro_pro_monthly` and `ryvro_pro_annual` are attached to entitlement `pro` for both App Store and Google Play
+- Confirmation that offering `default` has Monthly and Annual packages with store product IDs, package identifiers, pricing metadata, and trial metadata matching the store dashboards
 
 ## Env And Preflight
 
@@ -120,6 +123,8 @@ npm run release:env:check
 ```
 
 The check must pass before EAS production environment values are pushed or production binaries are rebuilt.
+
+The evidence is complete only when `npm run release:env:check` passes with the real `appl_...` and `goog_...` SDK keys mirrored into their Expo public values, entitlement ID `pro` mirrored into `EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID`, and the EAS production environment push has been completed without placeholder values.
 
 ## Sandbox Purchase QA
 
@@ -144,12 +149,17 @@ Record:
 - Tester account
 - Store sandbox account type
 - Product ID tested
+- Offering ID `default` and package identifier tested
 - Entitlement activation result
 - Cancel/expire/relock result
 - Restore result
+- Paywall metadata shown to the tester
+- Store transaction or sandbox event status without receipt contents
 - RevenueCat customer screen note without customer personal data or receipts
 
 Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the device QA rows and update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` after passing.
+
+Do not mark sandbox purchase QA as passed from web dashboards, RevenueCat Test Store, simulator-only testing, Expo Go, a local development client, or a build created before the final production environment values were pushed. Pass evidence must come from production-equivalent iOS and Android binaries that use bundle/package `com.ryvro.shiftplanner`, load RevenueCat offering `default`, activate entitlement `pro`, relock after cancellation or expiry, and restore purchases for the same sandbox store account.
 
 ## Evidence Log Updates
 
