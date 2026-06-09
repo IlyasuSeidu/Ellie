@@ -133,12 +133,12 @@ describe('Ryvro environment template', () => {
     'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist',
     'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json',
     'API_BASE_URL=https://api.getryvro.com',
-    'GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
-    'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
-    'GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
-    'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
-    'GOOGLE_ANDROID_CLIENT_ID=1234567890-android.apps.googleusercontent.com',
-    'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1234567890-android.apps.googleusercontent.com',
+    'GOOGLE_WEB_CLIENT_ID=123456789012-web.apps.googleusercontent.com',
+    'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789012-web.apps.googleusercontent.com',
+    'GOOGLE_IOS_CLIENT_ID=123456789012-ios.apps.googleusercontent.com',
+    'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=123456789012-ios.apps.googleusercontent.com',
+    'GOOGLE_ANDROID_CLIENT_ID=123456789012-android.apps.googleusercontent.com',
+    'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=123456789012-android.apps.googleusercontent.com',
     'RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain',
     'REVENUECAT_IOS_KEY=appl_liveios123',
     'EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_liveios123',
@@ -1191,6 +1191,8 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must match FIREBASE_PROJECT_ID as <project-id>.firebaseapp.com');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as a Firebase Storage bucket');
     expect(script).toContain('must be the Ryvro Firebase project ID');
+    expect(script).toContain('must match FIREBASE_MESSAGING_SENDER_ID');
+    expect(script).toContain('same Firebase messaging sender ID');
     expect(script).toContain('scoped to a Ryvro Firebase project');
     expect(script).toContain('retired Ellie/ShiftSync');
     expect(script).toContain('must not use tracked local placeholder Firebase service files');
@@ -1312,8 +1314,8 @@ describe('Ryvro environment template', () => {
   it('rejects production env files with mismatched Expo public Google OAuth client IDs', () => {
     const webResult = runProductionEnvCheck(
       validProductionEnv.replace(
-        'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
-        'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-other-web.apps.googleusercontent.com'
+        'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789012-web.apps.googleusercontent.com',
+        'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789012-other-web.apps.googleusercontent.com'
       )
     );
 
@@ -1323,8 +1325,8 @@ describe('Ryvro environment template', () => {
 
     const iosResult = runProductionEnvCheck(
       validProductionEnv.replace(
-        'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
-        'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-other-ios.apps.googleusercontent.com'
+        'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=123456789012-ios.apps.googleusercontent.com',
+        'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=123456789012-other-ios.apps.googleusercontent.com'
       )
     );
 
@@ -1334,14 +1336,49 @@ describe('Ryvro environment template', () => {
 
     const androidResult = runProductionEnvCheck(
       validProductionEnv.replace(
-        'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1234567890-android.apps.googleusercontent.com',
-        'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1234567890-other-android.apps.googleusercontent.com'
+        'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=123456789012-android.apps.googleusercontent.com',
+        'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=123456789012-other-android.apps.googleusercontent.com'
       )
     );
 
     expect(androidResult.status).toBe(1);
     expect(androidResult.stderr).toContain('EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID');
     expect(androidResult.stderr).toContain('must match GOOGLE_ANDROID_CLIENT_ID');
+  });
+
+  it('rejects production env files with Google OAuth clients from a different Firebase project number', () => {
+    const webResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'GOOGLE_WEB_CLIENT_ID=123456789012-web.apps.googleusercontent.com',
+        'GOOGLE_WEB_CLIENT_ID=999999999999-web.apps.googleusercontent.com'
+      )
+    );
+
+    expect(webResult.status).toBe(1);
+    expect(webResult.stderr).toContain('GOOGLE_WEB_CLIENT_ID');
+    expect(webResult.stderr).toContain('same Firebase messaging sender ID');
+
+    const iosResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'GOOGLE_IOS_CLIENT_ID=123456789012-ios.apps.googleusercontent.com',
+        'GOOGLE_IOS_CLIENT_ID=999999999999-ios.apps.googleusercontent.com'
+      )
+    );
+
+    expect(iosResult.status).toBe(1);
+    expect(iosResult.stderr).toContain('GOOGLE_IOS_CLIENT_ID');
+    expect(iosResult.stderr).toContain('same Firebase messaging sender ID');
+
+    const androidResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'GOOGLE_ANDROID_CLIENT_ID=123456789012-android.apps.googleusercontent.com',
+        'GOOGLE_ANDROID_CLIENT_ID=999999999999-android.apps.googleusercontent.com'
+      )
+    );
+
+    expect(androidResult.status).toBe(1);
+    expect(androidResult.stderr).toContain('GOOGLE_ANDROID_CLIENT_ID');
+    expect(androidResult.stderr).toContain('same Firebase messaging sender ID');
   });
 
   it('rejects production env files with mismatched Expo public RevenueCat keys', () => {

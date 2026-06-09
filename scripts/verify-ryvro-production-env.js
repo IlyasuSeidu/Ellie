@@ -198,6 +198,22 @@ function isFirebaseAppId(value) {
   return /^1:\d+:(web|ios|android):[A-Za-z0-9_-]+$/.test(value);
 }
 
+function getFirebaseAppProjectNumber(value) {
+  const match = value.match(/^1:(\d+):(web|ios|android):[A-Za-z0-9_-]+$/);
+  return match?.[1] || null;
+}
+
+function getOAuthClientProjectNumber(value) {
+  const match = value.match(/^(\d+)-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/);
+  return match?.[1] || null;
+}
+
+function isGoogleOAuthClientForSenderId(value, senderId) {
+  return (
+    value.endsWith('.apps.googleusercontent.com') && getOAuthClientProjectNumber(value) === senderId
+  );
+}
+
 function main() {
   const { envFile } = parseArgs(process.argv.slice(2));
   const envPath = path.resolve(process.cwd(), envFile);
@@ -257,8 +273,10 @@ function main() {
     errors,
     env,
     'FIREBASE_APP_ID',
-    isFirebaseAppId,
-    'must be the real Ryvro Firebase app ID'
+    (value) =>
+      isFirebaseAppId(value) &&
+      getFirebaseAppProjectNumber(value) === env.FIREBASE_MESSAGING_SENDER_ID,
+    'must be the real Ryvro Firebase app ID and must match FIREBASE_MESSAGING_SENDER_ID'
   );
   requireNativeServiceFile(
     errors,
@@ -286,6 +304,10 @@ function main() {
       if (!content.includes(`<string>${env.FIREBASE_PROJECT_ID}</string>`)) {
         throw new Error('PROJECT_ID must match FIREBASE_PROJECT_ID');
       }
+
+      if (!content.includes(`1:${env.FIREBASE_MESSAGING_SENDER_ID}:ios:`)) {
+        throw new Error('GOOGLE_APP_ID must match FIREBASE_MESSAGING_SENDER_ID');
+      }
     }
   );
   requireNativeServiceFile(
@@ -301,6 +323,7 @@ function main() {
 
       const parsed = JSON.parse(content);
       const projectId = parsed?.project_info?.project_id;
+      const projectNumber = parsed?.project_info?.project_number;
       const packageNames =
         parsed?.client
           ?.map((client) => client?.client_info?.android_client_info?.package_name)
@@ -308,6 +331,10 @@ function main() {
 
       if (projectId !== env.FIREBASE_PROJECT_ID) {
         throw new Error('project_info.project_id must match FIREBASE_PROJECT_ID');
+      }
+
+      if (projectNumber !== env.FIREBASE_MESSAGING_SENDER_ID) {
+        throw new Error('project_info.project_number must match FIREBASE_MESSAGING_SENDER_ID');
       }
 
       if (!packageNames.includes('com.ryvro.shiftplanner')) {
@@ -326,8 +353,8 @@ function main() {
     errors,
     env,
     'GOOGLE_WEB_CLIENT_ID',
-    (value) => value.endsWith('.apps.googleusercontent.com'),
-    'must be the real Google web OAuth client ID'
+    (value) => isGoogleOAuthClientForSenderId(value, env.FIREBASE_MESSAGING_SENDER_ID),
+    'must be the real Google web OAuth client ID for the same Firebase messaging sender ID'
   );
   requireMatchingValue(
     errors,
@@ -340,8 +367,8 @@ function main() {
     errors,
     env,
     'GOOGLE_IOS_CLIENT_ID',
-    (value) => value.endsWith('.apps.googleusercontent.com'),
-    'must be the real Google iOS OAuth client ID for com.ryvro.shiftplanner'
+    (value) => isGoogleOAuthClientForSenderId(value, env.FIREBASE_MESSAGING_SENDER_ID),
+    'must be the real Google iOS OAuth client ID for com.ryvro.shiftplanner and the same Firebase messaging sender ID'
   );
   requireMatchingValue(
     errors,
@@ -354,8 +381,8 @@ function main() {
     errors,
     env,
     'GOOGLE_ANDROID_CLIENT_ID',
-    (value) => value.endsWith('.apps.googleusercontent.com'),
-    'must be the real Google Android OAuth client ID for com.ryvro.shiftplanner'
+    (value) => isGoogleOAuthClientForSenderId(value, env.FIREBASE_MESSAGING_SENDER_ID),
+    'must be the real Google Android OAuth client ID for com.ryvro.shiftplanner and the same Firebase messaging sender ID'
   );
   requireMatchingValue(
     errors,
