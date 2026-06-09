@@ -24,6 +24,8 @@ Tester name:
 Tester account:
 Device model:
 OS version:
+Android SDK level:
+Physical device confirmation: Yes / No
 App version:
 iOS build number or Android versionCode:
 Install source:
@@ -38,6 +40,13 @@ Installed identity proof should show:
 
 - iOS: `CFBundleIdentifier` or device-management/TestFlight proof for `com.ryvro.shiftplanner`, display name `Ryvro`, version `1.0.0`, and build number.
 - Android: package proof for `com.ryvro.shiftplanner`, display name `Ryvro`, version `1.0.0`, and versionCode.
+
+Android physical-device proof must show:
+
+- The device is a real phone or tablet, not an Android emulator, Expo Go, local development client, or debug APK.
+- Android version is 10 or newer and Android SDK level is 29 or newer.
+- The install came from Play internal testing or a production-equivalent store-signed build.
+- The signed-in tester or owner Google account is the account used for Play Console device verification or internal testing.
 
 ## Must-Pass Smoke Matrix
 

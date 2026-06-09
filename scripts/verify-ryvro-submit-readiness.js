@@ -54,6 +54,7 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
 const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
 const deploymentGuide = read('docs/DEPLOYMENT.md');
 const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
+const deviceQaTemplate = read('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
 
 [
   [
@@ -95,6 +96,14 @@ const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING
     'Treat this as requiring a physical Android 10 or newer device signed into the owner Google account',
     playInternalTestingHandoff,
   ],
+  ['Android SDK level:', deviceQaTemplate],
+  ['Physical device confirmation: Yes / No', deviceQaTemplate],
+  ['Android version is 10 or newer and Android SDK level is 29 or newer', deviceQaTemplate],
+  [
+    'The install came from Play internal testing or a production-equivalent store-signed build',
+    deviceQaTemplate,
+  ],
+  ['not an Android emulator, Expo Go, local development client, or debug APK', deviceQaTemplate],
   ['Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`', submitBlockerTriage],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'submit readiness handoff'));
 

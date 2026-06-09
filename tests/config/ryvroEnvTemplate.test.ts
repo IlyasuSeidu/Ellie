@@ -3954,6 +3954,17 @@ describe('Ryvro environment template', () => {
     expect(deviceQaTemplate).toContain('Physical Android QA');
     expect(deviceQaTemplate).toContain('Sandbox purchase QA');
     expect(deviceQaTemplate).toContain('Installed bundle/package proof');
+    expect(deviceQaTemplate).toContain('Android SDK level:');
+    expect(deviceQaTemplate).toContain('Physical device confirmation: Yes / No');
+    expect(deviceQaTemplate).toContain(
+      'Android version is 10 or newer and Android SDK level is 29 or newer'
+    );
+    expect(deviceQaTemplate).toContain(
+      'The install came from Play internal testing or a production-equivalent store-signed build'
+    );
+    expect(deviceQaTemplate).toContain(
+      'not an Android emulator, Expo Go, local development client, or debug APK'
+    );
     expect(deviceQaTemplate).toContain('Must-Pass Smoke Matrix');
     expect(deviceQaTemplate).toContain('Authentication End-To-End Gate');
     expect(deviceQaTemplate).toContain('AuthService.socialCredentials.test.ts');
