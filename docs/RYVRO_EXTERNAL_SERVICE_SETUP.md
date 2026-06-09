@@ -52,7 +52,13 @@ Repo placement:
 - Android source path before native generation: `./google-services.json`
 - Keep both files at the repo root and ignored by Git so `npx expo prebuild --clean` can copy them into the generated native projects without deleting the source files first.
 - Local prebuilds fall back to tracked Ryvro-shaped placeholder files in `config/firebase/`; production `.env` must set the root-level `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` paths after the owner downloads real Firebase configs.
-- EAS cloud builds must receive the same files through file-type environment variables because `.easignore` excludes the root service files from the build archive:
+- EAS cloud builds must receive the same files through file-type environment variables because `.easignore` excludes the root service files from the build archive. After `npm run release:env:check` passes, run:
+
+```bash
+npm run release:env:files
+```
+
+That script validates the checked `.env` first, then runs:
 
 ```bash
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist

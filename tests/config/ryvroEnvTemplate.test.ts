@@ -1079,10 +1079,29 @@ describe('Ryvro environment template', () => {
     expect(packageJson.scripts?.['release:env:check']).toBe(
       'node scripts/verify-ryvro-production-env.js'
     );
+    expect(packageJson.scripts?.['release:env:files']).toBe(
+      'node scripts/push-ryvro-eas-file-env.js'
+    );
     expect(packageJson.scripts?.['release:env:push']).toBe('node scripts/push-ryvro-eas-env.js');
+    expect(fs.existsSync(path.join(process.cwd(), 'scripts/push-ryvro-eas-file-env.js'))).toBe(
+      true
+    );
     expect(fs.existsSync(pushScriptPath)).toBe(true);
     expect(pushScript).toContain("run('node', ['scripts/verify-ryvro-production-env.js'");
+    expect(pushScript).toContain('npm run release:env:files');
     expect(pushScript).toContain("'eas-cli', 'env:push', 'production', '--path'");
+    const filePushScript = fs.readFileSync(
+      path.join(process.cwd(), 'scripts/push-ryvro-eas-file-env.js'),
+      'utf8'
+    );
+    expect(filePushScript).toContain("run('node', ['scripts/verify-ryvro-production-env.js'");
+    expect(filePushScript).toContain("'env:create'");
+    expect(filePushScript).toContain("'GOOGLE_SERVICES_PLIST'");
+    expect(filePushScript).toContain("'GOOGLE_SERVICES_JSON'");
+    expect(filePushScript).toContain("'--type'");
+    expect(filePushScript).toContain("'file'");
+    expect(filePushScript).toContain("'--visibility'");
+    expect(filePushScript).toContain("'secret'");
     expect(script).toContain('APP_ENV');
     expect(script).toContain('EAS_PROJECT_ID');
     expect(script).toContain('FIREBASE_API_KEY');
@@ -1235,12 +1254,14 @@ describe('Ryvro environment template', () => {
     );
     expect(externalSetup).toContain('GOOGLE_SERVICES_PLIST');
     expect(externalSetup).toContain('GOOGLE_SERVICES_JSON');
+    expect(externalSetup).toContain('npm run release:env:files');
     expect(externalSetup).toContain('live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`');
     expect(externalSetup).toContain('`ACCOUNT_DELETION_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
     expect(releaseTasks).toContain('GOOGLE_SERVICES_PLIST');
     expect(releaseTasks).toContain('GOOGLE_SERVICES_JSON');
+    expect(releaseTasks).toContain('npm run release:env:files');
     expect(releaseTasks).toContain('Reject retired Ellie/ShiftSync Firebase project IDs');
     expect(releaseTasks).toContain('live HTTPS Ryvro-owned legal/support/account deletion URLs');
   });

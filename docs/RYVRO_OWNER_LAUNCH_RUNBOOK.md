@@ -114,6 +114,12 @@ Owner-only steps:
 - Create or refresh EAS production file variables from those ignored root files before cloud builds because `.easignore` excludes the raw files from the build archive:
 
 ```bash
+npm run release:env:files
+```
+
+That helper validates `.env` first, then runs the equivalent EAS file-variable commands:
+
+```bash
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
 ```
@@ -163,6 +169,7 @@ Evidence to record:
 - `npm run release:native:check` output.
 - `npm run release:env:check` output.
 - EAS production environment push confirmation.
+- `npm run release:env:files` confirmation.
 - EAS file-variable confirmation for `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON`, without recording file contents.
 - `curl` smoke-test output for `RYVRO_BRAIN_URL`.
 - `curl` smoke-test output for `SHIFT_SCHEDULE_PARSER_URL` with a minimal schedule prompt.

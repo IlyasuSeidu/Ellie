@@ -72,6 +72,12 @@ Fresh Firebase apps for the final bundle/package were created and verified.
 - Before starting EAS cloud production builds, upload the ignored root service files as EAS file variables because `.easignore` excludes the raw files from the build archive:
 
 ```bash
+npm run release:env:files
+```
+
+The helper validates `.env` first, then runs these EAS file-variable commands:
+
+```bash
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
 ```
@@ -217,7 +223,7 @@ npm run release:env:check
 - EAS project ID is `b306643e-1688-448e-8acd-f72bf74312c3`.
 - Firebase project ID is `ryvro-shift-planner`.
 - Root service-file paths are `./GoogleService-Info.plist` and `./google-services.json`, and both files exist locally for preflight.
-- EAS production has file-type environment variables `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` created from those ignored root files.
+- EAS production has file-type environment variables `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` created from those ignored root files through `npm run release:env:files`.
 - iOS bundle ID and Android package ID are `com.ryvro.shiftplanner`.
 - Google OAuth native IDs match their Expo public mirrors.
 - RevenueCat iOS and Android SDK keys match their Expo public mirrors and entitlement ID is `pro`.
@@ -238,6 +244,7 @@ Record:
 - `npm run release:native:check` pass output
 - `npm run release:env:check` pass output
 - EAS production environment push confirmation
+- `npm run release:env:files` confirmation
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`
 - Target environment `production`
 - Variable-name list and visibility classes only

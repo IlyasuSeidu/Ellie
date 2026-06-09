@@ -212,6 +212,12 @@ npm run release:env:push
 Then create or refresh the Firebase native service files as EAS file variables, because `.easignore` excludes the root files from the cloud build archive:
 
 ```bash
+npm run release:env:files
+```
+
+That helper validates `.env` first, then runs:
+
+```bash
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
 npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
 ```

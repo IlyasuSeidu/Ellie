@@ -68,8 +68,7 @@ function main() {
     [
       'Plain production env values are pushed.',
       'Create or refresh Firebase native service files as separate EAS file variables before cloud builds:',
-      'npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist',
-      'npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json',
+      'npm run release:env:files',
     ].join('\n')
   );
 }

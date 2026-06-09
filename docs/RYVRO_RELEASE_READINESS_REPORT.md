@@ -45,6 +45,7 @@ Completed and guarded in the current branch:
 - Production env preflight now validates the Firebase API key, app ID, messaging sender ID, auth domain, and storage bucket shape against the same Ryvro `FIREBASE_PROJECT_ID`.
 - Production env preflight now rejects retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts for `ryvroBrain` and `parseShiftScheduleDescription`.
 - Production env preflight now requires real root-level Firebase native service files for `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE`, rejects tracked local placeholders or generated native-folder paths, and checks the files target `FIREBASE_PROJECT_ID` plus `com.ryvro.shiftplanner`.
+- EAS production file-variable setup now has a guarded helper, `npm run release:env:files`, which validates the same production `.env` first and then creates `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` as secret file variables for cloud builds.
 - Production env preflight now rejects unsafe production `API_BASE_URL` values such as localhost, HTTP, or retired Ellie hosts.
 - Production env preflight now requires legal and support URLs to be live HTTPS Ryvro-owned URLs with matching privacy, terms/legal, and support/help paths, so generic placeholder domains cannot pass before EAS production environment values are pushed.
 - Firebase/backend repo config exposes only the launch `ryvroBrain` endpoint for new builds, and the production env preflight now rejects retired `ELLIE_BRAIN_*` keys instead of treating them as migration fallbacks.
