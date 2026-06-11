@@ -133,6 +133,7 @@
     },
     "signIn": {
       "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "अपने खाते में साइन इन करें",
       "forgotPassword": "पासवर्ड भूल गए?",
       "primaryButton": "साइन इन",

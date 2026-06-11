@@ -779,10 +779,8 @@ describe('Ryvro environment template', () => {
     );
 
     if (appDelegate) {
-      expect(appDelegate).toContain(
-        'Firebase default app is initialized through the React Native Firebase JS registry'
-      );
-      expect(appDelegate).not.toContain('FirebaseApp.configure()');
+      expect(appDelegate).toContain('import FirebaseCore');
+      expect(appDelegate).toContain('FirebaseApp.configure()');
     }
 
     if (xcodeProject) {
@@ -822,8 +820,10 @@ describe('Ryvro environment template', () => {
     expect(script).not.toContain("readOptional('ios/Ryvro.xcodeproj");
     expect(script).toContain('ios/RyvroShiftPlanner/GoogleService-Info.plist');
     expect(script).toContain('validateTrackedIosLocalGoogleService');
+    expect(script).toContain('Root iOS GoogleService-Info.plist');
     expect(script).toContain('API_KEY must remain a placeholder');
     expect(script).toContain('GOOGLE_APP_ID must remain the local placeholder app id');
+    expect(script).toContain('FirebaseApp.configure()');
     expect(script).toContain('--strict-generated');
     expect(script).toContain('--strict-generated-services');
     expect(script).toContain('retired Firebase project');

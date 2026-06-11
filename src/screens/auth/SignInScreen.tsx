@@ -17,6 +17,7 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -153,11 +154,16 @@ export const SignInScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         <Animated.View entering={FadeInDown.duration(500)} style={styles.header}>
-          <Text style={styles.appName}>
-            {t('auth.signIn.appName', {
-              defaultValue: 'RYVRO',
+          <Image
+            source={require('../../../assets/brand/ryvro-in-app-logo.png')}
+            style={styles.appLogo}
+            resizeMode="contain"
+            accessibilityRole="image"
+            accessibilityLabel={t('auth.signIn.appLogoLabel', {
+              defaultValue: 'Ryvro app logo',
             })}
-          </Text>
+            testID="sign-in-app-logo"
+          />
           <Text style={styles.subtitle}>
             {t('auth.signIn.subtitle', {
               defaultValue: 'Sign in to your account',
@@ -368,15 +374,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: theme.spacing.xxl,
   },
-  appName: {
-    fontSize: theme.typography.fontSizes.xxxl,
-    fontWeight: theme.typography.fontWeights.black,
-    color: theme.colors.paper,
-    letterSpacing: 6,
-    textShadowColor: theme.colors.sacredGold,
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 16,
-    marginBottom: theme.spacing.sm,
+  appLogo: {
+    width: 112,
+    height: 112,
+    alignSelf: 'center',
+    marginBottom: theme.spacing.md,
   },
   subtitle: {
     fontSize: theme.typography.fontSizes.md,

@@ -133,6 +133,7 @@
     },
     "signIn": {
       "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Sign in to your account",
       "forgotPassword": "Forgot password?",
       "primaryButton": "Sign In",

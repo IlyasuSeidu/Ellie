@@ -42,6 +42,18 @@ describe('SignInScreen', () => {
     expect(mockClearError).toHaveBeenCalledTimes(1);
   });
 
+  it('renders the centered app icon as the sign-in logo', () => {
+    const { getByTestId } = render(<SignInScreen />);
+    const logo = getByTestId('sign-in-app-logo');
+
+    expect(logo.props.source).toBe(require('../../../../assets/brand/ryvro-in-app-logo.png'));
+    expect(logo.props.style).toEqual(
+      expect.objectContaining({
+        alignSelf: 'center',
+      })
+    );
+  });
+
   it('validates input before submit', () => {
     const { getByTestId, getByText } = render(<SignInScreen />);
     fireEvent.press(getByTestId('sign-in-button'));

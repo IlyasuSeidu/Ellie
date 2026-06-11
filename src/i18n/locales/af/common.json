@@ -133,6 +133,7 @@
     },
     "signIn": {
       "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Meld by jou rekening aan",
       "forgotPassword": "Wagwoord vergeet?",
       "primaryButton": "Meld aan",

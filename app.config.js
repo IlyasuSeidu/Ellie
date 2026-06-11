@@ -153,6 +153,23 @@ function isCompatibleGoogleOAuthClientId(clientId, projectNumber) {
   return getOAuthClientProjectNumber(clientId) === projectNumber;
 }
 
+function getCompatibleEnvGoogleOAuthProjectNumber() {
+  const envMobileClientIds = [
+    process.env.GOOGLE_IOS_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    process.env.GOOGLE_ANDROID_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+  ].filter(Boolean);
+  const projectNumbers = envMobileClientIds.map(getOAuthClientProjectNumber).filter(Boolean);
+  const uniqueProjectNumbers = [...new Set(projectNumbers)];
+
+  return uniqueProjectNumbers.length === 1 ? uniqueProjectNumbers[0] : '';
+}
+
+function isRyvroFirebaseProjectId(projectId) {
+  return /^ryvro(?:-|$)/i.test(projectId || '');
+}
+
 function getCompatibleGoogleWebClientId(projectNumber, androidFirebaseConfig) {
   const candidates = [
     process.env.GOOGLE_WEB_CLIENT_ID,
@@ -168,6 +185,31 @@ function getCompatibleGoogleWebClientId(projectNumber, androidFirebaseConfig) {
   }
 
   return '';
+}
+
+function getCompatibleFirebaseFunctionUrl(envUrl, firebaseProjectId, functionName) {
+  const fallback = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/${functionName}`
+    : '';
+
+  if (!envUrl) {
+    return fallback;
+  }
+
+  try {
+    const parsed = new URL(envUrl);
+    if (
+      firebaseProjectId &&
+      parsed.hostname === `us-central1-${firebaseProjectId}.cloudfunctions.net` &&
+      parsed.pathname === `/${functionName}`
+    ) {
+      return envUrl;
+    }
+  } catch (_error) {
+    return fallback;
+  }
+
+  return fallback;
 }
 
 function getCompatibleGoogleClientId(projectNumber, candidates, fallbackClientId) {
@@ -203,6 +245,19 @@ function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
       },
     ];
   });
+}
+
+function getPluginName(plugin) {
+  return Array.isArray(plugin) ? plugin[0] : plugin;
+}
+
+function ensurePlugin(plugins, plugin) {
+  const pluginName = getPluginName(plugin);
+  if (plugins.some((existingPlugin) => getPluginName(existingPlugin) === pluginName)) {
+    return plugins;
+  }
+
+  return [...plugins, plugin];
 }
 
 module.exports = ({ config = {} }) => {
@@ -243,6 +298,7 @@ module.exports = ({ config = {} }) => {
     'expo-apple-authentication',
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
+    './plugins/withFirebaseCoreConfigure',
     [
       'expo-build-properties',
       {
@@ -286,25 +342,30 @@ module.exports = ({ config = {} }) => {
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
     process.env.IOS_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE ||
-    (appEnv === 'production' ? undefined : './config/firebase/GoogleService-Info.local.plist');
+    './GoogleService-Info.plist';
   const androidGoogleServicesFile =
     process.env.GOOGLE_SERVICES_JSON ||
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE ||
-    (appEnv === 'production' ? undefined : './config/firebase/google-services.local.json');
+    './google-services.json';
   const iosFirebaseConfig = buildFirebaseConfigFromIosGoogleServicesFile(iosGoogleServicesFile);
   const androidFirebaseConfig =
     buildFirebaseConfigFromAndroidGoogleServicesFile(androidGoogleServicesFile);
-  const firebaseProjectId =
-    iosFirebaseConfig?.projectId || androidFirebaseConfig?.projectId || envFirebaseProjectId;
+  const firebaseProjectId = isRyvroFirebaseProjectId(envFirebaseProjectId)
+    ? envFirebaseProjectId
+    : iosFirebaseConfig?.projectId || androidFirebaseConfig?.projectId || envFirebaseProjectId;
   const firebaseMessagingSenderId =
     iosFirebaseConfig?.messagingSenderId ||
     androidFirebaseConfig?.messagingSenderId ||
     process.env.FIREBASE_MESSAGING_SENDER_ID ||
     '';
+  const envGoogleOAuthProjectNumber = getCompatibleEnvGoogleOAuthProjectNumber();
   const googleOAuthProjectNumber =
-    iosFirebaseConfig?.messagingSenderId || androidFirebaseConfig?.messagingSenderId || '';
+    envGoogleOAuthProjectNumber ||
+    iosFirebaseConfig?.messagingSenderId ||
+    androidFirebaseConfig?.messagingSenderId ||
+    '';
   const defaultRyvroBrainUrl = firebaseProjectId
     ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/ryvroBrain`
     : '';
@@ -312,19 +373,23 @@ module.exports = ({ config = {} }) => {
     ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/parseShiftScheduleDescription`
     : '';
   const googleIosClientId =
-    iosFirebaseConfig?.googleIosClientId ||
     getCompatibleGoogleClientId(
       googleOAuthProjectNumber,
       [process.env.GOOGLE_IOS_CLIENT_ID, process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID],
-      googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_IOS_CLIENT_ID : ''
-    );
+      ''
+    ) ||
+    iosFirebaseConfig?.googleIosClientId ||
+    (googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_IOS_CLIENT_ID : '');
   const googleAndroidClientId =
-    androidFirebaseConfig?.googleAndroidClientId ||
     getCompatibleGoogleClientId(
       googleOAuthProjectNumber,
       [process.env.GOOGLE_ANDROID_CLIENT_ID, process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID],
-      googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_ANDROID_CLIENT_ID : ''
-    );
+      ''
+    ) ||
+    androidFirebaseConfig?.googleAndroidClientId ||
+    (googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER
+      ? RYVRO_GOOGLE_ANDROID_CLIENT_ID
+      : '');
   const googleWebClientId = getCompatibleGoogleWebClientId(
     googleOAuthProjectNumber,
     androidFirebaseConfig
@@ -345,6 +410,10 @@ module.exports = ({ config = {} }) => {
   const runtimeVersion =
     config.runtimeVersion ||
     (appEnv === 'production' ? { policy: 'fingerprint' } : { policy: 'appVersion' });
+  const plugins = ensurePlugin(
+    ensurePlugin(config.plugins || ryvroPlugins, './plugins/withNonModularHeaders'),
+    './plugins/withFirebaseCoreConfigure'
+  );
 
   return {
     ...config,
@@ -388,7 +457,7 @@ module.exports = ({ config = {} }) => {
       ...(config.web || {}),
       favicon: config.web?.favicon || ryvroIdentity.favicon,
     },
-    plugins: withGoogleSignInIosUrlScheme(config.plugins || ryvroPlugins, googleIosUrlScheme),
+    plugins: withGoogleSignInIosUrlScheme(plugins, googleIosUrlScheme),
     extra: {
       ...configExtra,
       APP_ENV: appEnv,
@@ -478,10 +547,17 @@ module.exports = ({ config = {} }) => {
       SUPPORT_URL: process.env.SUPPORT_URL || 'https://getryvro.com/support',
       ACCOUNT_DELETION_URL:
         process.env.ACCOUNT_DELETION_URL || 'https://getryvro.com/delete-account',
-      RYVRO_BRAIN_URL: process.env.RYVRO_BRAIN_URL || defaultRyvroBrainUrl,
+      RYVRO_BRAIN_URL: getCompatibleFirebaseFunctionUrl(
+        process.env.RYVRO_BRAIN_URL,
+        firebaseProjectId,
+        'ryvroBrain'
+      ),
       RYVRO_BRAIN_TIMEOUT: process.env.RYVRO_BRAIN_TIMEOUT || '30000',
-      SHIFT_SCHEDULE_PARSER_URL:
-        process.env.SHIFT_SCHEDULE_PARSER_URL || defaultShiftScheduleParserUrl,
+      SHIFT_SCHEDULE_PARSER_URL: getCompatibleFirebaseFunctionUrl(
+        process.env.SHIFT_SCHEDULE_PARSER_URL,
+        firebaseProjectId,
+        'parseShiftScheduleDescription'
+      ),
       SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',
       SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH:
         process.env.SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH || '2000',

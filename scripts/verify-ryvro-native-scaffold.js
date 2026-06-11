@@ -165,7 +165,7 @@ assertEqual(
 );
 assertEqual(
   dynamicExpo.ios?.googleServicesFile,
-  './config/firebase/GoogleService-Info.local.plist',
+  './GoogleService-Info.plist',
   'app.config.js ios.googleServicesFile without env override'
 );
 assertEqual(
@@ -175,7 +175,7 @@ assertEqual(
 );
 assertEqual(
   dynamicExpo.android?.googleServicesFile,
-  './config/firebase/google-services.local.json',
+  './google-services.json',
   'app.config.js android.googleServicesFile without env override'
 );
 assertEqual(
@@ -189,6 +189,10 @@ assertAbsent(readOptional('app.json'), retiredVisibleIdentityPattern, 'app.json'
 assertAbsent(readOptional('app.config.js'), retiredVisibleIdentityPattern, 'app.config.js');
 validateTrackedIosLocalGoogleService(
   readOptional('config/firebase/GoogleService-Info.local.plist')
+);
+validateIosGoogleService(
+  readOptional('GoogleService-Info.plist'),
+  'Root iOS GoogleService-Info.plist'
 );
 
 if (fs.existsSync(path.join(root, 'app.config.js.backup'))) {
@@ -206,6 +210,16 @@ if (generatedInfoPlist) {
     addError('Generated iOS Info.plist must contain CFBundleDisplayName = Ryvro');
   }
   assertAbsent(generatedInfoPlist, retiredVisibleIdentityPattern, 'Generated iOS Info.plist');
+}
+
+const generatedAppDelegate = readOptional('ios/RyvroShiftPlanner/AppDelegate.swift');
+if (generatedAppDelegate) {
+  if (!generatedAppDelegate.includes('import FirebaseCore')) {
+    addError('Generated iOS AppDelegate.swift must import FirebaseCore');
+  }
+  if (!generatedAppDelegate.includes('FirebaseApp.configure()')) {
+    addError('Generated iOS AppDelegate.swift must configure the Firebase default app');
+  }
 }
 
 const generatedXcodeProject = readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj');

@@ -74,7 +74,13 @@ describe('PremiumWelcomeScreen', () => {
       const { UNSAFE_root } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
       const image = UNSAFE_root.findByType('Image');
       expect(image).toBeTruthy();
-      expect(image.props.source).toBe(require('../../../../../assets/icon.png'));
+      expect(image.props.source).toBe(require('../../../../../assets/brand/ryvro-in-app-logo.png'));
+      expect(image.props.style).toEqual(
+        expect.objectContaining({
+          width: 220,
+          height: 220,
+        })
+      );
     });
   });
 

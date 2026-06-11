@@ -133,6 +133,7 @@
     },
     "signIn": {
       "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Masuk ke akun Anda",
       "forgotPassword": "Lupa kata sandi?",
       "primaryButton": "Masuk",

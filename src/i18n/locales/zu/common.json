@@ -133,6 +133,7 @@
     },
     "signIn": {
       "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Ngena ku-akhawunti yakho",
       "forgotPassword": "Ukhohlwe iphasiwedi?",
       "primaryButton": "Ngena",

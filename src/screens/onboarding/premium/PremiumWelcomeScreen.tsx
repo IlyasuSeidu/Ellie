@@ -165,19 +165,16 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
       >
         {/* Logo with animation */}
         <Animated.View style={[styles.logoContainer, logoAnimatedStyle]}>
-          <View style={styles.logoPlaceholder}>
-            <Image
-              source={require('../../../../assets/icon.png')}
-              style={styles.logoIcon}
-              resizeMode="contain"
-            />
-          </View>
+          <Image
+            source={require('../../../../assets/brand/ryvro-in-app-logo.png')}
+            style={styles.logoIcon}
+            resizeMode="contain"
+          />
         </Animated.View>
 
-        {/* App name with gold glow */}
+        {/* App name */}
         <Animated.View style={[styles.nameContainer, nameAnimatedStyle]}>
           <Animated.Text style={styles.appName}>Ryvro</Animated.Text>
-          <View style={styles.nameGlow} />
         </Animated.View>
 
         {/* Tagline */}
@@ -246,28 +243,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.xl,
   },
   logoContainer: {
-    marginBottom: theme.spacing.xl,
-    alignSelf: 'flex-start',
-    marginLeft: -20,
-  },
-  logoPlaceholder: {
     alignItems: 'center',
     justifyContent: 'center',
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 20 },
-        shadowOpacity: 1,
-        shadowRadius: 48,
-      },
-      android: {
-        elevation: 24,
-      },
-    }),
+    alignSelf: 'center',
+    marginBottom: theme.spacing.lg,
   },
   logoIcon: {
-    width: 320,
-    height: 320,
+    width: 220,
+    height: 220,
   },
   nameContainer: {
     position: 'relative',
@@ -282,30 +265,9 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         fontFamily: 'System',
-        textShadowColor: theme.colors.sacredGold,
-        textShadowOffset: { width: 0, height: 0 },
-        textShadowRadius: 20,
       },
       android: {
         fontFamily: 'sans-serif-black',
-      },
-    }),
-  },
-  nameGlow: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: theme.colors.sacredGold,
-    opacity: 0.1,
-    borderRadius: theme.borderRadius.lg,
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.3,
-        shadowRadius: 20,
       },
     }),
   },
