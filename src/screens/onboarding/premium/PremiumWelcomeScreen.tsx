@@ -167,7 +167,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
         <Animated.View style={[styles.logoContainer, logoAnimatedStyle]}>
           <View style={styles.logoPlaceholder}>
             <Image
-              source={require('../../../../assets/onboarding/icons/consolidated/ryvro-shift-assistant.png')}
+              source={require('../../../../assets/icon.png')}
               style={styles.logoIcon}
               resizeMode="contain"
             />

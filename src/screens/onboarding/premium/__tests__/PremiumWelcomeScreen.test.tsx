@@ -70,10 +70,11 @@ describe('PremiumWelcomeScreen', () => {
       expect(getByText('Set Up My Schedule')).toBeTruthy();
     });
 
-    it('should render logo image', () => {
+    it('should render the app icon as the welcome logo image', () => {
       const { UNSAFE_root } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
       const image = UNSAFE_root.findByType('Image');
       expect(image).toBeTruthy();
+      expect(image.props.source).toBe(require('../../../../../assets/icon.png'));
     });
   });
 
