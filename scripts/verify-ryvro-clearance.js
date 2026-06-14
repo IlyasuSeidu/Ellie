@@ -28,6 +28,13 @@ const DOMAIN_CANDIDATES = [
   'getryvroapp.com',
 ];
 
+const CONTROLLED_LAUNCH_DOMAINS = {
+  'getryvro.com': {
+    requiredRecord: '199.36.158.100',
+    requiredRegistrar: 'Spaceship, Inc.',
+  },
+};
+
 const SOCIAL_URLS = [
   'https://x.com/ryvro',
   'https://www.instagram.com/ryvro/',
@@ -164,9 +171,17 @@ async function checkDomain(domain) {
     }
   }
 
+  const controlledDomain = CONTROLLED_LAUNCH_DOMAINS[domain];
+  const ownedLaunchDomain =
+    !!controlledDomain &&
+    records.includes(controlledDomain.requiredRecord) &&
+    Array.isArray(whois) &&
+    whois.some((line) => line.includes(`Registrar: ${controlledDomain.requiredRegistrar}`));
+
   return {
     domain,
-    ok: records.length === 0 && (whois === null || whois === 'no-match'),
+    ok: ownedLaunchDomain || (records.length === 0 && (whois === null || whois === 'no-match')),
+    ownedLaunchDomain,
     records,
     whois,
   };
@@ -227,7 +242,10 @@ async function main() {
     apple.exactMatches?.length > 0 ||
     play.containsExactText ||
     domains.some(
-      (entry) => ['getryvro.com', 'useryvro.com'].includes(entry.domain) && entry.records.length > 0
+      (entry) =>
+        ['getryvro.com', 'useryvro.com'].includes(entry.domain) &&
+        entry.records.length > 0 &&
+        !entry.ownedLaunchDomain
     );
 
   process.exitCode = hardConflict ? 1 : 0;
