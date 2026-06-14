@@ -125,7 +125,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **TypeScript + Zod Validation**: Runtime safety for user data
 - **Firebase Backend**: Cloud Firestore for data sync
 - **Sacred Theme System**: Premium design language for shift workers
-- **1,784 Tests**: Comprehensive unit, config, service, and integration coverage
+- **1,812 Tests**: Comprehensive unit, config, service, and integration coverage
 - [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
 
 ---
@@ -144,16 +144,18 @@ Repo-proven launch state:
 - Latest local gate: `npm run release:check` passed TypeScript, 113 Jest suites / 1,812 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-06-14
 - Latest iOS simulator gate: `npm run test:e2e -- e2e/onboarding.test.ts --reuse` passed the fresh onboarding path into the Universal Shift Builder, `npm run test:e2e -- e2e/dashboard.test.ts --reuse` passed 16 dashboard checks including the active universal shift icon, and `npm run test:e2e -- e2e/critical-mobile.test.ts --reuse` passed auth, onboarding, dashboard, profile, and builder mobile-fit checks
 - Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
-- Latest pushed PR gate: GitHub Actions CI run `27506653328` on commit `416bf00` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
+- Latest pushed PR gate: GitHub Actions CI run `27506848948` on commit `687986d` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
 
 Owner/account work still required before launch:
 
 - Formal trademark/legal clearance for `Ryvro`
-- App Store Connect and Google Play Console app creation/name/package reservation
-- Domain and social handle reservation
-- Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat, legal/support/account deletion URLs, and EAS production secrets
-- Production `ryvroBrain` and `parseShiftScheduleDescription` deploys and smoke tests, including a valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response
-- Physical iOS and Android device smoke tests, store screenshots, privacy forms, data-safety forms, TestFlight/internal track upload, and final submission
+- Social handle reservation or approved fallback handles
+- Firebase Auth email-template action URL resolution or owner-approved fallback smoke evidence
+- App Store and Google Play subscription-product completion, including Google Payments hold removal for Play products
+- Sandbox purchase QA across trial start, entitlement activation, cancel, relock, and restore
+- Owner/legal review evidence for the live privacy and terms pages
+- App Store content rating, export compliance, EU trader status, reviewer account, subscription review screenshot, and final review submission
+- TestFlight build `4` iPhone smoke test, Play internal-track physical Android smoke test, store screenshots, and final production submission evidence
 
 Current launch handoff lives in [docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md](docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md), [docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md](docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md), [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RYVRO_RELEASE_READINESS_REPORT.md), [RYVRO_RELEASE_TASKS.md](RYVRO_RELEASE_TASKS.md), and [docs/RYVRO_EXTERNAL_SERVICE_SETUP.md](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md).
 
@@ -422,9 +424,10 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 
 - [x] Repo-side Ryvro identity, assets, copy, templates, release docs, and CI gates
 - [x] Public clearance preflight script and current public evidence
-- [ ] Account-owner clearance, console setup, production secrets, and production backend deploy
+- [x] App Store Connect and Google Play app/package creation, Firebase/OAuth/backend setup, EAS production env push, and TestFlight/internal-track upload evidence
+- [ ] Account-owner legal clearance, social handles, Firebase email-template action URL proof, subscription products, and store-compliance fields
 - [ ] Physical iOS and Android smoke tests
-- [ ] Store screenshots, privacy/data-safety forms, TestFlight/internal track upload, and final submission
+- [ ] Store screenshots, sandbox purchase QA, and final App Store / Google Play submission
 
 ### 🔮 Phase 5: Post-Launch Expansion
 

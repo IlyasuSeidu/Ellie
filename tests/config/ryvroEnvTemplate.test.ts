@@ -888,8 +888,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27506653328`');
-    expect(script).toContain('commit `416bf00`');
+    expect(script).toContain('CI run `27506848948`');
+    expect(script).toContain('commit `687986d`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1943,15 +1943,13 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27506653328`');
-    expect(readme).toContain('commit `416bf00`');
+    expect(readme).toContain('GitHub Actions CI run `27506848948`');
+    expect(readme).toContain('commit `687986d`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
-    expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
-    expect(readme).toContain(
-      'Production `ryvroBrain` and `parseShiftScheduleDescription` deploys and smoke tests'
-    );
-    expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
+    expect(readme).toContain('Firebase Auth email-template action URL resolution');
+    expect(readme).toContain('App Store and Google Play subscription-product completion');
+    expect(readme).toContain('TestFlight build `4` iPhone smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
     expect(readme).toContain('Testing infrastructure (1,812 tests in the latest release check)');
@@ -2591,10 +2589,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27506653328`');
-    expect(readinessReport).toContain('commit `416bf00`');
+    expect(readinessReport).toContain('CI run `27506848948`');
+    expect(readinessReport).toContain('commit `687986d`');
     expect(readinessReport).toContain(
-      'Latest pushed GitHub Actions check for PR #1 passed on commit `416bf00`'
+      'Latest pushed GitHub Actions check for PR #1 passed on commit `687986d`'
     );
     expect(readinessReport).toContain('CI run `27213964871`');
     expect(readinessReport).toContain('commit `13e1810`');
@@ -3585,8 +3583,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Latest pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).toContain('native scaffold preflight CI-safe');
-    expect(ownerRunbook).toContain('CI run `27506653328`');
-    expect(ownerRunbook).toContain('commit `416bf00`');
+    expect(ownerRunbook).toContain('CI run `27506848948`');
+    expect(ownerRunbook).toContain('commit `687986d`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(submitBlockerTriage).toContain(
       'scans the owner evidence packet for high-risk secret material'

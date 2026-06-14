@@ -27,13 +27,14 @@ Previously cleared submit-gate items: `Domain control for getryvro.com`, `Suppor
 The remaining checked blocker families are:
 
 - Formal trademark/legal clearance for `Ryvro`
-- Google Play internal testing physical-device QA and production access
 - Social handle reservation
-- Privacy and terms owner content review plus store-console use of the live `getryvro.com` URLs
 - Firebase Auth email templates
-- Fresh production builds after the now-pushed EAS production environment
-- RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
-- App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
+- App Store subscription product metadata and real review screenshot
+- Google Play subscription products after the Google Payments hold clears
+- Sandbox purchase QA across App Store, Google Play, and RevenueCat entitlement behavior
+- Privacy and terms owner content review plus store-console use of the live `getryvro.com` URLs
+- App Store content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and final App Store submission
+- Google Play internal testing opt-in visibility, physical Android QA, store screenshots, and final production access after the closed-testing requirement
 
 ## Recommended Order
 

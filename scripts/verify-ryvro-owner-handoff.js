@@ -83,7 +83,7 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['not live in the App Store or Google Play yet', readme],
   ['npm run release:owner:check', readme],
   ['owner handoff preflight', readme],
-  ['Physical iOS and Android device smoke tests', readme],
+  ['TestFlight build `4` iPhone smoke test', readme],
   ['npm run release:owner:check', deploymentPlan],
   ['owner handoff preflight', deploymentPlan],
   ['RevenueCat `pro` entitlement', deploymentPlan],
@@ -789,12 +789,12 @@ requireMatches(
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
 [
-  ['CI run `27506653328`', readme],
-  ['commit `416bf00`', readme],
-  ['CI run `27506653328`', readinessReport],
-  ['commit `416bf00`', readinessReport],
-  ['CI run `27506653328`', ownerRunbook],
-  ['commit `416bf00`', ownerRunbook],
+  ['CI run `27506848948`', readme],
+  ['commit `687986d`', readme],
+  ['CI run `27506848948`', readinessReport],
+  ['commit `687986d`', readinessReport],
+  ['CI run `27506848948`', ownerRunbook],
+  ['commit `687986d`', ownerRunbook],
   ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', readme],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
