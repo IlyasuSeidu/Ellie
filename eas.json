@@ -23,6 +23,7 @@
     },
     "production": {
       "node": "20.19.4",
+      "autoIncrement": true,
       "env": {
         "RCT_USE_RN_DEP": "0",
         "RCT_USE_PREBUILT_RNCORE": "0"
