@@ -1,6 +1,6 @@
 # Ryvro App Store Connect And TestFlight Handoff
 
-Last updated: 2026-06-07
+Last updated: 2026-06-14
 
 Use this checklist for the remaining iOS owner-account path after the App Store Connect app exists and before App Store review submission. It turns the current TestFlight and App Store Connect blockers into one non-secret evidence packet.
 
@@ -59,6 +59,7 @@ Known owner-console evidence from 2026-06-05:
 - Internal TestFlight group `Ryvro iPhone QA` shows `Internal Group ∙ 1 Tester ∙ 1 Build`.
 - Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`.
 - Expo App Store Connect connection check now shows EAS server-side App Store Connect API key `BQG8N6UP7Y` for submit use.
+- Logged-in Chrome recheck on 2026-06-14 reached App Store Connect Users and Access → Integrations → App Store Connect API, but the page said API access permission is required and showed `Request Access`. The RevenueCat iOS app and in-app purchase key flow remain blocked until App Store Connect API access is requested and granted, then an in-app purchase `.p8` key can be created or uploaded without storing private key material in Git.
 - App Store Connect showed the EU trader-status warning.
 - The uploaded iOS build still contains local placeholder Firebase/OAuth URL schemes, so it is not production-auth-ready until real Firebase/OAuth env evidence is complete and a fresh production build is made.
 
@@ -151,6 +152,7 @@ Complete with RevenueCat and App Store Connect products before final review.
 - Add product metadata, pricing, localization, and 7-day trial if approved for launch.
 - Upload required subscription review metadata and paywall screenshot if App Store Connect asks for it.
 - Create or upload the App Store Connect in-app purchase `.p8` key for RevenueCat.
+- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status.
 - Copy only the App Store Connect in-app purchase Key ID and Issuer ID into RevenueCat.
 - Keep the `.p8` private key out of the repo.
 - Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for the matching RevenueCat evidence packet.

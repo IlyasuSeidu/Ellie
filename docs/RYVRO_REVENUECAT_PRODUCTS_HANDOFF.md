@@ -33,6 +33,7 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - Android app URL: `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`
 - iOS app form was filled as `Ryvro (App Store)` with bundle `com.ryvro.shiftplanner`, but save was blocked until App Store Connect in-app purchase Key ID and Issuer ID are provided.
 - Latest logged-in RevenueCat check on 2026-06-14 found the App Store app form requires a p8 in-app purchase key file, Key ID, and Issuer ID before saving the iOS app. The iOS RevenueCat app remains pending.
+- Logged-in App Store Connect recheck on 2026-06-14 reached Users and Access → Integrations → App Store Connect API, but App Store Connect said API access permission is required and showed `Request Access`. Treat RevenueCat iOS app setup as blocked on App Store Connect API access plus the in-app purchase `.p8` key, Key ID, and Issuer ID.
 - Entitlement `pro` now exists with display name `Ryvro Pro`.
 - RevenueCat Play Store product record `Ryvro Pro Monthly` now exists with identifier `ryvro_pro_monthly:monthly`, subscription ID `ryvro_pro_monthly`, base plan ID `monthly`, and store status `Could not check`.
 - RevenueCat Play Store product record `Ryvro Pro Annual` now exists with identifier `ryvro_pro_annual:annual`, subscription ID `ryvro_pro_annual`, base plan ID `annual`, and store status `Could not check`.
@@ -53,6 +54,7 @@ Complete in App Store Connect as the owner.
 - Complete required subscription localizations.
 - Complete in-app purchase review metadata and screenshots if App Store Connect asks for them.
 - Create or upload the App Store Connect in-app purchase `.p8` key for RevenueCat.
+- If App Store Connect shows that API access permission is required, request and wait for that access before creating the in-app purchase key.
 - Copy only the Key ID and Issuer ID into RevenueCat; do not store the `.p8` key in the repo.
 
 Record:

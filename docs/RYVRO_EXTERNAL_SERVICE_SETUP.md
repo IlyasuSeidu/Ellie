@@ -175,7 +175,7 @@ Current non-secret dashboard state from logged-in owner-console work on 2026-06-
 - Android app: saved as `Ryvro (Play Store)` with package `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`, and REST API identifier `appab0f4b628d`.
 - Android remaining work: upload the Google Play service account credentials JSON, save the RevenueCat app settings, and configure Google developer notifications after Play Console setup is complete.
 - iOS app: the App Store app form was filled with `Ryvro (App Store)` and bundle `com.ryvro.shiftplanner`, but RevenueCat blocked save with `The following fields have errors: In-App Purchase Key ID and In-App Purchase Issuer ID`.
-- iOS remaining work: create or upload the App Store Connect in-app purchase p8 key, then provide its Key ID and Issuer ID in RevenueCat before saving the iOS app configuration.
+- iOS remaining work: request App Store Connect API access if the Integrations page still says permission is required, create or upload the App Store Connect in-app purchase p8 key after access is available, then provide its Key ID and Issuer ID in RevenueCat before saving the iOS app configuration.
 
 Target apps:
 
