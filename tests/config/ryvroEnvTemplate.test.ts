@@ -3881,6 +3881,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('validated store product status');
     expect(launchEvidenceLog).toContain('RevenueCat logged-in browser recheck on 2026-06-14');
     expect(launchEvidenceLog).toContain('Store product validation');
+    expect(launchEvidenceLog).toContain('subscription group ID `22156776`');
+    expect(launchEvidenceLog).toContain('Apple ID `6780186030`');
+    expect(launchEvidenceLog).toContain('Apple ID `6780186069`');
+    expect(launchEvidenceLog).toContain('status `Missing Metadata`');
     expect(launchEvidenceLog).toContain('package `$rc_annual` / Annual access');
     expect(launchEvidenceLog).toContain('paywall screenshot metadata if required');
     expect(launchEvidenceLog).toContain('active for the testing track');

@@ -34,34 +34,43 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - iOS app exists as `Ryvro (App Store)` with bundle `com.ryvro.shiftplanner`, REST API identifier `appd8a95a73e0`, and app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appd8a95a73e0`.
 - Logged-in owner-console work on 2026-06-14 generated the App Store Connect in-app purchase key `Ryvro RevenueCat IAP`, copied only Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f` into RevenueCat, and kept the one-time `.p8` private key outside Git at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8`.
 - Entitlement `pro` now exists with display name `Ryvro Pro`.
+- App Store Connect subscription group `Ryvro Pro` now exists with subscription group ID `22156776`.
+- App Store Connect product shell `Ryvro Pro Monthly` now exists with Apple ID `6780186030`, product ID `ryvro_pro_monthly`, duration `1 month`, and status `Missing Metadata`.
+- App Store Connect product shell `Ryvro Pro Annual` now exists with Apple ID `6780186069`, product ID `ryvro_pro_annual`, duration `1 year`, and status `Missing Metadata`.
 - RevenueCat Play Store product record `Ryvro Pro Monthly` now exists with identifier `ryvro_pro_monthly:monthly`, subscription ID `ryvro_pro_monthly`, base plan ID `monthly`, and store status `Could not check`.
 - RevenueCat Play Store product record `Ryvro Pro Annual` now exists with identifier `ryvro_pro_annual:annual`, subscription ID `ryvro_pro_annual`, base plan ID `annual`, and store status `Could not check`.
 - Entitlement `pro` shows `2 products` attached in the RevenueCat entitlement list.
 - Offering `default` now exists with display name `Default`, REST API identifier `ofrngfbba49b733`, package `$rc_monthly` pointing at `ryvro_pro_monthly:monthly`, and package `$rc_annual` pointing at `ryvro_pro_annual:annual`.
 - RevenueCat API keys page on 2026-06-14 shows SDK API key rows for `Ryvro (App Store)` and `Ryvro (Play Store)` with public keys in the expected `appl_...` and `goog_...` formats. The ignored local `.env` now mirrors the iOS and Android SDK keys into their native and Expo public variables without recording the values.
 - `npm run release:env:check`, `npm run release:env:push -- --force`, and `npm run release:env:files -- --force` passed on 2026-06-14 after the real RevenueCat SDK key mirrors were present.
-- RevenueCat product records and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products are blocked until a Google Payments merchant account is set up. A later logged-in Play Console recheck on 2026-06-14 still showed the merchant-account blocker after the owner reported Play Console configuration complete. Play-side base plans, App Store subscription products, RevenueCat store-product validation, and sandbox purchase QA are still pending.
+- RevenueCat product records, App Store Connect product shells, and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products are blocked until a Google Payments merchant account is set up. A later logged-in Play Console recheck on 2026-06-14 still showed the merchant-account blocker after the owner reported Play Console configuration complete. Play-side base plans, App Store pricing and metadata, RevenueCat store-product validation, and sandbox purchase QA are still pending.
 
 ## App Store Connect Subscription Setup
 
-Complete in App Store Connect as the owner.
+Complete in App Store Connect as the owner. Product shells were created on 2026-06-14, but they still show `Missing Metadata` and are not launch-ready.
 
-- Create subscription group: `Ryvro Pro`
-- Create monthly product ID: `ryvro_pro_monthly`
-- Create annual product ID: `ryvro_pro_annual`
+- Create subscription group: `Ryvro Pro`. Done with subscription group ID `22156776`.
+- Create monthly product ID: `ryvro_pro_monthly`. Done with Apple ID `6780186030`, duration `1 month`, status `Missing Metadata`.
+- Create annual product ID: `ryvro_pro_annual`. Done with Apple ID `6780186069`, duration `1 year`, status `Missing Metadata`.
 - Use display names `Ryvro Pro Monthly` and `Ryvro Pro Annual`.
-- Configure pricing and 7-day free trial if approved for launch.
+- Configure availability, pricing, and 7-day free trial if approved for launch.
 - Complete required subscription localizations.
-- Complete in-app purchase review metadata and screenshots if App Store Connect asks for them.
+- Complete in-app purchase review notes, screenshot or paywall image, and any extra review metadata App Store Connect requires.
 - App Store Connect in-app purchase `.p8` key for RevenueCat is generated and configured in RevenueCat. Keep the private key outside the repo and never paste the key contents.
 - Copy or record only the Key ID and Issuer ID as non-secret evidence.
 
 Record:
 
 - Subscription group name
+- Subscription group ID
 - Product IDs
+- Apple IDs
+- Durations
 - Product statuses
+- Availability and price status
 - Trial configuration note
+- Localization status
+- Review screenshot or paywall image status
 - RevenueCat iOS app ID `appd8a95a73e0`
 - Key ID and Issuer ID presence only, not the `.p8` key
 

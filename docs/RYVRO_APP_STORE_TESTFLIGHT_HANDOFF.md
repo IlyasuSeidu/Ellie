@@ -153,10 +153,11 @@ Complete with RevenueCat and App Store Connect products before final review.
 
 - Create subscription group `Ryvro Pro`.
 - Create products `ryvro_pro_monthly` and `ryvro_pro_annual`.
+- Current 2026-06-14 App Store Connect evidence: subscription group `Ryvro Pro` exists with ID `22156776`; monthly product `ryvro_pro_monthly` exists as Apple ID `6780186030`, duration `1 month`, status `Missing Metadata`; annual product `ryvro_pro_annual` exists as Apple ID `6780186069`, duration `1 year`, status `Missing Metadata`.
 - Add product metadata, pricing, localization, and 7-day trial if approved for launch.
 - Upload required subscription review metadata and paywall screenshot if App Store Connect asks for it.
 - Create or upload the App Store Connect in-app purchase `.p8` key for RevenueCat.
-- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status. Current owner-session evidence reached the In-App Purchase key page and shows no active in-app purchase keys yet.
+- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status. Current owner-session evidence generated the `Ryvro RevenueCat IAP` key and RevenueCat stores the non-secret Key ID and Issuer ID.
 - Copy only the App Store Connect in-app purchase Key ID and Issuer ID into RevenueCat.
 - Keep the `.p8` private key out of the repo.
 - Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for the matching RevenueCat evidence packet.
