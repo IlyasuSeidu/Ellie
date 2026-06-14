@@ -143,6 +143,7 @@ Current Play Console state on 2026-06-14:
 - The Play subscriptions page says `Missing requirements for accessing this page` and requires setting up a Google Payments merchant account before subscription products can be created.
 - A later owner-session recheck opened the payments profile area from that blocker, but the page did not show a completed merchant account or any controls for creating `ryvro_pro_monthly` or `ryvro_pro_annual`.
 - A 2026-06-14 payments-profile retry exposed the current root blocker: existing profile selection fails with `OR-ICRA-02` and Google Payments Center requires card verification for Visa ending `7053` before the hold can be removed. Keep Google Play products pending until the owner completes that private verification outside the repo and the Play subscriptions page allows product creation.
+- A fresh 2026-06-14 Android Publisher API check with the ignored local service account key authenticated successfully and reached the subscriptions endpoint for `com.ryvro.shiftplanner`, which returned HTTP `204` with no listed subscriptions. The same API session called `pricing:convertRegionPrices` for the intended USD `$6.99` monthly and `$49.99` annual prices, and both calls failed with HTTP `400` / `FAILED_PRECONDITION`. This confirms the blocker is not just a console UI issue; Play monetization prerequisites still prevent subscription product setup through the API too.
 
 Record:
 
