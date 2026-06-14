@@ -188,12 +188,13 @@ Current status:
 - EAS uses remote app version source for store builds, so remote EAS build numbers are the source of truth for submitted binaries.
 - The latest submitted iOS evidence is EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, version `1.0.0`, iOS build number `2`, uploaded to App Store Connect through EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`.
 - App Store Connect visual inspection on 2026-06-06 showed iOS build `2` as `Ready to Submit` and attached to internal TestFlight group `Ryvro iPhone QA`, but the build still contains placeholder Firebase/OAuth values and is not production-auth-ready.
-- The next production-auth-ready iOS upload must run `npm run release:versions:get` and then increment the remote iOS build number past `2` before rebuilding. Android versionCode still needs to be checked and incremented before the next Play upload.
+- Production EAS builds now use `autoIncrement: true`. A stopped 2026-06-14 upload consumed remote iOS build number `3` without creating a build record, and current production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` is queued as version `1.0.0`, build number `4`, commit `1c4a8acbf05d804a363e3efe63f3010c34d6a3e8`.
+- Android versionCode still needs to be checked and incremented before the next Play upload.
 
 Implementation steps:
 
 1. Keep semantic app version aligned in `app.json`, `app.config.js`, `package.json`, Android `versionName`, and generated iOS `MARKETING_VERSION`.
-2. For every uploaded binary after the current TestFlight build `2`, run `npm run release:versions:get`, then use `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` to increment:
+2. For every uploaded binary after the current TestFlight build `2`, run `npm run release:versions:get`; production iOS now auto-increments through EAS, and Android should use `eas build:version:set --platform android --profile production` or an equivalent EAS increment before the next Play upload:
    - EAS remote iOS build number (CFBundleVersion)
    - EAS remote Android versionCode
 3. Keep release log in `CHANGELOG.md` once public release notes begin.
@@ -460,7 +461,8 @@ Day 7:
 - [x] Add owner handoff preflight for account-only blockers, not-live status, physical-device QA, and store submission handoff docs
 - [x] Pin first-store-build iOS build number + Android versionCode across tracked config
 - [x] Upload iOS build number `2` to App Store Connect / TestFlight for internal testing
-- [ ] Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload
+- [x] Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload
+- [ ] Wait for production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish, submit it to TestFlight, and capture iPhone QA
 - [ ] Increment Android versionCode before the next Play upload
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot

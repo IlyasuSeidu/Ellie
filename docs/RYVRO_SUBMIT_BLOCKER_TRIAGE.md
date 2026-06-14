@@ -103,11 +103,11 @@ Do this only after real RevenueCat, legal URLs, backend URLs, and EAS production
 
 - Run `npm run release:versions:get` and confirm the current EAS remote values.
 - App Store Connect already has version `1.0.0`, build `2`, from EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, and TestFlight visual inspection showed build `2` as `Ready to Submit`.
-- Do not reuse iOS build number `2` for the next production-auth-ready binary. If EAS still reports iOS build number `2`, run `eas build:version:set --platform ios --profile production` before rebuilding so the next upload uses a later build number.
+- Do not reuse iOS build number `2` for the next production-auth-ready binary. Production EAS builds now use `autoIncrement: true`; the first stopped Codex upload consumed remote build number `3` without creating a build record, and the current production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses iOS build number `4`.
 - Check Android `versionCode`; if it is still `1` or otherwise already used for a Play upload, run `eas build:version:set --platform android --profile production` before rebuilding.
-- Rebuild iOS production binary after real Firebase, OAuth, RevenueCat, backend, and legal URL values have been pushed to the EAS production environment.
+- Wait for iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish, then inspect the IPA for bundle/display/version proof before submit.
 - Rebuild Android production AAB.
-- Submit iOS build to TestFlight.
+- Submit iOS build `4` to TestFlight after it finishes.
 - Install and test on a real iPhone.
 - Submit Android build to Play internal testing.
 - Install and test on a physical Android device.

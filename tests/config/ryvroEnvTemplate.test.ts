@@ -77,6 +77,7 @@ describe('Ryvro environment template', () => {
         distribution?: string;
       };
       production?: {
+        autoIncrement?: boolean;
         ios?: {
           buildConfiguration?: string;
         };
@@ -929,7 +930,8 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('Submit to the internal track first');
     expect(script).toContain('The emulator is not acceptable');
     expect(script).toContain('npm run release:versions:get');
-    expect(script).toContain('eas build:version:set --platform ios --profile production');
+    expect(script).toContain('Production EAS builds now use `autoIncrement: true`');
+    expect(script).toContain('601af1ee-5192-442f-9caa-deef5b9b6120');
     expect(script).toContain('eas build:version:set --platform android --profile production');
     expect(script).toContain('# Ryvro Submit Blocker Triage');
     expect(script).toContain('Recommended Order');
@@ -1828,8 +1830,9 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       'App Store Connect visual inspection on 2026-06-06 showed iOS build `2` as `Ready to Submit`'
     );
+    expect(deploymentPlan).toContain('Production EAS builds now use `autoIncrement: true`');
     expect(deploymentPlan).toContain(
-      'Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload'
+      'current production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
     );
     expect(deploymentPlan).not.toContain('## A1) Replace placeholder app identifiers');
     expect(deploymentPlan).toContain(
@@ -1850,14 +1853,12 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       'The latest submitted iOS evidence is EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`'
     );
-    expect(deploymentPlan).toContain(
-      'The next production-auth-ready iOS upload must run `npm run release:versions:get`'
-    );
+    expect(deploymentPlan).toContain('production iOS now auto-increments through EAS');
     expect(deploymentPlan).toContain(
       'Pin first-store-build iOS build number + Android versionCode across tracked config'
     );
     expect(deploymentPlan).toContain(
-      'Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload'
+      'Wait for production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
     );
     expect(deploymentPlan).toContain('Increment Android versionCode before the next Play upload');
     expect(deploymentPlan).toContain(
@@ -2392,11 +2393,14 @@ describe('Ryvro environment template', () => {
       'EAS iOS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, version `1.0.0`, build `2`'
     );
     expect(releaseTasks).toContain(
+      'production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120`, version `1.0.0`, build `4`'
+    );
+    expect(releaseTasks).toContain(
       'Build production iOS binary after running `npm run release:versions:get`'
     );
     expect(releaseTasks).toContain('bumping remote EAS versions with `eas build:version:set`');
     expect(releaseTasks).toContain('App Store Connect visual inspection showed build `2`');
-    expect(releaseTasks).toContain('increment the remote iOS build number past `2`');
+    expect(releaseTasks).toContain('must finish before TestFlight submit and iPhone QA');
     expect(releaseTasks).toContain(
       'EAS Android AAB `318b4e8f-b344-4ed9-8bcd-a5805093339d` proves package `com.ryvro.shiftplanner`'
     );
@@ -2436,6 +2440,7 @@ describe('Ryvro environment template', () => {
     expect(easJson.build?.development?.developmentClient).toBe(true);
     expect(easJson.build?.development?.distribution).toBe('internal');
     expect(easJson.build?.preview?.distribution).toBe('internal');
+    expect(easJson.build?.production?.autoIncrement).toBe(true);
     expect(easJson.build?.production?.ios?.buildConfiguration).toBe('Release');
     expect(easJson.build?.production?.android?.buildType).toBe('app-bundle');
     expect(easJson.submit?.production?.ios?.appleId).toBe('seiduilyasu94@gmail.com');
@@ -3915,7 +3920,7 @@ describe('Ryvro environment template', () => {
       'message `Ryvro TestFlight candidate build 2`, and final status `FINISHED`'
     );
     expect(launchEvidenceLog).toContain(
-      'a fresh production-auth-ready build is created after the EAS production environment'
+      'Fresh production-auth-ready build `601af1ee-5192-442f-9caa-deef5b9b6120` was created after the EAS production environment'
     );
     expect(launchEvidenceLog).toContain(
       'Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` and `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the TestFlight iPhone QA packet'
@@ -4070,9 +4075,7 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(submitBlockerTriage).toContain('npm run release:versions:get');
-    expect(submitBlockerTriage).toContain(
-      'eas build:version:set --platform ios --profile production'
-    );
+    expect(submitBlockerTriage).toContain('Production EAS builds now use `autoIncrement: true`');
     expect(submitBlockerTriage).toContain(
       'eas build:version:set --platform android --profile production'
     );
@@ -4080,10 +4083,10 @@ describe('Ryvro environment template', () => {
       'App Store Connect already has version `1.0.0`, build `2`'
     );
     expect(submitBlockerTriage).toContain(
-      'Do not reuse iOS build number `2` for the next production-auth-ready binary'
+      'current production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses iOS build number `4`'
     );
     expect(submitBlockerTriage).toContain(
-      'Rebuild iOS production binary after real Firebase, OAuth, RevenueCat, backend, and legal URL values'
+      'Wait for iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish'
     );
     expect(submitBlockerTriage).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(submitBlockerTriage).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
@@ -4130,7 +4133,7 @@ describe('Ryvro environment template', () => {
       'returned iOS build number `1` and Android versionCode `1`'
     );
     expect(appStoreTestFlightHandoff).toContain(
-      'eas build:version:set --platform ios --profile production'
+      'production builds were updated with `autoIncrement: true`'
     );
     expect(appStoreTestFlightHandoff).toContain('Latest EAS iOS production build evidence');
     expect(appStoreTestFlightHandoff).toContain('782b6dec-1cf1-4cf2-9159-69ef1ab4078a');
@@ -4181,6 +4184,12 @@ describe('Ryvro environment template', () => {
     );
     expect(appStoreTestFlightHandoff).not.toContain('eas-cli@14 build --verbose-logs');
     expect(appStoreTestFlightHandoff).toContain('incremented iOS build number');
+    expect(appStoreTestFlightHandoff).toContain(
+      'production builds were updated with `autoIncrement: true`'
+    );
+    expect(appStoreTestFlightHandoff).toContain('build ID `601af1ee-5192-442f-9caa-deef5b9b6120`');
+    expect(appStoreTestFlightHandoff).toContain('iOS build number `4`');
+    expect(appStoreTestFlightHandoff).toContain('status `IN_PROGRESS`');
     expect(appStoreTestFlightHandoff).toContain(
       'EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`'
     );

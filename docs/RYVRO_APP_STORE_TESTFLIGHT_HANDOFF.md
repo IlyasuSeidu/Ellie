@@ -55,13 +55,15 @@ Known owner-console evidence from 2026-06-05:
 - Repeat EAS submit attempts for the same build on 2026-06-06 created submission records `df935b60-4ef5-40b0-aaac-c5e7d25462d1` and `50d7057e-ca33-4395-a6e6-6c207b520860`, then failed with the generic CLI message `Something went wrong when submitting your app to Apple App Store Connect`. EAS CLI did not expose a more specific Apple error, so use the earlier successful submission `b53825db-0f5c-4f56-b19e-c5af5f1999f3` and inspect App Store Connect directly for the build processing status instead of treating the duplicate retries as fresh TestFlight evidence.
 - TestFlight previously showed version `1.0.0`, build `1`, status `Ready to Submit`.
 - App Store Connect TestFlight visual inspection on 2026-06-06 showed version `1.0.0` with builds `2` and `1`; both rows had status `Ready to Submit`. Build `2` is attached to group badge `RI`, expires in 90 days, and showed no installs or crashes yet. Build `2` is now through Apple processing and ready for TestFlight distribution/testing, but TestFlight install QA evidence is still pending.
+- After the real Ryvro Firebase, OAuth, RevenueCat, backend, and legal/support URL values were pushed to the EAS production environment, `eas.json` production builds were updated with `autoIncrement: true` on 2026-06-14. A first Codex-side build attempt incremented the remote iOS build number from `2` to `3`, but stalled during upload and created no EAS build record. The follow-up `.easignore` change excluded non-runtime onboarding icon density source folders and reduced the EAS upload archive from `231 MB` to `165 MB`.
+- Fresh iOS production-auth-ready build evidence from `npx eas-cli build:view 601af1ee-5192-442f-9caa-deef5b9b6120 --json` on 2026-06-14: build ID `601af1ee-5192-442f-9caa-deef5b9b6120`, status `IN_PROGRESS`, project `@ilyasu/ryvro`, distribution `STORE`, build profile `production`, app version `1.0.0`, iOS build number `4`, runtime version `27ab415ea5097dea58a4935ef2b64da37735155e`, commit `1c4a8acbf05d804a363e3efe63f3010c34d6a3e8`, message `Ryvro production-auth TestFlight candidate 1c4a8ac`, and logs URL `https://expo.dev/accounts/ilyasu/projects/ryvro/builds/601af1ee-5192-442f-9caa-deef5b9b6120`. Keep this pending until EAS reports `FINISHED`, the IPA is submitted to App Store Connect/TestFlight, Apple processing completes, and a real iPhone smoke test is recorded.
 - Spaceship Email forwarding now has `reviewer@getryvro.com` forwarding to `seiduilyasu94@gmail.com`, so the reviewer mailbox address has a destination before store review. On 2026-06-07, Firebase Auth confirmed `reviewer@getryvro.com` already existed; its password was rotated through the Identity Toolkit Admin API and copied to the local clipboard only, without writing it to Git, docs, screenshots, or chat. Store the password only in App Store Connect and Google Play Console reviewer-access fields.
 - Internal TestFlight group `Ryvro iPhone QA` shows `Internal Group ∙ 1 Tester ∙ 1 Build`.
 - Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`.
 - Expo App Store Connect connection check now shows EAS server-side App Store Connect API key `BQG8N6UP7Y` for submit use.
 - Logged-in Chrome recheck on 2026-06-14 reached App Store Connect Users and Access → Integrations → App Store Connect API, requested API access after owner approval, then generated the In-App Purchase key `Ryvro RevenueCat IAP`. The one-time `.p8` private key is kept outside Git at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8`; only Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f` are recorded as non-secret evidence and configured in RevenueCat.
 - App Store Connect showed the EU trader-status warning.
-- The uploaded iOS build still contains local placeholder Firebase/OAuth URL schemes, so it is not production-auth-ready until real Firebase/OAuth env evidence is complete and a fresh production build is made.
+- The uploaded iOS build `2` still contains local placeholder Firebase/OAuth URL schemes, so it is not production-auth-ready. Build `4` is the current production-auth-ready candidate, but it is still only queued until EAS finishes it and App Store Connect/TestFlight receives it.
 
 ## App Store Connect App Record
 
@@ -99,8 +101,8 @@ Use TestFlight before public App Store review.
 - Accept the TestFlight invitation on a real iPhone.
 - Install through TestFlight, not Expo Go and not a local debug build.
 - Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the smoke matrix.
-- Keep the current build pending until it is rebuilt with real Firebase/OAuth/RevenueCat production values.
-- Run `npm run release:versions:get`, then use `eas build:version:set --platform ios --profile production` to increment the remote iOS build number before uploading the next production-auth-ready TestFlight build.
+- Keep build `4` pending until EAS finishes, it is submitted to TestFlight, Apple processing completes, and real-device QA passes.
+- `eas.json` now uses production `autoIncrement: true`; still run `npm run release:versions:get` before any future upload and confirm the next iOS build number is higher than the last uploaded App Store Connect build.
 
 Record:
 

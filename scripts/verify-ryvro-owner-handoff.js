@@ -155,16 +155,14 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['eas build:version:set --platform ios --profile production', ownerRunbook],
   ['eas build:version:set --platform android --profile production', ownerRunbook],
   ['iOS build number `2`', deploymentPlan],
+  ['Production EAS builds now use `autoIncrement: true`', deploymentPlan],
+  ['601af1ee-5192-442f-9caa-deef5b9b6120', deploymentPlan],
   [
-    'Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload',
-    deploymentPlan,
-  ],
-  [
-    'Do not reuse iOS build number `2` for the next production-auth-ready binary',
+    'current production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses iOS build number `4`',
     submitBlockerTriage,
   ],
   [
-    'Rebuild iOS production binary after real Firebase, OAuth, RevenueCat, backend, and legal URL values',
+    'Wait for iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish',
     submitBlockerTriage,
   ],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
@@ -822,12 +820,12 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
-  /\|\s*20\s*\|[\s\S]*requires `eas login` \+ real production `\.env` values/,
+  /\|\s*20\s*\|[\s\S]*npm run release:env:push -- --force[\s\S]*npm run release:env:files -- --force[\s\S]*passed on 2026-06-14/,
   'release task 20'
 );
 requireMatches(
   releaseTasks,
-  /\|\s*21\s*\|[\s\S]*71fde2ff-aa36-4741-aa69-e4f11ba30acd[\s\S]*b53825db-0f5c-4f56-b19e-c5af5f1999f3[\s\S]*increment the remote iOS build number past `2`/,
+  /\|\s*21\s*\|[\s\S]*71fde2ff-aa36-4741-aa69-e4f11ba30acd[\s\S]*b53825db-0f5c-4f56-b19e-c5af5f1999f3[\s\S]*601af1ee-5192-442f-9caa-deef5b9b6120[\s\S]*build `4`/,
   'release task 21'
 );
 requireMatches(
