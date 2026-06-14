@@ -3638,6 +3638,8 @@ describe('Ryvro environment template', () => {
       'Production release and app admin permissions were not granted'
     );
     expect(launchEvidenceLog).toContain('Do not record payments profile address');
+    expect(launchEvidenceLog).toContain('OR-ICRA-02');
+    expect(launchEvidenceLog).toContain('Visa ending `7053`');
     expect(launchEvidenceLog).toContain(
       'owner legal/content review confirms the live policy matches'
     );
@@ -4092,6 +4094,8 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(submitBlockerTriage).toContain('Finish Google Play Internal Testing And Merchant Setup');
     expect(submitBlockerTriage).toContain('Google Payments merchant account');
+    expect(submitBlockerTriage).toContain('OR-ICRA-02');
+    expect(submitBlockerTriage).toContain('Visa ending `7053`');
     expect(submitBlockerTriage).toContain('at least 12 opted-in testers');
     expect(submitBlockerTriage).toContain('at least 14 days of closed testing');
     expect(submitBlockerTriage).toContain('Finish Firebase Email Templates And Production Env');
@@ -4537,6 +4541,8 @@ describe('Ryvro environment template', () => {
       'Next owner action: finish the internal testing tester list'
     );
     expect(googlePlayInternalTestingHandoff).toContain('Google Payments merchant account');
+    expect(googlePlayInternalTestingHandoff).toContain('OR-ICRA-02');
+    expect(googlePlayInternalTestingHandoff).toContain('Visa ending `7053`');
     expect(googlePlayInternalTestingHandoff).toContain('at least 12 opted-in testers');
     expect(googlePlayInternalTestingHandoff).toContain('at least 14 days of closed testing');
     expect(googlePlayInternalTestingHandoff).toContain('only the account owner can complete it');

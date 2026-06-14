@@ -307,7 +307,7 @@ Service account and internal testing:
 - First release track remains Internal testing.
 - The least-privilege Google Play service account for EAS Submit and RevenueCat access already exists and is active.
 - The downloaded JSON key is saved locally as ignored file `./google-play-key.json`; keep it ignored by Git and never paste its contents into docs, chat, or screenshots.
-- Set up a Google Payments merchant account before creating Play subscription products; Play Console currently blocks the subscriptions page until that is done.
+- Set up a Google Payments merchant account before creating Play subscription products; Play Console currently blocks the subscriptions page until that is done. A logged-in 2026-06-14 retry exposed payments hold `OR-ICRA-02` and a Google Payments card-verification requirement for Visa ending `7053`, which must be completed privately before Play product creation can continue.
 - Plan for Play production access to require a closed testing release with at least 12 opted-in testers for at least 14 days before applying for production.
 - Confirm `eas.json` points Android production submit at `./google-play-key.json` and track `internal`.
 - Run `eas submit --platform android --latest` only after the AAB exists and the service account is ready.
