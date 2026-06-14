@@ -143,6 +143,7 @@ Current Play Console state on 2026-06-14:
 - EAS submission ID: `cb58e3e5-a4c9-4935-af29-88065f7c3f28`.
 - EAS submission details: `https://expo.dev/accounts/ilyasu/projects/ryvro/submissions/cb58e3e5-a4c9-4935-af29-88065f7c3f28`.
 - Release track: `internal`; release status requested through EAS Submit: `COMPLETED`; rollout target: internal testing only.
+- Android Publisher API readback on 2026-06-14 at 18:00 UTC created a temporary edit, read tracks, then discarded the edit. It confirmed package `com.ryvro.shiftplanner` has internal track release name `1.0.0`, status `completed`, and versionCode `8`; production, beta, and alpha tracks had no releases.
 - The tester setup page says up to 100 testers can join internal tests and requires an email list before saving tester access.
 - The join link will appear after the app is published to the test.
 - Production access requires a closed testing release, at least 12 opted-in testers, and at least 14 days of closed testing before applying for production.
