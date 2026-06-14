@@ -405,11 +405,8 @@ module.exports = ({ config = {} }) => {
     delete expoUpdates.url;
   }
 
-  // Use appVersion runtime in non-production to avoid local-vs-cloud fingerprint drift in dev builds.
-  // Keep fingerprint policy in production to protect OTA/native compatibility.
-  const runtimeVersion =
-    config.runtimeVersion ||
-    (appEnv === 'production' ? { policy: 'fingerprint' } : { policy: 'appVersion' });
+  // Use appVersion runtime to avoid local-vs-cloud fingerprint drift during store builds.
+  const runtimeVersion = config.runtimeVersion || { policy: 'appVersion' };
   const plugins = ensurePlugin(
     ensurePlugin(config.plugins || ryvroPlugins, './plugins/withNonModularHeaders'),
     './plugins/withFirebaseCoreConfigure'
