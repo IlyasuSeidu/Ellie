@@ -268,8 +268,8 @@ These items cannot be finished from the repo alone:
 - Google Play internal testing and Android QA. The Play app-title and `com.ryvro.shiftplanner` package reservation are complete with draft app ID `4974146267407561805`, and the Play service account plus ignored local key are recorded. The remaining Play work is Google Payments merchant-account setup before subscriptions, internal tester-list setup, Android internal testing release, Play Console form completion, Play closed testing with at least 12 opted-in testers for at least 14 days before production access, physical Android QA from a store-signed build, screenshots, and final submission evidence.
 - Logged-in social handle reservation.
 - Firebase Auth email-template evidence for sender `Ryvro Support`, reply-to `support@getryvro.com`, and action domain `getryvro.com`.
-- Real production `.env` values, `npm run release:env:check`, and `npm run release:env:push`.
-- RevenueCat iOS app completion, App Store Connect in-app purchase key, the missing iOS `appl_...` SDK key, App Store and Google Play subscription products, merchant-account-gated Play base plans, offering `default`, and sandbox purchase/cancel/restore QA. The local ignored `.env` now passes every production env preflight item except `REVENUECAT_IOS_KEY` and `EXPO_PUBLIC_REVENUECAT_IOS_KEY`.
+- Firebase Auth email-template evidence remains pending; real production `.env` values, `npm run release:env:check`, `npm run release:env:push`, and EAS Firebase file-variable push are already recorded as passed in the launch evidence log.
+- App Store subscription product metadata completion, Google Play merchant-account-gated subscription base plans, RevenueCat product availability checks, and sandbox purchase/cancel/restore QA. RevenueCat apps, entitlement `pro`, offering `default`, and the mirrored iOS and Android SDK keys in the ignored local `.env` are already recorded as configured.
 - Owner legal/content review for the live privacy and terms pages, plus store-console use of the live `getryvro.com` URLs.
 - App Store privacy form, Google Play Data safety form, content rating, export compliance, EU trader status, reviewer account evidence, store screenshots, TestFlight iPhone QA, physical Android QA, and final store submission evidence.
 
@@ -277,7 +277,7 @@ Already recorded account-side evidence that should not be reopened as generic bl
 
 - App Store Connect app-name reservation is complete for `Ryvro Shift Planner` with ASC app ID `6776994726`.
 - `getryvro.com` is purchased, DNS-controlled, on Firebase Hosting with active HTTPS, and serving launch pages.
-- Firebase project `ryvro-shift-planner`, iOS app, Android app, native service-file metadata, OAuth/Auth setup evidence, deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests are recorded in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`. The remaining Firebase blocker is email-template evidence plus production env/EAS push evidence, not project or backend creation.
+- Firebase project `ryvro-shift-planner`, iOS app, Android app, native service-file metadata, OAuth/Auth setup evidence, deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests are recorded in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`; production env preflight, EAS production environment push, and EAS Firebase file-variable push are also recorded as passed. The remaining Firebase blocker is email-template evidence, not project, backend, production environment, or EAS environment setup.
 
 ## Merge Readiness
 

@@ -1994,6 +1994,12 @@ describe('Ryvro environment template', () => {
     expect(testingStrategy).toContain('the owner handoff preflight');
     expect(testingStrategy).toContain('fresh onboarding into the Universal Shift Builder');
     expect(testingStrategy).toContain('physical iOS/Android device smoke tests');
+    expect(testingStrategy).toContain(
+      'Production environment push is already recorded separately as passed evidence.'
+    );
+    expect(testingStrategy).not.toContain(
+      'production environment push, TestFlight/internal-track install proof'
+    );
     expect(testingStrategy).toContain('SignInScreen');
     expect(testingStrategy).toContain('Continue with Google');
     expect(testingStrategy).toContain('Continue with Apple');
@@ -2738,7 +2744,9 @@ describe('Ryvro environment template', () => {
       'Already recorded account-side evidence that should not be reopened as generic blockers'
     );
     expect(readinessReport).toContain('ASC app ID `6776994726`');
-    expect(readinessReport).toContain('The remaining Firebase blocker is email-template evidence');
+    expect(readinessReport).toContain(
+      'The remaining Firebase blocker is email-template evidence, not project, backend, production environment, or EAS environment setup.'
+    );
     expect(readinessReport).toContain(
       'deriving the Google Sign-In iOS URL scheme from the Ryvro OAuth client ID'
     );
@@ -2788,7 +2796,15 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests'
     );
-    expect(readinessReport).toContain('The remaining Firebase blocker is email-template evidence');
+    expect(readinessReport).toContain(
+      'The remaining Firebase blocker is email-template evidence, not project, backend, production environment, or EAS environment setup.'
+    );
+    expect(readinessReport).not.toContain(
+      'The remaining Firebase blocker is email-template evidence plus production env/EAS push evidence'
+    );
+    expect(readinessReport).not.toContain(
+      'The local ignored `.env` now passes every production env preflight item except'
+    );
     expect(readinessReport).toContain(
       'Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy'
     );

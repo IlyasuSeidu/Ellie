@@ -170,7 +170,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
     'deployed `ryvroBrain`, deployed `parseShiftScheduleDescription`, and backend smoke tests',
     readinessReport,
   ],
-  ['The remaining Firebase blocker is email-template evidence', readinessReport],
+  [
+    'The remaining Firebase blocker is email-template evidence, not project, backend, production environment, or EAS environment setup.',
+    readinessReport,
+  ],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'owner launch handoff'));
 
 [
