@@ -90,7 +90,8 @@ Do this before purchase QA and store review.
 - App Store Connect In-App Purchase key is generated and configured in RevenueCat. Keep only non-secret Key ID and Issuer ID in tracked evidence.
 - Configure entitlement ID `pro` with display name `Ryvro Pro`.
 - App Store Connect product shells now exist: subscription group `Ryvro Pro` ID `22156776`, monthly product `ryvro_pro_monthly` Apple ID `6780186030`, and annual product `ryvro_pro_annual` Apple ID `6780186069`; both products still show `Missing Metadata`.
-- Finish App Store product availability, pricing, localization, trial decision, review notes, screenshot or paywall image metadata, and RevenueCat App Store mapping.
+- English (Australia) localizations and review notes are saved for both App Store products.
+- Finish App Store product availability, pricing, trial decision, review screenshot or paywall image metadata, RevenueCat App Store mapping, and sandbox purchase QA.
 - Create Google Play products `ryvro_pro_monthly` and `ryvro_pro_annual`.
 - Attach both products to entitlement `pro`.
 - Offering ID `default` exists with monthly and annual packages from the current RevenueCat product records.

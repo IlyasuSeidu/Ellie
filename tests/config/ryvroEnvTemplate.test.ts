@@ -3885,6 +3885,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Apple ID `6780186030`');
     expect(launchEvidenceLog).toContain('Apple ID `6780186069`');
     expect(launchEvidenceLog).toContain('status `Missing Metadata`');
+    expect(launchEvidenceLog).toContain('English (Australia) localizations');
+    expect(launchEvidenceLog).toContain('Monthly schedule tools and assistant access.');
+    expect(launchEvidenceLog).toContain('Full-year schedule tools and assistant access.');
+    expect(launchEvidenceLog).toContain('review notes filled');
     expect(launchEvidenceLog).toContain('package `$rc_annual` / Annual access');
     expect(launchEvidenceLog).toContain('paywall screenshot metadata if required');
     expect(launchEvidenceLog).toContain('active for the testing track');
