@@ -939,6 +939,22 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain(
       'Play subscription products/base plans and final Publishing overview review submission remain pending'
     );
+    expect(releaseTasks).toContain(
+      '[x] RevenueCat entitlement `pro` and offering `default` configured with monthly and annual package records'
+    );
+    expect(releaseTasks).toContain('store validation and sandbox purchase QA remain open below');
+    expect(releaseTasks).toContain(
+      '[ ] App Store Connect subscription products `ryvro_pro_monthly` + `ryvro_pro_annual` launch-ready'
+    );
+    expect(releaseTasks).toContain(
+      'product shells, localization, review notes, all-country availability, and pricing are saved'
+    );
+    expect(releaseTasks).toContain(
+      'contact phone save, screenshots, age rating, export compliance, EU trader status, subscription metadata, and final review submission remain'
+    );
+    expect(releaseTasks).toContain(
+      'App content declarations are saved, but Play subscription products/base plans and final Publishing overview review submission remain'
+    );
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(script).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
