@@ -242,8 +242,8 @@ cd android && ./gradlew bundleRelease
 
 **Build and store:**
 
-- [ ] iOS archive built with production bundle ID
-- [ ] Android AAB built with production ID + valid release signing
+- [x] iOS archive built with production bundle ID — production-auth-ready EAS iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses `com.ryvro.shiftplanner`, version `1.0.0`, build `4`
+- [x] Android AAB built with production ID + valid release signing — EAS Android production AAB `build-1781452667575.aab` used package `com.ryvro.shiftplanner`, versionCode `8`, and was accepted on the Play internal track
 - [ ] Manual smoke tests pass on physical iOS + Android devices (all smoke matrix items)
 - [ ] Privacy Policy live URL and owner review complete — live URL exists and mentions RevenueCat + subscription terms; owner legal/content review still pending (Task 19)
 - [ ] App Store Connect metadata + privacy form + in-app purchase section completed from `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`

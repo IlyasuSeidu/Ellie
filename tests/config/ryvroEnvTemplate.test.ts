@@ -888,8 +888,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27507658165`');
-    expect(script).toContain('commit `df55775`');
+    expect(script).toContain('CI run `27508431698`');
+    expect(script).toContain('commit `1b31255`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1951,8 +1951,8 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27507658165`');
-    expect(readme).toContain('commit `df55775`');
+    expect(readme).toContain('GitHub Actions CI run `27508431698`');
+    expect(readme).toContain('commit `1b31255`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Firebase Auth email-template action URL resolution');
@@ -2615,10 +2615,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27507658165`');
-    expect(readinessReport).toContain('commit `df55775`');
+    expect(readinessReport).toContain('CI run `27508431698`');
+    expect(readinessReport).toContain('commit `1b31255`');
     expect(readinessReport).toContain(
-      'Latest pushed GitHub Actions check for PR #1 passed on commit `df55775`'
+      'Latest pushed GitHub Actions check for PR #1 passed on commit `1b31255`'
     );
     expect(readinessReport).toContain('CI run `27213964871`');
     expect(readinessReport).toContain('commit `13e1810`');
@@ -3626,8 +3626,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Latest pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).toContain('launch-template copy guard');
-    expect(ownerRunbook).toContain('CI run `27507658165`');
-    expect(ownerRunbook).toContain('commit `df55775`');
+    expect(ownerRunbook).toContain('CI run `27508431698`');
+    expect(ownerRunbook).toContain('commit `1b31255`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(submitBlockerTriage).toContain(
       'scans the owner evidence packet for high-risk secret material'
