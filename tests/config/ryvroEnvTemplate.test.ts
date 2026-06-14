@@ -921,6 +921,7 @@ describe('Ryvro environment template', () => {
     expect(result.stderr).not.toContain('RevenueCat apps still has pending owner evidence');
     expect(result.stderr).not.toContain('Entitlement still has pending owner evidence');
     expect(result.stderr).not.toContain('Default offering still has pending owner evidence');
+    expect(result.stderr).not.toContain('App Store privacy form still has pending owner evidence');
     expect(result.stderr).toContain('App Store products still has pending owner evidence');
     expect(result.stderr).toContain('Google Play products still has pending owner evidence');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
@@ -3640,6 +3641,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Do not record payments profile address');
     expect(launchEvidenceLog).toContain('OR-ICRA-02');
     expect(launchEvidenceLog).toContain('Visa ending `7053`');
+    expect(launchEvidenceLog).toContain('App Store privacy form');
+    expect(launchEvidenceLog).toContain('Published a few seconds ago by Ilyasu Seidu');
+    expect(launchEvidenceLog).toContain('Data Linked to You');
+    expect(launchEvidenceLog).toContain('not used for tracking');
     expect(launchEvidenceLog).toContain(
       'owner legal/content review confirms the live policy matches'
     );
@@ -4229,6 +4234,10 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`'
     );
+    expect(appStoreTestFlightHandoff).toContain('App Store Connect App Privacy was completed');
+    expect(appStoreTestFlightHandoff).toContain('Published a few seconds ago by Ilyasu Seidu');
+    expect(appStoreTestFlightHandoff).toContain('Data Linked to You');
+    expect(appStoreTestFlightHandoff).toContain('not used for tracking');
     expect(appStoreTestFlightHandoff).toContain('EU trader-status warning');
     expect(appStoreTestFlightHandoff).toContain('Digital Services Act / EU trader status');
     expect(appStoreTestFlightHandoff).toContain('public trader contact details are correct');
