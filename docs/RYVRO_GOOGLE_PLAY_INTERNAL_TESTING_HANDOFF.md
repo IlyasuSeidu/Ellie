@@ -46,6 +46,7 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - Android emulator attempt on 2026-06-07 used the Play Console Android app on `Pixel_9_Pro` / Android API 36, selected `Ryvro`, and tapped `Verify`. Google rejected the emulator with `You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.` Treat this as requiring a physical Android 10 or newer device signed into the owner Google account.
 - Do not record the payments profile address, payment details, or full profile contents.
 - Next owner action: finish the internal testing tester list, set up the Google Payments merchant account for subscriptions, rebuild after the final production environment passes, submit the latest Android build to internal testing, then complete physical Android QA.
+- Later Chrome recheck on 2026-06-14 after the owner reported Play Console configuration complete still showed Play subscriptions blocked by `Missing requirements for accessing this page`. The `Set up a merchant account` entry opened the Play payments profile area, but no completed merchant account or subscription-product controls were visible.
 
 ## App Creation
 
@@ -110,6 +111,7 @@ Current Play Console state on 2026-06-14:
 - The join link will appear after the app is published to the test.
 - Production access requires a closed testing release, at least 12 opted-in testers, and at least 14 days of closed testing before applying for production.
 - The Play subscriptions page says `Missing requirements for accessing this page` and requires setting up a Google Payments merchant account before subscription products can be created.
+- A later owner-session recheck opened the payments profile area from that blocker, but the page did not show a completed merchant account or any controls for creating `ryvro_pro_monthly` or `ryvro_pro_annual`.
 
 Record:
 
