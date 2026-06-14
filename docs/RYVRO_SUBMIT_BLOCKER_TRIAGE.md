@@ -105,9 +105,9 @@ Do this only after real RevenueCat, legal URLs, backend URLs, and EAS production
 - App Store Connect already has version `1.0.0`, build `2`, from EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, and TestFlight visual inspection showed build `2` as `Ready to Submit`.
 - Do not reuse iOS build number `2` for the next production-auth-ready binary. Production EAS builds now use `autoIncrement: true`; the first stopped Codex upload consumed remote build number `3` without creating a build record, and the current production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses iOS build number `4`.
 - Check Android `versionCode`; if it is still `1` or otherwise already used for a Play upload, run `eas build:version:set --platform android --profile production` before rebuilding.
-- Wait for iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish, then inspect the IPA for bundle/display/version proof before submit.
+- iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` finished, and IPA inspection confirmed `Ryvro`, `com.ryvro.shiftplanner`, version `1.0.0`, build `4`, production Google iOS URL scheme, and no retired Ellie/ShiftSync text-readable bundle strings.
 - Rebuild Android production AAB.
-- Submit iOS build `4` to TestFlight after it finishes.
+- EAS Submit uploaded iOS build `4` to App Store Connect through submission `cd86140b-6b5f-4707-9fa1-fde6beda10fa`; wait for Apple processing to finish, then attach/distribute it to the internal TestFlight group if App Store Connect requires a manual action.
 - Install and test on a real iPhone.
 - Submit Android build to Play internal testing.
 - Install and test on a physical Android device.

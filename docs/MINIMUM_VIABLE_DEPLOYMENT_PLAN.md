@@ -186,9 +186,9 @@ Current status:
 
 - Initial v1 app version is pinned across tracked config: Expo `version` is `1.0.0`, Android `versionName` is `1.0.0`, and tracked fallback build values remain iOS `buildNumber` / `CURRENT_PROJECT_VERSION` `1` plus Android `versionCode` `1`.
 - EAS uses remote app version source for store builds, so remote EAS build numbers are the source of truth for submitted binaries.
-- The latest submitted iOS evidence is EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, version `1.0.0`, iOS build number `2`, uploaded to App Store Connect through EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`.
+- The latest submitted iOS evidence is production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120`, version `1.0.0`, iOS build number `4`, uploaded to App Store Connect through EAS Submit `cd86140b-6b5f-4707-9fa1-fde6beda10fa`; Apple reported that the binary was uploaded and is processing for TestFlight.
 - App Store Connect visual inspection on 2026-06-06 showed iOS build `2` as `Ready to Submit` and attached to internal TestFlight group `Ryvro iPhone QA`, but the build still contains placeholder Firebase/OAuth values and is not production-auth-ready.
-- Production EAS builds now use `autoIncrement: true`. A stopped 2026-06-14 upload consumed remote iOS build number `3` without creating a build record, and current production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` is queued as version `1.0.0`, build number `4`, commit `1c4a8acbf05d804a363e3efe63f3010c34d6a3e8`.
+- Production EAS builds now use `autoIncrement: true`. A stopped 2026-06-14 upload consumed remote iOS build number `3` without creating a build record; build `4` finished, passed IPA identity inspection, and was submitted to App Store Connect.
 - Android versionCode still needs to be checked and incremented before the next Play upload.
 
 Implementation steps:
@@ -462,7 +462,8 @@ Day 7:
 - [x] Pin first-store-build iOS build number + Android versionCode across tracked config
 - [x] Upload iOS build number `2` to App Store Connect / TestFlight for internal testing
 - [x] Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload
-- [ ] Wait for production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish, submit it to TestFlight, and capture iPhone QA
+- [x] Finish and submit production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` / build `4` to App Store Connect for TestFlight processing
+- [ ] Capture TestFlight processing completion and iPhone QA for build `4`
 - [ ] Increment Android versionCode before the next Play upload
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot

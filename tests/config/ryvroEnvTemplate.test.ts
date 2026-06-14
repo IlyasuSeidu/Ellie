@@ -1832,7 +1832,7 @@ describe('Ryvro environment template', () => {
     );
     expect(deploymentPlan).toContain('Production EAS builds now use `autoIncrement: true`');
     expect(deploymentPlan).toContain(
-      'current production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
+      'uploaded to App Store Connect through EAS Submit `cd86140b-6b5f-4707-9fa1-fde6beda10fa`'
     );
     expect(deploymentPlan).not.toContain('## A1) Replace placeholder app identifiers');
     expect(deploymentPlan).toContain(
@@ -1851,14 +1851,14 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain('EAS uses remote app version source');
     expect(deploymentPlan).toContain('npm run release:versions:get');
     expect(deploymentPlan).toContain(
-      'The latest submitted iOS evidence is EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`'
+      'The latest submitted iOS evidence is production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
     );
     expect(deploymentPlan).toContain('production iOS now auto-increments through EAS');
     expect(deploymentPlan).toContain(
       'Pin first-store-build iOS build number + Android versionCode across tracked config'
     );
     expect(deploymentPlan).toContain(
-      'Wait for production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
+      'Finish and submit production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
     );
     expect(deploymentPlan).toContain('Increment Android versionCode before the next Play upload');
     expect(deploymentPlan).toContain(
@@ -2390,21 +2390,17 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('Repo-side offline basics are now covered');
     expect(releaseTasks).toContain('Physical-device QA still has to prove');
     expect(releaseTasks).toContain(
-      'EAS iOS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, version `1.0.0`, build `2`'
-    );
-    expect(releaseTasks).toContain(
       'production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120`, version `1.0.0`, build `4`'
     );
     expect(releaseTasks).toContain(
       'Build production iOS binary after running `npm run release:versions:get`'
     );
     expect(releaseTasks).toContain('bumping remote EAS versions with `eas build:version:set`');
-    expect(releaseTasks).toContain('App Store Connect visual inspection showed build `2`');
-    expect(releaseTasks).toContain('must finish before TestFlight submit and iPhone QA');
+    expect(releaseTasks).toContain('IPA inspection confirmed `Ryvro`');
     expect(releaseTasks).toContain(
       'EAS Android AAB `318b4e8f-b344-4ed9-8bcd-a5805093339d` proves package `com.ryvro.shiftplanner`'
     );
-    expect(releaseTasks).toContain('EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`');
+    expect(releaseTasks).toContain('EAS Submit `cd86140b-6b5f-4707-9fa1-fde6beda10fa`');
     expect(releaseTasks).toContain(
       'Install Play internal testing build or a store-signed Android QA build'
     );
@@ -4086,7 +4082,7 @@ describe('Ryvro environment template', () => {
       'current production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses iOS build number `4`'
     );
     expect(submitBlockerTriage).toContain(
-      'Wait for iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish'
+      'iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` finished'
     );
     expect(submitBlockerTriage).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(submitBlockerTriage).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
@@ -4189,7 +4185,8 @@ describe('Ryvro environment template', () => {
     );
     expect(appStoreTestFlightHandoff).toContain('build ID `601af1ee-5192-442f-9caa-deef5b9b6120`');
     expect(appStoreTestFlightHandoff).toContain('iOS build number `4`');
-    expect(appStoreTestFlightHandoff).toContain('status `IN_PROGRESS`');
+    expect(appStoreTestFlightHandoff).toContain('final status `FINISHED`');
+    expect(appStoreTestFlightHandoff).toContain('cd86140b-6b5f-4707-9fa1-fde6beda10fa');
     expect(appStoreTestFlightHandoff).toContain(
       'EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`'
     );

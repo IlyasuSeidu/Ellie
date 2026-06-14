@@ -161,10 +161,7 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
     'current production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses iOS build number `4`',
     submitBlockerTriage,
   ],
-  [
-    'Wait for iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` to finish',
-    submitBlockerTriage,
-  ],
+  ['iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` finished', submitBlockerTriage],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['Firebase project `ryvro-shift-planner`, iOS app, Android app', readinessReport],
@@ -443,6 +440,7 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['final status `FINISHED`', appStoreTestFlightHandoff],
   ['BQG8N6UP7Y', appStoreTestFlightHandoff],
   ['b53825db-0f5c-4f56-b19e-c5af5f1999f3', appStoreTestFlightHandoff],
+  ['cd86140b-6b5f-4707-9fa1-fde6beda10fa', appStoreTestFlightHandoff],
   ['Apple was processing the binary after upload', appStoreTestFlightHandoff],
   ['Internal TestFlight group `Ryvro iPhone QA`', appStoreTestFlightHandoff],
   [
@@ -825,7 +823,7 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
-  /\|\s*21\s*\|[\s\S]*71fde2ff-aa36-4741-aa69-e4f11ba30acd[\s\S]*b53825db-0f5c-4f56-b19e-c5af5f1999f3[\s\S]*601af1ee-5192-442f-9caa-deef5b9b6120[\s\S]*build `4`/,
+  /\|\s*21\s*\|[\s\S]*601af1ee-5192-442f-9caa-deef5b9b6120[\s\S]*build `4`[\s\S]*IPA inspection confirmed/,
   'release task 21'
 );
 requireMatches(
