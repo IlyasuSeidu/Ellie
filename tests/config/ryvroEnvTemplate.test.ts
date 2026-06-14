@@ -2415,6 +2415,15 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain(
       'Android Publisher API readback confirmed internal track release `1.0.0`, status `completed`, versionCode `8`'
     );
+    expect(releaseTasks).toContain(
+      'Submit Android to Google Play internal track with the service account key and `eas submit --platform android --latest`'
+    );
+    expect(releaseTasks).toContain(
+      'EAS Submit `cb58e3e5-a4c9-4935-af29-88065f7c3f28` uploaded versionCode `8` to the Play internal track'
+    );
+    expect(releaseTasks).not.toContain(
+      'Submit Android: set up Google Play Service Account key, run `eas submit --platform android --latest`'
+    );
     expect(releaseTasks).not.toContain(
       'EAS Android AAB `318b4e8f-b344-4ed9-8bcd-a5805093339d` proves package `com.ryvro.shiftplanner`'
     );
@@ -3590,6 +3599,13 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas build:version:set --platform android --profile production');
     expect(ownerRunbook).toContain('eas build --platform ios --profile production');
     expect(ownerRunbook).toContain('eas build --platform android --profile production');
+    expect(ownerRunbook).toContain(
+      'Android internal-track submission is already complete for versionCode `8`'
+    );
+    expect(ownerRunbook).toContain('tester-list and opt-in-link evidence');
+    expect(ownerRunbook).not.toContain(
+      'Submit Android to internal testing first after `eas submit --platform android --latest`'
+    );
     expect(ownerRunbook).toContain('Physical iOS and Android smoke tests');
     expect(ownerRunbook).toContain('TestFlight iPhone');
     expect(ownerRunbook).toContain('TestFlight group, tester invite, installed bundle ID');

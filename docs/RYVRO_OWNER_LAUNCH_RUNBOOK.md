@@ -295,8 +295,8 @@ npm run release:submit:check
 
 - Upload screenshots, metadata, privacy/data forms, content rating, and subscription details.
 - Submit iOS through App Store Connect after `eas submit --platform ios --latest`.
-- Submit Android to internal testing first after `eas submit --platform android --latest`.
-- Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` before Android submit and production promotion.
+- Android internal-track submission is already complete for versionCode `8`; use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` to confirm tester-list and opt-in-link evidence before physical Android QA.
+- Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` before any Android resubmission with `eas submit --platform android --latest` or production promotion.
 - Promote Android from internal testing to production only after internal track smoke passes.
 
 Evidence to record:
