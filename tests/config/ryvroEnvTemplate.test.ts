@@ -913,10 +913,11 @@ describe('Ryvro environment template', () => {
     expect(result.stderr).not.toContain(
       'Google Play service account still has pending owner evidence'
     );
-    expect(result.stderr).toContain(
+    expect(result.stderr).not.toContain(
       'App Store Connect in-app purchase key still has pending owner evidence'
     );
-    expect(result.stderr).toContain('RevenueCat SDK keys still has pending owner evidence');
+    expect(result.stderr).not.toContain('RevenueCat SDK keys still has pending owner evidence');
+    expect(result.stderr).toContain('RevenueCat apps still has pending owner evidence');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
@@ -3162,14 +3163,12 @@ describe('Ryvro environment template', () => {
     );
     expect(externalSetup).toContain('REST API identifier `appab0f4b628d`');
     expect(externalSetup).toContain('upload the Google Play service account credentials JSON');
-    expect(externalSetup).toContain('iOS app: the App Store app form was filled');
-    expect(externalSetup).toContain('In-App Purchase Key ID and In-App Purchase Issuer ID');
-    expect(externalSetup).toContain('App Store Connect in-app purchase p8 key');
+    expect(externalSetup).toContain('iOS app: saved as `Ryvro (App Store)`');
+    expect(externalSetup).toContain('REST API identifier `appd8a95a73e0`');
+    expect(externalSetup).toContain('App Store Connect in-app purchase key');
     expect(externalSetup).toContain('Do not use RevenueCat `test_` API keys');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
-    expect(externalSetup).toContain(
-      'Fill these in `.env` from the `.env.production.example` slots'
-    );
+    expect(externalSetup).toContain('The ignored local `.env` now has these values filled');
     expect(externalSetup).toContain(
       '`npm run release:env:check` passes with the real RevenueCat native/public key mirrors before secrets are pushed to EAS'
     );
@@ -3853,7 +3852,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
     expect(launchEvidenceLog).toContain('category `Productivity`');
     expect(launchEvidenceLog).toContain('`Native Apple` plus `Native Android`');
-    expect(launchEvidenceLog).toContain('connected to the Test Store only');
+    expect(launchEvidenceLog).toContain('not Test Store only');
     expect(launchEvidenceLog).toContain('`Ryvro (Play Store)`');
     expect(launchEvidenceLog).toContain('package `com.ryvro.shiftplanner`');
     expect(launchEvidenceLog).toContain('Google Play service account');
@@ -3864,8 +3863,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('`.p8` private key kept out of Git');
     expect(launchEvidenceLog).toContain('RevenueCat SDK keys');
     expect(launchEvidenceLog).toContain('iOS `appl_...` and Android `goog_...` keys');
-    expect(launchEvidenceLog).toContain('now mirrors it into `REVENUECAT_ANDROID_KEY`');
-    expect(launchEvidenceLog).toContain('missing iOS RevenueCat key values');
+    expect(launchEvidenceLog).toContain('mirrors the iOS key into `REVENUECAT_IOS_KEY`');
+    expect(launchEvidenceLog).toContain('mirrors the Android key into `REVENUECAT_ANDROID_KEY`');
+    expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appd8a95a73e0');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d');
     expect(launchEvidenceLog).toContain('REST API identifier `appab0f4b628d`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
@@ -3888,7 +3888,8 @@ describe('Ryvro environment template', () => {
     );
     expect(launchEvidenceLog).toContain('offering/package tested, paywall metadata shown');
     expect(launchEvidenceLog).toContain('`Ryvro (App Store)`');
-    expect(launchEvidenceLog).toContain('In-App Purchase Key ID and In-App Purchase Issuer ID');
+    expect(launchEvidenceLog).toContain('Key ID `YMBX7HL47H`');
+    expect(launchEvidenceLog).toContain('Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f`');
     expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');

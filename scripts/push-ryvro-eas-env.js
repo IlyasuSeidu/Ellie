@@ -4,6 +4,7 @@
 
 const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 
 function parseArgs(argv) {
@@ -46,6 +47,26 @@ function run(command, args) {
   }
 }
 
+function createEasPushEnvFile(envPath) {
+  const source = fs.readFileSync(envPath, 'utf8');
+  const lines = source.split(/\r?\n/);
+  const pushLines = lines.filter((line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) return true;
+
+    const separatorIndex = trimmed.indexOf('=');
+    if (separatorIndex === -1) return true;
+
+    const value = trimmed.slice(separatorIndex + 1).trim();
+    return value.length > 0;
+  });
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ryvro-eas-env-'));
+  const pushPath = path.join(tempDir, path.basename(envPath));
+
+  fs.writeFileSync(pushPath, pushLines.join('\n'), { mode: 0o600 });
+  return { pushPath, tempDir };
+}
+
 function main() {
   const { envFile, force } = parseArgs(process.argv.slice(2));
   const envPath = path.resolve(process.cwd(), envFile);
@@ -57,13 +78,18 @@ function main() {
 
   run('node', ['scripts/verify-ryvro-production-env.js', '--env-file', envFile]);
 
-  const easArgs = ['eas-cli', 'env:push', 'production', '--path', envFile];
+  const { pushPath, tempDir } = createEasPushEnvFile(envPath);
+  const easArgs = ['eas-cli', 'env:push', 'production', '--path', pushPath];
   if (force) {
     easArgs.push('--force');
   }
 
   console.log('Ryvro production env check passed. Pushing checked values to EAS production.');
-  run('npx', easArgs);
+  try {
+    run('npx', easArgs);
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
   console.log(
     [
       'Plain production env values are pushed.',

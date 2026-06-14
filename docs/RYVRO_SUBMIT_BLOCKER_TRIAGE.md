@@ -18,7 +18,7 @@ Expected current result: the command fails until the remaining owner evidence ro
 
 The same command scans the owner evidence packet for high-risk secret material, including service-account private-key JSON fields, private-key blocks, Firebase API keys, RevenueCat SDK keys, and EAS access tokens. If it fails for a secret scan item, remove the secret from the tracked file, rotate the exposed key in the owning console, and replace the evidence with a non-secret screenshot reference or dashboard note.
 
-Latest checked on 2026-06-14: `npm run release:native:check`, `npm run release:store:check`, and `npm run release:owner:check` passed. Google Play app creation, package reservation, Google Play Android Developer API enablement, Play Console service-account invite, and local ignored `./google-play-key.json` creation are now recorded as passed. A later logged-in Chrome recheck after the owner reported Play Console configuration complete still showed the Play subscriptions page blocked by `Missing requirements for accessing this page` and a required Google Payments merchant account. The Play payments profile flow opened, but did not expose a completed merchant account or subscription-product controls. A logged-in App Store Connect recheck reached the App Store Connect API page, but API access permission is still required before the in-app purchase key can be created for RevenueCat. The ignored local `.env` was updated from current Ryvro evidence, and `npm run release:env:check` now fails only because the RevenueCat iOS SDK key and matching Expo public iOS key are still missing. `npm run release:submit:check` still fails because other owner evidence rows remain pending. `npm run release:clearance` still requires manual legal/social evidence; public checks show `getryvro.com` is registered and resolves, but formal trademark clearance and logged-in social-handle reservation remain owner-side proof items.
+Latest checked on 2026-06-14: `npm run release:native:check`, `npm run release:store:check`, and `npm run release:owner:check` passed. Google Play app creation, package reservation, Google Play Android Developer API enablement, Play Console service-account invite, and local ignored `./google-play-key.json` creation are now recorded as passed. A later logged-in Chrome recheck after the owner reported Play Console configuration complete still showed the Play subscriptions page blocked by `Missing requirements for accessing this page` and a required Google Payments merchant account. The Play payments profile flow opened, but did not expose a completed merchant account or subscription-product controls. App Store Connect API access is available, the App Store Connect in-app purchase key was generated, RevenueCat iOS app `appd8a95a73e0` was saved, the ignored local `.env` has real iOS and Android RevenueCat SDK key mirrors, `npm run release:env:check` passed, `npm run release:env:push -- --force` passed, and `npm run release:env:files -- --force` created the Firebase file variables. `npm run release:submit:check` still fails because other owner evidence rows remain pending. `npm run release:clearance` still requires manual legal/social evidence; public checks show `getryvro.com` is registered and resolves, but formal trademark clearance and logged-in social-handle reservation remain owner-side proof items.
 
 Previously cleared submit-gate items: `Domain control for getryvro.com`, `Support page/mailbox`, and Android service account key path `./google-play-key.json` no longer appear in submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, Google Play Console email-delivery proof to `support@getryvro.com`, Play service-account invitation, and local ignored key-file presence were recorded as passed.
 
@@ -28,8 +28,8 @@ The remaining checked blocker families are:
 - Google Play internal testing, Android QA, and Play submission
 - Social handle reservation
 - Privacy and terms owner content review plus store-console use of the live `getryvro.com` URLs
-- Firebase Auth email templates, production env preflight, and EAS production environment push
-- Production `.env`, `npm run release:env:check`, removal of retired Ellie env keys, and EAS production environment push
+- Firebase Auth email templates
+- Fresh production builds after the now-pushed EAS production environment
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
 - App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
 
@@ -75,8 +75,10 @@ Do this before rebuilding production binaries.
 - `OPENAI_API_KEY` is stored in Firebase Secret Manager, both `ryvroBrain` and `parseShiftScheduleDescription` are deployed, and backend provider smoke tests have passed.
 - Finish Firebase Auth email-template evidence for the custom action URL or action domain. The remaining problem is that the console save produced an error and the API patch returned `EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED`, so this still needs owner-console or support resolution evidence before submission.
 - Fill real production `.env` values. Current local ignored `.env` already passes Ryvro Firebase, Google OAuth, backend URL, legal/support URL, RevenueCat Android key, and entitlement checks.
-- Run `npm run release:env:check`. Current remaining failures are only `REVENUECAT_IOS_KEY` and `EXPO_PUBLIC_REVENUECAT_IOS_KEY`.
-- Push checked production values to EAS with `npm run release:env:push`.
+- Production `.env` now passes `npm run release:env:check` with real RevenueCat iOS and Android SDK key mirrors.
+- Checked production values were pushed to EAS with `npm run release:env:push -- --force`.
+- Firebase native service files were pushed to EAS as file variables with `npm run release:env:files -- --force`.
+- Rebuild production binaries after any remaining Firebase email-template decision and store-product setup work that affects launch behavior.
 
 Evidence source: `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md`.
 
@@ -84,13 +86,13 @@ Evidence source: `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md`.
 
 Do this before purchase QA and store review.
 
-- Confirm Ryvro iOS and Android apps in RevenueCat.
-- Request App Store Connect API access if the Integrations page still says permission is required.
+- Ryvro iOS and Android apps are confirmed in RevenueCat.
+- App Store Connect In-App Purchase key is generated and configured in RevenueCat. Keep only non-secret Key ID and Issuer ID in tracked evidence.
 - Configure entitlement ID `pro` with display name `Ryvro Pro`.
 - Create App Store products `ryvro_pro_monthly` and `ryvro_pro_annual`.
 - Create Google Play products `ryvro_pro_monthly` and `ryvro_pro_annual`.
 - Attach both products to entitlement `pro`.
-- Create offering ID `default` with monthly and annual packages.
+- Offering ID `default` exists with monthly and annual packages from the current RevenueCat product records.
 - Run sandbox purchase, cancel, relock, and restore tests.
 
 Evidence source: `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md`.

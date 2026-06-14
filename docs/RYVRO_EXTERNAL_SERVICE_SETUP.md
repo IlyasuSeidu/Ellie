@@ -165,17 +165,19 @@ Verification:
 
 ## RevenueCat
 
-Current non-secret dashboard state from logged-in owner-console work on 2026-06-05:
+Current non-secret dashboard state from logged-in owner-console work through 2026-06-14:
 
 - Project: `Ryvro`
 - Project URL path: `https://app.revenuecat.com/projects/42dccd7e/overview`
 - Category: `Productivity`
 - Starting platforms: `Native Apple` and `Native Android`
-- Setup status: dashboard still shows setup `(0 of 6)` and Test Store only.
+- Setup status: Ryvro project setup is in progress and still needs real store-product validation before purchase QA.
 - Android app: saved as `Ryvro (Play Store)` with package `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`, and REST API identifier `appab0f4b628d`.
-- Android remaining work: upload the Google Play service account credentials JSON, save the RevenueCat app settings, and configure Google developer notifications after Play Console setup is complete.
-- iOS app: the App Store app form was filled with `Ryvro (App Store)` and bundle `com.ryvro.shiftplanner`, but RevenueCat blocked save with `The following fields have errors: In-App Purchase Key ID and In-App Purchase Issuer ID`.
-- iOS remaining work: request App Store Connect API access if the Integrations page still says permission is required, create or upload the App Store Connect in-app purchase p8 key after access is available, then provide its Key ID and Issuer ID in RevenueCat before saving the iOS app configuration.
+- Android remaining work: finish Google Play merchant/subscription setup, confirm service-account connection, and configure Google developer notifications if RevenueCat requires them.
+- Historical setup guidance included upload the Google Play service account credentials JSON to RevenueCat; keep that JSON ignored and record only non-secret connection status.
+- iOS app: saved as `Ryvro (App Store)` with bundle `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appd8a95a73e0`, and REST API identifier `appd8a95a73e0`.
+- App Store Connect in-app purchase key: generated for RevenueCat on 2026-06-14 with Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f`; the `.p8` private key is stored outside the repo at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8` and must not be committed or pasted.
+- RevenueCat SDK keys: the ignored local `.env` now contains real iOS `appl_...` and Android `goog_...` SDK keys mirrored into their Expo public variables without recording the values.
 
 Target apps:
 
@@ -223,7 +225,7 @@ REVENUECAT_ENTITLEMENT_ID=pro
 EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
 ```
 
-Fill these in `.env` from the `.env.production.example` slots after creating the Ryvro RevenueCat apps, products, entitlement, and default offering. Keep the same keys in `.env.example` as local-development placeholders only.
+The ignored local `.env` now has these values filled from the Ryvro RevenueCat apps. Keep the same keys in `.env.example` as local-development placeholders only.
 
 Important:
 
@@ -239,7 +241,7 @@ Verification:
 - Restore purchases succeeds.
 - Profile shows `Ryvro Pro - Active` after entitlement activation.
 - Center voice button unlocks when Pro is active.
-- `npm run release:env:check` passes with the real RevenueCat native/public key mirrors before secrets are pushed to EAS.
+- `npm run release:env:check` passes with the real RevenueCat native/public key mirrors before secrets are pushed to EAS. This passed on 2026-06-14, followed by `npm run release:env:push -- --force` and `npm run release:env:files -- --force`.
 
 ## App Store Connect
 

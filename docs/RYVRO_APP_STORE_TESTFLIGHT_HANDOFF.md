@@ -59,7 +59,7 @@ Known owner-console evidence from 2026-06-05:
 - Internal TestFlight group `Ryvro iPhone QA` shows `Internal Group ∙ 1 Tester ∙ 1 Build`.
 - Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`.
 - Expo App Store Connect connection check now shows EAS server-side App Store Connect API key `BQG8N6UP7Y` for submit use.
-- Logged-in Chrome recheck on 2026-06-14 reached App Store Connect Users and Access → Integrations → App Store Connect API, but the page said API access permission is required and showed `Request Access`. The RevenueCat iOS app and in-app purchase key flow remain blocked until App Store Connect API access is requested and granted, then an in-app purchase `.p8` key can be created or uploaded without storing private key material in Git.
+- Logged-in Chrome recheck on 2026-06-14 reached App Store Connect Users and Access → Integrations → App Store Connect API, requested API access after owner approval, then generated the In-App Purchase key `Ryvro RevenueCat IAP`. The one-time `.p8` private key is kept outside Git at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8`; only Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f` are recorded as non-secret evidence and configured in RevenueCat.
 - App Store Connect showed the EU trader-status warning.
 - The uploaded iOS build still contains local placeholder Firebase/OAuth URL schemes, so it is not production-auth-ready until real Firebase/OAuth env evidence is complete and a fresh production build is made.
 
@@ -152,7 +152,7 @@ Complete with RevenueCat and App Store Connect products before final review.
 - Add product metadata, pricing, localization, and 7-day trial if approved for launch.
 - Upload required subscription review metadata and paywall screenshot if App Store Connect asks for it.
 - Create or upload the App Store Connect in-app purchase `.p8` key for RevenueCat.
-- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status.
+- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status. Current owner-session evidence reached the In-App Purchase key page and shows no active in-app purchase keys yet.
 - Copy only the App Store Connect in-app purchase Key ID and Issuer ID into RevenueCat.
 - Keep the `.p8` private key out of the repo.
 - Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for the matching RevenueCat evidence packet.
