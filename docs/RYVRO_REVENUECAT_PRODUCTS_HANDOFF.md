@@ -38,6 +38,7 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - App Store Connect subscription group `Ryvro Pro` now exists with subscription group ID `22156776`.
 - App Store Connect product shell `Ryvro Pro Monthly` now exists with Apple ID `6780186030`, product ID `ryvro_pro_monthly`, duration `1 month`, and status `Missing Metadata`. Logged-in Chrome readback on 2026-06-14 confirmed English (Australia) localization is saved with display name `Ryvro Pro Monthly`, description `Monthly schedule tools and assistant access.`, localization status `Prepare for Submission`, and review notes filled for the reviewer account and sandbox purchase or restore path.
 - App Store Connect product shell `Ryvro Pro Annual` now exists with Apple ID `6780186069`, product ID `ryvro_pro_annual`, duration `1 year`, and status `Missing Metadata`. Logged-in Chrome readback on 2026-06-14 confirmed English (Australia) localization is saved with display name `Ryvro Pro Annual`, description `Full-year schedule tools and assistant access.`, localization status `Prepare for Submission`, and review notes filled for the reviewer account and sandbox purchase or restore path.
+- Fresh logged-in Chrome readback on 2026-06-14 confirmed the monthly subscription still has an empty review screenshot field. The product should stay `Missing Metadata` until a real TestFlight or production-equivalent Ryvro Pro paywall screenshot is uploaded for review. Do not use generated, debug, Expo Go, or mock screenshots as subscription review evidence.
 - RevenueCat Play Store product record `Ryvro Pro Monthly` now exists with identifier `ryvro_pro_monthly:monthly`, subscription ID `ryvro_pro_monthly`, base plan ID `monthly`, and store status `Could not check`.
 - RevenueCat Play Store product record `Ryvro Pro Annual` now exists with identifier `ryvro_pro_annual:annual`, subscription ID `ryvro_pro_annual`, base plan ID `annual`, and store status `Could not check`.
 - Entitlement `pro` shows `2 products` attached in the RevenueCat entitlement list.
@@ -60,6 +61,7 @@ Complete in App Store Connect as the owner. Product shells were created on 2026-
 - Configure the 7-day free trial if approved for launch.
 - Complete remaining required subscription localizations beyond English (Australia), if Apple or launch markets require them.
 - Upload the in-app purchase review screenshot or paywall image and complete any extra review metadata App Store Connect requires.
+- Current visible blocker: review screenshot is empty on the monthly product page. Capture the paywall from build `4` or a newer production-equivalent build after RevenueCat products load, then upload it to each required subscription review screenshot field.
 - App Store Connect in-app purchase `.p8` key for RevenueCat is generated and configured in RevenueCat. Keep the private key outside the repo and never paste the key contents.
 - Copy or record only the Key ID and Issuer ID as non-secret evidence.
 
