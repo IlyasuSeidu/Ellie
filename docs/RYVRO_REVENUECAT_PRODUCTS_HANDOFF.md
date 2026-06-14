@@ -43,7 +43,7 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - Offering `default` now exists with display name `Default`, REST API identifier `ofrngfbba49b733`, package `$rc_monthly` pointing at `ryvro_pro_monthly:monthly`, and package `$rc_annual` pointing at `ryvro_pro_annual:annual`.
 - RevenueCat API keys page on 2026-06-14 shows SDK API key rows for `Ryvro (App Store)` and `Ryvro (Play Store)` with public keys in the expected `appl_...` and `goog_...` formats. The ignored local `.env` now mirrors the iOS and Android SDK keys into their native and Expo public variables without recording the values.
 - `npm run release:env:check`, `npm run release:env:push -- --force`, and `npm run release:env:files -- --force` passed on 2026-06-14 after the real RevenueCat SDK key mirrors were present.
-- RevenueCat product records, App Store Connect product shells, and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products are blocked until a Google Payments merchant account is set up. A later logged-in Play Console recheck on 2026-06-14 still showed the merchant-account blocker after the owner reported Play Console configuration complete. Play-side base plans, App Store availability, pricing, trial decision, review screenshot, RevenueCat store-product validation, and sandbox purchase QA are still pending.
+- RevenueCat product records, App Store Connect product shells, and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products are blocked until a Google Payments merchant account is set up. A later logged-in Play Console recheck on 2026-06-14 still showed the merchant-account blocker after the owner reported Play Console configuration complete. App Store all-country availability and base pricing are now saved for both products, but Play-side base plans, App Store trial decision, review screenshot, RevenueCat store-product validation, and sandbox purchase QA are still pending.
 
 ## App Store Connect Subscription Setup
 
@@ -55,7 +55,8 @@ Complete in App Store Connect as the owner. Product shells were created on 2026-
 - Use display names `Ryvro Pro Monthly` and `Ryvro Pro Annual`. Done for English (Australia) localizations on both products.
 - Save subscription descriptions. Done for English (Australia): monthly uses `Monthly schedule tools and assistant access.` and annual uses `Full-year schedule tools and assistant access.`.
 - Save subscription review notes. Done on both products with reviewer account and sandbox purchase or restore instructions.
-- Configure availability, pricing, and 7-day free trial if approved for launch.
+- Configure availability and pricing. Done on 2026-06-14 for all countries or regions: monthly pricing is based on Ghana (USD) `$6.99`, and annual 1 Year Upfront pricing is based on Ghana (USD) `$49.99`. The annual Monthly with 12-Month Commitment variant remains unset by design for launch.
+- Configure the 7-day free trial if approved for launch.
 - Complete remaining required subscription localizations beyond English (Australia), if Apple or launch markets require them.
 - Upload the in-app purchase review screenshot or paywall image and complete any extra review metadata App Store Connect requires.
 - App Store Connect in-app purchase `.p8` key for RevenueCat is generated and configured in RevenueCat. Keep the private key outside the repo and never paste the key contents.

@@ -91,7 +91,8 @@ Do this before purchase QA and store review.
 - Configure entitlement ID `pro` with display name `Ryvro Pro`.
 - App Store Connect product shells now exist: subscription group `Ryvro Pro` ID `22156776`, monthly product `ryvro_pro_monthly` Apple ID `6780186030`, and annual product `ryvro_pro_annual` Apple ID `6780186069`; both products still show `Missing Metadata`.
 - English (Australia) localizations and review notes are saved for both App Store products.
-- Finish App Store product availability, pricing, trial decision, review screenshot or paywall image metadata, RevenueCat App Store mapping, and sandbox purchase QA.
+- App Store all-country availability and base pricing are saved for both products: monthly from Ghana (USD) `$6.99`, and annual 1 Year Upfront from Ghana (USD) `$49.99`.
+- Finish App Store trial decision, review screenshot or paywall image metadata, RevenueCat App Store mapping, and sandbox purchase QA.
 - Create Google Play products `ryvro_pro_monthly` and `ryvro_pro_annual`.
 - Attach both products to entitlement `pro`.
 - Offering ID `default` exists with monthly and annual packages from the current RevenueCat product records.

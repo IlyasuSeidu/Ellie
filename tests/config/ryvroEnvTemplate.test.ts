@@ -3889,6 +3889,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Monthly schedule tools and assistant access.');
     expect(launchEvidenceLog).toContain('Full-year schedule tools and assistant access.');
     expect(launchEvidenceLog).toContain('review notes filled');
+    expect(launchEvidenceLog).toContain('all-country availability and subscription pricing');
+    expect(launchEvidenceLog).toContain('Ghana (USD) base price of `$6.99`');
+    expect(launchEvidenceLog).toContain('Ghana (USD) base price of `$49.99`');
+    expect(launchEvidenceLog).toContain(
+      'Monthly with 12-Month Commitment variant was intentionally left unset'
+    );
     expect(launchEvidenceLog).toContain('package `$rc_annual` / Annual access');
     expect(launchEvidenceLog).toContain('paywall screenshot metadata if required');
     expect(launchEvidenceLog).toContain('active for the testing track');
@@ -4469,6 +4475,10 @@ describe('Ryvro environment template', () => {
     );
     expect(revenueCatProductsHandoff).toContain(
       'package identifiers, pricing metadata, and trial metadata'
+    );
+    expect(revenueCatProductsHandoff).toContain('monthly pricing is based on Ghana (USD) `$6.99`');
+    expect(revenueCatProductsHandoff).toContain(
+      'annual 1 Year Upfront pricing is based on Ghana (USD) `$49.99`'
     );
     expect(revenueCatProductsHandoff).toContain(
       'entitlement ID `pro` mirrored into `EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID`'
