@@ -107,7 +107,7 @@ Do this only after real RevenueCat, legal URLs, backend URLs, and EAS production
 - Check Android `versionCode`; if it is still `1` or otherwise already used for a Play upload, run `eas build:version:set --platform android --profile production` before rebuilding.
 - iOS production build `601af1ee-5192-442f-9caa-deef5b9b6120` finished, and IPA inspection confirmed `Ryvro`, `com.ryvro.shiftplanner`, version `1.0.0`, build `4`, production Google iOS URL scheme, and no retired Ellie/ShiftSync text-readable bundle strings.
 - Rebuild Android production AAB.
-- EAS Submit uploaded iOS build `4` to App Store Connect through submission `cd86140b-6b5f-4707-9fa1-fde6beda10fa`; wait for Apple processing to finish, then attach/distribute it to the internal TestFlight group if App Store Connect requires a manual action.
+- EAS Submit uploaded iOS build `4` to App Store Connect through submission `cd86140b-6b5f-4707-9fa1-fde6beda10fa`; TestFlight processing is complete and build `4` is attached to internal group `Ryvro iPhone QA`; install it on a real iPhone and capture QA.
 - Install and test on a real iPhone.
 - Submit Android build to Play internal testing.
 - Install and test on a physical Android device.
