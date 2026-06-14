@@ -23,7 +23,7 @@ checks and physical device QA still need to happen before store submission.
 | Offline voice query fallback               | `src/utils/offlineFallback.ts`                  | Implemented across bundled locales               |
 | Network status hook                        | `src/hooks/useNetworkStatus.ts`                 | Implemented from `networkService` snapshots      |
 | Offline banner                             | `src/components/system/OfflineBanner.tsx`       | Mounted in `App.tsx` and covered by tests        |
-| Pending sync indicator                     | `src/components/system/SyncStatusIndicator.tsx` | Counts local queues and failed sync items        |
+| Pending sync indicator                     | `src/components/system/SyncStatusIndicator.tsx` | Implemented but intentionally not mounted        |
 | Pending sync status hook                   | `src/hooks/usePendingSyncStatus.ts`             | Reads user, shift-log, session, analytics queues |
 | Storage cleanup maintenance                | `src/services/StorageMaintenanceService.ts`     | Runs on startup and app foreground               |
 | Shift calculations                         | `src/utils/shiftUtils.ts`                       | Pure functions with no network dependency        |
@@ -37,7 +37,7 @@ Resolved since the original audit:
 - `FirebaseService.initializeNetworkListener()` subscribes to `networkService` and updates network guards from the current snapshot.
 - `NetworkService` falls back safely when the native NetInfo module is unavailable, which keeps Jest and unsupported runtimes from crashing at import time.
 - `OfflineBanner` is mounted in `App.tsx` and renders only when `useNetworkStatus()` reports `offline`.
-- `SyncStatusIndicator` is mounted in `App.tsx` and surfaces queued user, shift-log, session, and analytics writes from local storage.
+- Pending sync remains silent in the app UI; `SyncStatusIndicator` is not mounted in `App.tsx`.
 - `StorageMaintenanceService.initialize()` runs from `App.tsx` and calls `removeExpired()` when due without blocking app render.
 
 ### Remaining Gaps
@@ -69,8 +69,8 @@ React Native app
   |-- AsyncStorageService
   |     |-- TTL-aware persisted cache
   |
-  |-- SyncStatusIndicator
-        |-- reads local pending/failed queues and surfaces sync state
+  |-- Silent pending-sync queues
+        |-- local pending/failed state is retained without a global banner
 ```
 
 ### Read Path
@@ -98,8 +98,7 @@ User edits profile, schedule, exception, or reminder
   |-- online -> write to Firebase/service backend
   |-- offline -> queue operation in the feature-specific local queue
   |
-  |-- network returns -> service processes queue
-  |-- SyncStatusIndicator shows local pending/failed state while queued
+  |-- network returns -> service processes queue silently
 ```
 
 ---

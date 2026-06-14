@@ -70,6 +70,29 @@ describe('PremiumWelcomeScreen', () => {
       expect(getByText('Set Up My Schedule')).toBeTruthy();
     });
 
+    it('should render the welcome CTA with large text and a right arrow icon', () => {
+      const { getByTestId, getByText, UNSAFE_getAllByProps } = render(
+        <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
+      );
+
+      expect(getByTestId('welcome-button').props.style).toEqual(
+        expect.objectContaining({
+          height: 78,
+          width: '100%',
+        })
+      );
+      expect(getByText('Set Up My Schedule').props.style).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            fontSize: 23,
+            lineHeight: 31,
+          }),
+        ])
+      );
+      expect(UNSAFE_getAllByProps({ name: 'arrow-forward-circle' }).length).toBeGreaterThan(0);
+      expect(UNSAFE_getAllByProps({ size: 28 }).length).toBeGreaterThan(0);
+    });
+
     it('should render the app icon as the welcome logo image', () => {
       const { UNSAFE_root } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
       const image = UNSAFE_root.findByType('Image');

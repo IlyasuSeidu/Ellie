@@ -212,9 +212,15 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
             onPress={handleContinue}
             variant="primary"
             size="large"
-            icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
+            icon={<Ionicons name="arrow-forward-circle" size={28} color={theme.colors.deepVoid} />}
             iconPosition="right"
+            style={styles.primaryCtaButton}
+            contentStyle={styles.primaryCtaButtonContent}
+            textStyle={styles.primaryCtaText}
             titleNumberOfLines={1}
+            accessibilityHint={t('welcome.getStartedHint', {
+              defaultValue: 'Continue to set up your schedule.',
+            })}
             testID={`${testID}-button`}
           />
         </Animated.View>
@@ -339,5 +345,21 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
+  },
+  primaryCtaButton: {
+    width: '100%',
+    height: 78,
+  },
+  primaryCtaButtonContent: {
+    height: 78,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+  },
+  primaryCtaText: {
+    color: theme.colors.deepVoid,
+    fontSize: 23,
+    lineHeight: 31,
+    fontWeight: '800',
+    letterSpacing: 0.2,
   },
 });

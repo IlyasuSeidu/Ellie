@@ -2088,7 +2088,7 @@ describe('Ryvro environment template', () => {
     expect(usePendingSyncStatus).toContain('STORAGE_KEYS.sessions.pendingPrefix');
     expect(usePendingSyncStatus).toContain('STORAGE_KEYS.analytics.pendingEvents');
     expect(app).toContain('<OfflineBanner />');
-    expect(app).toContain('<SyncStatusIndicator />');
+    expect(app).not.toContain('<SyncStatusIndicator />');
     expect(app).toContain('storageMaintenanceService.initialize()');
     expect(storageMaintenanceService).toContain('this.storage.removeExpired()');
     expect(storageMaintenanceService).toContain('CACHE_TTL_MS.storageMaintenanceInterval');

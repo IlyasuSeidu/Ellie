@@ -54,6 +54,8 @@ export interface PremiumButtonProps {
   iconPosition?: IconPosition;
   /** Custom style */
   style?: ViewStyle;
+  /** Custom inner content style */
+  contentStyle?: ViewStyle;
   /** Custom text style */
   textStyle?: TextStyle;
   /** Optional custom gradient for primary variant */
@@ -80,6 +82,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   icon,
   iconPosition = 'left',
   style,
+  contentStyle,
   textStyle,
   primaryGradientColors,
   accessibilityLabel,
@@ -262,7 +265,12 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
           colors={primaryGradientColors ?? [theme.colors.sacredGold, theme.colors.brightGold]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={[styles.gradient, sizeStyles.container, isDisabled && styles.disabledContainer]}
+          style={[
+            styles.gradient,
+            sizeStyles.container,
+            contentStyle,
+            isDisabled && styles.disabledContainer,
+          ]}
         >
           {renderShimmer()}
           {renderContent()}
@@ -283,6 +291,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
           animatedStyle,
           styles.secondaryButton,
           sizeStyles.container,
+          contentStyle,
           isDisabled && styles.disabledContainer,
           style,
         ]}
@@ -309,6 +318,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
         animatedStyle,
         styles.outlineButton,
         sizeStyles.container,
+        contentStyle,
         isDisabled && styles.disabledContainer,
         style,
       ]}
