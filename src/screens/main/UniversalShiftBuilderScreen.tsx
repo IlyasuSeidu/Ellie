@@ -228,6 +228,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const [selectedTemplateAnalytics, setSelectedTemplateAnalytics] =
     useState<SelectedTemplateAnalytics | null>(null);
   const [templateSearchQuery, setTemplateSearchQuery] = useState('');
+  const [cycleDayDraft, setCycleDayDraft] = useState('1');
   const templateTileWidth = Math.min(312, Math.max(248, windowWidth - theme.spacing.md * 5));
 
   // ── Inspector sheet state ───────────────────────────────────────────────────
@@ -387,6 +388,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     return ((schedule.phaseOffset ?? 0) % cycleLength) + 1;
   }, [schedule.phaseOffset, schedule.sequence.length]);
 
+  useEffect(() => {
+    setCycleDayDraft(String(alignmentDayNumber));
+  }, [alignmentDayNumber]);
+
   const alignmentDayLabel = useMemo(
     () =>
       getSequenceDayLabel(
@@ -406,16 +411,41 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     [schedule.sequence, schedule.shiftDefinitions, shiftLabelFallbacks]
   );
 
-  const handleCycleDayNumberChange = useCallback(
-    (text: string) => {
-      const n = parseInt(text, 10);
-      if (isNaN(n) || n < 1) return;
-      updateSchedule((s) => {
-        const cycleLength = Math.max(s.sequence.length, 1);
-        return { ...s, phaseOffset: Math.min(n, cycleLength) - 1 };
-      });
+  const setCycleDayNumber = useCallback(
+    (dayNumber: number) => {
+      const cycleLength = Math.max(schedule.sequence.length, 1);
+      const safeDay = Math.min(Math.max(dayNumber, 1), cycleLength);
+
+      setCycleDayDraft(String(safeDay));
+      if (safeDay === alignmentDayNumber) return;
+
+      updateSchedule((s) => ({ ...s, phaseOffset: safeDay - 1 }));
     },
-    [updateSchedule]
+    [alignmentDayNumber, schedule.sequence.length, updateSchedule]
+  );
+
+  const commitCycleDayNumber = useCallback(
+    (draft: string) => {
+      const parsed = Number.parseInt(draft, 10);
+      setCycleDayNumber(Number.isFinite(parsed) ? parsed : alignmentDayNumber);
+    },
+    [alignmentDayNumber, setCycleDayNumber]
+  );
+
+  const handleCycleDayNumberChange = useCallback((text: string) => {
+    setCycleDayDraft(text.replace(/[^0-9]/g, '').slice(0, 3));
+  }, []);
+
+  const handleCycleDayNumberCommit = useCallback(() => {
+    commitCycleDayNumber(cycleDayDraft);
+  }, [commitCycleDayNumber, cycleDayDraft]);
+
+  const handleCycleDayStep = useCallback(
+    (direction: -1 | 1) => {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      setCycleDayNumber(alignmentDayNumber + direction);
+    },
+    [alignmentDayNumber, setCycleDayNumber]
   );
 
   const handleAlignmentChoicePress = useCallback(
@@ -1508,15 +1538,64 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             })}
           </Text>
         </View>
-        <TextInput
-          style={styles.phaseOffsetInput}
-          value={String(alignmentDayNumber)}
-          onChangeText={handleCycleDayNumberChange}
-          keyboardType="number-pad"
-          maxLength={3}
-          selectTextOnFocus
-          accessibilityLabel={t('builder.cycleDayNumberLabel')}
-        />
+        <View style={styles.phaseOffsetStepper}>
+          <TouchableOpacity
+            style={[
+              styles.phaseOffsetStepButton,
+              alignmentDayNumber <= 1 && styles.phaseOffsetStepButtonDisabled,
+            ]}
+            onPress={() => handleCycleDayStep(-1)}
+            disabled={alignmentDayNumber <= 1}
+            accessibilityRole="button"
+            accessibilityLabel={t('builder.previousCycleDayA11y', {
+              defaultValue: 'Go to previous cycle day',
+            })}
+            testID="universal-shift-builder-cycle-day-decrement"
+          >
+            <Ionicons
+              name="remove"
+              size={18}
+              color={alignmentDayNumber <= 1 ? theme.colors.shadow : theme.colors.paper}
+            />
+          </TouchableOpacity>
+          <TextInput
+            style={styles.phaseOffsetInput}
+            value={cycleDayDraft}
+            onChangeText={handleCycleDayNumberChange}
+            onBlur={handleCycleDayNumberCommit}
+            onSubmitEditing={handleCycleDayNumberCommit}
+            keyboardType="number-pad"
+            returnKeyType="done"
+            maxLength={3}
+            selectTextOnFocus
+            accessibilityLabel={t('builder.cycleDayNumberLabel')}
+            testID="universal-shift-builder-cycle-day-input"
+          />
+          <TouchableOpacity
+            style={[
+              styles.phaseOffsetStepButton,
+              alignmentDayNumber >= Math.max(schedule.sequence.length, 1) &&
+                styles.phaseOffsetStepButtonDisabled,
+            ]}
+            onPress={() => handleCycleDayStep(1)}
+            disabled={alignmentDayNumber >= Math.max(schedule.sequence.length, 1)}
+            accessibilityRole="button"
+            accessibilityLabel={t('builder.nextCycleDayA11y', {
+              defaultValue: 'Go to next cycle day',
+            })}
+            testID="universal-shift-builder-cycle-day-increment"
+          >
+            <Ionicons
+              name="add"
+              size={18}
+              color={
+                alignmentDayNumber >= Math.max(schedule.sequence.length, 1)
+                  ? theme.colors.shadow
+                  : theme.colors.paper
+              }
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       {alignmentChoices.length > 0 && (
         <ScrollView
@@ -3082,16 +3161,36 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.xs,
     marginTop: 2,
   },
-  phaseOffsetInput: {
+  phaseOffsetStepper: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: theme.colors.softStone,
+    borderRadius: theme.borderRadius.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.darkStone,
+    overflow: 'hidden',
+  },
+  phaseOffsetStepButton: {
+    width: 38,
+    minHeight: 42,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  phaseOffsetStepButtonDisabled: {
+    opacity: 0.45,
+  },
+  phaseOffsetInput: {
     color: theme.colors.paper,
     fontSize: theme.typography.fontSizes.md,
     fontWeight: theme.typography.fontWeights.bold,
-    borderRadius: theme.borderRadius.sm,
     paddingHorizontal: theme.spacing.sm,
-    paddingVertical: 6,
-    width: 60,
+    paddingVertical: Platform.OS === 'ios' ? 10 : 6,
+    width: 54,
+    minHeight: 42,
     textAlign: 'center',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: theme.colors.darkStone,
   },
   alignmentChoicesScroll: {
     marginTop: theme.spacing.sm,
