@@ -1,6 +1,6 @@
 # Ryvro Google Play Internal Testing Handoff
 
-Last updated: 2026-06-07
+Last updated: 2026-06-14
 
 Use this checklist after the Play Console developer account exists and before any Android production rollout. It covers the Android owner/account path that cannot be completed from the repo alone.
 
@@ -37,9 +37,11 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - The `About you` step now has the Ryvro Android/Play Console experience text filled and website `https://getryvro.com` entered.
 - The developer registration fee was completed and Play Console now shows `Developer account created`.
 - The Play Console dashboard is reachable for developer account `Ryvro`.
-- Latest Chrome progress on 2026-06-09 shows Play Console now says `Your identity has been verified successfully` for developer account `Ryvro`.
+- Latest Chrome progress on 2026-06-14 shows Play Console still reaches developer account `Ryvro`, account ID `8980566822183056641`, under owner account `seiduilyasu94@gmail.com`.
+- Earlier Chrome progress on 2026-06-09 showed Play Console says `Your identity has been verified successfully` for developer account `Ryvro`.
+- The Play Console home page still says `Finish setting up your developer account`, lists Android mobile device access verification and contact phone verification, and keeps app creation locked with `Complete account verifications to create new apps`.
 - Google still blocks app creation until the remaining account verification tasks are complete. The dashboard still shows Android mobile device access verification and contact phone verification, and `Create app` is disabled with the message `Complete account verifications to create new apps`.
-- The Android mobile device verification details page says only the account owner can complete it. The owner must open the Google Play Console app on a real Android mobile device, sign in with `seiduilyasu94@gmail.com`, choose developer account `Ryvro`, and follow the on-device instructions.
+- The Android mobile device verification details page was rechecked on 2026-06-14. It says only the account owner can complete it. The owner must open the Google Play Console app on a real Android mobile device, sign in with `seiduilyasu94@gmail.com`, choose developer account `Ryvro`, and follow the on-device instructions.
 - The contact phone verification details page still says phone verification cannot be completed until the other Play Console verification tasks are complete, so it remains blocked by Android mobile device access verification.
 - Android emulator attempt on 2026-06-07 used the Play Console Android app on `Pixel_9_Pro` / Android API 36, selected `Ryvro`, and tapped `Verify`. Google rejected the emulator with `You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.` Treat this as requiring a physical Android 10 or newer device signed into the owner Google account.
 - Do not record the payments profile address, payment details, or full profile contents.

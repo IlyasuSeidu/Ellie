@@ -1,6 +1,6 @@
 # Ryvro RevenueCat And Store Products Handoff
 
-Last updated: 2026-06-05
+Last updated: 2026-06-14
 
 Use this checklist after App Store Connect, Google Play Console, and RevenueCat owner access are available. It turns the Ryvro Pro subscription blockers into one non-secret evidence packet.
 
@@ -21,17 +21,24 @@ Do not store RevenueCat SDK keys, App Store Connect `.p8` private keys, Google P
 
 ## Current Non-Secret Dashboard State
 
-Known owner-console evidence from 2026-06-05:
+Known owner-console evidence from 2026-06-05 through 2026-06-14:
 
 - RevenueCat project: `Ryvro`
 - Project URL path: `https://app.revenuecat.com/projects/42dccd7e/overview`
 - Category: `Productivity`
 - Starting platforms: `Native Apple` and `Native Android`
-- Dashboard setup still showed `(0 of 6)` and Test Store only.
+- Dashboard setup now shows Ryvro project setup in progress.
 - Android app exists as `Ryvro (Play Store)` with REST API identifier `appab0f4b628d`.
 - Android package: `com.ryvro.shiftplanner`
 - Android app URL: `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`
 - iOS app form was filled as `Ryvro (App Store)` with bundle `com.ryvro.shiftplanner`, but save was blocked until App Store Connect in-app purchase Key ID and Issuer ID are provided.
+- Latest logged-in RevenueCat check on 2026-06-14 found the App Store app form requires a p8 in-app purchase key file, Key ID, and Issuer ID before saving the iOS app. The iOS RevenueCat app remains pending.
+- Entitlement `pro` now exists with display name `Ryvro Pro`.
+- RevenueCat Play Store product record `Ryvro Pro Monthly` now exists with identifier `ryvro_pro_monthly:monthly`, subscription ID `ryvro_pro_monthly`, base plan ID `monthly`, and store status `Could not check`.
+- RevenueCat Play Store product record `Ryvro Pro Annual` now exists with identifier `ryvro_pro_annual:annual`, subscription ID `ryvro_pro_annual`, base plan ID `annual`, and store status `Could not check`.
+- Entitlement `pro` shows `2 products` attached in the RevenueCat entitlement list.
+- Offering `default` now exists with display name `Default`, REST API identifier `ofrngfbba49b733`, package `$rc_monthly` pointing at `ryvro_pro_monthly:monthly`, and package `$rc_annual` pointing at `ryvro_pro_annual:annual`.
+- RevenueCat product records and offering packages are not proof of working store purchases yet. Google Play app creation is still blocked by Play account verification, the App Store RevenueCat app is still blocked by the App Store Connect in-app purchase key, and sandbox purchase QA is still pending.
 
 ## App Store Connect Subscription Setup
 
@@ -87,8 +94,8 @@ Complete in RevenueCat after the store products exist.
 - Create entitlement ID `pro` with display name `Ryvro Pro`.
 - Add products `ryvro_pro_monthly` and `ryvro_pro_annual`.
 - Attach both products to entitlement `pro`.
-- Create offering ID `default`.
-- Add Monthly and Annual packages to offering `default`.
+- Create offering ID `default`. Done in RevenueCat on 2026-06-14 with display name `Default`.
+- Add Monthly and Annual packages to offering `default`. Done in RevenueCat on 2026-06-14 for the current Play Store product records.
 - Confirm RevenueCat dashboard no longer shows Test Store only for launch products.
 
 Record:
