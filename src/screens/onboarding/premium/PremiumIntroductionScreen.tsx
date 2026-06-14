@@ -30,6 +30,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { ChatMessage, Message } from '@/components/onboarding/premium/ChatMessage';
 import { TypingIndicator } from '@/components/onboarding/premium/TypingIndicator';
+import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { ChatInput, QuickReply } from '@/components/onboarding/premium/ChatInput';
 import { useOnboarding } from '@/contexts/OnboardingContext';
@@ -602,6 +603,17 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     [currentStep]
   );
 
+  const handleContinueFromComplete = useCallback(() => {
+    const completedFormData = pendingCompletionDataRef.current ?? formData;
+
+    if (completionHandledRef.current) {
+      goToNextScreen(navigation, 'Introduction');
+      return;
+    }
+
+    completeIntroduction(completedFormData);
+  }, [completeIntroduction, formData, navigation]);
+
   // Handle long-press to edit
   const handleLongPress = useCallback(
     (messageId: string) => {
@@ -697,6 +709,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     currentStep === ConversationStep.WAIT_COMPANY
       ? [{ id: 'skip', label: t('intro.skipCompany'), value: '' }]
       : [];
+  const shouldShowCompletedContinue =
+    currentStep === ConversationStep.COMPLETE && hasBotQuestion('complete') && !isTyping;
 
   // Memoized render function for FlatList performance
   // CRITICAL: No inline arrow functions - pass stable function references only
@@ -776,6 +790,21 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
             testID={`${testID}-chat-input`}
           />
         )}
+
+        {shouldShowCompletedContinue && (
+          <View style={styles.completedActionContainer}>
+            <PremiumButton
+              title={t('intro.continue', { defaultValue: 'Continue' })}
+              onPress={handleContinueFromComplete}
+              variant="primary"
+              size="large"
+              testID={`${testID}-continue-button`}
+              accessibilityHint={t('intro.continueHint', {
+                defaultValue: 'Continue to build your shift schedule.',
+              })}
+            />
+          </View>
+        )}
       </KeyboardAvoidingView>
     </View>
   );
@@ -795,6 +824,11 @@ const styles = StyleSheet.create({
   messagesContent: {
     paddingTop: theme.spacing.md,
     paddingBottom: theme.spacing.md,
+  },
+  completedActionContainer: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingTop: theme.spacing.sm,
+    paddingBottom: theme.spacing.lg,
   },
 });
 

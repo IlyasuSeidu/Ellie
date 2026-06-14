@@ -248,6 +248,59 @@ describe('PremiumIntroductionScreen', () => {
 
       expect(mockNavigate).toHaveBeenCalledWith('UniversalShiftBuilder');
     });
+
+    it('keeps a continue action available after completing intro and returning to the screen', async () => {
+      const { findByPlaceholderText, findByTestId } = renderWithProviders(
+        <PremiumIntroductionScreen />
+      );
+
+      await act(async () => {
+        jest.advanceTimersByTime(6000);
+      });
+
+      const nameInput = await findByPlaceholderText('Enter your name', { timeout: 3000 });
+      fireEvent.changeText(nameInput, 'Ilyasu');
+      fireEvent.press(await findByTestId('premium-introduction-screen-chat-input-submit'));
+
+      await act(async () => {
+        jest.advanceTimersByTime(2500);
+      });
+
+      const occupationInput = await findByPlaceholderText(
+        'e.g. Nurse, security officer, plant operator',
+        { timeout: 3000 }
+      );
+      fireEvent.changeText(occupationInput, 'Security officer');
+      fireEvent.press(await findByTestId('premium-introduction-screen-chat-input-submit'));
+
+      await act(async () => {
+        jest.advanceTimersByTime(2500);
+      });
+
+      fireEvent.press(
+        await findByTestId('premium-introduction-screen-chat-input-quick-reply-skip')
+      );
+
+      await act(async () => {
+        jest.advanceTimersByTime(3000);
+      });
+
+      const countryInput = await findByPlaceholderText('Enter your country', { timeout: 3000 });
+      fireEvent.changeText(countryInput, 'Ghana');
+      fireEvent.press(await findByTestId('premium-introduction-screen-chat-input-submit'));
+
+      await act(async () => {
+        jest.advanceTimersByTime(6000);
+      });
+
+      expect(mockNavigate).toHaveBeenCalledWith('UniversalShiftBuilder');
+      expect(mockNavigate).toHaveBeenCalledTimes(1);
+
+      fireEvent.press(await findByTestId('premium-introduction-screen-continue-button'));
+
+      expect(mockNavigate).toHaveBeenCalledTimes(2);
+      expect(mockNavigate).toHaveBeenLastCalledWith('UniversalShiftBuilder');
+    });
   });
 
   describe('Chat Interface', () => {
