@@ -1305,6 +1305,12 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('`ACCOUNT_DELETION_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
+    expect(releaseTasks).toContain(
+      '| 16  | 👤 Copy `.env.production.example` to `.env`, paste `EAS_PROJECT_ID`'
+    );
+    expect(releaseTasks).toContain(
+      '✅ Done (`npm run release:env:check`, `npm run release:env:push -- --force`, and `npm run release:env:files -- --force` passed on 2026-06-14; secret values stay out of Git)'
+    );
     expect(releaseTasks).toContain('GOOGLE_SERVICES_PLIST');
     expect(releaseTasks).toContain('GOOGLE_SERVICES_JSON');
     expect(releaseTasks).toContain('npm run release:env:files');
