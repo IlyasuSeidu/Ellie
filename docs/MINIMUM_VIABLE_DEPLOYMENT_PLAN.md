@@ -189,12 +189,12 @@ Current status:
 - The latest submitted iOS evidence is production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120`, version `1.0.0`, iOS build number `4`, uploaded to App Store Connect through EAS Submit `cd86140b-6b5f-4707-9fa1-fde6beda10fa`; App Store Connect visual inspection on 2026-06-14 showed version `1.0.0`, build `4`, status `Ready to Submit`, group badge `RI`, group `Ryvro iPhone QA`, upload date `Jun 14, 2026 at 11:29 AM`, one invitation, no installs, no crashes, and no feedback.
 - App Store Connect visual inspection on 2026-06-06 showed iOS build `2` as `Ready to Submit` and attached to internal TestFlight group `Ryvro iPhone QA`, but the build still contains placeholder Firebase/OAuth values and is not production-auth-ready.
 - Production EAS builds now use `autoIncrement: true`. A stopped 2026-06-14 upload consumed remote iOS build number `3` without creating a build record; build `4` finished, passed IPA identity inspection, and was submitted to App Store Connect.
-- Android versionCode still needs to be checked and incremented before the next Play upload.
+- Android remote versionCode has already advanced for the current internal-track upload: the successful local production AAB consumed versionCode `8`, EAS Submit uploaded it to Google Play internal testing, and Android Publisher API readback confirmed the internal track has release `1.0.0`, status `completed`, and versionCode `8`.
 
 Implementation steps:
 
 1. Keep semantic app version aligned in `app.json`, `app.config.js`, `package.json`, Android `versionName`, and generated iOS `MARKETING_VERSION`.
-2. For every uploaded binary after the current TestFlight build `2`, run `npm run release:versions:get`; production iOS now auto-increments through EAS, and Android should use `eas build:version:set --platform android --profile production` or an equivalent EAS increment before the next Play upload:
+2. Before every future uploaded binary, run `npm run release:versions:get`; production iOS now auto-increments through EAS, and Android should use `eas build:version:set --platform android --profile production` or an equivalent EAS increment before any later Play upload after the current internal-track versionCode `8` build:
    - EAS remote iOS build number (CFBundleVersion)
    - EAS remote Android versionCode
 3. Keep release log in `CHANGELOG.md` once public release notes begin.
@@ -464,7 +464,7 @@ Day 7:
 - [x] Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload
 - [x] Finish and submit production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` / build `4` to App Store Connect for TestFlight processing
 - [ ] Capture TestFlight iPhone QA for build `4`
-- [ ] Increment Android versionCode before the next Play upload
+- [x] Increment Android versionCode and submit the versionCode `8` AAB to Google Play internal testing
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot
 - [x] Add repo-side Ryvro Pro subscription gating, paywall, and RevenueCat runtime guards

@@ -435,7 +435,7 @@ eas submit --platform ios --latest
 
 ### 1. Prepare Google Play Console
 
-The Google Play app now exists in draft status as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`. The remaining Play release work is Android internal testing submission, Play Console form completion, and physical Android QA from a store-signed internal-testing build. The emulator is not acceptable for the final physical-device QA evidence.
+The Google Play app now exists in draft status as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`, and EAS Submit has uploaded versionCode `8` to the Play internal track. The remaining Play release work is internal tester-list and opt-in-link confirmation, Google Payments merchant-account completion before subscription products, physical Android QA from the store-signed internal-testing build, the required closed-testing period before production access, screenshots, and final production promotion evidence. The emulator is not acceptable for the final physical-device QA evidence.
 
 1. **Create Application**:
    - Go to [Google Play Console](https://play.google.com/console/)

@@ -832,7 +832,7 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
-  /\|\s*22\s*\|[\s\S]*318b4e8f-b344-4ed9-8bcd-a5805093339d[\s\S]*com\.ryvro\.shiftplanner/,
+  /\|\s*22\s*\|[\s\S]*versionCode `8`[\s\S]*com\.ryvro\.shiftplanner[\s\S]*cb58e3e5-a4c9-4935-af29-88065f7c3f28[\s\S]*internal track release `1\.0\.0`[\s\S]*status `completed`/,
   'release task 22'
 );
 

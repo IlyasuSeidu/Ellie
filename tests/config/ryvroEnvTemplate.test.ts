@@ -1865,7 +1865,15 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       'Finish and submit production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
     );
-    expect(deploymentPlan).toContain('Increment Android versionCode before the next Play upload');
+    expect(deploymentPlan).toContain(
+      'Increment Android versionCode and submit the versionCode `8` AAB to Google Play internal testing'
+    );
+    expect(deploymentPlan).toContain(
+      'Android Publisher API readback confirmed the internal track has release `1.0.0`, status `completed`, and versionCode `8`'
+    );
+    expect(deploymentPlan).not.toContain(
+      'Android versionCode still needs to be checked and incremented before the next Play upload'
+    );
     expect(deploymentPlan).toContain(
       'Ryvro Pro subscription gating, paywall, restore purchases, and RevenueCat product loading in the first submitted binary'
     );
@@ -2205,7 +2213,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('TestFlight install QA passes on a real iPhone');
     expect(deploymentGuide).toContain('The Google Play app now exists in draft status');
     expect(deploymentGuide).toContain(
-      'physical Android QA from a store-signed internal-testing build'
+      'physical Android QA from the store-signed internal-testing build'
     );
     expect(deploymentGuide).toContain('The emulator is not acceptable');
     expect(deploymentGuide).toContain('Go to "Internal testing"');
@@ -2405,6 +2413,9 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('bumping remote EAS versions with `eas build:version:set`');
     expect(releaseTasks).toContain('IPA inspection confirmed `Ryvro`');
     expect(releaseTasks).toContain(
+      'Android Publisher API readback confirmed internal track release `1.0.0`, status `completed`, versionCode `8`'
+    );
+    expect(releaseTasks).not.toContain(
       'EAS Android AAB `318b4e8f-b344-4ed9-8bcd-a5805093339d` proves package `com.ryvro.shiftplanner`'
     );
     expect(releaseTasks).toContain('EAS Submit `cd86140b-6b5f-4707-9fa1-fde6beda10fa`');
@@ -2730,7 +2741,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('Owner launch runbook now sequences clearance');
     expect(readinessReport).toContain(
-      'Google Play internal testing and merchant setup, Firebase email templates and production env'
+      'Play internal tester-list/opt-in confirmation and merchant setup, Firebase email templates'
     );
     expect(readinessReport).toContain(
       'Google Play internal-testing handoff now documents the completed developer-account creation'
@@ -3527,7 +3538,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('developer registration');
     expect(ownerRunbook).toContain('Android device access verification');
     expect(ownerRunbook).toContain('contact phone verification');
-    expect(ownerRunbook).toContain('Android internal testing release');
+    expect(ownerRunbook).toContain('completed Android internal-track upload evidence');
     expect(ownerRunbook).toContain('physical Android QA');
     expect(ownerRunbook).toContain('Do not store the private payments-profile values in the repo');
     expect(ownerRunbook).toContain(
