@@ -7,7 +7,8 @@
       "freeTrial": "Isilingo samahhala",
       "noCard": "Alikho ikhadi lesikweletu",
       "cancelAnytime": "Khansela noma nini"
-    }
+    },
+    "getStartedHint": "Qala ukusetha uhlelo lwakho"
   },
   "common": {
     "swipeHint": "Swayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okulandelayo, noma phezulu ukuze uthole ulwazi olwengeziwe",
@@ -71,7 +72,9 @@
       "countryTooShort": "Izwe kufanele okungenani libe nezinhlamvu ezingu-2",
       "countryTooLong": "Izwe akumele leqe izinhlamvu eziyi-100"
     },
-    "skipCompany": "Yeqa"
+    "skipCompany": "Yeqa",
+    "continue": "Qhubeka",
+    "continueHint": "Dlulela esinyathelweni esilandelayo sokuqalisa"
   },
   "shiftSystem": {
     "title": "Indawo yakho yokusebenza isebenza ngamashifu amangaki?",

@@ -249,4 +249,27 @@ describe('locale parity', () => {
       expect(matches).toEqual([]);
     });
   });
+
+  it('does not expose raw translation placeholders or known broken launch copy', () => {
+    const forbiddenPatterns = [/__TK\d+__/, /\bmanusia pit\b/i, /\bdiskon\s+\d+\b/i];
+    const matches: string[] = [];
+
+    locales.forEach((locale) => {
+      NAMESPACES.forEach((namespace) => {
+        const localePath = path.join(LOCALES_ROOT, locale, `${namespace}.json`);
+        const localized = JSON.parse(fs.readFileSync(localePath, 'utf8')) as Record<
+          string,
+          unknown
+        >;
+
+        Array.from(flattenStringValues(localized).entries()).forEach(([key, value]) => {
+          if (forbiddenPatterns.some((pattern) => pattern.test(value))) {
+            matches.push(`${locale}:${namespace}:${key}=${value}`);
+          }
+        });
+      });
+    });
+
+    expect(matches).toEqual([]);
+  });
 });

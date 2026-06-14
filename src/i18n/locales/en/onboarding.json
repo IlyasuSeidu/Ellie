@@ -7,7 +7,8 @@
       "freeTrial": "Free trial",
       "noCard": "No credit card",
       "cancelAnytime": "Cancel anytime"
-    }
+    },
+    "getStartedHint": "Start setting up your schedule"
   },
   "painHook": {
     "title": "What's the hardest part of your schedule right now?",
@@ -146,7 +147,9 @@
       "companyRequired": "Company is required",
       "countryTooShort": "Country must be at least 2 characters",
       "countryTooLong": "Country must not exceed 100 characters"
-    }
+    },
+    "continue": "Continue",
+    "continueHint": "Move to the next onboarding step"
   },
   "shiftSystem": {
     "title": "How Many Shifts Does Your Workplace Run?",

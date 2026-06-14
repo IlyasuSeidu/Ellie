@@ -176,7 +176,7 @@
       "title": "你的班表已经准备好了。",
       "subtitle": "花不到一杯咖啡的钱就能解锁。",
       "features": {
-        "askSchedule": "询问“嘿__TK1__”有关您的名单的任何信息",
+        "askSchedule": "询问“嘿Ryvro”有关您的名单的任何信息",
         "fullYear": "查看你整整一年的安排——每一次班次，逐月清晰可见",
         "offline": "信号较弱时也能使用",
         "instantAnswers": "有关休假和模式的即时答案",
@@ -260,16 +260,16 @@
       "unconfigured": "Ryvro Pro 暂不可用。请更新 Ryvro；如果问题持续，请联系支持团队。"
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Pro 主动订阅",
-      "rowUpgradeA11y": "升级到 __TK1__ 专业版",
-      "activeLabel": "__TK1__ Pro — 主动 ✓",
-      "upgradeLabel": "升级到 __TK1__ 专业版",
-      "activeHint": "全日历·嘿__TK1__语音助手",
+      "rowActiveA11y": "Ryvro Pro 主动订阅",
+      "rowUpgradeA11y": "升级到 Ryvro 专业版",
+      "activeLabel": "Ryvro Pro — 主动 ✓",
+      "upgradeLabel": "升级到 Ryvro 专业版",
+      "activeHint": "全日历·嘿Ryvro语音助手",
       "upgradeHint": "套餐低至每月 6.99 美元或每年 49.99 美元",
       "customerCenterError": "目前无法打开订阅管理。请稍后再试。"
     },
     "padlock": {
-      "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"
+      "a11yLabel": "升级到 Ryvro Pro 以查看完整日历"
     },
     "recoveryNudge": {
       "title": "你当前处于有限访问模式",

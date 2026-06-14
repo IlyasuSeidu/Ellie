@@ -176,7 +176,7 @@
       "title": "Jou schedule is gereed.",
       "subtitle": "Ontsluit dit vir minder as 'n koppie koffie.",
       "features": {
-        "askSchedule": "Vra \"Hey __TK1__\" enigiets oor jou schedule",
+        "askSchedule": "Vra \"Hey Ryvro\" enigiets oor jou schedule",
         "fullYear": "Sien jou volle jaar — elke skof, maand vir maand",
         "offline": "Werk deur swak sein, geen probleem nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
@@ -260,16 +260,16 @@
       "unconfigured": "Ryvro Pro is nog nie beskikbaar nie. Dateer Ryvro op of kontak ondersteuning as dit aanhou gebeur."
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
-      "rowUpgradeA11y": "Gradeer op na __TK1__ Pro",
-      "activeLabel": "__TK1__ Pro — Aktief ✓",
-      "upgradeLabel": "Gradeer op na __TK1__ Pro",
-      "activeHint": "Volledige kalender · Hey __TK1__ stemassistent",
+      "rowActiveA11y": "Ryvro Pro aktiewe intekening",
+      "rowUpgradeA11y": "Gradeer op na Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Aktief ✓",
+      "upgradeLabel": "Gradeer op na Ryvro Pro",
+      "activeHint": "Volledige kalender · Hey Ryvro stemassistent",
       "upgradeHint": "Planne vanaf $6,99/maand of $49,99/jaar",
       "customerCenterError": "Intekeningbestuur is tans nie beskikbaar nie. Probeer asseblief weer."
     },
     "padlock": {
-      "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"
+      "a11yLabel": "Gradeer op na Ryvro Pro om volledige kalender te sien"
     },
     "recoveryNudge": {
       "title": "Jy is op beperkte toegang",

@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "JJJJ-MM-DD",
     "calendarExportStartPlaceholder": "Begin JJJJ-MM-DD",
-    "calendarExportEndPlaceholder": "Einde JJJJ-MM-DD"
+    "calendarExportEndPlaceholder": "Einde JJJJ-MM-DD",
+    "previousCycleDayA11y": "Gaan na vorige siklusdag",
+    "nextCycleDayA11y": "Gaan na volgende siklusdag",
+    "templateSearchHint": "Soek sjablone volgens bedryf, skoftipe of roosterpatroon.",
+    "templateSearchClearA11y": "Maak sjabloonsoektog skoon",
+    "templateSearchResultCount": "{{count}} van {{total}} sjablone",
+    "templateSearchAllCount": "{{count}} sjablone"
   }
 }

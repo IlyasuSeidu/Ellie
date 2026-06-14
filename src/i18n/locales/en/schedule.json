@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "YYYY-MM-DD",
     "calendarExportStartPlaceholder": "Start YYYY-MM-DD",
-    "calendarExportEndPlaceholder": "End YYYY-MM-DD"
+    "calendarExportEndPlaceholder": "End YYYY-MM-DD",
+    "previousCycleDayA11y": "Go to previous cycle day",
+    "nextCycleDayA11y": "Go to next cycle day",
+    "templateSearchHint": "Search templates by industry, shift type, or roster pattern.",
+    "templateSearchClearA11y": "Clear template search",
+    "templateSearchResultCount": "{{count}} of {{total}} templates",
+    "templateSearchAllCount": "{{count}} templates"
   }
 }

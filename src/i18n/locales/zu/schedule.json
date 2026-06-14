@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "YYYY-MM-DD",
     "calendarExportStartPlaceholder": "Qala YYYY-MM-DD",
-    "calendarExportEndPlaceholder": "Phela YYYY-MM-DD"
+    "calendarExportEndPlaceholder": "Phela YYYY-MM-DD",
+    "previousCycleDayA11y": "Iya osukwini lomjikelezo olwedlule",
+    "nextCycleDayA11y": "Iya osukwini lomjikelezo olulandelayo",
+    "templateSearchHint": "Sesha amathempulethi ngomkhakha, uhlobo lweshifu, noma iphethini yerosta.",
+    "templateSearchClearA11y": "Sula ukusesha kwamathempulethi",
+    "templateSearchResultCount": "{{count}} kwangu-{{total}} amathempulethi",
+    "templateSearchAllCount": "{{count}} amathempulethi"
   }
 }

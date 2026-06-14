@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "YYYY-MM-DD",
     "calendarExportStartPlaceholder": "البداية YYYY-MM-DD",
-    "calendarExportEndPlaceholder": "النهاية YYYY-MM-DD"
+    "calendarExportEndPlaceholder": "النهاية YYYY-MM-DD",
+    "previousCycleDayA11y": "انتقل إلى يوم الدورة السابق",
+    "nextCycleDayA11y": "انتقل إلى يوم الدورة التالي",
+    "templateSearchHint": "ابحث في القوالب حسب القطاع أو نوع الوردية أو نمط الجدول.",
+    "templateSearchClearA11y": "مسح بحث القوالب",
+    "templateSearchResultCount": "{{count}} من {{total}} قالب",
+    "templateSearchAllCount": "{{count}} قالب"
   }
 }

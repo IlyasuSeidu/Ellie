@@ -7,7 +7,8 @@
       "freeTrial": "Prueba gratis",
       "noCard": "Sin tarjeta de crédito",
       "cancelAnytime": "Cancela cuando quieras"
-    }
+    },
+    "getStartedHint": "Empieza a configurar tu horario"
   },
   "common": {
     "swipeHint": "Desliza a la derecha para seleccionar, izquierda para ver siguiente o arriba para mas informacion",
@@ -71,7 +72,9 @@
       "countryTooShort": "El pais debe tener al menos 2 caracteres",
       "countryTooLong": "El pais no debe superar 100 caracteres"
     },
-    "skipCompany": "Omitir"
+    "skipCompany": "Omitir",
+    "continue": "Continuar",
+    "continueHint": "Pasar al siguiente paso de incorporación"
   },
   "shiftSystem": {
     "title_named": "Hola {{name}}, ¿cuántos turnos usa tu lugar de trabajo?",

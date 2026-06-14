@@ -176,7 +176,7 @@
       "title": "Schedule Anda sudah siap.",
       "subtitle": "Buka dengan biaya kurang dari secangkir kopi.",
       "features": {
-        "askSchedule": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
+        "askSchedule": "Tanyakan \"Hai Ryvro\" apa pun tentang daftar pemain Anda",
         "fullYear": "Lihat setahun penuh Anda — setiap shift, bulan demi bulan",
         "offline": "Tetap bekerja saat sinyal lemah",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
@@ -260,16 +260,16 @@
       "unconfigured": "Ryvro Pro belum tersedia. Perbarui Ryvro atau hubungi dukungan jika ini terus terjadi."
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Pro langganan aktif",
-      "rowUpgradeA11y": "Tingkatkan ke __TK1__ Pro",
-      "activeLabel": "__TK1__ Pro — Aktif ✓",
-      "upgradeLabel": "Tingkatkan ke __TK1__ Pro",
-      "activeHint": "Kalender lengkap · Hai __TK1__ asisten suara",
+      "rowActiveA11y": "Ryvro Pro langganan aktif",
+      "rowUpgradeA11y": "Tingkatkan ke Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Aktif ✓",
+      "upgradeLabel": "Tingkatkan ke Ryvro Pro",
+      "activeHint": "Kalender lengkap · Hai Ryvro asisten suara",
       "upgradeHint": "Paket mulai dari $6,99/bln atau $49,99/tahun",
       "customerCenterError": "Pengelolaan langganan tidak tersedia saat ini. Silakan coba lagi."
     },
     "padlock": {
-      "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"
+      "a11yLabel": "Tingkatkan ke Ryvro Pro untuk melihat kalender lengkap"
     },
     "recoveryNudge": {
       "title": "Anda menggunakan akses terbatas",

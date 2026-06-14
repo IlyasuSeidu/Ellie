@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "ГГГГ-ММ-ДД",
     "calendarExportStartPlaceholder": "Начало ГГГГ-ММ-ДД",
-    "calendarExportEndPlaceholder": "Конец ГГГГ-ММ-ДД"
+    "calendarExportEndPlaceholder": "Конец ГГГГ-ММ-ДД",
+    "previousCycleDayA11y": "Перейти к предыдущему дню цикла",
+    "nextCycleDayA11y": "Перейти к следующему дню цикла",
+    "templateSearchHint": "Ищите шаблоны по отрасли, типу смены или графику.",
+    "templateSearchClearA11y": "Очистить поиск шаблонов",
+    "templateSearchResultCount": "{{count}} из {{total}} шаблонов",
+    "templateSearchAllCount": "{{count}} шаблонов"
   }
 }

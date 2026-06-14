@@ -1,6 +1,6 @@
 # Ryvro Submit Blocker Triage
 
-Last updated: 2026-06-07
+Last updated: 2026-06-14
 
 Use this file when `npm run release:submit:check` fails. It groups the remaining blockers into the order that should unblock TestFlight, Play internal testing, and final store submission.
 
@@ -18,17 +18,19 @@ Expected current result: the command fails until the owner evidence rows in `doc
 
 The same command scans the owner evidence packet for high-risk secret material, including service-account private-key JSON fields, private-key blocks, Firebase API keys, RevenueCat SDK keys, and EAS access tokens. If it fails for a secret scan item, remove the secret from the tracked file, rotate the exposed key in the owning console, and replace the evidence with a non-secret screenshot reference or dashboard note.
 
-Latest checked on 2026-06-07: `Domain control for getryvro.com` and `Support page/mailbox` no longer appear in the submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, and Google Play Console email-delivery proof to `support@getryvro.com` were recorded as passed.
+Latest checked on 2026-06-14: `npm run release:native:check`, `npm run release:store:check`, and `npm run release:owner:check` passed. `npm run release:submit:check` still fails because owner evidence rows remain pending and `./google-play-key.json` is not present locally. `npm run release:env:check` still fails because this checkout does not have real production `.env` values or ignored production Firebase config files. The local retired `ELLIE_BRAIN_URL` and `ELLIE_BRAIN_TIMEOUT` keys were removed from the ignored `.env` on 2026-06-14 and no longer appear in the env preflight failures. `npm run release:clearance` still requires manual legal/social evidence; public checks show `getryvro.com` is registered and resolves, but formal trademark clearance and logged-in social-handle reservation remain owner-side proof items.
+
+Previously cleared submit-gate items: `Domain control for getryvro.com` and `Support page/mailbox` no longer appear in submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, and Google Play Console email-delivery proof to `support@getryvro.com` were recorded as passed.
 
 The remaining checked blocker families are:
 
 - Android service account key path `./google-play-key.json`
 - Formal trademark/legal clearance for `Ryvro`
-- Google Play title, package, app creation, service account, internal testing, Android QA, and Play submission
+- Google Play title, package, app dashboard evidence, service account, internal testing, Android QA, and Play submission
 - Social handle reservation
 - Privacy and terms owner content review plus store-console use of the live `getryvro.com` URLs
 - Firebase Auth email templates, production env preflight, and EAS production environment push
-- Production `.env`, `npm run release:env:check`, and EAS production environment push
+- Production `.env`, `npm run release:env:check`, removal of retired Ellie env keys, and EAS production environment push
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
 - App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
 

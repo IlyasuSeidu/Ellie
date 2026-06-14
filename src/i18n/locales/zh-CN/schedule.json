@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "YYYY-MM-DD",
     "calendarExportStartPlaceholder": "开始 YYYY-MM-DD",
-    "calendarExportEndPlaceholder": "结束 YYYY-MM-DD"
+    "calendarExportEndPlaceholder": "结束 YYYY-MM-DD",
+    "previousCycleDayA11y": "转到上一个周期日",
+    "nextCycleDayA11y": "转到下一个周期日",
+    "templateSearchHint": "按行业、班次类型或排班模式搜索模板。",
+    "templateSearchClearA11y": "清除模板搜索",
+    "templateSearchResultCount": "{{count}} / {{total}} 个模板",
+    "templateSearchAllCount": "{{count}} 个模板"
   }
 }

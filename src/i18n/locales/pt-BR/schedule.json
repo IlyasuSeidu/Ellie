@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "AAAA-MM-DD",
     "calendarExportStartPlaceholder": "Inicio AAAA-MM-DD",
-    "calendarExportEndPlaceholder": "Fim AAAA-MM-DD"
+    "calendarExportEndPlaceholder": "Fim AAAA-MM-DD",
+    "previousCycleDayA11y": "Ir para o dia anterior do ciclo",
+    "nextCycleDayA11y": "Ir para o próximo dia do ciclo",
+    "templateSearchHint": "Pesquise modelos por setor, tipo de turno ou padrão de escala.",
+    "templateSearchClearA11y": "Limpar busca de modelos",
+    "templateSearchResultCount": "{{count}} de {{total}} modelos",
+    "templateSearchAllCount": "{{count}} modelos"
   }
 }

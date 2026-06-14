@@ -7,7 +7,8 @@
       "freeTrial": "Uji coba gratis",
       "noCard": "Tanpa kartu kredit",
       "cancelAnytime": "Batalkan kapan saja"
-    }
+    },
+    "getStartedHint": "Mulai menyiapkan jadwal Anda"
   },
   "common": {
     "swipeHint": "Gesek ke kanan untuk memilih, ke kiri untuk melihat berikutnya, atau ke atas untuk info lebih lanjut",
@@ -71,7 +72,9 @@
       "countryTooShort": "Negara harus terdiri dari minimal 2 karakter",
       "countryTooLong": "Negara tidak boleh melebihi 100 karakter"
     },
-    "skipCompany": "Lewati"
+    "skipCompany": "Lewati",
+    "continue": "Lanjutkan",
+    "continueHint": "Pindah ke langkah onboarding berikutnya"
   },
   "shiftSystem": {
     "title": "Berapa banyak shift yang dijalankan tempat kerja Anda?",
@@ -90,7 +93,7 @@
       "2-shift": {
         "title": "2 Shift (12 jam)",
         "schedule": "Siang & malam",
-        "description": "Tambang Anda menjalankan dua shift masing-masing 12 jam—satu di siang hari, satu lagi di malam hari",
+        "description": "Tempat kerja Anda menjalankan dua shift masing-masing 12 jam—satu di siang hari, satu lagi di malam hari",
         "details": {
           "workRestRatio": "12 jam aktif, 12 jam libur",
           "useCases": ["Situs penambangan", "Minyak & gas", "Operasi 24/7", "Pekerjaan jarak jauh"],
@@ -163,7 +166,7 @@
       },
       "5-5-5": {
         "name": "5-5-5 Rotasi",
-        "schedule": "5 hari • 5 malam • diskon 5",
+        "schedule": "5 hari • 5 malam • 5 hari libur",
         "description": "Bekerja 5 shift hari, lalu 5 shift malam, lalu 5 hari libur – jalan tengah yang baik"
       },
       "3-3-3": {
@@ -173,8 +176,8 @@
       },
       "10-10-10": {
         "name": "10-10-10 Rotasi",
-        "schedule": "10 hari • 10 malam • diskon 10",
-        "description": "Perubahan panjang 10 hari, 10 malam, lalu 10 malam akan memaksimalkan waktu Anda di rumah"
+        "schedule": "10 hari • 10 malam • 10 hari libur",
+        "description": "Rotasi panjang 10 shift hari, 10 shift malam, lalu 10 hari libur untuk memaksimalkan waktu Anda di rumah"
       },
       "continental": {
         "name": "Rotasi Kontinental",
@@ -189,10 +192,10 @@
       "custom": {
         "name": "Rotasi Kustom",
         "schedule": "Anda memilih",
-        "description": "Situs Anda menggunakan sesuatu yang berbeda? Bangun rotasi Anda sendiri di sini"
+        "description": "Tempat kerja Anda memakai pola yang berbeda? Bangun rotasi Anda sendiri di sini"
       },
       "fifo-8-6": {
-        "name": "__TK1__ 8/6",
+        "name": "FIFO 8/6",
         "schedule": "8 hari kerja • 6 hari di rumah",
         "description": "Bekerja 8 hari blok kerja berturut-turut, lalu 6 hari istirahat — umum untuk tim jarak jauh dan FIFO"
       },
@@ -207,17 +210,17 @@
         "description": "Dua minggu kerja, dua minggu istirahat — ritme kerja/istirahat seimbang"
       },
       "fifo-14-7": {
-        "name": "__TK1__ 14/7 (2:1)",
+        "name": "FIFO 14/7 (2:1)",
         "schedule": "2 minggu kerja • 1 minggu di rumah",
         "description": "Dua minggu kerja, satu minggu istirahat — untuk blok kerja lebih panjang"
       },
       "fifo-21-7": {
-        "name": "__TK1__ 21/7 (3:1)",
+        "name": "FIFO 21/7 (3:1)",
         "schedule": "3 minggu kerja • 1 minggu di rumah",
         "description": "Tiga minggu kerja, satu minggu istirahat — untuk operasi sangat jauh"
       },
       "fifo-28-14": {
-        "name": "__TK1__ 28/14 (2:1)",
+        "name": "FIFO 28/14 (2:1)",
         "schedule": "4 minggu bekerja • 2 minggu di rumah",
         "description": "Empat minggu kerja, dua minggu istirahat — untuk operasi jarak jauh panjang"
       },
@@ -846,7 +849,7 @@
         "stats": "Siklus 8 hari - 2D/2N/4O"
       },
       "pitman": {
-        "name": "manusia pit",
+        "name": "Pitman",
         "stats": "Siklus 7 hari - 2H/2N/3O"
       }
     },

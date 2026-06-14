@@ -7,7 +7,8 @@
       "freeTrial": "Gratis proef",
       "noCard": "Geen kredietkaart",
       "cancelAnytime": "Kanselleer enige tyd"
-    }
+    },
+    "getStartedHint": "Begin om jou rooster op te stel"
   },
   "common": {
     "swipeHint": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting",
@@ -71,7 +72,9 @@
       "countryTooShort": "Land moet ten minste 2 karakters wees",
       "countryTooLong": "Land mag nie 100 karakters oorskry nie"
     },
-    "skipCompany": "Slaan oor"
+    "skipCompany": "Slaan oor",
+    "continue": "Gaan voort",
+    "continueHint": "Gaan na die volgende aanboordstap"
   },
   "shiftSystem": {
     "title": "Hoeveel skofte loop jou werkplek?",

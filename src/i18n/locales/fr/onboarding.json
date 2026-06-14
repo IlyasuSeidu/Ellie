@@ -7,7 +7,8 @@
       "freeTrial": "Essai gratuit",
       "noCard": "Aucune carte bancaire",
       "cancelAnytime": "Annulez à tout moment"
-    }
+    },
+    "getStartedHint": "Commencez à configurer votre planning"
   },
   "common": {
     "swipeHint": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations.",
@@ -71,7 +72,9 @@
       "countryTooShort": "Le pays doit comporter au moins 2 caractères",
       "countryTooLong": "Le pays ne doit pas dépasser 100 caractères"
     },
-    "skipCompany": "Passer"
+    "skipCompany": "Passer",
+    "continue": "Continuer",
+    "continueHint": "Passer à l'étape suivante de l'intégration"
   },
   "shiftSystem": {
     "title": "Combien d’équipes votre lieu de travail utilise-t-il?",

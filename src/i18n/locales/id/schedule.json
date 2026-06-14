@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "YYYY-MM-DD",
     "calendarExportStartPlaceholder": "Mulai YYYY-MM-DD",
-    "calendarExportEndPlaceholder": "Selesai YYYY-MM-DD"
+    "calendarExportEndPlaceholder": "Selesai YYYY-MM-DD",
+    "previousCycleDayA11y": "Ke hari siklus sebelumnya",
+    "nextCycleDayA11y": "Ke hari siklus berikutnya",
+    "templateSearchHint": "Cari template berdasarkan industri, jenis shift, atau pola roster.",
+    "templateSearchClearA11y": "Hapus pencarian template",
+    "templateSearchResultCount": "{{count}} dari {{total}} template",
+    "templateSearchAllCount": "{{count}} template"
   }
 }

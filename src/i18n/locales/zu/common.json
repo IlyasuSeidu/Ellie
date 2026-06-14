@@ -176,7 +176,7 @@
       "title": "Irosta yakho isilungile.",
       "subtitle": "Yivule ngemali encane kunekhofi.",
       "features": {
-        "askSchedule": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
+        "askSchedule": "Buza okuthi \"Hey Ryvro\" noma yini ngohlelo lwakho",
         "fullYear": "Bona unyaka wakho wonke — ishifu ngayinye, inyanga nenyanga",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
@@ -260,16 +260,16 @@
       "unconfigured": "I-Ryvro Pro ayikatholakali. Buyekeza i-Ryvro noma uxhumane nosekelayo uma lokhu kuqhubeka."
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
-      "rowUpgradeA11y": "Thuthukela ku-__TK1__ Pro",
-      "activeLabel": "__TK1__ Pro — Iyasebenza ✓",
-      "upgradeLabel": "Thuthukela ku-__TK1__ Pro",
-      "activeHint": "Ikhalenda eligcwele · Sawubona __TK1__ umsizi wezwi",
+      "rowActiveA11y": "Ryvro Ukubhalisa okusebenzayo kwe-Pro",
+      "rowUpgradeA11y": "Thuthukela ku-Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Iyasebenza ✓",
+      "upgradeLabel": "Thuthukela ku-Ryvro Pro",
+      "activeHint": "Ikhalenda eligcwele · Sawubona Ryvro umsizi wezwi",
       "upgradeHint": "Amaphakeji aqala ku-$6.99/ngenyanga noma ku-$49.99/ngonyaka",
       "customerCenterError": "Ukuphathwa kokubhalisela akutholakali manje. Sicela uzame futhi."
     },
     "padlock": {
-      "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"
+      "a11yLabel": "Thuthukela ku-Ryvro Pro ukuze ubone ikhalenda eligcwele"
     },
     "recoveryNudge": {
       "title": "Usekufinyeleleni okulinganiselwe",

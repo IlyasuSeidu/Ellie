@@ -140,6 +140,12 @@
     "holidayYearPlaceholder": "2026",
     "dateFormatPlaceholder": "YYYY-MM-DD",
     "calendarExportStartPlaceholder": "शुरू YYYY-MM-DD",
-    "calendarExportEndPlaceholder": "समाप्त YYYY-MM-DD"
+    "calendarExportEndPlaceholder": "समाप्त YYYY-MM-DD",
+    "previousCycleDayA11y": "पिछले चक्र दिन पर जाएं",
+    "nextCycleDayA11y": "अगले चक्र दिन पर जाएं",
+    "templateSearchHint": "उद्योग, शिफ्ट प्रकार या रोस्टर पैटर्न से टेम्पलेट खोजें।",
+    "templateSearchClearA11y": "टेम्पलेट खोज साफ़ करें",
+    "templateSearchResultCount": "{{total}} में से {{count}} टेम्पलेट",
+    "templateSearchAllCount": "{{count}} टेम्पलेट"
   }
 }

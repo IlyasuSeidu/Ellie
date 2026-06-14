@@ -7,7 +7,8 @@
       "freeTrial": "Teste grátis",
       "noCard": "Sem cartão de crédito",
       "cancelAnytime": "Cancele quando quiser"
-    }
+    },
+    "getStartedHint": "Comece a configurar sua escala"
   },
   "common": {
     "swipeHint": "Deslize para a direita para selecionar, esquerda para ver o proximo ou para cima para mais informacoes",
@@ -71,7 +72,9 @@
       "countryTooShort": "O pais deve ter pelo menos 2 caracteres",
       "countryTooLong": "O pais nao pode exceder 100 caracteres"
     },
-    "skipCompany": "Pular"
+    "skipCompany": "Pular",
+    "continue": "Continuar",
+    "continueHint": "Ir para a próxima etapa de integração"
   },
   "shiftSystem": {
     "title_named": "Oi {{name}}, quantos turnos seu local de trabalho executa?",
