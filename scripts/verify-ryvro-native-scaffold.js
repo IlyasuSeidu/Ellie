@@ -8,6 +8,7 @@ const path = require('node:path');
 const root = process.cwd();
 const strictGenerated = process.argv.includes('--strict-generated');
 const strictGeneratedServices = process.argv.includes('--strict-generated-services');
+const isCi = process.env.CI === 'true';
 const errors = [];
 const warnings = [];
 
@@ -90,6 +91,19 @@ function validateIosGoogleService(content, label) {
       `${label} GCM_SENDER_ID must be a real numeric sender id; received ${senderId || '<missing>'}`
     );
   }
+}
+
+function validateRootIosGoogleService(content) {
+  const label = 'Root iOS GoogleService-Info.plist';
+
+  if (!content && isCi) {
+    warnings.push(
+      `${label} is ignored and unavailable in CI; release:env:check validates the real production service file before store builds.`
+    );
+    return;
+  }
+
+  validateIosGoogleService(content, label);
 }
 
 function validateTrackedIosLocalGoogleService(content) {
@@ -190,10 +204,7 @@ assertAbsent(readOptional('app.config.js'), retiredVisibleIdentityPattern, 'app.
 validateTrackedIosLocalGoogleService(
   readOptional('config/firebase/GoogleService-Info.local.plist')
 );
-validateIosGoogleService(
-  readOptional('GoogleService-Info.plist'),
-  'Root iOS GoogleService-Info.plist'
-);
+validateRootIosGoogleService(readOptional('GoogleService-Info.plist'));
 
 if (fs.existsSync(path.join(root, 'app.config.js.backup'))) {
   addError(
