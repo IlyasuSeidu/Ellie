@@ -97,6 +97,25 @@ npm run release:submit:check
 
 The submit check should still fail until all other owner evidence rows are complete, but the Android service-account file-path and Google Play service-account evidence errors should be gone while the real local JSON exists.
 
+## App Content Declarations
+
+Logged-in Play Console work on 2026-06-14 cleared every item on the App content `Need attention` tab for Play app ID `4974146267407561805`. Play Console then showed `You're all caught up. See completed declarations on the Actioned tab.`
+
+Completed declarations:
+
+- Privacy policy URL: `https://getryvro.com/privacy`.
+- Ads: `No, my app does not contain ads`.
+- Advertising ID: `No`, Ryvro does not use the advertising ID.
+- Government apps: `No`.
+- Financial features: `My app doesn't provide any financial features`; store subscriptions are handled by Play billing and are not a financial-service feature.
+- Health apps: `My app does not have any health features`.
+- Sign in details: restricted app access answered `Yes`; reviewer access record `Reviewer account` was added for `reviewer@getryvro.com` with the password entered only in Play Console, full-access instructions, and the checkbox confirming access to premium or paid content. Do not record the password.
+- Target audience and content: target age `18 and over`.
+- Content ratings: IARC questionnaire completed with contact email `support@getryvro.com`, category `All Other App Types`, generated AI/online content disclosed, digital goods disclosed for subscriptions, no random/chance purchases, no precise-location sharing, no web browser/search engine, no primary news or education product, no age-restricted products, no user-to-user content sharing, and no violence, sexuality, offensive language, or controlled-substance content. Saved ratings shown: Brazil `14+`, ESRB `Everyone`, PEGI `3`, USK `All ages`, and IARC/Google Play `3+`, with interactive element `In-App Purchases`.
+- Data safety: saved with data collection/sharing, encrypted in transit, email/password and OAuth account creation, account deletion URL `https://getryvro.com/delete-account`, privacy policy `https://getryvro.com/privacy`, and selected launch data types for personal info, purchase history, voice recordings, calendar events, files/docs, app activity, app info/performance, and device IDs.
+
+These declarations are saved in Play Console and must still be sent for review through Publishing overview when a release is submitted. Update the declarations before submission if the shipped app adds location, contacts, health data, ads/tracking SDKs, direct payment-card collection, public social sharing, public content feeds, regulated-duty claims, or other new data/features.
+
 ## Internal Testing Track
 
 Submit Android to internal testing first.

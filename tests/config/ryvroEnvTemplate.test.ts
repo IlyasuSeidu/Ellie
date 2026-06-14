@@ -3668,11 +3668,16 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(launchEvidenceLog).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(launchEvidenceLog).toContain(
-      'match the live privacy policy, Firebase, RevenueCat, Google Play billing, AI provider, voice, analytics, diagnostics, account deletion, data deletion, and subscription behavior'
+      'completed and saved the Data safety declaration for Play app ID `4974146267407561805`'
     );
-    expect(launchEvidenceLog).toContain('Do not mark passed from the draft alone');
+    expect(launchEvidenceLog).toContain('Voice audio was marked as ephemeral collection');
+    expect(launchEvidenceLog).toContain(
+      'The preview showed Data shared and Data collected sections'
+    );
     expect(launchEvidenceLog).toContain('Content rating and export compliance');
-    expect(launchEvidenceLog).toContain('Google Play content rating, Google Play target audience');
+    expect(launchEvidenceLog).toContain('completed the Play App content declarations');
+    expect(launchEvidenceLog).toContain('Target audience was saved as `18 and over`');
+    expect(launchEvidenceLog).toContain('Brazil `14+`, ESRB `Everyone`, PEGI `3`');
     expect(launchEvidenceLog).toContain('working-adult productivity app with subscriptions');
     expect(launchEvidenceLog).toContain('AI-assisted schedule drafting');
     expect(launchEvidenceLog).toContain('no child-directed audience, no gambling, no dating');
@@ -3681,6 +3686,9 @@ describe('Ryvro environment template', () => {
       'Record only non-secret completion notes or console status references'
     );
     expect(launchEvidenceLog).toContain('Firebase Auth confirmed `reviewer@getryvro.com`');
+    expect(launchEvidenceLog).toContain(
+      'entered only into the Google Play Sign in details declaration'
+    );
     expect(launchEvidenceLog).toContain('reviewer-access fields');
     expect(launchEvidenceLog).toContain('production-auth-ready build');
     expect(launchEvidenceLog).toContain('completes onboarding with a non-mining sample schedule');
@@ -4569,6 +4577,16 @@ describe('Ryvro environment template', () => {
       'Local ignored key path: `./google-play-key.json`'
     );
     expect(googlePlayInternalTestingHandoff).toContain('Do not paste the JSON contents anywhere');
+    expect(googlePlayInternalTestingHandoff).toContain('App Content Declarations');
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Need attention` tab for Play app ID `4974146267407561805`'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Target audience and content: target age `18 and over`'
+    );
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'Data safety: saved with data collection/sharing'
+    );
     expect(googlePlayInternalTestingHandoff).toContain('Internal Testing Track');
     expect(googlePlayInternalTestingHandoff).toContain('Track: Internal testing');
     expect(googlePlayInternalTestingHandoff).toContain('Physical Android QA');
