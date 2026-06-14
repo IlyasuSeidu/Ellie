@@ -39,34 +39,40 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - The Play Console dashboard is reachable for developer account `Ryvro`.
 - Latest Chrome progress on 2026-06-14 shows Play Console still reaches developer account `Ryvro`, account ID `8980566822183056641`, under owner account `seiduilyasu94@gmail.com`.
 - Earlier Chrome progress on 2026-06-09 showed Play Console says `Your identity has been verified successfully` for developer account `Ryvro`.
-- Owner confirmation on 2026-06-14: the remaining Play Console account configuration and app setup are done.
-- The Google Play app is configured for `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`.
+- The Google Play app was created in Play Console on 2026-06-14 with app name `Ryvro Shift Planner`, package `com.ryvro.shiftplanner`, app type App, pricing Free, app ID `4974146267407561805`, and status Draft.
+- The Play Console app list shows `Ryvro Shift Planner` / `com.ryvro.shiftplanner` and the account page says all apps are registered for Android developer verification requirements.
 - The Android mobile device verification details page was rechecked before completion on 2026-06-14. It said only the account owner can complete it from the Google Play Console app on a real Android mobile device signed in as `seiduilyasu94@gmail.com`.
 - The earlier contact phone verification blocker is now recorded as owner-resolved by the 2026-06-14 Play Console configuration confirmation.
 - Android emulator attempt on 2026-06-07 used the Play Console Android app on `Pixel_9_Pro` / Android API 36, selected `Ryvro`, and tapped `Verify`. Google rejected the emulator with `You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.` Treat this as requiring a physical Android 10 or newer device signed into the owner Google account.
 - Do not record the payments profile address, payment details, or full profile contents.
-- Next owner action: create or confirm the least-privilege Google Play service account for EAS Submit and RevenueCat, save the ignored JSON key locally as `./google-play-key.json`, then submit the latest Android build to internal testing.
+- Next owner action: submit the latest Android build to internal testing, then complete Play internal testing setup and physical Android QA.
 
 ## App Creation
 
-Create the app before uploading the AAB.
+The app is already created. Use these values for Android submission and Play Console setup.
 
 - App name: `Ryvro Shift Planner`
 - Package name: `com.ryvro.shiftplanner`
 - App or game: App
 - Free or paid: Free
-- Declarations: complete accurately in Play Console; do not accept declarations on behalf of the owner.
+- Play app dashboard ID: `4974146267407561805`
+- App status after creation: Draft
+- Declarations: accepted during app creation for Developer Program Policies, Play App Signing Terms of Service, and US export laws.
 - Record the Play Console app dashboard link or package dashboard note in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
 
 ## Service Account And API Access
 
-Create a Google Play service account for EAS Submit and RevenueCat. Keep the JSON file local and ignored by Git.
+The Google Play service account has been created and invited. Keep the JSON file local and ignored by Git.
 
-- In Play Console, open API access and link or confirm the Google Cloud project.
-- Create a least-privilege Google Play service account named `Ryvro EAS Submit` or equivalent.
-- Grant only the permissions needed to upload and manage releases for `com.ryvro.shiftplanner`.
-- Save the downloaded JSON key locally as `google-play-key.json` at the repo root.
-- Confirm `.gitignore` keeps `google-play-key.json` out of Git.
+- Google Cloud project: `ryvro-shift-planner`
+- Google Play Android Developer API: enabled on 2026-06-14.
+- Service account email: `ryvro-eas-submit@ryvro-shift-planner.iam.gserviceaccount.com`
+- Play Console user status: Active, never expires.
+- Local ignored key path: `./google-play-key.json`
+- Local key permissions: file mode `600`
+- `.gitignore` keeps `google-play-key.json` out of Git.
+- App-level permissions granted for `Ryvro Shift Planner` / `com.ryvro.shiftplanner`: view app information, edit and delete draft apps, view financial data, manage orders and subscriptions, release apps to testing tracks, manage testing tracks and edit tester lists, manage store presence, and Play-managed dependent policy access.
+- App admin and production release permissions were not granted.
 - Do not paste the JSON contents anywhere.
 - Record only the service account email, permission summary, and local file path `./google-play-key.json` in the evidence log.
 
@@ -77,7 +83,7 @@ test -f ./google-play-key.json
 npm run release:submit:check
 ```
 
-The submit check should still fail until all other owner evidence rows are complete, but the Android service-account file-path error should be gone once the real local JSON exists.
+The submit check should still fail until all other owner evidence rows are complete, but the Android service-account file-path and Google Play service-account evidence errors should be gone while the real local JSON exists.
 
 ## Internal Testing Track
 

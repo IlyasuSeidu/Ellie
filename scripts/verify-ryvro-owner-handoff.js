@@ -375,7 +375,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['# Ryvro Submit Blocker Triage', submitBlockerTriage],
   ['Current Submit Gate', submitBlockerTriage],
   ['Recommended Order', submitBlockerTriage],
-  ['Android service account key path `./google-play-key.json`', submitBlockerTriage],
+  [
+    'local ignored `./google-play-key.json` is present before Android EAS submit',
+    submitBlockerTriage,
+  ],
   ['Formal trademark/legal clearance for `Ryvro`', submitBlockerTriage],
   ['Finish Google Play Verification And App Setup', submitBlockerTriage],
   ['Finish Firebase Email Templates And Production Env', submitBlockerTriage],
@@ -635,7 +638,7 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['only the account owner can complete it', playInternalTestingHandoff],
   ['Google Play Console app on a real Android mobile device', playInternalTestingHandoff],
   [
-    'Next owner action: create or confirm the least-privilege Google Play service account for EAS Submit and RevenueCat',
+    'Next owner action: submit the latest Android build to internal testing',
     playInternalTestingHandoff,
   ],
   [
@@ -643,8 +646,11 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
     playInternalTestingHandoff,
   ],
   ['Service Account And API Access', playInternalTestingHandoff],
-  ['least-privilege Google Play service account', playInternalTestingHandoff],
-  ['Save the downloaded JSON key locally as `google-play-key.json`', playInternalTestingHandoff],
+  [
+    'Service account email: `ryvro-eas-submit@ryvro-shift-planner.iam.gserviceaccount.com`',
+    playInternalTestingHandoff,
+  ],
+  ['Local ignored key path: `./google-play-key.json`', playInternalTestingHandoff],
   ['Do not paste the JSON contents anywhere', playInternalTestingHandoff],
   ['Internal Testing Track', playInternalTestingHandoff],
   ['Track: Internal testing', playInternalTestingHandoff],

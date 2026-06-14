@@ -435,7 +435,7 @@ eas submit --platform ios --latest
 
 ### 1. Prepare Google Play Console
 
-Google Play app creation is still blocked until Google account verification, contact phone verification, and physical Android 10+ device access verification are complete. The emulator is not acceptable for that Play Console verification step.
+The Google Play app now exists in draft status as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`. The remaining Play release work is Android internal testing submission, Play Console form completion, and physical Android QA from a store-signed internal-testing build. The emulator is not acceptable for the final physical-device QA evidence.
 
 1. **Create Application**:
    - Go to [Google Play Console](https://play.google.com/console/)

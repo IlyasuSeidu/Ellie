@@ -38,7 +38,7 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - RevenueCat Play Store product record `Ryvro Pro Annual` now exists with identifier `ryvro_pro_annual:annual`, subscription ID `ryvro_pro_annual`, base plan ID `annual`, and store status `Could not check`.
 - Entitlement `pro` shows `2 products` attached in the RevenueCat entitlement list.
 - Offering `default` now exists with display name `Default`, REST API identifier `ofrngfbba49b733`, package `$rc_monthly` pointing at `ryvro_pro_monthly:monthly`, and package `$rc_annual` pointing at `ryvro_pro_annual:annual`.
-- RevenueCat product records and offering packages are not proof of working store purchases yet. Google Play app creation is still blocked by Play account verification, the App Store RevenueCat app is still blocked by the App Store Connect in-app purchase key, and sandbox purchase QA is still pending.
+- RevenueCat product records and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products, Play-side base plans, RevenueCat Play service-account connection verification, the App Store RevenueCat app, the App Store Connect in-app purchase key, and sandbox purchase QA are still pending.
 
 ## App Store Connect Subscription Setup
 

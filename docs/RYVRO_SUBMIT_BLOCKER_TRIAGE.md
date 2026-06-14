@@ -14,19 +14,18 @@ Run:
 npm run release:submit:check
 ```
 
-Expected current result: the command fails until the owner evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are no longer `Pending owner evidence`, the Android service account key exists locally at `./google-play-key.json`, and production EAS submit values are real.
+Expected current result: the command fails until the remaining owner evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are no longer `Pending owner evidence` and production EAS submit values are real.
 
 The same command scans the owner evidence packet for high-risk secret material, including service-account private-key JSON fields, private-key blocks, Firebase API keys, RevenueCat SDK keys, and EAS access tokens. If it fails for a secret scan item, remove the secret from the tracked file, rotate the exposed key in the owning console, and replace the evidence with a non-secret screenshot reference or dashboard note.
 
-Latest checked on 2026-06-14: `npm run release:native:check`, `npm run release:store:check`, and `npm run release:owner:check` passed. `npm run release:submit:check` still fails because owner evidence rows remain pending and `./google-play-key.json` is not present locally. `npm run release:env:check` still fails because this checkout does not have real production `.env` values or ignored production Firebase config files. The local retired `ELLIE_BRAIN_URL` and `ELLIE_BRAIN_TIMEOUT` keys were removed from the ignored `.env` on 2026-06-14 and no longer appear in the env preflight failures. `npm run release:clearance` still requires manual legal/social evidence; public checks show `getryvro.com` is registered and resolves, but formal trademark clearance and logged-in social-handle reservation remain owner-side proof items.
+Latest checked on 2026-06-14: `npm run release:native:check`, `npm run release:store:check`, and `npm run release:owner:check` passed. Google Play app creation, package reservation, Google Play Android Developer API enablement, Play Console service-account invite, and local ignored `./google-play-key.json` creation are now recorded as passed. `npm run release:submit:check` still fails because other owner evidence rows remain pending. `npm run release:env:check` still fails because this checkout does not have real production `.env` values or ignored production Firebase config files. The local retired `ELLIE_BRAIN_URL` and `ELLIE_BRAIN_TIMEOUT` keys were removed from the ignored `.env` on 2026-06-14 and no longer appear in the env preflight failures. `npm run release:clearance` still requires manual legal/social evidence; public checks show `getryvro.com` is registered and resolves, but formal trademark clearance and logged-in social-handle reservation remain owner-side proof items.
 
-Previously cleared submit-gate items: `Domain control for getryvro.com` and `Support page/mailbox` no longer appear in submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, and Google Play Console email-delivery proof to `support@getryvro.com` were recorded as passed.
+Previously cleared submit-gate items: `Domain control for getryvro.com`, `Support page/mailbox`, and Android service account key path `./google-play-key.json` no longer appear in submit-gate failures after owner purchase confirmation, DNS proof, Firebase custom-domain activation, certificate activation, live HTTPS checks, Google Play Console email-delivery proof to `support@getryvro.com`, Play service-account invitation, and local ignored key-file presence were recorded as passed.
 
 The remaining checked blocker families are:
 
-- Android service account key path `./google-play-key.json`
 - Formal trademark/legal clearance for `Ryvro`
-- Google Play title, package, app dashboard evidence, service account, internal testing, Android QA, and Play submission
+- Google Play internal testing, Android QA, and Play submission
 - Social handle reservation
 - Privacy and terms owner content review plus store-console use of the live `getryvro.com` URLs
 - Firebase Auth email templates, production env preflight, and EAS production environment push
@@ -57,7 +56,7 @@ Google Play blocks Android submission and RevenueCat Android product linkage.
 - Create the `Ryvro Shift Planner` app.
 - Confirm package `com.ryvro.shiftplanner`.
 - Create a least-privilege service account.
-- Save the downloaded JSON locally as `./google-play-key.json`.
+- Confirm the local ignored `./google-play-key.json` is present before Android EAS submit.
 - Confirm `.gitignore` keeps `google-play-key.json` out of Git.
 - Keep Android track as `internal` until internal-track QA passes.
 

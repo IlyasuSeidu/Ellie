@@ -906,9 +906,13 @@ describe('Ryvro environment template', () => {
     expect(result.status).toBe(1);
     expect(result.stderr).toContain('Ryvro submit readiness check failed');
     expect(result.stderr).not.toContain('submit.production.ios.appleId');
-    expect(result.stderr).toContain('Android service account key path ./google-play-key.json');
     expect(result.stderr).toContain('Formal trademark/legal clearance for `Ryvro`');
-    expect(result.stderr).toContain('Google Play service account still has pending owner evidence');
+    if (!fs.existsSync(path.join(process.cwd(), 'google-play-key.json'))) {
+      expect(result.stderr).toContain('Android service account key path ./google-play-key.json');
+    }
+    expect(result.stderr).not.toContain(
+      'Google Play service account still has pending owner evidence'
+    );
     expect(result.stderr).toContain(
       'App Store Connect in-app purchase key still has pending owner evidence'
     );
@@ -2193,8 +2197,10 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('eas submit --platform android --latest');
     expect(deploymentGuide).toContain('Submit to TestFlight first');
     expect(deploymentGuide).toContain('TestFlight install QA passes on a real iPhone');
-    expect(deploymentGuide).toContain('Google account verification');
-    expect(deploymentGuide).toContain('physical Android 10+ device access verification');
+    expect(deploymentGuide).toContain('The Google Play app now exists in draft status');
+    expect(deploymentGuide).toContain(
+      'physical Android QA from a store-signed internal-testing build'
+    );
     expect(deploymentGuide).toContain('The emulator is not acceptable');
     expect(deploymentGuide).toContain('Go to "Internal testing"');
     expect(deploymentGuide).toContain('Upload to the internal testing track');
@@ -2721,11 +2727,12 @@ describe('Ryvro environment template', () => {
       'Google Play verification and app setup, Firebase email templates and production env'
     );
     expect(readinessReport).toContain(
-      'the physical Android mobile device access verification and contact phone verification required before `Create app` is enabled'
+      'Google Play internal-testing handoff now documents the completed developer-account creation'
     );
+    expect(readinessReport).toContain('Play app ID `4974146267407561805`');
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain(
-      '`npm run release:submit:check` still intentionally fails on 2026-06-09'
+      '`npm run release:submit:check` still intentionally fails on 2026-06-14'
     );
     expect(readinessReport).toContain(
       'Already recorded account-side evidence that should not be reopened as generic blockers'
@@ -3497,35 +3504,21 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('ASC app ID `6776994726`');
     expect(ownerRunbook).toContain('EU trader status');
     expect(ownerRunbook).toContain('App Store Connect app-record, EU trader');
-    expect(ownerRunbook).toContain('selected the `Yourself` developer-account path');
-    expect(ownerRunbook).toContain('entered public developer name `Ryvro`');
-    expect(ownerRunbook).toContain('selected `Create new payments profile`');
-    expect(ownerRunbook).toContain('owner created and linked the payments profile');
+    expect(ownerRunbook).toContain('Completed 2026-06-14: Play Console app');
+    expect(ownerRunbook).toContain('app ID `4974146267407561805`');
+    expect(ownerRunbook).toContain('app type App, pricing Free, and status Draft');
+    expect(ownerRunbook).toContain('Earlier enrollment evidence covered the personal account path');
     expect(ownerRunbook).toContain('public email `support@getryvro.com`');
-    expect(ownerRunbook).toContain('the code was verified');
-    expect(ownerRunbook).toContain('website `https://getryvro.com` entered');
-    expect(ownerRunbook).toContain('Developer account created');
-    expect(ownerRunbook).toContain('Your identity has been verified successfully');
-    expect(ownerRunbook).toContain('Android mobile device access verification');
+    expect(ownerRunbook).toContain('website `https://getryvro.com`');
+    expect(ownerRunbook).toContain('developer registration');
+    expect(ownerRunbook).toContain('Android device access verification');
     expect(ownerRunbook).toContain('contact phone verification');
-    expect(ownerRunbook).toContain('Complete account verifications to create new apps');
-    expect(ownerRunbook).toContain('only the account owner can complete it');
-    expect(ownerRunbook).toContain('Google Play Console app on a real Android mobile device');
-    expect(ownerRunbook).toContain(
-      'Contact phone verification remains blocked until Android mobile device access verification is complete'
-    );
-    expect(ownerRunbook).toContain('Android emulator verification was attempted');
-    expect(ownerRunbook).toContain('Pixel_9_Pro');
-    expect(ownerRunbook).toContain(
-      "You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer."
-    );
-    expect(ownerRunbook).toContain('Use a physical Android 10 or newer device');
+    expect(ownerRunbook).toContain('Android internal testing release');
+    expect(ownerRunbook).toContain('physical Android QA');
     expect(ownerRunbook).toContain('Do not store the private payments-profile values in the repo');
     expect(ownerRunbook).toContain(
-      'ownership cannot be changed after the developer account is created'
+      'Enrollment and app creation are complete for the current personal developer account'
     );
-    expect(ownerRunbook).toContain('verified organization type');
-    expect(ownerRunbook).toContain('personal account path');
     expect(ownerRunbook).toContain('Google Play service account email');
     expect(ownerRunbook).toContain('local key path `./google-play-key.json`');
     expect(ownerRunbook).toContain('Reserve or create Google Play title `Ryvro Shift Planner`');
@@ -3632,22 +3625,22 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('ASC app ID: `6776994726`');
     expect(launchEvidenceLog).toContain('Apple Developer Program License Agreement accepted');
     expect(launchEvidenceLog).toContain('explicit bundle ID `com.ryvro.shiftplanner`');
-    expect(launchEvidenceLog).toContain('Logged-in Chrome Play Console progress');
-    expect(launchEvidenceLog).toContain('selected the `Yourself` account path');
-    expect(launchEvidenceLog).toContain('selected `Create new payments profile`');
-    expect(launchEvidenceLog).toContain('owner created and linked the payments profile');
-    expect(launchEvidenceLog).toContain('public email `support@getryvro.com`');
-    expect(launchEvidenceLog).toContain('the code was verified');
-    expect(launchEvidenceLog).toContain('website `https://getryvro.com` entered');
-    expect(launchEvidenceLog).toContain('Developer account created');
-    expect(launchEvidenceLog).toContain('Your identity has been verified successfully');
-    expect(launchEvidenceLog).toContain('Android mobile device access verification');
-    expect(launchEvidenceLog).toContain('contact phone verification');
-    expect(launchEvidenceLog).toContain('Complete account verifications to create new apps');
+    expect(launchEvidenceLog).toContain('Created in logged-in Play Console on 2026-06-14');
+    expect(launchEvidenceLog).toContain('app ID `4974146267407561805`');
     expect(launchEvidenceLog).toContain(
-      'Contact phone verification remains blocked until Android mobile device access verification is complete'
+      'ryvro-eas-submit@ryvro-shift-planner.iam.gserviceaccount.com'
     );
-    expect(launchEvidenceLog).toContain('Do not record the payments profile address');
+    expect(launchEvidenceLog).toContain('local ignored key file `./google-play-key.json`');
+    expect(launchEvidenceLog).toContain('Earlier enrollment evidence covers public developer name');
+    expect(launchEvidenceLog).toContain('support email verification at `support@getryvro.com`');
+    expect(launchEvidenceLog).toContain('website `https://getryvro.com`');
+    expect(launchEvidenceLog).toContain('developer-account creation');
+    expect(launchEvidenceLog).toContain('developer-account creation');
+    expect(launchEvidenceLog).toContain('app status: Draft');
+    expect(launchEvidenceLog).toContain(
+      'Production release and app admin permissions were not granted'
+    );
+    expect(launchEvidenceLog).toContain('Do not record payments profile address');
     expect(launchEvidenceLog).toContain(
       'owner legal/content review confirms the live policy matches'
     );
@@ -3759,7 +3752,8 @@ describe('Ryvro environment template', () => {
       'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
     );
     expect(launchEvidenceLog).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
-    expect(launchEvidenceLog).toContain('service account JSON handling');
+    expect(launchEvidenceLog).toContain('local ignored key file `./google-play-key.json`');
+    expect(launchEvidenceLog).toContain('Do not paste the JSON key');
     expect(launchEvidenceLog).toContain('Domain control for `getryvro.com`');
     expect(launchEvidenceLog).toContain('Owner purchase confirmation, DNS control proof');
     expect(launchEvidenceLog).toContain(
@@ -3966,7 +3960,7 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
     expect(externalSetup).toContain('RevenueCat apps, Ryvro Pro entitlement');
     expect(externalSetup).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
-    expect(externalSetup).toContain('Create a least-privilege Google Play service account');
+    expect(externalSetup).toContain('Google Play service account');
     expect(externalSetup).toContain(
       'Save the downloaded JSON key locally as `./google-play-key.json`'
     );
@@ -4066,7 +4060,7 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Current Submit Gate');
     expect(submitBlockerTriage).toContain('Recommended Order');
     expect(submitBlockerTriage).toContain(
-      'Android service account key path `./google-play-key.json`'
+      'local ignored `./google-play-key.json` is present before Android EAS submit'
     );
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(submitBlockerTriage).toContain('Finish Google Play Verification And App Setup');
@@ -4493,21 +4487,21 @@ describe('Ryvro environment template', () => {
       'Your identity has been verified successfully'
     );
     expect(googlePlayInternalTestingHandoff).toContain(
-      'Next owner action: complete Android mobile device access verification in the Google Play Console app on a real physical Android 10 or newer device'
+      'Next owner action: submit the latest Android build to internal testing'
     );
     expect(googlePlayInternalTestingHandoff).toContain('only the account owner can complete it');
     expect(googlePlayInternalTestingHandoff).toContain(
       'Google Play Console app on a real Android mobile device'
     );
     expect(googlePlayInternalTestingHandoff).toContain(
-      'phone verification cannot be completed until the other Play Console verification tasks are complete'
+      'contact phone verification blocker is now recorded as owner-resolved'
     );
     expect(googlePlayInternalTestingHandoff).toContain('Service Account And API Access');
     expect(googlePlayInternalTestingHandoff).toContain(
-      'least-privilege Google Play service account'
+      'Service account email: `ryvro-eas-submit@ryvro-shift-planner.iam.gserviceaccount.com`'
     );
     expect(googlePlayInternalTestingHandoff).toContain(
-      'Save the downloaded JSON key locally as `google-play-key.json`'
+      'Local ignored key path: `./google-play-key.json`'
     );
     expect(googlePlayInternalTestingHandoff).toContain('Do not paste the JSON contents anywhere');
     expect(googlePlayInternalTestingHandoff).toContain('Internal Testing Track');
