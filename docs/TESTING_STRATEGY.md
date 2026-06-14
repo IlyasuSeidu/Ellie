@@ -4,9 +4,9 @@
 
 This document outlines the current testing strategy for the Ryvro application. It combines the normal testing pyramid with launch-specific gates for the Ryvro rebrand, the `com.ryvro.shiftplanner` native identity, the Universal Shift Builder, authentication, subscriptions, reminders, exceptions, calendar import/export, and the owner handoff work that cannot be completed inside the repository.
 
-Current release evidence on June 9, 2026:
+Current release evidence on June 14, 2026:
 
-- `npm run release:check` passes TypeScript, 113 Jest suites / 1,812 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- `npm run release:check` passes TypeScript, 113 Jest suites / 1,813 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - The PR CI pipeline must pass Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job before launch-readiness evidence is treated as current.
 - Simulator E2E coverage includes fresh onboarding into the Universal Shift Builder, dashboard color/icon checks, profile navigation into builder settings, and mobile-fit coverage.
 - Release is still not complete until the account-only store setup, production environment push, TestFlight/internal-track install proof, subscription sandbox QA, screenshots, and physical iOS/Android device smoke tests are recorded in the launch evidence log.

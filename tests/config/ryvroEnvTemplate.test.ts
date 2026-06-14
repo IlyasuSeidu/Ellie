@@ -888,8 +888,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27506848948`');
-    expect(script).toContain('commit `687986d`');
+    expect(script).toContain('CI run `27507658165`');
+    expect(script).toContain('commit `df55775`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1934,7 +1934,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('113 Jest suites / 1,812 tests / 4 snapshots');
+    expect(readme).toContain('113 Jest suites / 1,813 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1943,8 +1943,8 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27506848948`');
-    expect(readme).toContain('commit `687986d`');
+    expect(readme).toContain('GitHub Actions CI run `27507658165`');
+    expect(readme).toContain('commit `df55775`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Firebase Auth email-template action URL resolution');
@@ -1952,7 +1952,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('TestFlight build `4` iPhone smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,812 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,813 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1961,7 +1961,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,812 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,813 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-06-09 release check)');
     expect(readme).toContain('Total Tests**: 1,805 passing (113 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
@@ -1985,8 +1985,8 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(testingStrategy).toContain('Current release evidence on June 9, 2026');
-    expect(testingStrategy).toContain('113 Jest suites / 1,812 tests / 4 snapshots');
+    expect(testingStrategy).toContain('Current release evidence on June 14, 2026');
+    expect(testingStrategy).toContain('113 Jest suites / 1,813 tests / 4 snapshots');
     expect(testingStrategy).toContain('The PR CI pipeline must pass');
     expect(testingStrategy).toContain('the dedicated Release Check job');
     expect(testingStrategy).toContain('the Ryvro native scaffold preflight');
@@ -2575,7 +2575,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,781 tests');
-    expect(readinessReport).toContain('113 Jest suites / 1,812 tests');
+    expect(readinessReport).toContain('113 Jest suites / 1,813 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2589,10 +2589,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27506848948`');
-    expect(readinessReport).toContain('commit `687986d`');
+    expect(readinessReport).toContain('CI run `27507658165`');
+    expect(readinessReport).toContain('commit `df55775`');
     expect(readinessReport).toContain(
-      'Latest pushed GitHub Actions check for PR #1 passed on commit `687986d`'
+      'Latest pushed GitHub Actions check for PR #1 passed on commit `df55775`'
     );
     expect(readinessReport).toContain('CI run `27213964871`');
     expect(readinessReport).toContain('commit `13e1810`');
@@ -2602,7 +2602,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `d2fa476`');
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain('commit `88e0c62`');
-    expect(readinessReport).toContain('native scaffold preflight CI-safe');
+    expect(readinessReport).toContain('launch-template copy guard');
     expect(readinessReport).toContain('CI run `27011414391`');
     expect(readinessReport).toContain('commit `6fcced7`');
     expect(readinessReport).toContain('CI run `27011090251`');
@@ -3575,16 +3575,16 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('113 Jest suites, 1,812 tests');
+    expect(ownerRunbook).toContain('113 Jest suites, 1,813 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Latest pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
-    expect(ownerRunbook).toContain('native scaffold preflight CI-safe');
-    expect(ownerRunbook).toContain('CI run `27506848948`');
-    expect(ownerRunbook).toContain('commit `687986d`');
+    expect(ownerRunbook).toContain('launch-template copy guard');
+    expect(ownerRunbook).toContain('CI run `27507658165`');
+    expect(ownerRunbook).toContain('commit `df55775`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(submitBlockerTriage).toContain(
       'scans the owner evidence packet for high-risk secret material'
