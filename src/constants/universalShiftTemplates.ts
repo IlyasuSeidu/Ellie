@@ -296,7 +296,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     id: 'mining-fifo-14-14',
     industry: 'mining_fifo',
     title: 'Mining FIFO 14/14',
-    subtitle: 'Launch-wedge FIFO template for mining and remote operations crews.',
+    subtitle: 'FIFO pattern for mining, offshore, and remote operations crews.',
     aiPromptExample:
       'I do FIFO mining: 14 days at the work location, travel home, then 14 days off.',
     visual: visual('Mine', 'hammer', '#D97706'),

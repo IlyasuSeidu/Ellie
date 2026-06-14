@@ -76,6 +76,14 @@ describe('Universal shift templates', () => {
     }
   });
 
+  it('keeps template copy free of internal launch-planning terms', () => {
+    for (const template of UNIVERSAL_SHIFT_TEMPLATES) {
+      const launchCopy = [template.title, template.subtitle, template.aiPromptExample].join('\n');
+
+      expect(launchCopy).not.toMatch(/\blaunch[- ]?wedge\b|\bwedge\b|internal/i);
+    }
+  });
+
   it('keeps non-mining template copy from inheriting mining or site-specific language', () => {
     for (const template of UNIVERSAL_SHIFT_TEMPLATES.filter(
       (candidate) => candidate.industry !== 'mining_fifo'
