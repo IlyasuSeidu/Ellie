@@ -3882,6 +3882,15 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('sandbox trial or purchase');
     expect(launchEvidenceLog).toContain('Google developer notifications');
     expect(launchEvidenceLog).toContain('validated store product status');
+    expect(launchEvidenceLog).toContain(
+      'projects/ryvro-shift-planner/topics/play-billing-notifications'
+    );
+    expect(launchEvidenceLog).toContain(
+      'google-play-developer-notifications@system.gserviceaccount.com'
+    );
+    expect(launchEvidenceLog).toContain(
+      'Play test notification for package `com.ryvro.shiftplanner`'
+    );
     expect(launchEvidenceLog).toContain('RevenueCat logged-in browser recheck on 2026-06-14');
     expect(launchEvidenceLog).toContain('Store product validation');
     expect(launchEvidenceLog).toContain('subscription group ID `22156776`');
@@ -4486,6 +4495,9 @@ describe('Ryvro environment template', () => {
     expect(revenueCatProductsHandoff).toContain('monthly pricing is based on Ghana (USD) `$6.99`');
     expect(revenueCatProductsHandoff).toContain(
       'annual 1 Year Upfront pricing is based on Ghana (USD) `$49.99`'
+    );
+    expect(revenueCatProductsHandoff).toContain(
+      'Google developer notifications status: configured and Play test notification received'
     );
     expect(revenueCatProductsHandoff).toContain(
       'entitlement ID `pro` mirrored into `EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID`'

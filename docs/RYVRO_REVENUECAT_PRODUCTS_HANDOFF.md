@@ -44,7 +44,7 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - Offering `default` now exists with display name `Default`, REST API identifier `ofrngfbba49b733`, package `$rc_monthly` pointing at `ryvro_pro_monthly:monthly`, and package `$rc_annual` pointing at `ryvro_pro_annual:annual`.
 - RevenueCat API keys page on 2026-06-14 shows SDK API key rows for `Ryvro (App Store)` and `Ryvro (Play Store)` with public keys in the expected `appl_...` and `goog_...` formats. The ignored local `.env` now mirrors the iOS and Android SDK keys into their native and Expo public variables without recording the values.
 - `npm run release:env:check`, `npm run release:env:push -- --force`, and `npm run release:env:files -- --force` passed on 2026-06-14 after the real RevenueCat SDK key mirrors were present.
-- RevenueCat product records, App Store Connect product shells, and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products are blocked until a Google Payments merchant account is set up. A later logged-in Play Console recheck on 2026-06-14 still showed the merchant-account blocker after the owner reported Play Console configuration complete. App Store all-country availability and base pricing are now saved for both products, but Play-side base plans, the separate RevenueCat App Store Connect API key upload, App Store trial decision, review screenshot, RevenueCat store-product validation, and sandbox purchase QA are still pending.
+- RevenueCat product records, App Store Connect product shells, and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, and Google Play real-time developer notifications are configured through Pub/Sub topic `projects/ryvro-shift-planner/topics/play-billing-notifications`; a Play test notification for package `com.ryvro.shiftplanner` was received through a temporary pull subscription on 2026-06-14. Google Play subscription products are still blocked until a Google Payments merchant account is set up. A later logged-in Play Console recheck on 2026-06-14 still showed the merchant-account blocker after the owner reported Play Console configuration complete and again after RTDN was saved. App Store all-country availability and base pricing are now saved for both products, but Play-side base plans, the separate RevenueCat App Store Connect API key upload, App Store trial decision, review screenshot, RevenueCat store-product validation, and sandbox purchase QA are still pending.
 
 ## App Store Connect Subscription Setup
 
@@ -88,7 +88,7 @@ Complete in Google Play Console after the Play app and service account exist.
 - Configure base plans with matching pricing and 7-day trial where approved.
 - Activate the base plans in the internal testing or closed testing path before production.
 - Connect the Google Play service account to RevenueCat.
-- Configure Google developer notifications if RevenueCat requires them.
+- Google developer notifications are configured: Play Console uses Pub/Sub topic `projects/ryvro-shift-planner/topics/play-billing-notifications`, the topic grants publisher access to `google-play-developer-notifications@system.gserviceaccount.com`, and a Play test notification reached a temporary pull subscription for package `com.ryvro.shiftplanner` on 2026-06-14. The temporary subscription was deleted after verification.
 
 Record:
 
@@ -97,7 +97,7 @@ Record:
 - Base-plan statuses
 - Trial configuration note
 - Google Play service account connected status
-- Google developer notifications status
+- Google developer notifications status: configured and Play test notification received
 
 ## RevenueCat Configuration
 

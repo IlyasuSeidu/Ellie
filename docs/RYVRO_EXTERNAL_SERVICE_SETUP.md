@@ -173,7 +173,8 @@ Current non-secret dashboard state from logged-in owner-console work through 202
 - Starting platforms: `Native Apple` and `Native Android`
 - Setup status: Ryvro project setup is in progress and still needs real store-product validation before purchase QA.
 - Android app: saved as `Ryvro (Play Store)` with package `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`, and REST API identifier `appab0f4b628d`.
-- Android remaining work: finish Google Play merchant/subscription setup, confirm service-account connection, and configure Google developer notifications if RevenueCat requires them.
+- Android remaining work: finish Google Play merchant/subscription setup and confirm RevenueCat store-product validation.
+- Google Play real-time developer notifications: configured on 2026-06-14 with Pub/Sub topic `projects/ryvro-shift-planner/topics/play-billing-notifications`. The topic grants `roles/pubsub.publisher` to `google-play-developer-notifications@system.gserviceaccount.com`, Play Console monetization setup saved the topic, and a temporary pull subscription received a Play test notification for package `com.ryvro.shiftplanner` before being deleted.
 - Historical setup guidance included upload the Google Play service account credentials JSON to RevenueCat; keep that JSON ignored and record only non-secret connection status.
 - iOS app: saved as `Ryvro (App Store)` with bundle `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appd8a95a73e0`, and REST API identifier `appd8a95a73e0`.
 - App Store Connect in-app purchase key: generated for RevenueCat on 2026-06-14 with Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f`; the `.p8` private key is stored outside the repo at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8` and must not be committed or pasted.

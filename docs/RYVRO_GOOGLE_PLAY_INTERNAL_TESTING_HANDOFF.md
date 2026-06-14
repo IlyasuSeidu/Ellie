@@ -77,6 +77,16 @@ The Google Play service account has been created and invited. Keep the JSON file
 - Do not paste the JSON contents anywhere.
 - Record only the service account email, permission summary, and local file path `./google-play-key.json` in the evidence log.
 
+## Play Billing Notifications
+
+Google Play real-time developer notifications are configured for the Ryvro Firebase/Google Cloud project.
+
+- Pub/Sub topic: `projects/ryvro-shift-planner/topics/play-billing-notifications`
+- Publisher service account: `google-play-developer-notifications@system.gserviceaccount.com`
+- IAM role on topic: `roles/pubsub.publisher`
+- Play Console monetization setup saved this topic on 2026-06-14.
+- Verification: a temporary pull subscription received a Play test notification for package `com.ryvro.shiftplanner` on 2026-06-14, then the temporary subscription was deleted. Do not record Pub/Sub ack IDs or raw message payloads in Git.
+
 Local verification before Android submit:
 
 ```bash

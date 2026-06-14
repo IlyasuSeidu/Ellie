@@ -94,7 +94,8 @@ Do this before purchase QA and store review.
 - English (Australia) localizations and review notes are saved for both App Store products.
 - App Store all-country availability and base pricing are saved for both products: monthly from Ghana (USD) `$6.99`, and annual 1 Year Upfront from Ghana (USD) `$49.99`.
 - Finish App Store trial decision, review screenshot or paywall image metadata, RevenueCat App Store mapping, and sandbox purchase QA.
-- Create Google Play products `ryvro_pro_monthly` and `ryvro_pro_annual`.
+- Google Play RTDN is configured with Pub/Sub topic `projects/ryvro-shift-planner/topics/play-billing-notifications`, publisher service account `google-play-developer-notifications@system.gserviceaccount.com`, and a received Play test notification for package `com.ryvro.shiftplanner`.
+- Create Google Play products `ryvro_pro_monthly` and `ryvro_pro_annual` after the Google Payments merchant-account blocker clears.
 - Attach both products to entitlement `pro`.
 - Offering ID `default` exists with monthly and annual packages from the current RevenueCat product records.
 - Run sandbox purchase, cancel, relock, and restore tests.
