@@ -88,6 +88,7 @@ Do this before purchase QA and store review.
 
 - Ryvro iOS and Android apps are confirmed in RevenueCat.
 - App Store Connect In-App Purchase key is generated and configured in RevenueCat. Keep only non-secret Key ID and Issuer ID in tracked evidence.
+- RevenueCat's separate App Store Connect API key upload is still pending. The 2026-06-14 `Ryvro RevenueCat API` key with Key ID `VMFGH4BNTL` was revoked after its one-time `.p8` download could not be verified locally.
 - Configure entitlement ID `pro` with display name `Ryvro Pro`.
 - App Store Connect product shells now exist: subscription group `Ryvro Pro` ID `22156776`, monthly product `ryvro_pro_monthly` Apple ID `6780186030`, and annual product `ryvro_pro_annual` Apple ID `6780186069`; both products still show `Missing Metadata`.
 - English (Australia) localizations and review notes are saved for both App Store products.
