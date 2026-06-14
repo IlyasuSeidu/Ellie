@@ -10,10 +10,10 @@ import { ChatMessage, Message } from '../ChatMessage';
 // Mock ChatAvatar
 jest.mock('../ChatAvatar', () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ChatAvatar: ({ testID }: any) => {
+  ChatAvatar: ({ testID, size }: any) => {
     const React = require('react');
     const { View } = require('react-native');
-    return React.createElement(View, { testID }, 'Avatar');
+    return React.createElement(View, { testID, size }, 'Avatar');
   },
 }));
 
@@ -45,6 +45,14 @@ describe('ChatMessage', () => {
         <ChatMessage message={botMessage} isBot={true} reducedMotion={false} testID="bot-message" />
       );
       expect(getByTestId('bot-message-avatar')).toBeTruthy();
+    });
+
+    it('should render bot messages with the larger assistant avatar', () => {
+      const { getByTestId } = render(
+        <ChatMessage message={botMessage} isBot={true} reducedMotion={false} testID="bot-message" />
+      );
+
+      expect(getByTestId('bot-message-avatar').props.size).toBe(48);
     });
 
     it('should have correct accessibility label for bot', () => {

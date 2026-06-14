@@ -79,8 +79,8 @@ export const ChatAvatar = React.memo<ChatAvatarProps>(
         <Image
           source={require('../../../../assets/onboarding/icons/consolidated/ryvro-shift-assistant.png')}
           style={{
-            width: size * 0.6,
-            height: size * 0.6,
+            width: size,
+            height: size,
           }}
           resizeMode="contain"
         />
@@ -93,16 +93,16 @@ ChatAvatar.displayName = 'ChatAvatar';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 2,
-    borderColor: theme.colors.sacredGold,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    borderColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
       ios: {
-        shadowColor: theme.colors.sacredGold,
+        shadowColor: theme.colors.shiftVisualization.afternoonShift,
         shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.4,
+        shadowOpacity: 0.24,
         shadowRadius: 6,
       },
       android: {

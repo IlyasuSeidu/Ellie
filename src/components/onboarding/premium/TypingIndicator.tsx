@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderWidth: 1,
     borderColor: theme.colors.softStone,
-    marginLeft: 52, // Align with bot message text (avatar 40px + gap 12px)
+    marginLeft: 60, // Align with bot message text (avatar 48px + gap 12px)
   },
   dotsContainer: {
     flexDirection: 'row',

@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { render } from '@testing-library/react-native';
+import { StyleSheet } from 'react-native';
 import { ChatAvatar } from '../ChatAvatar';
 
 describe('ChatAvatar', () => {
@@ -31,6 +32,26 @@ describe('ChatAvatar', () => {
       const { UNSAFE_root } = render(<ChatAvatar reducedMotion={false} />);
       const image = UNSAFE_root.findByType('Image');
       expect(image).toBeTruthy();
+    });
+
+    it('should render the assistant image at the full avatar size', () => {
+      const { UNSAFE_root } = render(<ChatAvatar size={50} reducedMotion={false} />);
+      const image = UNSAFE_root.findByType('Image');
+
+      expect(image.props.style).toEqual(
+        expect.objectContaining({
+          width: 50,
+          height: 50,
+        })
+      );
+    });
+
+    it('should not draw a white backing circle behind the assistant image', () => {
+      const { getByTestId } = render(<ChatAvatar reducedMotion={false} testID="chat-avatar" />);
+      const avatarStyle = StyleSheet.flatten(getByTestId('chat-avatar').props.style);
+
+      expect(avatarStyle.backgroundColor).toBe('transparent');
+      expect(avatarStyle.borderWidth).toBe(0);
     });
   });
 

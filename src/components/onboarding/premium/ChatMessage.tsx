@@ -129,7 +129,7 @@ export const ChatMessage = React.memo<ChatMessageProps>(
           )}
         >
           <ChatAvatar
-            size={40}
+            size={48}
             animated={true}
             reducedMotion={reducedMotion}
             testID={`${testID}-avatar`}

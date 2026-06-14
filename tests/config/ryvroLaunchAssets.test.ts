@@ -5,6 +5,7 @@ type PngSpec = {
   minBytes: number;
   width: number;
   height: number;
+  hasAlpha?: boolean;
 };
 
 const root = process.cwd();
@@ -24,6 +25,10 @@ const expectPngAsset = (relativePath: string, spec: PngSpec): void => {
   expect(file.subarray(0, 8).toString('hex')).toBe(pngSignature);
   expect(file.readUInt32BE(16)).toBe(spec.width);
   expect(file.readUInt32BE(20)).toBe(spec.height);
+  if (spec.hasAlpha !== undefined) {
+    const colorType = file.readUInt8(25);
+    expect([4, 6].includes(colorType)).toBe(spec.hasAlpha);
+  }
 };
 
 const readPngDimensions = (relativePath: string): Pick<PngSpec, 'width' | 'height'> => {
@@ -80,16 +85,19 @@ describe('Ryvro launch assets', () => {
       minBytes: 8_000,
       width: 512,
       height: 512,
+      hasAlpha: true,
     });
     expectPngAsset('assets/onboarding/icons/consolidated/ryvro-shift-assistant@2x.png', {
       minBytes: 18_000,
       width: 1024,
       height: 1024,
+      hasAlpha: true,
     });
     expectPngAsset('assets/onboarding/icons/consolidated/ryvro-shift-assistant@3x.png', {
       minBytes: 30_000,
       width: 1536,
       height: 1536,
+      hasAlpha: true,
     });
   });
 
