@@ -3864,7 +3864,8 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('local `./google-play-key.json` presence only');
     expect(launchEvidenceLog).toContain('separate App Store Connect API key upload as required');
     expect(launchEvidenceLog).toContain('Key ID `VMFGH4BNTL`');
-    expect(launchEvidenceLog).toContain('do not use `VMFGH4BNTL`');
+    expect(launchEvidenceLog).toContain('Key ID `G842654HWJ`');
+    expect(launchEvidenceLog).toContain('Do not use `VMFGH4BNTL` or `G842654HWJ`');
     expect(launchEvidenceLog).toContain('App Store Connect in-app purchase key');
     expect(launchEvidenceLog).toContain('Key ID and Issuer ID presence in RevenueCat only');
     expect(launchEvidenceLog).toContain('`.p8` private key kept out of Git');
@@ -4472,6 +4473,7 @@ describe('Ryvro environment template', () => {
       'Separate RevenueCat App Store Connect API key upload is still pending'
     );
     expect(revenueCatProductsHandoff).toContain('Do not use `VMFGH4BNTL`');
+    expect(revenueCatProductsHandoff).toContain('Do not use `VMFGH4BNTL` or `G842654HWJ`');
     expect(revenueCatProductsHandoff).toContain('App Store Connect Subscription Setup');
     expect(revenueCatProductsHandoff).toContain('Google Play Subscription Setup');
     expect(revenueCatProductsHandoff).toContain('Create entitlement ID `pro`');
