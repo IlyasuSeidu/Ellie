@@ -67,6 +67,9 @@ build-in-public/
 design/
 
 # source images are retained in git but not needed at runtime
+assets/onboarding/icons/1x/
+assets/onboarding/icons/2x/
+assets/onboarding/icons/3x/
 assets/onboarding/icons/source/
 
 # local training/build scratch
