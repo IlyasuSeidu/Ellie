@@ -635,10 +635,13 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['only the account owner can complete it', playInternalTestingHandoff],
   ['Google Play Console app on a real Android mobile device', playInternalTestingHandoff],
   [
-    'Next owner action: complete Android mobile device access verification in the Google Play Console app on a real physical Android 10 or newer device',
+    'Next owner action: create or confirm the least-privilege Google Play service account for EAS Submit and RevenueCat',
     playInternalTestingHandoff,
   ],
-  ['contact phone verification details page', playInternalTestingHandoff],
+  [
+    'contact phone verification blocker is now recorded as owner-resolved',
+    playInternalTestingHandoff,
+  ],
   ['Service Account And API Access', playInternalTestingHandoff],
   ['least-privilege Google Play service account', playInternalTestingHandoff],
   ['Save the downloaded JSON key locally as `google-play-key.json`', playInternalTestingHandoff],

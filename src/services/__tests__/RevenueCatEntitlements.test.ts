@@ -32,7 +32,7 @@ describe('RevenueCatEntitlements', () => {
     });
   });
 
-  it('keeps Ryvro entitlement aliases available for the launch RevenueCat dashboard', () => {
+  it('uses only the canonical Ryvro launch entitlement by default', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -49,22 +49,12 @@ describe('RevenueCatEntitlements', () => {
         hasActiveProEntitlement,
       } = require('../RevenueCatEntitlements');
 
-      expect(getRevenueCatEntitlementIds()).toEqual(
-        expect.arrayContaining([
-          'pro',
-          'premium',
-          'ryvro_pro',
-          'ryvro-premium',
-          'ryvro_shift_planner_pro',
-          'Ryvro Shift Planner Pro',
-        ])
-      );
-      expect(hasActiveProEntitlement(makeCustomerInfo(['ryvro_shift_planner_pro']))).toBe(true);
-      expect(hasActiveProEntitlement(makeCustomerInfo(['Ryvro Shift Planner Pro']))).toBe(true);
+      expect(getRevenueCatEntitlementIds()).toEqual(['pro']);
+      expect(hasActiveProEntitlement(makeCustomerInfo(['pro']))).toBe(true);
     });
   });
 
-  it('matches the canonical pro and premium entitlement ids', () => {
+  it('matches the canonical pro entitlement id only', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -83,12 +73,12 @@ describe('RevenueCatEntitlements', () => {
 
       expect(hasActiveProEntitlement(makeCustomerInfo(['pro']))).toBe(true);
       expect(getActiveProEntitlement(makeCustomerInfo(['pro']))?.identifier).toBe('pro');
-      expect(hasActiveProEntitlement(makeCustomerInfo(['premium']))).toBe(true);
-      expect(getActiveProEntitlement(makeCustomerInfo(['premium']))?.identifier).toBe('premium');
+      expect(hasActiveProEntitlement(makeCustomerInfo(['premium']))).toBe(false);
+      expect(getActiveProEntitlement(makeCustomerInfo(['premium']))).toBeNull();
     });
   });
 
-  it('does not accept retired Ellie entitlement names for this pre-launch rebrand', () => {
+  it('does not accept retired or loose entitlement names for this pre-launch rebrand', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -114,8 +104,16 @@ describe('RevenueCatEntitlements', () => {
           'ellie_miner_shift_assistant_pro',
           'miner_shift_assistant_pro',
           'Ellie: Miner Shift Assistant Pro',
+          'premium',
+          'ryvro_pro',
+          'ryvro-premium',
+          'ryvro_shift_planner_pro',
+          'Ryvro Shift Planner Pro',
         ])
       );
+      expect(hasActiveProEntitlement(makeCustomerInfo(['premium']))).toBe(false);
+      expect(hasActiveProEntitlement(makeCustomerInfo(['ryvro_shift_planner_pro']))).toBe(false);
+      expect(hasActiveProEntitlement(makeCustomerInfo(['Ryvro Shift Planner Pro']))).toBe(false);
       expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie Shift Planner Pro']))).toBe(false);
       expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie: Miner Shift Assistant Pro']))).toBe(
         false
@@ -145,7 +143,7 @@ describe('RevenueCatEntitlements', () => {
     });
   });
 
-  it('prefers an explicit configured entitlement without dropping Ryvro aliases', () => {
+  it('prefers an explicit configured entitlement while retaining canonical pro', () => {
     process.env.REVENUECAT_ENTITLEMENT_ID = 'custom_partner_pro';
 
     jest.isolateModules(() => {
@@ -166,9 +164,7 @@ describe('RevenueCatEntitlements', () => {
 
       expect(getPrimaryRevenueCatEntitlementId()).toBe('custom_partner_pro');
       expect(getRevenueCatEntitlementIds()[0]).toBe('custom_partner_pro');
-      expect(getRevenueCatEntitlementIds()).toEqual(
-        expect.arrayContaining(['pro', 'ryvro_pro', 'ryvro_shift_planner_pro'])
-      );
+      expect(getRevenueCatEntitlementIds()).toEqual(['custom_partner_pro', 'pro']);
     });
   });
 });

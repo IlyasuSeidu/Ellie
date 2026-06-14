@@ -39,13 +39,13 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - The Play Console dashboard is reachable for developer account `Ryvro`.
 - Latest Chrome progress on 2026-06-14 shows Play Console still reaches developer account `Ryvro`, account ID `8980566822183056641`, under owner account `seiduilyasu94@gmail.com`.
 - Earlier Chrome progress on 2026-06-09 showed Play Console says `Your identity has been verified successfully` for developer account `Ryvro`.
-- The Play Console home page still says `Finish setting up your developer account`, lists Android mobile device access verification and contact phone verification, and keeps app creation locked with `Complete account verifications to create new apps`.
-- Google still blocks app creation until the remaining account verification tasks are complete. The dashboard still shows Android mobile device access verification and contact phone verification, and `Create app` is disabled with the message `Complete account verifications to create new apps`.
-- The Android mobile device verification details page was rechecked on 2026-06-14. It says only the account owner can complete it. The owner must open the Google Play Console app on a real Android mobile device, sign in with `seiduilyasu94@gmail.com`, choose developer account `Ryvro`, and follow the on-device instructions.
-- The contact phone verification details page still says phone verification cannot be completed until the other Play Console verification tasks are complete, so it remains blocked by Android mobile device access verification.
+- Owner confirmation on 2026-06-14: the remaining Play Console account configuration and app setup are done.
+- The Google Play app is configured for `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`.
+- The Android mobile device verification details page was rechecked before completion on 2026-06-14. It said only the account owner can complete it from the Google Play Console app on a real Android mobile device signed in as `seiduilyasu94@gmail.com`.
+- The earlier contact phone verification blocker is now recorded as owner-resolved by the 2026-06-14 Play Console configuration confirmation.
 - Android emulator attempt on 2026-06-07 used the Play Console Android app on `Pixel_9_Pro` / Android API 36, selected `Ryvro`, and tapped `Verify`. Google rejected the emulator with `You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.` Treat this as requiring a physical Android 10 or newer device signed into the owner Google account.
 - Do not record the payments profile address, payment details, or full profile contents.
-- Next owner action: complete Android mobile device access verification in the Google Play Console app on a real physical Android 10 or newer device, then complete contact phone verification, then continue to app creation and package reservation.
+- Next owner action: create or confirm the least-privilege Google Play service account for EAS Submit and RevenueCat, save the ignored JSON key locally as `./google-play-key.json`, then submit the latest Android build to internal testing.
 
 ## App Creation
 

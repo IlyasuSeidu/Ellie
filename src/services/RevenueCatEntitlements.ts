@@ -39,18 +39,11 @@ export const getPrimaryRevenueCatEntitlementId = (): string => {
   );
 };
 
-const ENTITLEMENT_ALIASES = [
-  'pro',
-  'premium',
-  'ryvro_pro',
-  'ryvro-premium',
-  'ryvro_shift_planner_pro',
-  'Ryvro Shift Planner Pro',
-];
+const CANONICAL_REVENUECAT_ENTITLEMENT_ID = 'pro';
 
 export const getRevenueCatEntitlementIds = (): string[] => {
   const primary = getPrimaryRevenueCatEntitlementId();
-  return Array.from(new Set([primary, ...ENTITLEMENT_ALIASES]));
+  return Array.from(new Set([primary, CANONICAL_REVENUECAT_ENTITLEMENT_ID]));
 };
 
 export const getActiveProEntitlement = (info: CustomerInfo): PurchasesEntitlementInfo | null => {
