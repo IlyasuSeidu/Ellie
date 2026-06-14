@@ -268,6 +268,17 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       return searchableText.includes(query);
     });
   }, [templateSearchQuery]);
+  const isTemplateSearchActive = templateSearchQuery.trim().length > 0;
+  const templateSearchResultText = isTemplateSearchActive
+    ? t('builder.templateSearchResultCount', {
+        count: filteredTemplates.length,
+        total: UNIVERSAL_SHIFT_TEMPLATES.length,
+        defaultValue: '{{count}} of {{total}} templates',
+      })
+    : t('builder.templateSearchAllCount', {
+        count: UNIVERSAL_SHIFT_TEMPLATES.length,
+        defaultValue: '{{count}} templates',
+      });
 
   useEffect(() => {
     Analytics.screenView('UniversalShiftBuilder');
@@ -323,6 +334,11 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const markDirty = useCallback(() => {
     setIsDirty(true);
     setDismissedWarnings(false);
+  }, []);
+
+  const handleClearTemplateSearch = useCallback(() => {
+    setTemplateSearchQuery('');
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   }, []);
 
   // ── Schedule mutators ──────────────────────────────────────────────────────
@@ -1336,8 +1352,47 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         </View>
         <View style={styles.templateCountBadge}>
           <Ionicons name="albums-outline" size={13} color={theme.colors.deepVoid} />
-          <Text style={styles.templateCountText}>{UNIVERSAL_SHIFT_TEMPLATES.length}</Text>
+          <Text style={styles.templateCountText}>{filteredTemplates.length}</Text>
         </View>
+      </View>
+
+      <View style={styles.templateSearchGroup}>
+        <View
+          style={styles.templateSearchCard}
+          testID="universal-shift-builder-template-search-row"
+        >
+          <Ionicons name="search" size={18} color={theme.colors.shadow} />
+          <TextInput
+            value={templateSearchQuery}
+            onChangeText={setTemplateSearchQuery}
+            placeholder={t('builder.templateSearchPlaceholder')}
+            placeholderTextColor={theme.colors.shadow}
+            accessibilityLabel={t('builder.templateSearchA11y')}
+            accessibilityHint={t('builder.templateSearchHint', {
+              defaultValue: 'Search templates by industry, shift type, or roster pattern.',
+            })}
+            style={styles.templateSearchInput}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="search"
+            clearButtonMode="never"
+            testID="universal-shift-builder-template-search"
+          />
+          {isTemplateSearchActive && (
+            <TouchableOpacity
+              style={styles.templateSearchClearButton}
+              onPress={handleClearTemplateSearch}
+              accessibilityRole="button"
+              accessibilityLabel={t('builder.templateSearchClearA11y', {
+                defaultValue: 'Clear template search',
+              })}
+              testID="universal-shift-builder-template-search-clear"
+            >
+              <Ionicons name="close-circle" size={20} color={theme.colors.dust} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <Text style={styles.templateSearchResultText}>{templateSearchResultText}</Text>
       </View>
 
       <ScrollView
@@ -1345,23 +1400,9 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         style={styles.templateScroll}
         contentContainerStyle={styles.templateContent}
+        keyboardShouldPersistTaps="handled"
         testID="universal-shift-builder-template-scroll"
       >
-        <View style={[styles.templateSearchCard, { width: templateTileWidth }]}>
-          <Ionicons name="search" size={17} color={theme.colors.shadow} />
-          <TextInput
-            value={templateSearchQuery}
-            onChangeText={setTemplateSearchQuery}
-            placeholder={t('builder.templateSearchPlaceholder')}
-            placeholderTextColor={theme.colors.shadow}
-            accessibilityLabel={t('builder.templateSearchA11y')}
-            style={styles.templateSearchInput}
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="search"
-            testID="universal-shift-builder-template-search"
-          />
-        </View>
         {filteredTemplates.map((template) => (
           <TouchableOpacity
             key={template.id}
@@ -2495,27 +2536,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.md,
     gap: theme.spacing.sm,
   },
+  templateSearchGroup: {
+    marginTop: theme.spacing.xs,
+    marginBottom: theme.spacing.sm,
+    gap: 6,
+  },
   templateSearchCard: {
-    width: 204,
-    minHeight: 174,
     backgroundColor: theme.colors.deepVoid,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.lg,
     borderWidth: 1,
     borderColor: theme.colors.softStone,
-    paddingHorizontal: theme.spacing.sm,
-    paddingVertical: theme.spacing.sm,
-    marginRight: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    minHeight: 48,
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: theme.spacing.xs,
+    alignItems: 'center',
+    gap: theme.spacing.sm,
   },
   templateSearchInput: {
     flex: 1,
-    minHeight: 42,
     color: theme.colors.paper,
     fontSize: theme.typography.fontSizes.sm,
-    lineHeight: 18,
+    lineHeight: 20,
     padding: 0,
+    minWidth: 0,
+  },
+  templateSearchClearButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  templateSearchResultText: {
+    color: theme.colors.shadow,
+    fontSize: theme.typography.fontSizes.xs,
+    fontWeight: theme.typography.fontWeights.medium,
   },
   templateCard: {
     width: 222,
