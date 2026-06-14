@@ -895,6 +895,10 @@ describe('Ryvro environment template', () => {
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
     const scriptPath = path.join(process.cwd(), 'scripts/verify-ryvro-submit-readiness.js');
     const script = fs.readFileSync(scriptPath, 'utf8');
+    const releaseTasks = fs.readFileSync(
+      path.join(process.cwd(), 'RYVRO_RELEASE_TASKS.md'),
+      'utf8'
+    );
     const result = spawnSync(process.execPath, [scriptPath], {
       cwd: process.cwd(),
       encoding: 'utf8',
@@ -925,6 +929,16 @@ describe('Ryvro environment template', () => {
     expect(result.stderr).toContain('App Store products still has pending owner evidence');
     expect(result.stderr).toContain('Google Play products still has pending owner evidence');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
+    expect(releaseTasks).toContain(
+      'App Store privacy form is published and safe iOS version metadata/reviewer fields were filled from repo copy'
+    );
+    expect(releaseTasks).toContain(
+      'the version page did not save because the private App Review contact phone is required'
+    );
+    expect(releaseTasks).toContain('Play App content `Need attention` tab is clear');
+    expect(releaseTasks).toContain(
+      'Play subscription products/base plans and final Publishing overview review submission remain pending'
+    );
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(script).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
