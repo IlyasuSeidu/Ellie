@@ -38,7 +38,8 @@ Known owner-console evidence from 2026-06-05 through 2026-06-14:
 - RevenueCat Play Store product record `Ryvro Pro Annual` now exists with identifier `ryvro_pro_annual:annual`, subscription ID `ryvro_pro_annual`, base plan ID `annual`, and store status `Could not check`.
 - Entitlement `pro` shows `2 products` attached in the RevenueCat entitlement list.
 - Offering `default` now exists with display name `Default`, REST API identifier `ofrngfbba49b733`, package `$rc_monthly` pointing at `ryvro_pro_monthly:monthly`, and package `$rc_annual` pointing at `ryvro_pro_annual:annual`.
-- RevenueCat product records and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products, Play-side base plans, RevenueCat Play service-account connection verification, the App Store RevenueCat app, the App Store Connect in-app purchase key, and sandbox purchase QA are still pending.
+- RevenueCat API keys page on 2026-06-14 shows an SDK API key row for `Ryvro (Play Store)` with a public key in the expected `goog_...` format. The local ignored `.env` now has that Android SDK key mirrored into `REVENUECAT_ANDROID_KEY` and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` without recording the value.
+- RevenueCat product records and offering packages are not proof of working store purchases yet. The Google Play app and service account now exist, but Google Play subscription products are blocked until a Google Payments merchant account is set up. Play-side base plans, RevenueCat Play service-account connection verification, the App Store RevenueCat app, the App Store Connect in-app purchase key, the iOS `appl_...` SDK key, and sandbox purchase QA are still pending.
 
 ## App Store Connect Subscription Setup
 
@@ -67,6 +68,7 @@ Record:
 
 Complete in Google Play Console after the Play app and service account exist.
 
+- Set up a Google Payments merchant account first. The Play Console subscriptions page currently says a merchant account is required before subscriptions can be accessed.
 - Create subscription product ID: `ryvro_pro_monthly`
 - Create subscription product ID: `ryvro_pro_annual`
 - Configure base plans with matching pricing and 7-day trial where approved.

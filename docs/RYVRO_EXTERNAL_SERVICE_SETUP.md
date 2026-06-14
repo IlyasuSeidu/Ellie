@@ -299,11 +299,12 @@ Required before submit:
 
 Service account and internal testing:
 
-- Complete the remaining Play Console account verification tasks before creating the app. The developer account now exists and Play Console says `Your identity has been verified successfully`, but Play Console still requires Android mobile device access verification on a physical Android 10 or newer device and contact phone verification before `Create app` is enabled.
-- Create the Play app as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`.
-- Set first release track to Internal testing.
-- Create a least-privilege Google Play service account for EAS Submit and RevenueCat access.
-- Save the downloaded JSON key locally as `./google-play-key.json`; keep it ignored by Git and never paste its contents into docs, chat, or screenshots.
+- The Play app already exists as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner` and draft app ID `4974146267407561805`.
+- First release track remains Internal testing.
+- The least-privilege Google Play service account for EAS Submit and RevenueCat access already exists and is active.
+- The downloaded JSON key is saved locally as ignored file `./google-play-key.json`; keep it ignored by Git and never paste its contents into docs, chat, or screenshots.
+- Set up a Google Payments merchant account before creating Play subscription products; Play Console currently blocks the subscriptions page until that is done.
+- Plan for Play production access to require a closed testing release with at least 12 opted-in testers for at least 14 days before applying for production.
 - Confirm `eas.json` points Android production submit at `./google-play-key.json` and track `internal`.
 - Run `eas submit --platform android --latest` only after the AAB exists and the service account is ready.
 - Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for the exact evidence packet and promotion gate.

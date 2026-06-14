@@ -932,15 +932,10 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('eas build:version:set --platform android --profile production');
     expect(script).toContain('# Ryvro Submit Blocker Triage');
     expect(script).toContain('Recommended Order');
-    expect(script).toContain('Finish Google Play Verification And App Setup');
-    expect(script).toContain('Android mobile device access verification');
-    expect(script).toContain('physical Android 10 or newer device');
-    expect(script).toContain(
-      "You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer."
-    );
-    expect(script).toContain(
-      'Treat this as requiring a physical Android 10 or newer device signed into the owner Google account'
-    );
+    expect(script).toContain('Finish Google Play Internal Testing And Merchant Setup');
+    expect(script).toContain('Google Payments merchant account');
+    expect(script).toContain('at least 12 opted-in testers');
+    expect(script).toContain('at least 14 days of closed testing');
     expect(script).toContain('Finish Firebase Email Templates And Production Env');
     expect(script).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(script).toContain('Social handles');
@@ -2724,7 +2719,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('Owner launch runbook now sequences clearance');
     expect(readinessReport).toContain(
-      'Google Play verification and app setup, Firebase email templates and production env'
+      'Google Play internal testing and merchant setup, Firebase email templates and production env'
     );
     expect(readinessReport).toContain(
       'Google Play internal-testing handoff now documents the completed developer-account creation'
@@ -3869,7 +3864,8 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('`.p8` private key kept out of Git');
     expect(launchEvidenceLog).toContain('RevenueCat SDK keys');
     expect(launchEvidenceLog).toContain('iOS `appl_...` and Android `goog_...` keys');
-    expect(launchEvidenceLog).toContain('native and Expo public mirrors match');
+    expect(launchEvidenceLog).toContain('now mirrors it into `REVENUECAT_ANDROID_KEY`');
+    expect(launchEvidenceLog).toContain('missing iOS RevenueCat key values');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d');
     expect(launchEvidenceLog).toContain('REST API identifier `appab0f4b628d`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
@@ -3962,8 +3958,9 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(externalSetup).toContain('Google Play service account');
     expect(externalSetup).toContain(
-      'Save the downloaded JSON key locally as `./google-play-key.json`'
+      'downloaded JSON key is saved locally as ignored file `./google-play-key.json`'
     );
+    expect(externalSetup).toContain('Google Payments merchant account');
     expect(externalSetup).toContain('eas submit --platform android --latest');
 
     expect(deviceQaTemplate).toContain('# Ryvro Device QA Evidence Template');
@@ -4063,7 +4060,10 @@ describe('Ryvro environment template', () => {
       'local ignored `./google-play-key.json` is present before Android EAS submit'
     );
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
-    expect(submitBlockerTriage).toContain('Finish Google Play Verification And App Setup');
+    expect(submitBlockerTriage).toContain('Finish Google Play Internal Testing And Merchant Setup');
+    expect(submitBlockerTriage).toContain('Google Payments merchant account');
+    expect(submitBlockerTriage).toContain('at least 12 opted-in testers');
+    expect(submitBlockerTriage).toContain('at least 14 days of closed testing');
     expect(submitBlockerTriage).toContain('Finish Firebase Email Templates And Production Env');
     expect(submitBlockerTriage).toContain('backend provider smoke tests have passed');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
@@ -4487,8 +4487,11 @@ describe('Ryvro environment template', () => {
       'Your identity has been verified successfully'
     );
     expect(googlePlayInternalTestingHandoff).toContain(
-      'Next owner action: submit the latest Android build to internal testing'
+      'Next owner action: finish the internal testing tester list'
     );
+    expect(googlePlayInternalTestingHandoff).toContain('Google Payments merchant account');
+    expect(googlePlayInternalTestingHandoff).toContain('at least 12 opted-in testers');
+    expect(googlePlayInternalTestingHandoff).toContain('at least 14 days of closed testing');
     expect(googlePlayInternalTestingHandoff).toContain('only the account owner can complete it');
     expect(googlePlayInternalTestingHandoff).toContain(
       'Google Play Console app on a real Android mobile device'

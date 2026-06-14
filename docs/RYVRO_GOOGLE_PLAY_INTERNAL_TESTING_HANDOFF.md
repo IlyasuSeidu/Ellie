@@ -45,7 +45,7 @@ Current non-secret progress from logged-in Chrome on 2026-06-07:
 - The earlier contact phone verification blocker is now recorded as owner-resolved by the 2026-06-14 Play Console configuration confirmation.
 - Android emulator attempt on 2026-06-07 used the Play Console Android app on `Pixel_9_Pro` / Android API 36, selected `Ryvro`, and tapped `Verify`. Google rejected the emulator with `You can't verify using this device. To verify, use a device running Android 10 (SDK 29) or newer.` Treat this as requiring a physical Android 10 or newer device signed into the owner Google account.
 - Do not record the payments profile address, payment details, or full profile contents.
-- Next owner action: submit the latest Android build to internal testing, then complete Play internal testing setup and physical Android QA.
+- Next owner action: finish the internal testing tester list, set up the Google Payments merchant account for subscriptions, rebuild after the final production environment passes, submit the latest Android build to internal testing, then complete physical Android QA.
 
 ## App Creation
 
@@ -102,6 +102,14 @@ Required internal-track setup:
 - Version code: current production Android version code
 - Release notes: concise testing note based on `docs/RYVRO_STORE_LISTING.md`
 - Rollout target: internal testing only, not production
+
+Current Play Console state on 2026-06-14:
+
+- Internal testing is available but inactive, with no releases.
+- The tester setup page says up to 100 testers can join internal tests and requires an email list before saving tester access.
+- The join link will appear after the app is published to the test.
+- Production access requires a closed testing release, at least 12 opted-in testers, and at least 14 days of closed testing before applying for production.
+- The Play subscriptions page says `Missing requirements for accessing this page` and requires setting up a Google Payments merchant account before subscription products can be created.
 
 Record:
 
