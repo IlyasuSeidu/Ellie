@@ -874,7 +874,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('App Store Connect app name `Ryvro Shift Planner`');
     expect(script).toContain('Google Play title `Ryvro Shift Planner`');
     expect(script).toContain('Create RevenueCat project');
-    expect(script).toContain('Android app `Ryvro (Play Store)` exists as `appab0f4b628d`');
+    expect(script).toContain('RevenueCat app `Ryvro (Play Store)` exists as `appab0f4b628d`');
     expect(script).toContain('Run `eas login` then `eas init`');
     expect(script).toContain('not live in the App Store or Google Play yet');
     expect(script).toContain('npm run release:owner:check');
@@ -918,7 +918,11 @@ describe('Ryvro environment template', () => {
       'App Store Connect in-app purchase key still has pending owner evidence'
     );
     expect(result.stderr).not.toContain('RevenueCat SDK keys still has pending owner evidence');
-    expect(result.stderr).toContain('RevenueCat apps still has pending owner evidence');
+    expect(result.stderr).not.toContain('RevenueCat apps still has pending owner evidence');
+    expect(result.stderr).not.toContain('Entitlement still has pending owner evidence');
+    expect(result.stderr).not.toContain('Default offering still has pending owner evidence');
+    expect(result.stderr).toContain('App Store products still has pending owner evidence');
+    expect(result.stderr).toContain('Google Play products still has pending owner evidence');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
@@ -2324,10 +2328,8 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain(
       'Add RevenueCat native/public key and entitlement placeholders to `.env.example`, `.env.production.example`, runtime config, and `npm run release:env:check`'
     );
-    expect(releaseTasks).toContain(
-      'iOS app save is blocked on App Store Connect in-app purchase p8 key, Key ID, and Issuer ID'
-    );
-    expect(releaseTasks).toContain('Android app `Ryvro (Play Store)` exists as `appab0f4b628d`');
+    expect(releaseTasks).toContain('RevenueCat app `Ryvro (App Store)` exists as `appd8a95a73e0`');
+    expect(releaseTasks).toContain('RevenueCat app `Ryvro (Play Store)` exists as `appab0f4b628d`');
     expect(releaseTasks).toContain('Team ID `BZ798WZJCB`');
     expect(releaseTasks).toContain(
       '`@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`'
@@ -3849,11 +3851,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('rejection of retired Ellie or ShiftSync IDs');
     expect(launchEvidenceLog).toContain('variable names updated, visibility classes');
     expect(launchEvidenceLog).toContain('Do not record API keys, SDK key values');
-    expect(launchEvidenceLog).toContain('created project `Ryvro`');
-    expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
-    expect(launchEvidenceLog).toContain('category `Productivity`');
-    expect(launchEvidenceLog).toContain('`Native Apple` plus `Native Android`');
-    expect(launchEvidenceLog).toContain('not Test Store only');
+    expect(launchEvidenceLog).toContain('showed project `Ryvro`');
+    expect(launchEvidenceLog).toContain('iOS app ID `appd8a95a73e0`');
+    expect(launchEvidenceLog).toContain('Android app ID `appab0f4b628d`');
+    expect(launchEvidenceLog).toContain(
+      'both bundle/application IDs set to `com.ryvro.shiftplanner`'
+    );
     expect(launchEvidenceLog).toContain('`Ryvro (Play Store)`');
     expect(launchEvidenceLog).toContain('package `com.ryvro.shiftplanner`');
     expect(launchEvidenceLog).toContain('Google Play service account');
@@ -3866,24 +3869,22 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('iOS `appl_...` and Android `goog_...` keys');
     expect(launchEvidenceLog).toContain('mirrors the iOS key into `REVENUECAT_IOS_KEY`');
     expect(launchEvidenceLog).toContain('mirrors the Android key into `REVENUECAT_ANDROID_KEY`');
-    expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appd8a95a73e0');
-    expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d');
-    expect(launchEvidenceLog).toContain('REST API identifier `appab0f4b628d`');
+    expect(launchEvidenceLog).toContain('RevenueCat apps');
+    expect(launchEvidenceLog).toContain('Passed');
+    expect(launchEvidenceLog).toContain('Android app ID `appab0f4b628d`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
     expect(launchEvidenceLog).toContain('RevenueCat/store-products evidence packet');
     expect(launchEvidenceLog).toContain('App Store Connect subscription group `Ryvro Pro`');
-    expect(launchEvidenceLog).toContain('RevenueCat offering `default`');
+    expect(launchEvidenceLog).toContain('Offering ID `default`');
     expect(launchEvidenceLog).toContain('sandbox trial or purchase');
-    expect(launchEvidenceLog).toContain('Google developer notifications remain pending');
-    expect(launchEvidenceLog).toContain('not Test Store only');
-    expect(launchEvidenceLog).toContain(
-      'both RevenueCat apps are saved against real App Store Connect and Google Play products'
-    );
-    expect(launchEvidenceLog).toContain('Google Play service account connected status');
-    expect(launchEvidenceLog).toContain('offering `default` references packages that grant it');
+    expect(launchEvidenceLog).toContain('Google developer notifications');
+    expect(launchEvidenceLog).toContain('validated store product status');
+    expect(launchEvidenceLog).toContain('RevenueCat logged-in browser recheck on 2026-06-14');
+    expect(launchEvidenceLog).toContain('Store product validation');
+    expect(launchEvidenceLog).toContain('package `$rc_annual` / Annual access');
     expect(launchEvidenceLog).toContain('paywall screenshot metadata if required');
     expect(launchEvidenceLog).toContain('active for the testing track');
-    expect(launchEvidenceLog).toContain('package identifier, pricing metadata, trial metadata');
+    expect(launchEvidenceLog).toContain('Store pricing, trial metadata');
     expect(launchEvidenceLog).toContain(
       'Do not mark passed from web dashboards, RevenueCat Test Store'
     );
