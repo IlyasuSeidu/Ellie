@@ -64,7 +64,7 @@ Completed and guarded in the current branch:
 - Dashboard FIFO status, offline assistant pattern summaries, onboarding FIFO roster cards, FIFO phase selector labels, custom FIFO builder setup copy, profile FIFO config-card summaries, and the active FIFO user guide now use work-block/rest-block language instead of defaulting to site-specific phrasing.
 - Global pending-sync visibility now surfaces queued user-profile, shift-log, session, analytics, and related offline writes through the app-level sync status indicator.
 - Runtime cache TTL policy is centralized in `src/config/cacheConfig.ts` and wired through shift schedules, holidays, RevenueCat offerings, paywall recovery, voice assistant persistence, and storage maintenance.
-- First-store-build version values are aligned across tracked Expo and native config: app version `1.0.0`, iOS build number `1`, Android versionCode `1`, and Android versionName `1.0.0`.
+- Tracked Expo and native source config still keep the first-release baseline at app version `1.0.0`, iOS build number `1`, Android versionCode `1`, and Android versionName `1.0.0`; the submitted store candidates have advanced through EAS remote versioning, with current production-auth-ready iOS build `4` in TestFlight and Android versionCode `8` on the Play internal track.
 
 ## Current Public Clearance Evidence
 

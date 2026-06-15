@@ -2830,7 +2830,11 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'active research-funnel operating-system and automation prompt docs now match the runtime launch-persona model'
     );
-    expect(readinessReport).toContain('First-store-build version values are aligned');
+    expect(readinessReport).toContain(
+      'Tracked Expo and native source config still keep the first-release baseline'
+    );
+    expect(readinessReport).toContain('current production-auth-ready iOS build `4`');
+    expect(readinessReport).toContain('Android versionCode `8` on the Play internal track');
     expect(readinessReport).toContain(
       'Production env preflight now requires the real EAS project UUID'
     );
