@@ -83,7 +83,7 @@ Completed and guarded in the current branch:
 ## Verification Completed
 
 - Local focused verification on 2026-06-09 passed `npm test -- --runTestsByPath src/services/firebase/__tests__/authSdk.providers.test.ts src/services/__tests__/AuthService.socialCredentials.test.ts --no-cache`, `npm run type-check`, and `git diff --check` after fixing native Apple Firebase credential creation. `npm run release:submit:check` still failed intentionally on the current owner evidence and local Android service-account key blockers.
-- Latest pushed GitHub Actions check for PR #1 passed on commit `1b31255`: CI run `27508431698` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
+- Latest verified pushed GitHub Actions check for PR #1 passed on commit `6913d81`: CI run `27509251571` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Previous pushed GitHub Actions check for PR #1 passed on commit `13e1810`: CI run `27213964871` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Earlier pushed GitHub Actions check for PR #1 passed on commit `89a2899`: CI run `27213105262` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Local release verification on 2026-06-14 passed `npm run release:check` after adding the launch-template copy guard. The release check included TypeScript, 113 Jest suites / 1,813 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.

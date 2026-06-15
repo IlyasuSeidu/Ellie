@@ -792,12 +792,9 @@ requireMatches(
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
 [
-  ['CI run `27508431698`', readme],
-  ['commit `1b31255`', readme],
-  ['CI run `27508431698`', readinessReport],
-  ['commit `1b31255`', readinessReport],
-  ['CI run `27508431698`', ownerRunbook],
-  ['commit `1b31255`', ownerRunbook],
+  ['Latest verified pushed PR gate', readme],
+  ['Latest verified pushed GitHub Actions check', readinessReport],
+  ['Latest verified pushed PR gate evidence', ownerRunbook],
   ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', readme],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],

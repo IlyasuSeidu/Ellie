@@ -888,8 +888,9 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27508431698`');
-    expect(script).toContain('commit `1b31255`');
+    expect(script).toContain('Latest verified pushed PR gate');
+    expect(script).not.toContain("['CI run `27508431698`'");
+    expect(script).not.toContain("['commit `1b31255`'");
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1986,9 +1987,9 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('fresh onboarding path into the Universal Shift Builder');
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
-    expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27508431698`');
-    expect(readme).toContain('commit `1b31255`');
+    expect(readme).toContain('Latest verified pushed PR gate');
+    expect(readme).toContain('GitHub Actions CI run `27509251571`');
+    expect(readme).toContain('commit `6913d81`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Firebase Auth email-template action URL resolution');
@@ -2651,10 +2652,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27508431698`');
-    expect(readinessReport).toContain('commit `1b31255`');
+    expect(readinessReport).toContain('CI run `27509251571`');
+    expect(readinessReport).toContain('commit `6913d81`');
     expect(readinessReport).toContain(
-      'Latest pushed GitHub Actions check for PR #1 passed on commit `1b31255`'
+      'Latest verified pushed GitHub Actions check for PR #1 passed on commit `6913d81`'
     );
     expect(readinessReport).toContain('CI run `27213964871`');
     expect(readinessReport).toContain('commit `13e1810`');
@@ -3659,11 +3660,11 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
-    expect(ownerRunbook).toContain('Latest pushed PR gate evidence is');
+    expect(ownerRunbook).toContain('Latest verified pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).toContain('launch-template copy guard');
-    expect(ownerRunbook).toContain('CI run `27508431698`');
-    expect(ownerRunbook).toContain('commit `1b31255`');
+    expect(ownerRunbook).toContain('CI run `27509251571`');
+    expect(ownerRunbook).toContain('commit `6913d81`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(submitBlockerTriage).toContain(
       'scans the owner evidence packet for high-risk secret material'
