@@ -668,6 +668,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['Production Promotion Gate', playInternalTestingHandoff],
   ['exact commit being submitted', playInternalTestingHandoff],
   ['GitHub CI is green for that commit', playInternalTestingHandoff],
+  [
+    'real Google Play subscription products `ryvro_pro_monthly` and `ryvro_pro_annual` plus base plans are created after the merchant-account blocker clears',
+    playInternalTestingHandoff,
+  ],
   ['rollout percentage or internal-only note', playInternalTestingHandoff],
   ['policy warning, or rejected release note', playInternalTestingHandoff],
   ['npm run release:submit:check', playInternalTestingHandoff],

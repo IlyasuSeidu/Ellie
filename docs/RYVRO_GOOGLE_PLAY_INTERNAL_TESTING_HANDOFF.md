@@ -197,7 +197,7 @@ Do not promote the Android release beyond internal testing until all of these ar
 - `npm run release:submit:check` passes on the exact commit being submitted.
 - GitHub CI is green for that commit.
 - Google Play Data safety, content rating, target audience, app access, privacy policy, account deletion, and subscription declarations are complete.
-- RevenueCat Android app, entitlement `pro`, products, and offering `default` are complete.
+- RevenueCat Android app, entitlement `pro`, and offering `default` are configured, and real Google Play subscription products `ryvro_pro_monthly` and `ryvro_pro_annual` plus base plans are created after the merchant-account blocker clears.
 - Sandbox purchase and restore pass on Android.
 - Physical Android QA passes from the internal testing install.
 - Store screenshots are captured from production-equivalent builds.

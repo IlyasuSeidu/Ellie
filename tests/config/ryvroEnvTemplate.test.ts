@@ -4731,6 +4731,9 @@ describe('Ryvro environment template', () => {
     expect(googlePlayInternalTestingHandoff).toContain('Production Promotion Gate');
     expect(googlePlayInternalTestingHandoff).toContain('exact commit being submitted');
     expect(googlePlayInternalTestingHandoff).toContain('GitHub CI is green for that commit');
+    expect(googlePlayInternalTestingHandoff).toContain(
+      'real Google Play subscription products `ryvro_pro_monthly` and `ryvro_pro_annual` plus base plans are created after the merchant-account blocker clears'
+    );
     expect(googlePlayInternalTestingHandoff).toContain('rollout percentage or internal-only note');
     expect(googlePlayInternalTestingHandoff).toContain('policy warning, or rejected release note');
     expect(googlePlayInternalTestingHandoff).toContain('npm run release:submit:check');
