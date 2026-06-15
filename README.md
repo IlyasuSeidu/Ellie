@@ -144,8 +144,8 @@ Repo-proven launch state:
 - Latest local gate: `npm run release:check` passed TypeScript, 113 Jest suites / 1,814 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-06-15
 - Latest iOS simulator gate: `npm run test:e2e -- e2e/onboarding.test.ts --reuse` passed the fresh onboarding path into the Universal Shift Builder, `npm run test:e2e -- e2e/dashboard.test.ts --reuse` passed 16 dashboard checks including the active universal shift icon, and `npm run test:e2e -- e2e/critical-mobile.test.ts --reuse` passed auth, onboarding, dashboard, profile, and builder mobile-fit checks
 - Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
-- Recent verified pushed PR gate: GitHub Actions CI run `27545464804` on commit `0e0507a` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
-- Recent verified E2E workflow gate: GitHub Actions run `27545606240` on commit `0e0507a` passed the bounded E2E Configuration Check; native simulator/emulator Detox jobs remain available through the manual `run_native` workflow input
+- Recent verified pushed PR gate: GitHub Actions CI run `27546422603` on commit `7f3df5e` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
+- Recent verified E2E workflow gate: GitHub Actions run `27546583226` on commit `7f3df5e` passed the bounded E2E Configuration Check; native simulator/emulator Detox jobs remain available through the manual `run_native` workflow input
 
 Owner/account work still required before launch:
 
