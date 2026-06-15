@@ -2014,10 +2014,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent verified pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27532846467`');
-    expect(readme).toContain('commit `50a7904`');
+    expect(readme).toContain('GitHub Actions CI run `27534775034`');
+    expect(readme).toContain('commit `a95056e`');
     expect(readme).toContain('Recent verified E2E workflow gate');
-    expect(readme).toContain('GitHub Actions run `27532978363`');
+    expect(readme).toContain('GitHub Actions run `27543339745`');
     expect(readme).toContain('manual `run_native` workflow input');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
@@ -2370,7 +2370,7 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain(
       'Legend: ✅ Done · 🔧 Repo or build task · 👤 Owner/account step'
     );
-    expect(releaseTasks).toContain('latest public clearance evidence at 13:11Z');
+    expect(releaseTasks).toContain('latest public clearance evidence at 07:35Z');
     expect(releaseTasks).toContain('domain cart evidence');
     expect(releaseTasks).toContain('owner runbook verification refresh');
     expect(releaseTasks).toContain('verified `getryvro.com` domain control');
@@ -2388,7 +2388,8 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).not.toContain('Manual — you do these');
     expect(releaseTasks).not.toContain('Manual step (you do this)');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-06-06 13:11Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-06-15 07:35Z');
+    expect(releaseTasks).not.toContain('latest public evidence: 2026-06-06 13:11Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-06-05 13:31Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-06-05 11:04Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 19:32Z');
@@ -2687,12 +2688,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27532846467`');
-    expect(readinessReport).toContain('commit `50a7904`');
+    expect(readinessReport).toContain('CI run `27534775034`');
+    expect(readinessReport).toContain('commit `a95056e`');
     expect(readinessReport).toContain(
-      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `50a7904`'
+      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `a95056e`'
     );
-    expect(readinessReport).toContain('GitHub Actions run `27532978363`');
+    expect(readinessReport).toContain('GitHub Actions run `27543339745`');
     expect(readinessReport).toContain(
       'Recent local release verification on 2026-06-15 passed `npm run release:check`'
     );
@@ -3723,9 +3724,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain(
       'updating current App Store and Google Play screenshot requirements'
     );
-    expect(ownerRunbook).toContain('CI run `27532846467`');
-    expect(ownerRunbook).toContain('commit `50a7904`');
-    expect(ownerRunbook).toContain('GitHub Actions run `27532978363`');
+    expect(ownerRunbook).toContain('CI run `27534775034`');
+    expect(ownerRunbook).toContain('commit `a95056e`');
+    expect(ownerRunbook).toContain('GitHub Actions run `27543339745`');
     expect(ownerRunbook).toContain('bounded E2E Configuration Check');
     expect(ownerRunbook).toContain('manual `run_native` workflow input');
     expect(ownerRunbook).toContain('dedicated Release Check job');
