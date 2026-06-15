@@ -54,6 +54,16 @@ Fresh public preflight captured on 2026-06-14 at `2026-06-14T14:52:08.460Z`:
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, `ryvro.org`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` still returned no public DNS records or no-match `.com` WHOIS results in the public preflight.
 - X, Instagram, and TikTok `@ryvro` returned public `200` responses; YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses. These remain public signals only and are not logged-in reservation proof.
 
+Fresh public preflight captured on 2026-06-15 at `2026-06-15T07:35:47.077Z`:
+
+- Apple public software search returned 9 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
+- Google Play public search found no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydora`, `Rydoo`, `Ryver`, and `Ryver LLC`.
+- USPTO Trademark Search app was reachable with status `200`; this is still only reachability proof, not legal clearance.
+- `getryvro.com` is still recognized by the clearance script as the controlled launch domain: DNS returns `199.36.158.100`, Verisign WHOIS shows `GETRYVRO.COM`, creation date `2026-06-06T14:52:51Z`, expiry date `2027-06-06T14:52:51Z`, registrar `Spaceship, Inc.`, and Spaceship launch nameservers.
+- `ryvro.com` remains separately registered through GoDaddy/Afternic and is not treated as the owned launch domain.
+- `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, `ryvro.org`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` still returned no public DNS records or no-match `.com` WHOIS results in the public preflight.
+- X, Instagram, and TikTok `@ryvro` returned public `200` responses; YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses. These remain public signals only and are not logged-in reservation proof.
+
 Logged-in browser reservation progress from 2026-06-06:
 
 - Spaceship showed `getryvro.com` as available.

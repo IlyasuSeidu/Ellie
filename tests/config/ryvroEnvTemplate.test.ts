@@ -2537,11 +2537,14 @@ describe('Ryvro environment template', () => {
 
     expect(readinessReport).toContain('Date: 2026-06-15');
     expect(readinessReport).not.toContain('Date: 2026-06-01');
-    expect(readinessReport).toContain('2026-06-06T13:11:48.530Z');
+    expect(readinessReport).toContain('2026-06-15T07:35:47.077Z');
     expect(readinessReport).toContain('privacy and terms use effective date `June 6, 2026`');
     expect(readinessReport).toContain('live HTTPS checks passed');
     expect(readinessReport).toContain('a 2026-06-07 recheck confirmed `getryvro.com`');
-    expect(readinessReport).toContain('visible fuzzy names were `Rydoo` and `Rydora`');
+    expect(readinessReport).toContain(
+      'visible fuzzy names were `Rydora`, `Rydoo`, `Ryver`, and `Ryver LLC`'
+    );
+    expect(readinessReport).toContain('recognized as the controlled launch domain');
     expect(readinessReport).toContain('Spaceship showed `getryvro.com` as available');
     expect(readinessReport).toContain('visible total `$9.08`');
     expect(readinessReport).not.toContain('2026-06-05T13:31:53.172Z');
@@ -3721,6 +3724,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(launchEvidenceLog).toContain('clearance/domain/social evidence packet');
     expect(launchEvidenceLog).toContain('2026-06-06T13:11:48.530Z');
+    expect(launchEvidenceLog).toContain('2026-06-15T07:35:47.077Z');
     expect(launchEvidenceLog).toContain('App Store Connect app name `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(launchEvidenceLog).toContain('App Store/TestFlight evidence packet');
@@ -4169,16 +4173,22 @@ describe('Ryvro environment template', () => {
       'Fallback social handles: `@getryvro`, `@tryryvro`'
     );
     expect(clearanceDomainSocialHandoff).toContain('2026-06-06T13:11:48.530Z');
+    expect(clearanceDomainSocialHandoff).toContain('2026-06-15T07:35:47.077Z');
     expect(clearanceDomainSocialHandoff).toContain(
       'no exact `Ryvro` or `Ryvro Shift Planner` app result'
     );
-    expect(clearanceDomainSocialHandoff).toContain('visible fuzzy names were `Rydoo` and `Rydora`');
+    expect(clearanceDomainSocialHandoff).toContain(
+      'visible fuzzy names were `Rydora`, `Rydoo`, `Ryver`, and `Ryver LLC`'
+    );
     expect(clearanceDomainSocialHandoff).toContain(
       'USPTO Trademark Search app was reachable with status `200`'
     );
     expect(clearanceDomainSocialHandoff).toContain('`getryvro.com` had no public DNS records');
     expect(clearanceDomainSocialHandoff).toContain(
       '`ryvro.com` is already registered through GoDaddy/Afternic'
+    );
+    expect(clearanceDomainSocialHandoff).toContain(
+      '`getryvro.com` is still recognized by the clearance script as the controlled launch domain'
     );
     expect(clearanceDomainSocialHandoff).toContain(
       'X, Instagram, and TikTok `@ryvro` returned public `200` responses'
