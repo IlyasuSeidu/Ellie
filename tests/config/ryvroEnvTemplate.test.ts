@@ -2036,7 +2036,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
-    expect(readme).toContain('Latest iOS simulator gate');
+    expect(readme).toContain('Recorded local release gate');
+    expect(readme).toContain('Recorded iOS simulator gate');
+    expect(readme).not.toContain('Latest local gate');
+    expect(readme).not.toContain('Latest iOS simulator gate');
     expect(readme).toContain('fresh onboarding path into the Universal Shift Builder');
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
@@ -2740,8 +2743,9 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).not.toContain('Recent verified pushed GitHub Actions check');
     expect(readinessReport).toContain('GitHub Actions run `27546583226`');
     expect(readinessReport).toContain(
-      'Recent local release verification on 2026-06-15 passed `npm run release:check`'
+      'Recorded local release verification on 2026-06-15 passed `npm run release:check`'
     );
+    expect(readinessReport).not.toContain('Recent local release verification');
     expect(readinessReport).toContain('bounded E2E Configuration Check');
     expect(readinessReport).toContain('manual `run_native` workflow input');
     expect(readinessReport).toContain('CI run `27525326188`');
@@ -3771,9 +3775,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Recent recorded pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Recent verified pushed PR gate evidence');
-    expect(ownerRunbook).toContain(
-      'updating current App Store and Google Play screenshot requirements'
-    );
+    expect(ownerRunbook).toContain('updating App Store and Google Play screenshot requirements');
+    expect(ownerRunbook).not.toContain('Latest local gate');
+    expect(ownerRunbook).not.toContain('updating current App Store and Google Play');
     expect(ownerRunbook).toContain('CI run `27546422603`');
     expect(ownerRunbook).toContain('commit `7f3df5e`');
     expect(ownerRunbook).toContain('GitHub Actions run `27546583226`');
