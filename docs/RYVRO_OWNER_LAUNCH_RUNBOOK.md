@@ -1,6 +1,6 @@
 # Ryvro Owner Launch Runbook
 
-Last updated: 2026-06-05
+Last updated: 2026-06-15
 
 This is the account-owner sequence for taking the repo-ready Ryvro build to the App Store and Google Play. It intentionally separates owner-only account work from repo-proven work so a release cannot be treated as live before console, domain, payment, backend, and physical-device evidence exists.
 
@@ -309,12 +309,12 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-06-14 after adding the launch-template copy guard, with TypeScript, 113 Jest suites, 1,813 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Latest local gate: `npm run release:check` passed on 2026-06-15 after aligning Ryvro EAS update guidance, with TypeScript, 113 Jest suites, 1,813 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
-- Recent verified pushed PR gate evidence is GitHub Actions CI run `27525536046` on commit `4504963`; it passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
-- Recent verified E2E workflow evidence is GitHub Actions run `27525326580` on commit `817800f`; it passed the bounded E2E Configuration Check, with native simulator/emulator Detox jobs available through the manual `run_native` workflow input.
+- Recent verified pushed PR gate evidence is GitHub Actions CI run `27526037831` on commit `ccc491c`; it passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent verified E2E workflow evidence is GitHub Actions run `27525894828` on commit `0cd4a7d`; it passed the bounded E2E Configuration Check, with native simulator/emulator Detox jobs available through the manual `run_native` workflow input.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
 Keep this section current whenever a new launch-readiness commit is pushed and CI passes.
