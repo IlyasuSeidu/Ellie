@@ -516,7 +516,7 @@ Configure in `app.json`:
 {
   "expo": {
     "updates": {
-      "url": "https://u.expo.dev/FILL_AFTER_EAS_INIT"
+      "url": "https://u.expo.dev/b306643e-1688-448e-8acd-f72bf74312c3"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -524,6 +524,8 @@ Configure in `app.json`:
   }
 }
 ```
+
+The linked Ryvro EAS project is `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`. The active app config derives the same update URL from that project ID, so do not replace it with a generic placeholder during release prep.
 
 ### 2. Publish Update
 

@@ -2230,6 +2230,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('"serviceAccountKeyPath": "./google-play-key.json"');
     expect(deploymentGuide).toContain('cli.appVersionSource');
     expect(deploymentGuide).toContain('npm run release:versions:get');
+    expect(deploymentGuide).toContain('https://u.expo.dev/b306643e-1688-448e-8acd-f72bf74312c3');
     expect(deploymentGuide).toContain('eas build:version:set --platform ios --profile production');
     expect(deploymentGuide).toContain(
       'eas build:version:set --platform android --profile production'
@@ -2273,6 +2274,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).not.toContain('WRITE_EXTERNAL_STORAGE');
     expect(deploymentGuide).not.toContain('"image": "./assets/splash.png"');
     expect(deploymentGuide).not.toContain('"projectId": "your-project-id"');
+    expect(deploymentGuide).not.toContain('FILL_AFTER_EAS_INIT');
     expect(deploymentGuide).not.toContain('your-api-key');
     expect(deploymentGuide).not.toContain('your-apple-id@example.com');
     expect(deploymentGuide).not.toContain('your-app-store-connect-id');
