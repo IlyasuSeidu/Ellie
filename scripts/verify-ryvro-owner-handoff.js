@@ -431,10 +431,11 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`', appStoreTestFlightHandoff],
   ['npm run release:versions:get', appStoreTestFlightHandoff],
   ['EAS remote version check', appStoreTestFlightHandoff],
-  ['Latest EAS iOS production build evidence', appStoreTestFlightHandoff],
+  ['Historical EAS iOS production build-list evidence from 2026-06-05', appStoreTestFlightHandoff],
   ['782b6dec-1cf1-4cf2-9159-69ef1ab4078a', appStoreTestFlightHandoff],
   ['Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is', appStoreTestFlightHandoff],
   ['incremented iOS build number', appStoreTestFlightHandoff],
+  ['build `4` is the current TestFlight candidate', appStoreTestFlightHandoff],
   ['EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`', appStoreTestFlightHandoff],
   [
     'TestFlight previously showed version `1.0.0`, build `1`, status `Ready to Submit`',

@@ -1,6 +1,6 @@
 # Ryvro App Store Connect And TestFlight Handoff
 
-Last updated: 2026-06-14
+Last updated: 2026-06-15
 
 Use this checklist for the remaining iOS owner-account path after the App Store Connect app exists and before App Store review submission. It turns the current TestFlight and App Store Connect blockers into one non-secret evidence packet.
 
@@ -44,7 +44,7 @@ Known owner-console evidence from 2026-06-05:
 - EAS iOS signing reused distribution certificate serial `301E6C7873C7CB794FF62784DA03A26D`, expiring Thu, 11 Mar 2027 10:35:07 UTC.
 - EAS created provisioning profile Developer Portal ID `8SPN7X8WKH`, expiring Thu, 11 Mar 2027 10:35:07 UTC.
 - EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a` uploaded to App Store Connect through EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`.
-- Latest EAS iOS production build evidence from `npx eas-cli build:list --platform ios --limit 5 --json` is build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a`, status `FINISHED`, project `@ilyasu/ryvro`, version `1.0.0`, build number `1`, completed `2026-06-05T10:05:30.038Z`, and application archive `https://expo.dev/artifacts/eas/fQEAHqM7cPm7B5yEpFosVy.ipa`.
+- Historical EAS iOS production build-list evidence from 2026-06-05 showed build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a`, status `FINISHED`, project `@ilyasu/ryvro`, version `1.0.0`, build number `1`, completed `2026-06-05T10:05:30.038Z`, and application archive `https://expo.dev/artifacts/eas/fQEAHqM7cPm7B5yEpFosVy.ipa`. This is not the latest production-auth-ready candidate; build `4` is the current TestFlight candidate.
 - EAS remote version check with `npm run release:versions:get` on 2026-06-05 returned iOS build number `1` and Android versionCode `1`.
 - Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is because App Store Connect already has version `1.0.0`, build `1` from the earlier TestFlight upload. The next TestFlight upload should use real production Firebase/OAuth/RevenueCat values and an incremented iOS build number.
 - Fresh EAS iOS build attempts on 2026-06-06 from commit `8338318` reached `Uploading to EAS Build (0 / 223 MB)` and did not create a new remote build record. The `.easignore` cleanup in commit `8338318` reduced the upload archive from `244 MB` to `223 MB` by excluding local-only files, but the upload still stalled from the Codex environment. A local Terminal retry with `npx eas-cli@14` proved that EAS CLI 14 does not support `--verbose-logs`, so the supported retry command is `cd /Users/Shared/Ellie && npx eas-cli@14 build --profile production --platform ios --non-interactive --no-wait --message "Ryvro TestFlight candidate 63972d5"`.

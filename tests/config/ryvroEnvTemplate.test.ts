@@ -4334,7 +4334,10 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'production builds were updated with `autoIncrement: true`'
     );
-    expect(appStoreTestFlightHandoff).toContain('Latest EAS iOS production build evidence');
+    expect(appStoreTestFlightHandoff).toContain(
+      'Historical EAS iOS production build-list evidence from 2026-06-05'
+    );
+    expect(appStoreTestFlightHandoff).not.toContain('Latest EAS iOS production build evidence');
     expect(appStoreTestFlightHandoff).toContain('782b6dec-1cf1-4cf2-9159-69ef1ab4078a');
     expect(appStoreTestFlightHandoff).toContain(
       'Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is'
@@ -4388,6 +4391,7 @@ describe('Ryvro environment template', () => {
     );
     expect(appStoreTestFlightHandoff).toContain('build ID `601af1ee-5192-442f-9caa-deef5b9b6120`');
     expect(appStoreTestFlightHandoff).toContain('iOS build number `4`');
+    expect(appStoreTestFlightHandoff).toContain('build `4` is the current TestFlight candidate');
     expect(appStoreTestFlightHandoff).toContain('final status `FINISHED`');
     expect(appStoreTestFlightHandoff).toContain('cd86140b-6b5f-4707-9fa1-fde6beda10fa');
     expect(appStoreTestFlightHandoff).toContain(
