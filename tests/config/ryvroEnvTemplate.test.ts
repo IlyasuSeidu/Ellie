@@ -2240,7 +2240,10 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('"version": ">= 12.0.0"');
     expect(deploymentGuide).toContain('"node": "20.19.4"');
     expect(deploymentGuide).toContain('"buildType": "app-bundle"');
-    expect(deploymentGuide).toContain('`npm run release:submit:check` must fail until');
+    expect(deploymentGuide).toContain('`npm run release:submit:check` now fails only until');
+    expect(deploymentGuide).toContain('current evidence records that file path as passed');
+    expect(deploymentGuide).toContain('now fails only until the remaining owner evidence rows');
+    expect(deploymentGuide).not.toContain('remaining console values, local key file');
     expect(deploymentGuide).toContain("name: 'Ryvro Shift Planner'");
     expect(deploymentGuide).toContain("slug: 'ryvro'");
     expect(deploymentGuide).toContain("scheme: 'ryvro'");
@@ -2286,6 +2289,9 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('Go to "Internal testing"');
     expect(deploymentGuide).toContain('Upload to the internal testing track');
     expect(deploymentGuide).toContain('Promote from internal testing to production only after');
+    expect(deploymentGuide).toContain(
+      'the ignored local `./google-play-key.json` remains present outside Git'
+    );
     expect(deploymentGuide).toContain('./google-play-key.json');
     expect(deploymentGuide).not.toContain('Go to "Production" → "Create new release"');
     expect(deploymentGuide).not.toContain('Upload to production track');
@@ -2688,6 +2694,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'Production env preflight now requires real root-level Firebase native service files'
     );
+    expect(readinessReport).toContain(
+      'The Android service-account key path was later cleared as submit evidence'
+    );
+    expect(readinessReport).not.toContain('local Android service-account key blockers');
     expect(readinessReport).toContain('CI run `26714544097`');
     expect(readinessReport).toContain('commit `35ea875`');
     expect(readinessReport).toContain('CI run `26714684603`');

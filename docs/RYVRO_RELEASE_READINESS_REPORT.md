@@ -83,7 +83,7 @@ Completed and guarded in the current branch:
 
 ## Verification Completed
 
-- Local focused verification on 2026-06-09 passed `npm test -- --runTestsByPath src/services/firebase/__tests__/authSdk.providers.test.ts src/services/__tests__/AuthService.socialCredentials.test.ts --no-cache`, `npm run type-check`, and `git diff --check` after fixing native Apple Firebase credential creation. `npm run release:submit:check` still failed intentionally on the current owner evidence and local Android service-account key blockers.
+- Local focused verification on 2026-06-09 passed `npm test -- --runTestsByPath src/services/firebase/__tests__/authSdk.providers.test.ts src/services/__tests__/AuthService.socialCredentials.test.ts --no-cache`, `npm run type-check`, and `git diff --check` after fixing native Apple Firebase credential creation. The Android service-account key path was later cleared as submit evidence; `npm run release:submit:check` now still fails intentionally only on the remaining owner/account/device evidence rows.
 - Recent verified pushed GitHub Actions check for PR #1 passed on commit `0e0507a`: CI run `27545464804` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - Recent verified E2E workflow check on commit `0e0507a`: GitHub Actions run `27545606240` passed the bounded E2E Configuration Check. The native simulator/emulator Detox jobs remain available through the manual `run_native` workflow input and are not part of the default bounded E2E check.
 - Previous pushed GitHub Actions check for PR #1 passed on commit `a95056e`: CI run `27534775034` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.

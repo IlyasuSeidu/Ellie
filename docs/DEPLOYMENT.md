@@ -150,7 +150,7 @@ Do not replace the committed `eas.json` with an older sample from Expo docs. The
 }
 ```
 
-`submit.production` now includes the verified App Store Connect Apple ID email and ASC app ID. It still keeps Android service-account evidence outside the repository, so `npm run release:submit:check` must fail until the remaining console values, local key file, and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
+`submit.production` now includes the verified App Store Connect Apple ID email, ASC app ID, Android service-account key path, and internal Play track. The real Android key file stays outside the repository at ignored path `./google-play-key.json`; current evidence records that file path as passed, so `npm run release:submit:check` now fails only until the remaining owner evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
 
 Because `cli.appVersionSource` is `remote`, Expo ignores tracked `ios.buildNumber` and `android.versionCode` for EAS store builds. Before each production-auth rebuild, check the remote values:
 
@@ -462,7 +462,7 @@ The Google Play app now exists in draft status as `Ryvro Shift Planner` with pac
 
 ### 3. Submit to Google Play
 
-Submit to the internal track first. Do not promote to production until `npm run release:submit:check` passes, the local `./google-play-key.json` exists outside Git, Play Console app/package evidence is complete, internal-track Android install QA passes on a physical Android device, and the evidence log is updated.
+Submit to the internal track first. Do not promote to production until `npm run release:submit:check` passes, the ignored local `./google-play-key.json` remains present outside Git for any Android EAS submit retry, Play Console app/package evidence is complete, internal-track Android install QA passes on a physical Android device, and the evidence log is updated.
 
 #### Option 1: Using EAS Submit
 
