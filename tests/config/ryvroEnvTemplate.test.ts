@@ -4431,6 +4431,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(firebaseOauthBackendHandoff).toContain('# Ryvro Firebase, OAuth, And Backend Handoff');
+    expect(firebaseOauthBackendHandoff).toContain('Last updated: 2026-06-15');
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase project display name: `Ryvro` or `Ryvro Shift Planner`'
     );
@@ -4450,14 +4451,17 @@ describe('Ryvro environment template', () => {
     );
     expect(firebaseOauthBackendHandoff).toContain('view and administer Firebase data and settings');
     expect(firebaseOauthBackendHandoff).toContain('Firebase CLI reauth completed on 2026-06-05');
+    expect(firebaseOauthBackendHandoff).toContain('Historical pre-project state');
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase project creation completed on 2026-06-05'
     );
     expect(firebaseOauthBackendHandoff).toContain('project number `1002666052675`');
     expect(firebaseOauthBackendHandoff).toContain('state `ACTIVE`');
-    expect(firebaseOauthBackendHandoff).toContain('firebase use --clear');
     expect(firebaseOauthBackendHandoff).toContain(
-      'pass `--project ryvro-shift-planner` explicitly'
+      '.firebaserc` points the default project at `ryvro-shift-planner`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Keep using `--project ryvro-shift-planner` on deploy and functions commands'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase native apps were created on 2026-06-05'
@@ -4472,6 +4476,11 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       'Fresh native Firebase config files were downloaded'
     );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Current generated Android native service-file check on 2026-06-15'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('android/app/google-services.json');
+    expect(firebaseOauthBackendHandoff).toContain('1:1002666052675:android:735fd0ef9443ddf76b98f6');
     expect(firebaseOauthBackendHandoff).toContain(
       'Metadata-only local verification confirmed both files target'
     );
@@ -4492,6 +4501,12 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain('Both files are ignored by Git');
     expect(firebaseOauthBackendHandoff).toContain(
       'Do not use tracked local placeholders under `config/firebase/`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Keep the generated ignored `android/app/google-services.json` synchronized'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'release:native:check` now rejects the generated file if it points at a retired Firebase project'
     );
     expect(firebaseOauthBackendHandoff).toContain('Web OAuth client');
     expect(firebaseOauthBackendHandoff).toContain(
