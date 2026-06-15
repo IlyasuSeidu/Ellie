@@ -2812,7 +2812,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('Play app ID `4974146267407561805`');
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain(
-      '`npm run release:submit:check` still intentionally fails on 2026-06-14'
+      '`npm run release:submit:check` still intentionally fails on 2026-06-15'
+    );
+    expect(readinessReport).toContain(
+      'formal trademark/legal clearance, social handles, Firebase Auth email templates, App Store products, Google Play products, sandbox purchase QA'
     );
     expect(readinessReport).toContain(
       'Already recorded account-side evidence that should not be reopened as generic blockers'
