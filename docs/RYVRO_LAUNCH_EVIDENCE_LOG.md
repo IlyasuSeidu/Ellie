@@ -1,6 +1,6 @@
 # Ryvro Launch Evidence Log
 
-Last updated: 2026-06-14
+Last updated: 2026-06-15
 
 Use this log to record non-secret proof for the account-owner and physical-device launch work that cannot be completed from the repo alone. Do not paste passwords, private keys, signing certificates, service-account JSON, RevenueCat SDK keys, Firebase config file contents, or reviewer passwords here.
 

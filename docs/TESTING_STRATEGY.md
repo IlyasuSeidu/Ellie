@@ -6,7 +6,7 @@ This document outlines the current testing strategy for the Ryvro application. I
 
 Current release evidence on June 14, 2026:
 
-- `npm run release:check` passes TypeScript, 113 Jest suites / 1,813 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- `npm run release:check` passes TypeScript, 113 Jest suites / 1,814 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - The PR CI pipeline must pass Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job before launch-readiness evidence is treated as current.
 - Simulator E2E coverage includes fresh onboarding into the Universal Shift Builder, dashboard color/icon checks, profile navigation into builder settings, and mobile-fit coverage.
 - Release is still not complete until the account-only store setup, TestFlight/internal-track install proof, subscription sandbox QA, screenshots, and physical iOS/Android device smoke tests are recorded in the launch evidence log. Production environment push is already recorded separately as passed evidence.
