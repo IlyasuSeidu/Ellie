@@ -2014,10 +2014,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent verified pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27544106675`');
-    expect(readme).toContain('commit `47fa804`');
+    expect(readme).toContain('GitHub Actions CI run `27545464804`');
+    expect(readme).toContain('commit `0e0507a`');
     expect(readme).toContain('Recent verified E2E workflow gate');
-    expect(readme).toContain('GitHub Actions run `27544232914`');
+    expect(readme).toContain('GitHub Actions run `27545606240`');
     expect(readme).toContain('manual `run_native` workflow input');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
@@ -2694,12 +2694,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27544106675`');
-    expect(readinessReport).toContain('commit `47fa804`');
+    expect(readinessReport).toContain('CI run `27545464804`');
+    expect(readinessReport).toContain('commit `0e0507a`');
     expect(readinessReport).toContain(
-      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `47fa804`'
+      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `0e0507a`'
     );
-    expect(readinessReport).toContain('GitHub Actions run `27544232914`');
+    expect(readinessReport).toContain('GitHub Actions run `27545606240`');
     expect(readinessReport).toContain(
       'Recent local release verification on 2026-06-15 passed `npm run release:check`'
     );
@@ -3730,9 +3730,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain(
       'updating current App Store and Google Play screenshot requirements'
     );
-    expect(ownerRunbook).toContain('CI run `27544106675`');
-    expect(ownerRunbook).toContain('commit `47fa804`');
-    expect(ownerRunbook).toContain('GitHub Actions run `27544232914`');
+    expect(ownerRunbook).toContain('CI run `27545464804`');
+    expect(ownerRunbook).toContain('commit `0e0507a`');
+    expect(ownerRunbook).toContain('GitHub Actions run `27545606240`');
     expect(ownerRunbook).toContain('bounded E2E Configuration Check');
     expect(ownerRunbook).toContain('manual `run_native` workflow input');
     expect(ownerRunbook).toContain('dedicated Release Check job');
@@ -4273,6 +4273,12 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('backend provider smoke tests have passed');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
+    expect(submitBlockerTriage).toContain('GitHub Actions CI run `27545464804`');
+    expect(submitBlockerTriage).toContain('bounded E2E workflow run `27545606240`');
+    expect(submitBlockerTriage).toContain('commit `0e0507a`');
+    expect(submitBlockerTriage).not.toContain('27544106675');
+    expect(submitBlockerTriage).not.toContain('27544232914');
+    expect(submitBlockerTriage).not.toContain('commit `47fa804`');
     expect(submitBlockerTriage).toContain('npm run release:versions:get');
     expect(submitBlockerTriage).toContain('Production EAS builds now use `autoIncrement: true`');
     expect(submitBlockerTriage).toContain(
