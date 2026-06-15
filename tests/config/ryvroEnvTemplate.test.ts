@@ -1866,6 +1866,12 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       'including the native scaffold, store readiness, owner handoff preflight, and backend build gates'
     );
+    expect(deploymentPlan).toContain(
+      'Remaining App Store Connect and Play Console metadata, review forms, screenshots, subscription-product declarations'
+    );
+    expect(deploymentPlan).toContain(
+      'already published App Store privacy and saved Play App content declarations stay aligned with the shipped build'
+    );
     expect(deploymentPlan).toContain('npm run release:owner:check');
     expect(deploymentPlan).toContain('Hide Schedule and Stats tabs for v1.');
     expect(deploymentPlan).toContain(
@@ -1938,6 +1944,17 @@ describe('Ryvro environment template', () => {
       'Upload production-auth-ready TestFlight build `4`; keep build `2` as historical/non-final evidence only'
     );
     expect(deploymentPlan).toContain('Upload Play internal build versionCode `8`');
+    expect(deploymentPlan).toContain(
+      'Finish App Store Connect metadata save, screenshots, rating/export/EU trader fields, subscription review fields, and final review submission'
+    );
+    expect(deploymentPlan).toContain(
+      'Send saved Play App content declarations through Publishing overview, finish subscription products/base plans, and capture final review evidence'
+    );
+    expect(deploymentPlan).not.toContain('[ ] Complete App Store Connect metadata/privacy');
+    expect(deploymentPlan).not.toContain('[ ] Complete Play Console data safety/content forms');
+    expect(deploymentPlan).toContain(
+      'store-product validation, remaining App Store Connect and Play Console review fields'
+    );
     expect(deploymentPlan).toContain(
       'Increment Android versionCode and submit the versionCode `8` AAB to Google Play internal testing'
     );

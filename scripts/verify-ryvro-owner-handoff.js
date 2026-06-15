@@ -88,7 +88,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['owner handoff preflight', deploymentPlan],
   ['RevenueCat `pro` entitlement', deploymentPlan],
   ['Manual smoke tests pass on 2 physical devices', deploymentPlan],
-  ['App Store Connect + Play Console metadata/privacy/forms, screenshots', deploymentPlan],
+  [
+    'Remaining App Store Connect and Play Console metadata, review forms, screenshots, subscription-product declarations',
+    deploymentPlan,
+  ],
   ['Physical iOS and Android smoke tests', ownerRunbook],
   ['Store screenshots, app privacy, data safety, content rating', ownerRunbook],
   ['npm run release:submit:check', ownerRunbook],

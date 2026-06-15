@@ -51,7 +51,7 @@ You can submit only when all items are true:
 7. RevenueCat `pro` entitlement, `ryvro_pro_monthly`, `ryvro_pro_annual`, and `default` offering are configured for both stores.
 8. Sandbox subscription smoke passes: purchase activates Ryvro Pro, voice/full calendar unlock, cancel/expiration re-locks, and Restore Purchases works.
 9. Manual smoke tests pass on 2 physical devices (iOS + Android minimum).
-10. App Store Connect + Play Console metadata/privacy/forms, screenshots, and in-app purchase declarations are fully completed.
+10. Remaining App Store Connect and Play Console metadata, review forms, screenshots, subscription-product declarations, and final review-submission evidence are fully completed; already published App Store privacy and saved Play App content declarations stay aligned with the shipped build.
 
 ## 4. Workstream A - Hard Technical Blockers
 
@@ -473,8 +473,8 @@ Day 7:
 - [ ] Run full smoke test matrix on physical devices
 - [x] Upload production-auth-ready TestFlight build `4`; keep build `2` as historical/non-final evidence only
 - [x] Upload Play internal build versionCode `8`
-- [ ] Complete App Store Connect metadata/privacy
-- [ ] Complete Play Console data safety/content forms
+- [ ] Finish App Store Connect metadata save, screenshots, rating/export/EU trader fields, subscription review fields, and final review submission
+- [ ] Send saved Play App content declarations through Publishing overview, finish subscription products/base plans, and capture final review evidence
 - [ ] Submit production (or closed beta if risk remains)
 
 ## 12. Risks and Mitigations
@@ -488,7 +488,7 @@ Mitigation: Remove risky permissions unless strictly required; document justific
 Risk: CI appears green but release check fails locally.  
 Mitigation: Make `release:check` mandatory before every release candidate tag.
 
-Risk: Repo docs overstate launch readiness while owner-only account, domain, RevenueCat `pro` entitlement, App Store Connect + Play Console metadata/privacy/forms, screenshots, and physical-device work remain incomplete.
+Risk: Repo docs overstate launch readiness while owner-only account, store-product validation, remaining App Store Connect and Play Console review fields, screenshots, final Publishing overview/App Review submission, and physical-device work remain incomplete.
 
 Mitigation: Keep `release:owner:check` in the release gate so the not-live stop gates, Manual smoke tests pass on 2 physical devices requirement, and account-only blockers stay visible before every release candidate.
 
