@@ -1910,7 +1910,7 @@ describe('Ryvro environment template', () => {
       'Add tracked Gradle release-signing guard so non-E2E release tasks require `RYVRO_UPLOAD_*`'
     );
     expect(deploymentPlan).toContain(
-      'Generate/upload the real Android release keystore through EAS/local secrets before store upload'
+      'Use EAS-managed Android release signing for store upload; keep local `RYVRO_UPLOAD_*` guards for any non-E2E local release builds'
     );
     expect(deploymentPlan).toContain('Initial v1 app version is pinned across tracked config');
     expect(deploymentPlan).toContain(
@@ -1926,8 +1926,18 @@ describe('Ryvro environment template', () => {
       'Pin first-store-build iOS build number + Android versionCode across tracked config'
     );
     expect(deploymentPlan).toContain(
+      'Upload historical iOS build number `2` to App Store Connect / TestFlight for internal testing; do not use it as final production-auth-ready evidence'
+    );
+    expect(deploymentPlan).toContain(
       'Finish and submit production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120`'
     );
+    expect(deploymentPlan).toContain(
+      'Finish store-console subscription products, RevenueCat store-product validation, and sandbox purchase QA'
+    );
+    expect(deploymentPlan).toContain(
+      'Upload production-auth-ready TestFlight build `4`; keep build `2` as historical/non-final evidence only'
+    );
+    expect(deploymentPlan).toContain('Upload Play internal build versionCode `8`');
     expect(deploymentPlan).toContain(
       'Increment Android versionCode and submit the versionCode `8` AAB to Google Play internal testing'
     );
@@ -1970,7 +1980,7 @@ describe('Ryvro environment template', () => {
       '[x] Add owner handoff preflight for account-only blockers, not-live status, physical-device QA, and store submission handoff docs'
     );
     expect(deploymentPlan).toContain(
-      '[ ] Create RevenueCat `pro` entitlement, `default` offering, and both Ryvro store products'
+      '[ ] Finish store-console subscription products, RevenueCat store-product validation, and sandbox purchase QA'
     );
     expect(deploymentPlan).toContain(
       '[ ] Pass sandbox purchase/cancel/restore smoke on iOS and Android'

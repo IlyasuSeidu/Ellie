@@ -154,7 +154,10 @@ const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
   ['npm run release:versions:get', ownerRunbook],
   ['eas build:version:set --platform ios --profile production', ownerRunbook],
   ['eas build:version:set --platform android --profile production', ownerRunbook],
-  ['iOS build number `2`', deploymentPlan],
+  [
+    'Upload historical iOS build number `2` to App Store Connect / TestFlight for internal testing; do not use it as final production-auth-ready evidence',
+    deploymentPlan,
+  ],
   ['Production EAS builds now use `autoIncrement: true`', deploymentPlan],
   ['601af1ee-5192-442f-9caa-deef5b9b6120', deploymentPlan],
   [

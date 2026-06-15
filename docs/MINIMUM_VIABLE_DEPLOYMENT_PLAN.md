@@ -455,12 +455,12 @@ Day 7:
 - [x] Set production `bundleIdentifier` and `android.package` in repo config
 - [x] Set Android `namespace` and `applicationId` in repo config
 - [x] Add tracked Gradle release-signing guard so non-E2E release tasks require `RYVRO_UPLOAD_*`
-- [ ] Generate/upload the real Android release keystore through EAS/local secrets before store upload
+- [x] Use EAS-managed Android release signing for store upload; keep local `RYVRO_UPLOAD_*` guards for any non-E2E local release builds
 - [x] Remove unneeded Android permissions from active app config
 - [x] Ensure `npm run release:check` exits 0
 - [x] Add owner handoff preflight for account-only blockers, not-live status, physical-device QA, and store submission handoff docs
 - [x] Pin first-store-build iOS build number + Android versionCode across tracked config
-- [x] Upload iOS build number `2` to App Store Connect / TestFlight for internal testing
+- [x] Upload historical iOS build number `2` to App Store Connect / TestFlight for internal testing; do not use it as final production-auth-ready evidence
 - [x] Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload
 - [x] Finish and submit production-auth-ready iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` / build `4` to App Store Connect for TestFlight processing
 - [ ] Capture TestFlight iPhone QA for build `4`
@@ -468,11 +468,11 @@ Day 7:
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot
 - [x] Add repo-side Ryvro Pro subscription gating, paywall, and RevenueCat runtime guards
-- [ ] Create RevenueCat `pro` entitlement, `default` offering, and both Ryvro store products
+- [ ] Finish store-console subscription products, RevenueCat store-product validation, and sandbox purchase QA
 - [ ] Pass sandbox purchase/cancel/restore smoke on iOS and Android
 - [ ] Run full smoke test matrix on physical devices
-- [x] Upload TestFlight build `2`
-- [ ] Upload Play Internal build
+- [x] Upload production-auth-ready TestFlight build `4`; keep build `2` as historical/non-final evidence only
+- [x] Upload Play internal build versionCode `8`
 - [ ] Complete App Store Connect metadata/privacy
 - [ ] Complete Play Console data safety/content forms
 - [ ] Submit production (or closed beta if risk remains)
