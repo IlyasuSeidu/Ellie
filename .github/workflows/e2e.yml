@@ -28,6 +28,8 @@ jobs:
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
       RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
       RYVRO_BRAIN_TIMEOUT: '30000'
+      EXPO_IOS_GOOGLE_SERVICES_FILE: ./config/firebase/GoogleService-Info.local.plist
+      EXPO_ANDROID_GOOGLE_SERVICES_FILE: ./config/firebase/google-services.local.json
 
     steps:
       - name: Checkout code
@@ -41,6 +43,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
+
+      - name: Generate iOS native project
+        run: E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 npx expo prebuild --platform ios --clean --non-interactive
 
       - name: Setup iOS Simulator
         run: |
@@ -86,6 +91,9 @@ jobs:
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
       RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
       RYVRO_BRAIN_TIMEOUT: '30000'
+      EXPO_IOS_GOOGLE_SERVICES_FILE: ./config/firebase/GoogleService-Info.local.plist
+      EXPO_ANDROID_GOOGLE_SERVICES_FILE: ./config/firebase/google-services.local.json
+      ANDROID_AVD_HOME: ${{ github.workspace }}/.android/avd
 
     steps:
       - name: Checkout code
@@ -106,6 +114,12 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Generate Android native project
+        run: |
+          E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 npx expo prebuild --platform android --clean --non-interactive
+          git checkout -- android/app/build.gradle android/app/src/androidTest/java/com/ryvro/shiftplanner/DetoxTest.java android/app/src/main/AndroidManifest.xml android/app/src/main/java/com/ryvro/shiftplanner/E2EConfigModule.kt android/app/src/main/java/com/ryvro/shiftplanner/E2EConfigPackage.kt android/app/src/main/java/com/ryvro/shiftplanner/MainApplication.kt android/app/src/main/res/xml/network_security_config.xml android/build.gradle
+          chmod +x android/gradlew
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
@@ -114,14 +128,16 @@ jobs:
 
       - name: Create Android emulator
         run: |
+          mkdir -p "$ANDROID_AVD_HOME"
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-33;google_apis;x86_64"
-          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n TestEmulator -k "system-images;android-33;google_apis;x86_64" --force
-          $ANDROID_HOME/emulator/emulator -list-avds
+          $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n TestEmulator -k "system-images;android-33;google_apis;x86_64" --device pixel_6 --force
+          $ANDROID_HOME/emulator/emulator -list-avds | grep TestEmulator
 
       - name: Start Android emulator
         run: |
-          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
-          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -no-boot-anim -no-metrics -gpu swiftshader_indirect &
+          timeout 600 bash -c 'adb wait-for-device && until adb shell getprop sys.boot_completed | tr -d "\r" | grep -q "1"; do sleep 5; done'
+          adb shell input keyevent 82 || true
 
       - name: Build Android app for testing
         run: detox build --configuration android.release

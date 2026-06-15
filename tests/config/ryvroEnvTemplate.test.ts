@@ -760,8 +760,9 @@ describe('Ryvro environment template', () => {
     expect(detoxConfig).toContain('RyvroShiftPlanner.xcworkspace');
     expect(detoxConfig).toContain('-scheme RyvroShiftPlanner');
     expect(detoxConfig).toContain('Release-iphonesimulator/RyvroShiftPlanner.app');
-    expect(detoxConfig).toContain('name=iPhone 16');
-    expect(detoxConfig).toContain("type: 'iPhone 16'");
+    expect(detoxConfig).toContain("process.env.DETOX_IOS_DEVICE || 'iPhone 15 Pro'");
+    expect(detoxConfig).toContain('name=${iosSimulatorName}');
+    expect(detoxConfig).toContain('type: iosSimulatorName');
     expect(detoxConfig).toContain("'ios.release.xsmax'");
     expect(detoxConfig).toContain("'simulator.xsmax'");
     expect(detoxConfig).toContain("id: '0D934C32-AFB6-497E-8A1E-39F2DB3C447F'");
@@ -769,7 +770,8 @@ describe('Ryvro environment template', () => {
     expect(detoxConfig).toContain("'simulator.iphone16e'");
     expect(detoxConfig).toContain("id: 'E19B62D4-CF73-49E3-8E6B-F0663DA6E76C'");
     expect(detoxConfig).not.toContain('EllieMinerShiftAssistant.app');
-    expect(detoxConfig).not.toContain('name=iPhone 15 Pro');
+    expect(detoxConfig).not.toContain('name=iPhone 16');
+    expect(detoxConfig).not.toContain("type: 'iPhone 16'");
   });
 
   it('keeps the native iOS build product on the Ryvro app artifact', () => {
@@ -5541,6 +5543,18 @@ describe('Ryvro environment template', () => {
     expect(e2eWorkflow).not.toContain('ELLIE_BRAIN_TIMEOUT');
     expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
+    expect(e2eWorkflow).toContain(
+      'EXPO_IOS_GOOGLE_SERVICES_FILE: ./config/firebase/GoogleService-Info.local.plist'
+    );
+    expect(e2eWorkflow).toContain(
+      'EXPO_ANDROID_GOOGLE_SERVICES_FILE: ./config/firebase/google-services.local.json'
+    );
+    expect(e2eWorkflow).toContain('npx expo prebuild --platform ios --clean --non-interactive');
+    expect(e2eWorkflow).toContain('npx expo prebuild --platform android --clean --non-interactive');
+    expect(e2eWorkflow).toContain('ANDROID_AVD_HOME: ${{ github.workspace }}/.android/avd');
+    expect(e2eWorkflow).toContain('avdmanager create avd -n TestEmulator');
+    expect(e2eWorkflow).toContain('emulator -list-avds | grep TestEmulator');
+    expect(e2eWorkflow).toContain('timeout 600 bash -c');
     expect(ciWorkflow).toContain('name: Release Check');
     expect(ciWorkflow).toContain('backend/functions/package-lock.json');
     expect(ciWorkflow).toContain('npm --prefix backend/functions ci');
