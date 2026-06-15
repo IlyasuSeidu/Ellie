@@ -823,9 +823,14 @@ describe('Ryvro environment template', () => {
     expect(script).not.toContain("readOptional('ios/Ryvro.xcodeproj");
     expect(script).toContain('ios/RyvroShiftPlanner/GoogleService-Info.plist');
     expect(script).toContain('validateTrackedIosLocalGoogleService');
+    expect(script).toContain('validateTrackedAndroidLocalGoogleService');
     expect(script).toContain('Root iOS GoogleService-Info.plist');
+    expect(script).toContain('Root Android google-services.json');
+    expect(script).toContain('android/app/google-services.json');
     expect(script).toContain('API_KEY must remain a placeholder');
+    expect(script).toContain('API key must remain a placeholder');
     expect(script).toContain('GOOGLE_APP_ID must remain the local placeholder app id');
+    expect(script).toContain('mobilesdk_app_id must remain the local placeholder app id');
     expect(script).toContain('FirebaseApp.configure()');
     expect(script).toContain('--strict-generated');
     expect(script).toContain('--strict-generated-services');
@@ -1046,8 +1051,14 @@ describe('Ryvro environment template', () => {
     const androidGoogleServices = readOptional('android/app/google-services.json');
     if (androidGoogleServices) {
       const parsedAndroidGoogleServices = JSON.parse(androidGoogleServices) as {
+        project_info?: {
+          project_id?: string;
+          project_number?: string;
+          storage_bucket?: string;
+        };
         client?: Array<{
           client_info?: {
+            mobilesdk_app_id?: string;
             android_client_info?: {
               package_name?: string;
             };
@@ -1062,6 +1073,19 @@ describe('Ryvro environment template', () => {
       expect(packageNames).toContain('com.ryvro.shiftplanner');
       expect(packageNames).not.toContain('com.ellie.minershiftassistant');
       expect(packageNames).not.toContain('com.ilyasuseidu.ellie');
+      expect(parsedAndroidGoogleServices.project_info?.project_id).toBe('ryvro-shift-planner');
+      expect(parsedAndroidGoogleServices.project_info?.project_number).toBe('1002666052675');
+      expect(parsedAndroidGoogleServices.project_info?.storage_bucket).toBe(
+        'ryvro-shift-planner.firebasestorage.app'
+      );
+      expect(
+        parsedAndroidGoogleServices.client?.some(
+          (client) =>
+            client.client_info?.mobilesdk_app_id ===
+            '1:1002666052675:android:735fd0ef9443ddf76b98f6'
+        )
+      ).toBe(true);
+      expect(androidGoogleServices).not.toContain('ellie-20260220135308');
     }
   });
 

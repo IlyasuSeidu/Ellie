@@ -30,6 +30,20 @@ function readOptional(relativePath) {
   }
 }
 
+function readOptionalJson(relativePath) {
+  const content = readOptional(relativePath);
+  if (!content) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(content);
+  } catch (_error) {
+    addError(`${relativePath} must be valid JSON`);
+    return null;
+  }
+}
+
 function addError(message) {
   errors.push(message);
 }
@@ -141,6 +155,132 @@ function validateTrackedIosLocalGoogleService(content) {
   assertAbsent(content, retiredFirebaseProjectPattern, label);
 }
 
+function findAndroidClient(parsed) {
+  return Array.isArray(parsed?.client)
+    ? parsed.client.find(
+        (entry) =>
+          entry?.client_info?.android_client_info?.package_name === 'com.ryvro.shiftplanner'
+      )
+    : null;
+}
+
+function getAndroidServiceValues(parsed) {
+  const client = findAndroidClient(parsed);
+
+  return {
+    projectNumber: parsed?.project_info?.project_number || '',
+    projectId: parsed?.project_info?.project_id || '',
+    storageBucket: parsed?.project_info?.storage_bucket || '',
+    client,
+    appId: client?.client_info?.mobilesdk_app_id || '',
+    packageName: client?.client_info?.android_client_info?.package_name || '',
+    apiKey: client?.api_key?.[0]?.current_key || '',
+  };
+}
+
+function validateAndroidGoogleService(parsed, label) {
+  if (!parsed) {
+    addError(`${label} is missing`);
+    return;
+  }
+
+  const { projectNumber, projectId, storageBucket, client, appId, packageName } =
+    getAndroidServiceValues(parsed);
+
+  assertEqual(packageName, 'com.ryvro.shiftplanner', `${label} package_name`);
+
+  if (!client) {
+    addError(`${label} must include a client for com.ryvro.shiftplanner`);
+  }
+
+  if (!projectId || /placeholder|local/i.test(projectId)) {
+    addError(
+      `${label} project_info.project_id must be a real Firebase project; received ${
+        projectId || '<missing>'
+      }`
+    );
+  }
+
+  if (retiredFirebaseProjectPattern.test(projectId)) {
+    addError(
+      `${label} project_info.project_id still points at a retired Firebase project: ${projectId}`
+    );
+  }
+
+  if (projectId !== 'ryvro-shift-planner') {
+    addError(`${label} project_info.project_id must be ryvro-shift-planner`);
+  }
+
+  if (projectNumber !== '1002666052675') {
+    addError(`${label} project_info.project_number must be 1002666052675`);
+  }
+
+  if (storageBucket !== 'ryvro-shift-planner.firebasestorage.app') {
+    addError(
+      `${label} project_info.storage_bucket must be ryvro-shift-planner.firebasestorage.app`
+    );
+  }
+
+  if (
+    !/^1:\d+:android:[a-f0-9]+$/i.test(appId) ||
+    appId.includes('000000000000') ||
+    /placeholder|local/i.test(appId)
+  ) {
+    addError(
+      `${label} client_info.mobilesdk_app_id must be a real Android Firebase app id; received ${
+        appId || '<missing>'
+      }`
+    );
+  }
+}
+
+function validateRootAndroidGoogleService(parsed) {
+  const label = 'Root Android google-services.json';
+
+  if (!parsed && isCi) {
+    warnings.push(
+      `${label} is ignored and unavailable in CI; release:env:check validates the real production service file before store builds.`
+    );
+    return;
+  }
+
+  validateAndroidGoogleService(parsed, label);
+}
+
+function validateTrackedAndroidLocalGoogleService(parsed) {
+  const label = 'Tracked Android google-services.local.json';
+
+  if (!parsed) {
+    addError(`${label} is missing`);
+    return;
+  }
+
+  const { projectNumber, projectId, storageBucket, appId, packageName, apiKey } =
+    getAndroidServiceValues(parsed);
+
+  assertEqual(packageName, 'com.ryvro.shiftplanner', `${label} package_name`);
+
+  if (projectId !== 'ryvro-local') {
+    addError(`${label} project_info.project_id must stay on the local placeholder project`);
+  }
+
+  if (projectNumber !== '000000000000') {
+    addError(`${label} project_info.project_number must remain the local placeholder sender id`);
+  }
+
+  if (storageBucket !== 'ryvro-local.firebasestorage.app') {
+    addError(`${label} project_info.storage_bucket must stay on the local placeholder bucket`);
+  }
+
+  if (apiKey !== 'local-ryvro-placeholder') {
+    addError(`${label} API key must remain a placeholder and must not store real Firebase keys`);
+  }
+
+  if (appId !== '1:000000000000:android:localryvroplaceholder') {
+    addError(`${label} mobilesdk_app_id must remain the local placeholder app id`);
+  }
+}
+
 function getDynamicExpoConfig() {
   const buildExpoConfig = require(path.join(root, 'app.config.js'));
   return buildExpoConfig({ config: {} });
@@ -204,7 +344,11 @@ assertAbsent(readOptional('app.config.js'), retiredVisibleIdentityPattern, 'app.
 validateTrackedIosLocalGoogleService(
   readOptional('config/firebase/GoogleService-Info.local.plist')
 );
+validateTrackedAndroidLocalGoogleService(
+  readOptionalJson('config/firebase/google-services.local.json')
+);
 validateRootIosGoogleService(readOptional('GoogleService-Info.plist'));
+validateRootAndroidGoogleService(readOptionalJson('google-services.json'));
 
 if (fs.existsSync(path.join(root, 'app.config.js.backup'))) {
   addError(
@@ -260,6 +404,14 @@ if (generatedIosGoogleService) {
       warnings.push(message);
     }
   }
+}
+
+const generatedAndroidGoogleService = readOptionalJson('android/app/google-services.json');
+if (generatedAndroidGoogleService) {
+  validateAndroidGoogleService(
+    generatedAndroidGoogleService,
+    'Generated Android google-services.json'
+  );
 }
 
 if (strictGenerated && warnings.length > 0) {
