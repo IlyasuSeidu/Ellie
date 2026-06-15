@@ -238,7 +238,7 @@ cd android && ./gradlew bundleRelease
 - [x] RevenueCat entitlement `pro` and offering `default` configured with monthly and annual package records (Tasks 42–48); store validation and sandbox purchase QA remain open below
 - [ ] App Store Connect subscription products `ryvro_pro_monthly` + `ryvro_pro_annual` launch-ready (Task 45) — product shells, localization, review notes, all-country availability, and pricing are saved, but `Missing Metadata`, trial decision, review screenshot, RevenueCat App Store validation, and sandbox purchase QA remain
 - [ ] Google Play subscription products created with matching IDs (Task 46)
-- [ ] Full subscription sandbox smoke test passes on device (Task 49 + smoke test items 8–13)
+- [ ] Full subscription sandbox smoke test passes on device (Task 49 + smoke test items 9–14)
 
 **Build and store:**
 

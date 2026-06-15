@@ -2411,6 +2411,12 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain(
       'Add RevenueCat native/public key and entitlement placeholders to `.env.example`, `.env.production.example`, runtime config, and `npm run release:env:check`'
     );
+    expect(releaseTasks).toContain(
+      'Full subscription sandbox smoke test passes on device (Task 49 + smoke test items 9–14)'
+    );
+    expect(releaseTasks).not.toContain(
+      'Full subscription sandbox smoke test passes on device (Task 49 + smoke test items 8–13)'
+    );
     expect(releaseTasks).toContain('RevenueCat app `Ryvro (App Store)` exists as `appd8a95a73e0`');
     expect(releaseTasks).toContain('RevenueCat app `Ryvro (Play Store)` exists as `appab0f4b628d`');
     expect(releaseTasks).toContain('Team ID `BZ798WZJCB`');
