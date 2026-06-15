@@ -157,9 +157,10 @@ if (!appStoreDescription) {
 }
 
 [
-  'App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796',
-  'App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732',
-  'Google Play phone: at least 2 screenshots at 1080 x 1920 or higher',
+  'App Store iPhone 6.9 inch bucket: 3 screenshots at 1290 x 2796',
+  'App Store iPad 13 inch bucket: 3 screenshots at 2048 x 2732',
+  'Google Play phone: at least 2 screenshots at 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha',
+  'Prefer four Google Play phone screenshots for recommendation surfaces',
   'Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link',
   'Capture from production, TestFlight, or Play internal builds only',
   'reviewer@getryvro.com',
@@ -184,6 +185,12 @@ if (!appStoreDescription) {
   '1290 x 2796',
   '2048 x 2732',
   '1080 x 1920 or higher',
+  '6.9 inch bucket',
+  '13 inch bucket',
+  '9:16',
+  'JPEG or 24-bit PNG without alpha',
+  '3840 px or less',
+  'long side no more than twice the short side',
   'docs/RYVRO_LAUNCH_EVIDENCE_LOG.md',
   'Keep the screenshot files out of Git',
 ].forEach((expected) => requireIncludes(screenshotChecklist, expected, 'screenshot checklist'));

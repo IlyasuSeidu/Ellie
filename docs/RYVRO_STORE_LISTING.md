@@ -220,11 +220,12 @@ Do not use:
 
 Capture these store-ready sets after the production/TestFlight/internal builds are installed and the reviewer account is configured:
 
-- App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796
-- App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732
-- Google Play phone: at least 2 screenshots at 1080 x 1920 or higher
+- App Store iPhone 6.9 inch bucket: 3 screenshots at 1290 x 2796
+- App Store iPad 13 inch bucket: 3 screenshots at 2048 x 2732
+- Google Play phone: at least 2 screenshots at 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha
 - Capture from production, TestFlight, or Play internal builds only; do not use Expo Go or development-client screenshots for store submission.
 - Use the reviewer account `reviewer@getryvro.com` with a saved non-mining schedule and a configured Ryvro Pro sandbox path before capture.
+- Prefer four Google Play phone screenshots for recommendation surfaces. If only the minimum two are uploaded, add the paywall screenshot as the third frame when subscriptions are submitted for review.
 
 Minimum launch sequence:
 
@@ -234,12 +235,12 @@ Minimum launch sequence:
 
 Required capture matrix:
 
-| Store surface          | Size / device target        | Required frames                                                                                           |
-| ---------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------- |
-| App Store iPhone       | 1290 x 2796, 6.7 inch       | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
-| App Store iPad         | 2048 x 2732, 12.9 inch      | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
-| Google Play phone      | 1080 x 1920 or higher       | Template start and dashboard/calendar, with Ryvro Pro paywall included when using more than 2 screenshots |
-| Internal QA attachment | Native screenshots or video | Any failed smoke-test path, including auth, reminders, import/export, purchases, assistant, or offline    |
+| Store surface          | Size / device target                                 | Required frames                                                                                           |
+| ---------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| App Store iPhone       | 1290 x 2796, 6.9 inch bucket                         | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
+| App Store iPad         | 2048 x 2732, 13 inch bucket                          | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
+| Google Play phone      | 1080 x 1920 or higher, 9:16, no alpha, max 3840 side | Template start and dashboard/calendar, with Ryvro Pro paywall included when using more than 2 screenshots |
+| Internal QA attachment | Native screenshots or video                          | Any failed smoke-test path, including auth, reminders, import/export, purchases, assistant, or offline    |
 
 Name captured files with the store, device class, frame number, and screen purpose, for example `app-store-iphone-01-template-start.png`, `app-store-ipad-03-paywall.png`, and `google-play-phone-02-dashboard-calendar.png`.
 

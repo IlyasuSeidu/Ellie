@@ -1,6 +1,6 @@
 # Ryvro Device QA Evidence Template
 
-Last updated: 2026-06-07
+Last updated: 2026-06-15
 
 Use this template when testing the production-equivalent Ryvro build on TestFlight iPhone and Android physical device or Play internal testing. Store only non-secret evidence here or in a copied QA packet. Do not record passwords, private keys, service-account JSON, signing material, full Firebase config contents, RevenueCat SDK keys, or private payment details.
 
@@ -115,17 +115,17 @@ Run these auth-specific checks on the production-equivalent builds:
 
 Record each final screenshot file after capture. Keep screenshot files out of Git unless the owner explicitly chooses to version final store artwork.
 
-| File name                                     | Platform/device   | Size                  | Source build | Result | Notes |
-| --------------------------------------------- | ----------------- | --------------------- | ------------ | ------ | ----- |
-| `app-store-iphone-01-template-start.png`      | App Store iPhone  | 1290 x 2796           |              |        |       |
-| `app-store-iphone-02-dashboard-calendar.png`  | App Store iPhone  | 1290 x 2796           |              |        |       |
-| `app-store-iphone-03-paywall.png`             | App Store iPhone  | 1290 x 2796           |              |        |       |
-| `app-store-ipad-01-template-start.png`        | App Store iPad    | 2048 x 2732           |              |        |       |
-| `app-store-ipad-02-dashboard-calendar.png`    | App Store iPad    | 2048 x 2732           |              |        |       |
-| `app-store-ipad-03-paywall.png`               | App Store iPad    | 2048 x 2732           |              |        |       |
-| `google-play-phone-01-template-start.png`     | Google Play phone | 1080 x 1920 or higher |              |        |       |
-| `google-play-phone-02-dashboard-calendar.png` | Google Play phone | 1080 x 1920 or higher |              |        |       |
-| `google-play-phone-03-paywall.png`            | Google Play phone | 1080 x 1920 or higher |              |        |       |
+| File name                                     | Platform/device   | Size and bucket                                      | Source build | Result | Notes |
+| --------------------------------------------- | ----------------- | ---------------------------------------------------- | ------------ | ------ | ----- |
+| `app-store-iphone-01-template-start.png`      | App Store iPhone  | 1290 x 2796, 6.9 inch bucket                         |              |        |       |
+| `app-store-iphone-02-dashboard-calendar.png`  | App Store iPhone  | 1290 x 2796, 6.9 inch bucket                         |              |        |       |
+| `app-store-iphone-03-paywall.png`             | App Store iPhone  | 1290 x 2796, 6.9 inch bucket                         |              |        |       |
+| `app-store-ipad-01-template-start.png`        | App Store iPad    | 2048 x 2732, 13 inch bucket                          |              |        |       |
+| `app-store-ipad-02-dashboard-calendar.png`    | App Store iPad    | 2048 x 2732, 13 inch bucket                          |              |        |       |
+| `app-store-ipad-03-paywall.png`               | App Store iPad    | 2048 x 2732, 13 inch bucket                          |              |        |       |
+| `google-play-phone-01-template-start.png`     | Google Play phone | 1080 x 1920 or higher, 9:16, no alpha, max 3840 side |              |        |       |
+| `google-play-phone-02-dashboard-calendar.png` | Google Play phone | 1080 x 1920 or higher, 9:16, no alpha, max 3840 side |              |        |       |
+| `google-play-phone-03-paywall.png`            | Google Play phone | 1080 x 1920 or higher, 9:16, no alpha, max 3840 side |              |        |       |
 
 ## Failure Record
 

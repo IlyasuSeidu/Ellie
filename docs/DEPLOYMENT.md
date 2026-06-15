@@ -392,11 +392,10 @@ Edit `eas.json` for Android-specific settings:
 
 - **App Description**: Use `docs/RYVRO_STORE_LISTING.md`
 - **Keywords**: Search optimization keywords
-- **Screenshots**: Required sizes for all devices
-  - iPhone 6.7": 1290 x 2796
-  - iPhone 6.5": 1242 x 2688
-  - iPhone 5.5": 1242 x 2208
-  - iPad Pro 12.9": 2048 x 2732
+- **Screenshots**: use `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for the current store-ready capture matrix
+  - App Store iPhone 6.9 inch bucket: 1290 x 2796
+  - App Store iPad 13 inch bucket: 2048 x 2732
+  - Google Play phone recommendation surfaces: 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha
 - **App Icon**: 1024 x 1024 (no transparency)
 - **Privacy Policy URL**: Publish from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
 - **Support URL**: Publish from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
