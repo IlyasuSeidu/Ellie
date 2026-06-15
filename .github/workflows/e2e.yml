@@ -8,14 +8,55 @@ on:
     branches:
       - 'release/**'
   workflow_dispatch:
+    inputs:
+      run_native:
+        description: Run native simulator and emulator Detox builds
+        required: false
+        default: false
+        type: boolean
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  e2e-config-check:
+    name: E2E Configuration Check
+    runs-on: ubuntu-latest
+
+    env:
+      FIREBASE_API_KEY: ci-test-api-key
+      FIREBASE_AUTH_DOMAIN: ci-test.firebaseapp.com
+      FIREBASE_PROJECT_ID: ci-test-project
+      FIREBASE_STORAGE_BUCKET: ci-test.appspot.com
+      FIREBASE_MESSAGING_SENDER_ID: '123456789'
+      FIREBASE_APP_ID: 1:123456789:web:abcdef
+      GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Validate Detox configuration
+        run: node -e "const config = require('./.detoxrc.js'); if (!config.configurations['ios.release'] || !config.configurations['android.release']) process.exit(1);"
+
+      - name: Run E2E workflow guard tests
+        run: npx jest tests/config/ryvroEnvTemplate.test.ts --runInBand --silent
+
   e2e-ios:
     name: E2E Tests (iOS)
     runs-on: macos-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_native == true }}
 
     env:
       # Firebase configuration (dummy values for CI)
@@ -79,6 +120,7 @@ jobs:
   e2e-android:
     name: E2E Tests (Android)
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_native == true }}
 
     env:
       # Firebase configuration (dummy values for CI)

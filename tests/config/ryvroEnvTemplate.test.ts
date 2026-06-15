@@ -5543,6 +5543,15 @@ describe('Ryvro environment template', () => {
     expect(e2eWorkflow).not.toContain('ELLIE_BRAIN_TIMEOUT');
     expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
+    expect(e2eWorkflow).toContain('run_native:');
+    expect(e2eWorkflow).toContain('E2E Configuration Check');
+    expect(e2eWorkflow).toContain('Validate Detox configuration');
+    expect(e2eWorkflow).toContain(
+      'npx jest tests/config/ryvroEnvTemplate.test.ts --runInBand --silent'
+    );
+    expect(e2eWorkflow).toContain(
+      "if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_native == true }}"
+    );
     expect(e2eWorkflow).toContain(
       'EXPO_IOS_GOOGLE_SERVICES_FILE: ./config/firebase/GoogleService-Info.local.plist'
     );
