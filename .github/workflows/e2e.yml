@@ -123,6 +123,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Enable Android emulator acceleration
+        run: |
+          if [ -e /dev/kvm ]; then
+            sudo chown "$USER" /dev/kvm
+            sudo chmod 660 /dev/kvm
+          fi
+
       - name: Install Detox CLI
         run: npm install -g detox-cli
 
@@ -135,8 +142,12 @@ jobs:
 
       - name: Start Android emulator
         run: |
-          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -no-boot-anim -no-metrics -gpu swiftshader_indirect &
-          timeout 600 bash -c 'adb wait-for-device && until adb shell getprop sys.boot_completed | tr -d "\r" | grep -q "1"; do sleep 5; done'
+          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -no-boot-anim -no-metrics -accel on -gpu swiftshader_indirect > "$RUNNER_TEMP/android-emulator.log" 2>&1 &
+          timeout 600 bash -c 'adb wait-for-device && until adb shell getprop sys.boot_completed | tr -d "\r" | grep -q "1"; do sleep 5; done' || {
+            adb devices -l || true
+            cat "$RUNNER_TEMP/android-emulator.log" || true
+            exit 1
+          }
           adb shell input keyevent 82 || true
 
       - name: Build Android app for testing
@@ -153,3 +164,4 @@ jobs:
           path: |
             e2e/artifacts/
             e2e/*.log
+            ${{ runner.temp }}/android-emulator.log

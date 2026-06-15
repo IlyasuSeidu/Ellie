@@ -5552,8 +5552,13 @@ describe('Ryvro environment template', () => {
     expect(e2eWorkflow).toContain('npx expo prebuild --platform ios --clean --non-interactive');
     expect(e2eWorkflow).toContain('npx expo prebuild --platform android --clean --non-interactive');
     expect(e2eWorkflow).toContain('ANDROID_AVD_HOME: ${{ github.workspace }}/.android/avd');
+    expect(e2eWorkflow).toContain('Enable Android emulator acceleration');
+    expect(e2eWorkflow).toContain('sudo chown "$USER" /dev/kvm');
+    expect(e2eWorkflow).toContain('sudo chmod 660 /dev/kvm');
     expect(e2eWorkflow).toContain('avdmanager create avd -n TestEmulator');
     expect(e2eWorkflow).toContain('emulator -list-avds | grep TestEmulator');
+    expect(e2eWorkflow).toContain('android-emulator.log');
+    expect(e2eWorkflow).toContain('-accel on');
     expect(e2eWorkflow).toContain('timeout 600 bash -c');
     expect(ciWorkflow).toContain('name: Release Check');
     expect(ciWorkflow).toContain('backend/functions/package-lock.json');
