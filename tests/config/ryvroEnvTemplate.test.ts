@@ -895,7 +895,7 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('Recent verified pushed PR gate');
+    expect(script).toContain('Recent recorded pushed PR gate');
     expect(script).not.toContain("['CI run `27508431698`'");
     expect(script).not.toContain("['commit `1b31255`'");
   });
@@ -2023,10 +2023,11 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('fresh onboarding path into the Universal Shift Builder');
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
-    expect(readme).toContain('Recent verified pushed PR gate');
+    expect(readme).toContain('Recent recorded pushed PR gate');
+    expect(readme).not.toContain('Recent verified pushed PR gate');
     expect(readme).toContain('GitHub Actions CI run `27546422603`');
     expect(readme).toContain('commit `7f3df5e`');
-    expect(readme).toContain('Recent verified E2E workflow gate');
+    expect(readme).toContain('Recent recorded E2E workflow gate');
     expect(readme).toContain('GitHub Actions run `27546583226`');
     expect(readme).toContain('manual `run_native` workflow input');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
@@ -2393,7 +2394,7 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('historical rollout report status clarification');
     expect(releaseTasks).toContain('Ryvro EAS update URL guidance');
     expect(releaseTasks).toContain(
-      'current pushed CI evidence recorded in `README.md`, `docs/RYVRO_RELEASE_READINESS_REPORT.md`, and `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`'
+      'recorded pushed CI evidence in `README.md`, `docs/RYVRO_RELEASE_READINESS_REPORT.md`, and `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain(
@@ -2717,8 +2718,9 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `27546422603`');
     expect(readinessReport).toContain('commit `7f3df5e`');
     expect(readinessReport).toContain(
-      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `7f3df5e`'
+      'Recent recorded pushed GitHub Actions check for PR #1 passed on commit `7f3df5e`'
     );
+    expect(readinessReport).not.toContain('Recent verified pushed GitHub Actions check');
     expect(readinessReport).toContain('GitHub Actions run `27546583226`');
     expect(readinessReport).toContain(
       'Recent local release verification on 2026-06-15 passed `npm run release:check`'
@@ -3749,8 +3751,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
-    expect(ownerRunbook).toContain('Recent verified pushed PR gate evidence is');
+    expect(ownerRunbook).toContain('Recent recorded pushed PR gate evidence is');
     expect(ownerRunbook).not.toContain('Recent pushed PR gate evidence includes');
+    expect(ownerRunbook).not.toContain('Recent verified pushed PR gate evidence');
     expect(ownerRunbook).toContain(
       'updating current App Store and Google Play screenshot requirements'
     );
