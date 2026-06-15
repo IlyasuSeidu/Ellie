@@ -1990,10 +1990,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent verified pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `27531970661`');
-    expect(readme).toContain('commit `3690178`');
+    expect(readme).toContain('GitHub Actions CI run `27532846467`');
+    expect(readme).toContain('commit `50a7904`');
     expect(readme).toContain('Recent verified E2E workflow gate');
-    expect(readme).toContain('GitHub Actions run `27532102773`');
+    expect(readme).toContain('GitHub Actions run `27532978363`');
     expect(readme).toContain('manual `run_native` workflow input');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
@@ -2663,12 +2663,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27531970661`');
-    expect(readinessReport).toContain('commit `3690178`');
+    expect(readinessReport).toContain('CI run `27532846467`');
+    expect(readinessReport).toContain('commit `50a7904`');
     expect(readinessReport).toContain(
-      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `3690178`'
+      'Recent verified pushed GitHub Actions check for PR #1 passed on commit `50a7904`'
     );
-    expect(readinessReport).toContain('GitHub Actions run `27532102773`');
+    expect(readinessReport).toContain('GitHub Actions run `27532978363`');
     expect(readinessReport).toContain(
       'Recent local release verification on 2026-06-15 passed `npm run release:check`'
     );
@@ -3699,9 +3699,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain(
       'updating current App Store and Google Play screenshot requirements'
     );
-    expect(ownerRunbook).toContain('CI run `27531970661`');
-    expect(ownerRunbook).toContain('commit `3690178`');
-    expect(ownerRunbook).toContain('GitHub Actions run `27532102773`');
+    expect(ownerRunbook).toContain('CI run `27532846467`');
+    expect(ownerRunbook).toContain('commit `50a7904`');
+    expect(ownerRunbook).toContain('GitHub Actions run `27532978363`');
     expect(ownerRunbook).toContain('bounded E2E Configuration Check');
     expect(ownerRunbook).toContain('manual `run_native` workflow input');
     expect(ownerRunbook).toContain('dedicated Release Check job');
