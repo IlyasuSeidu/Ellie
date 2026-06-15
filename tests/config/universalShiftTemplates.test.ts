@@ -250,6 +250,23 @@ describe('Universal shift templates', () => {
     expect(builderScreen).toContain('shift_builder_template_applied');
   });
 
+  it('keeps template search above the template cards in the builder flow', () => {
+    const builderScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
+      'utf8'
+    );
+
+    const templateSearchIndex = builderScreen.indexOf('styles.templateSearchGroup');
+    const templateScrollIndex = builderScreen.indexOf('styles.templateScroll');
+    const shiftPaletteIndex = builderScreen.indexOf('<ShiftDefinitionPalette');
+
+    expect(templateSearchIndex).toBeGreaterThan(-1);
+    expect(templateScrollIndex).toBeGreaterThan(-1);
+    expect(shiftPaletteIndex).toBeGreaterThan(-1);
+    expect(templateSearchIndex).toBeLessThan(templateScrollIndex);
+    expect(templateScrollIndex).toBeLessThan(shiftPaletteIndex);
+  });
+
   it('localizes launch-critical exception and calendar builder sections', () => {
     const builderScreen = fs.readFileSync(
       path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
