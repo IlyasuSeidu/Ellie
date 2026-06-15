@@ -243,7 +243,7 @@ Acceptance criteria:
 
 Current status:
 
-- README now includes a Ryvro release status snapshot with repo-proven launch state, latest local/CI gates, and the owner/account/device work still required before public store launch.
+- README now includes a Ryvro release status snapshot with repo-proven launch state, recorded local/CI gate evidence, and the owner/account/device work still required before public store launch.
 
 Files:
 

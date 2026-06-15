@@ -945,6 +945,10 @@ describe('Ryvro environment template', () => {
     );
     expect(releaseTasks).toContain('Play App content `Need attention` tab is clear');
     expect(releaseTasks).toContain(
+      'App Store metadata save, rating/export/EU trader fields, screenshots, subscription review, and store review submission are still pending'
+    );
+    expect(releaseTasks).not.toContain('App Store metadata/privacy/forms/subscription review');
+    expect(releaseTasks).toContain(
       'Play subscription products/base plans and final Publishing overview review submission remain pending'
     );
     expect(releaseTasks).toContain(
@@ -1882,6 +1886,8 @@ describe('Ryvro environment template', () => {
       '<repo-root>/android/app/build/outputs/bundle/release/app-release.aab'
     );
     expect(deploymentPlan).toContain('README now includes a Ryvro release status snapshot');
+    expect(deploymentPlan).toContain('recorded local/CI gate evidence');
+    expect(deploymentPlan).not.toContain('latest local/CI gates');
     expect(deploymentPlan).toContain(
       '[x] Verify every visible tab/action is complete or routed to an implemented launch surface'
     );
