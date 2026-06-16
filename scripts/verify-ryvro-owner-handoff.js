@@ -831,7 +831,7 @@ if (
 
 requireMatches(
   releaseTasks,
-  /\|\s*0b\s*\|[\s\S]*formal trademark\/legal clearance[\s\S]*👤 Todo/,
+  /\|\s*0b\s*\|[\s\S]*formal trademark\/legal clearance[\s\S]*✅ Done[\s\S]*owner-approved search packet completed 2026-06-16/,
   'release task 0b'
 );
 requireMatches(

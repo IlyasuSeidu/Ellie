@@ -919,7 +919,7 @@ describe('Ryvro environment template', () => {
     expect(result.status).toBe(1);
     expect(result.stderr).toContain('Ryvro submit readiness check failed');
     expect(result.stderr).not.toContain('submit.production.ios.appleId');
-    expect(result.stderr).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(result.stderr).not.toContain('Formal trademark/legal clearance for `Ryvro`');
     if (!fs.existsSync(path.join(process.cwd(), 'google-play-key.json'))) {
       expect(result.stderr).toContain('Android service account key path ./google-play-key.json');
     }
@@ -2899,10 +2899,13 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('Play app ID `4974146267407561805`');
     expect(readinessReport).toContain('CI run `27208791655`');
     expect(readinessReport).toContain(
-      '`npm run release:submit:check` still intentionally fails on 2026-06-15'
+      '`npm run release:submit:check` still intentionally fails on 2026-06-16'
     );
     expect(readinessReport).toContain(
-      'formal trademark/legal clearance, social handles, Firebase Auth email templates, App Store products, Google Play products, sandbox purchase QA'
+      'social handles, Firebase Auth email templates, App Store products, Google Play products, sandbox purchase QA'
+    );
+    expect(readinessReport).toContain(
+      'Formal trademark/legal clearance, Google Play app/package evidence'
     );
     expect(readinessReport).toContain(
       'Already recorded account-side evidence that should not be reopened as generic blockers'
@@ -3816,9 +3819,15 @@ describe('Ryvro environment template', () => {
     );
 
     expect(launchEvidenceLog).toContain('# Ryvro Launch Evidence Log');
-    expect(launchEvidenceLog).toContain('Last updated: 2026-06-15');
+    expect(launchEvidenceLog).toContain('Last updated: 2026-06-16');
     expect(launchEvidenceLog).toContain('Do not paste passwords, private keys');
     expect(launchEvidenceLog).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(launchEvidenceLog).toContain(
+      'Owner-approved trademark search packet completed on 2026-06-16'
+    );
+    expect(launchEvidenceLog).toContain(
+      'no blocking conflict found for using `Ryvro` as the app brand for shift planning software'
+    );
     expect(launchEvidenceLog).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(launchEvidenceLog).toContain('clearance/domain/social evidence packet');
     expect(launchEvidenceLog).toContain('2026-06-06T13:11:48.530Z');
@@ -4317,6 +4326,10 @@ describe('Ryvro environment template', () => {
       'local ignored `./google-play-key.json` is present before Android EAS submit'
     );
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(submitBlockerTriage).toContain('owner-approved search packet completed on 2026-06-16');
+    expect(submitBlockerTriage).not.toContain(
+      '- Formal trademark/legal clearance for `Ryvro`\n- Social handle reservation'
+    );
     expect(submitBlockerTriage).toContain('Finish Google Play Internal Testing And Merchant Setup');
     expect(submitBlockerTriage).toContain('Google Payments merchant account');
     expect(submitBlockerTriage).toContain('OR-ICRA-02');

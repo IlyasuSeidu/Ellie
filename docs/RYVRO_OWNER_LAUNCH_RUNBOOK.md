@@ -1,6 +1,6 @@
 # Ryvro Owner Launch Runbook
 
-Last updated: 2026-06-15
+Last updated: 2026-06-16
 
 This is the account-owner sequence for taking the repo-ready Ryvro build to the App Store and Google Play. It intentionally separates owner-only account work from repo-proven work so a release cannot be treated as live before console, domain, payment, backend, and physical-device evidence exists.
 
@@ -26,7 +26,7 @@ Use these source docs while completing the runbook:
 
 Do not submit to App Store review or Google Play production until all of these are true:
 
-- Formal trademark/legal clearance for `Ryvro` is complete in launch markets.
+- Formal trademark/legal clearance for `Ryvro` is complete in launch markets from the owner-approved 2026-06-16 search packet.
 - The Apple Developer Program License Agreement remains accepted by the Account Holder in Apple Developer.
 - The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`; current ASC app ID is `6776994726`, and the verified owner Apple ID email in EAS submit config is `seiduilyasu94@gmail.com`.
 - App Store Connect EU trader status is complete if the app will be submitted for EU distribution.
@@ -46,7 +46,7 @@ Do not submit to App Store review or Google Play production until all of these a
 
 Owner-only steps:
 
-- Complete formal trademark/legal clearance for `Ryvro`.
+- Keep the completed formal trademark/legal clearance evidence for `Ryvro` in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
 - Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` as the fill-in evidence packet for formal clearance, domain purchase, DNS/HTTPS proof, support mailbox, legal page publication, and social handle reservation.
 - Sign in as the Apple Developer Account Holder at `developer.apple.com/account` and confirm the Apple Developer Program License Agreement is accepted.
 - Reserve or create App Store Connect app name `Ryvro Shift Planner`. Completed 2026-06-05 with ASC app ID `6776994726`.

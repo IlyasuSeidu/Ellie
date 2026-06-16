@@ -99,6 +99,15 @@ Record only non-secret evidence:
 - Decision summary: pass, pass with caveats, or failed
 - Any required fallback name or domain decision
 
+Recorded clearance evidence:
+
+- Trademark/legal clearance for `Ryvro` completed on 2026-06-16.
+- Launch markets reviewed: United States, United Kingdom, Australia, Canada, and New Zealand.
+- Clearance source: owner trademark search packet.
+- Result: no blocking conflict found for using `Ryvro` as the app brand for shift planning software.
+- Approved by: Ilyasu Seidu.
+- Keep the full owner search packet outside Git.
+
 ## Domain Reservation And DNS
 
 Reserve the launch domain before store submission.
@@ -203,7 +212,7 @@ Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` after owner proof exists.
 
 Only mark rows `Passed` when the matching evidence is complete:
 
-- Formal trademark/legal clearance for `Ryvro`
+- Formal trademark/legal clearance for `Ryvro` is passed from the owner-approved 2026-06-16 search packet.
 - Domain control for `getryvro.com`
 - `Social handles`
 - `Privacy page`

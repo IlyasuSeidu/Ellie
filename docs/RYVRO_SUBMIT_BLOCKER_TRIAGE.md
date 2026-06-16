@@ -1,6 +1,6 @@
 # Ryvro Submit Blocker Triage
 
-Last updated: 2026-06-15
+Last updated: 2026-06-16
 
 Use this file when `npm run release:submit:check` fails. It groups the remaining blockers into the order that should unblock TestFlight, Play internal testing, and final store submission.
 
@@ -26,7 +26,6 @@ Previously cleared submit-gate items: `Domain control for getryvro.com`, `Suppor
 
 The remaining checked blocker families are:
 
-- Formal trademark/legal clearance for `Ryvro`
 - Social handle reservation
 - Firebase Auth email templates
 - App Store subscription product metadata and real review screenshot
@@ -40,9 +39,12 @@ The remaining checked blocker families are:
 
 ### 1. Clear The Name And Public Ownership
 
-Complete these before spending more time on store metadata:
+Completed:
 
-- Formal trademark/legal clearance for `Ryvro`
+- Formal trademark/legal clearance for `Ryvro`: owner-approved search packet completed on 2026-06-16 for the United States, United Kingdom, Australia, Canada, and New Zealand, with no blocking conflict found for using `Ryvro` as the app brand for shift planning software.
+
+Still complete these before spending more time on store metadata:
+
 - Keep the passed support mailbox evidence current: `support@getryvro.com` received a Google Play Console verification email on 2026-06-07, and the one-time code was not recorded in the repo.
 - Publish owner-reviewed privacy, terms, support, and account deletion pages at `getryvro.com`
 - Reserve social handles or approved fallbacks

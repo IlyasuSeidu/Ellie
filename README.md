@@ -149,7 +149,6 @@ Repo-proven launch state:
 
 Owner/account work still required before launch:
 
-- Formal trademark/legal clearance for `Ryvro`
 - Social handle reservation or approved fallback handles
 - Firebase Auth email-template action URL resolution or owner-approved fallback smoke evidence
 - App Store and Google Play subscription-product completion, including Google Payments hold removal for Play products
