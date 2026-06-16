@@ -2892,7 +2892,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('Owner launch runbook now sequences clearance');
     expect(readinessReport).toContain(
-      'Play internal tester-list/opt-in confirmation and merchant setup, Firebase email templates'
+      'Play internal tester-list/opt-in confirmation and merchant setup'
     );
     expect(readinessReport).toContain(
       'Google Play internal-testing handoff now documents the completed developer-account creation'
@@ -2903,10 +2903,11 @@ describe('Ryvro environment template', () => {
       '`npm run release:submit:check` still intentionally fails on 2026-06-16'
     );
     expect(readinessReport).toContain(
-      'Firebase Auth email templates, App Store products, Google Play products, sandbox purchase QA'
+      'App Store products, Google Play products, sandbox purchase QA'
     );
+    expect(readinessReport).toContain('Firebase Auth email-template fallback evidence');
     expect(readinessReport).toContain(
-      'Formal trademark/legal clearance, social handle reservation, Google Play app/package evidence'
+      'Formal trademark/legal clearance, social handle reservation, Firebase Auth email-template fallback evidence, Google Play app/package evidence'
     );
     expect(readinessReport).toContain(
       'Already recorded account-side evidence that should not be reopened as generic blockers'
@@ -4037,12 +4038,19 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
     );
-    expect(launchEvidenceLog).toContain('metadata readback proves the callback URI persists');
-    expect(launchEvidenceLog).toContain('owner records an approved fallback that keeps Firebase');
+    expect(launchEvidenceLog).toContain(
+      'A metadata-only Identity Toolkit Admin API readback on 2026-06-16'
+    );
+    expect(launchEvidenceLog).toContain(
+      'Owner-approved first-release fallback completed on 2026-06-16'
+    );
+    expect(launchEvidenceLog).toContain('Result: no blocking issue for first release');
     expect(launchEvidenceLog).toContain(
       'end-to-end email verification plus password reset smoke results'
     );
-    expect(launchEvidenceLog).toContain('Do not mark passed from console save toasts alone');
+    expect(launchEvidenceLog).toContain(
+      'Do not record one-time email links, reset links, auth tokens, or tester passwords'
+    );
     expect(launchEvidenceLog).toContain(
       'Firebase Authentication for project `ryvro-shift-planner`'
     );
@@ -4056,7 +4064,7 @@ describe('Ryvro environment template', () => {
       'Email/Password, Google, and Apple provider rows all with `check_circle` and status `Enabled`'
     );
     expect(launchEvidenceLog).toContain('ignored root Firebase config files were refreshed');
-    expect(launchEvidenceLog).toContain('email-template row remains pending');
+    expect(launchEvidenceLog).toContain('Later Firebase Auth email-template evidence');
     expect(launchEvidenceLog).toContain('Backend deploy - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend deploy - parser');
@@ -4348,7 +4356,7 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(submitBlockerTriage).toContain('Recorded gate state on 2026-06-16');
     expect(submitBlockerTriage).toContain(
-      'formal trademark clearance and social handle reservation recorded as passed'
+      'formal trademark clearance, social handle reservation, and Firebase Auth email-template fallback evidence recorded as passed'
     );
     expect(submitBlockerTriage).toContain(
       'Social handle reservation: owner-approved reserved handle list completed on 2026-06-16'
@@ -4679,20 +4687,20 @@ describe('Ryvro environment template', () => {
       'Firebase Auth reviewer account `reviewer@getryvro.com` exists'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Firebase Auth email templates are still pending'
+      'Firebase Auth email templates are complete for first release'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'Required Firebase Auth sender name: `Ryvro Support`'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Final evidence must be either metadata readback proving `callbackUri` persists'
+      'First-release Firebase Auth callback URL fallback'
     );
     expect(firebaseOauthBackendHandoff).toContain('owner-approved first-release fallback');
     expect(firebaseOauthBackendHandoff).toContain(
       'end-to-end email verification plus password reset smoke results'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Do not mark passed from console save toasts alone'
+      'Do not record one-time email links, reset links, auth tokens, or tester passwords'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'firebase deploy --only functions:ryvro-brain:ryvroBrain,functions:ryvro-brain:parseShiftScheduleDescription'
