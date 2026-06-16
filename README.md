@@ -149,7 +149,6 @@ Repo-proven launch state:
 
 Owner/account work still required before launch:
 
-- Social handle reservation or approved fallback handles
 - Firebase Auth email-template action URL resolution or owner-approved fallback smoke evidence
 - App Store and Google Play subscription-product completion, including Google Payments hold removal for Play products
 - Sandbox purchase QA across trial start, entitlement activation, cancel, relock, and restore
@@ -425,7 +424,8 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 - [x] Repo-side Ryvro identity, assets, copy, templates, release docs, and CI gates
 - [x] Public clearance preflight script and current public evidence
 - [x] App Store Connect and Google Play app/package creation, Firebase/OAuth/backend setup, EAS production env push, and TestFlight/internal-track upload evidence
-- [ ] Account-owner legal clearance, social handles, Firebase email-template action URL proof, subscription products, and store-compliance fields
+- [x] Account-owner legal clearance and social handle reservation evidence
+- [ ] Firebase email-template action URL proof, subscription products, and store-compliance fields
 - [ ] Physical iOS and Android smoke tests
 - [ ] Store screenshots, sandbox purchase QA, and final App Store / Google Play submission
 

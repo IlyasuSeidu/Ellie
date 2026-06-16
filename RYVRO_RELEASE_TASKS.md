@@ -16,7 +16,7 @@ Legend: ✅ Done · 🔧 Repo or build task · 👤 Owner/account step
 | 0c  | 👤 Reserve or create App Store Connect app name `Ryvro Shift Planner`                                                                                                             | ✅ Done (ASC app ID `6776994726`)                                                           |
 | 0d  | 👤 Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`                                                                                 | ✅ Done (Play app ID `4974146267407561805`)                                                 |
 | 0e  | 👤 Purchase/reserve the launch domain, with `getryvro.com` as the current cleanest public candidate                                                                               | ✅ Done (`getryvro.com` purchased, DNS controlled, Firebase certificate active, HTTPS live) |
-| 0f  | 👤 Reserve social handles directly while logged in, starting with `@ryvro` and falling back to `@getryvro` or `@tryryvro` if needed                                               | 👤 Todo                                                                                     |
+| 0f  | 👤 Reserve social handles directly while logged in, starting with `@ryvro` and falling back to `@getryvro` or `@tryryvro` if needed                                               | ✅ Done (`@getryvro` reserved where handles are needed; LinkedIn `Ryvro`)                   |
 
 ---
 

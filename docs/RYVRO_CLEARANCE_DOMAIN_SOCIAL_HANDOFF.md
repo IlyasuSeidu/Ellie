@@ -206,6 +206,14 @@ Record:
 - Bio/status note
 - Link to `https://getryvro.com`
 
+Recorded social handle evidence:
+
+- Social handle reservation completed on 2026-06-16.
+- Reserved handles: X `@getryvro`, Instagram `@getryvro`, TikTok `@getryvro`, YouTube `@getryvro`, and LinkedIn `Ryvro`.
+- Fallback handle used: `@getryvro`.
+- Approved by: Ilyasu Seidu.
+- Keep account credentials and platform verification codes outside Git.
+
 ## Evidence Log Updates
 
 Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` after owner proof exists.
@@ -214,7 +222,7 @@ Only mark rows `Passed` when the matching evidence is complete:
 
 - Formal trademark/legal clearance for `Ryvro` is passed from the owner-approved 2026-06-16 search packet.
 - Domain control for `getryvro.com`
-- `Social handles`
+- `Social handles` is passed from the owner-approved 2026-06-16 reserved handle list.
 - `Privacy page`
 - `Terms page`
 - `Support page/mailbox`

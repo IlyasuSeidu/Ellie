@@ -920,6 +920,7 @@ describe('Ryvro environment template', () => {
     expect(result.stderr).toContain('Ryvro submit readiness check failed');
     expect(result.stderr).not.toContain('submit.production.ios.appleId');
     expect(result.stderr).not.toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(result.stderr).not.toContain('Social handles still has pending owner evidence');
     if (!fs.existsSync(path.join(process.cwd(), 'google-play-key.json'))) {
       expect(result.stderr).toContain('Android service account key path ./google-play-key.json');
     }
@@ -2902,10 +2903,10 @@ describe('Ryvro environment template', () => {
       '`npm run release:submit:check` still intentionally fails on 2026-06-16'
     );
     expect(readinessReport).toContain(
-      'social handles, Firebase Auth email templates, App Store products, Google Play products, sandbox purchase QA'
+      'Firebase Auth email templates, App Store products, Google Play products, sandbox purchase QA'
     );
     expect(readinessReport).toContain(
-      'Formal trademark/legal clearance, Google Play app/package evidence'
+      'Formal trademark/legal clearance, social handle reservation, Google Play app/package evidence'
     );
     expect(readinessReport).toContain(
       'Already recorded account-side evidence that should not be reopened as generic blockers'
@@ -3994,6 +3995,11 @@ describe('Ryvro environment template', () => {
     );
     expect(launchEvidenceLog).toContain('Do not record one-time verification codes in the repo');
     expect(launchEvidenceLog).toContain('Social handles');
+    expect(launchEvidenceLog).toContain(
+      'Owner-approved social handle reservation completed on 2026-06-16'
+    );
+    expect(launchEvidenceLog).toContain('X `@getryvro`, Instagram `@getryvro`');
+    expect(launchEvidenceLog).toContain('LinkedIn `Ryvro`');
     expect(launchEvidenceLog).toContain('social handle evidence');
     expect(launchEvidenceLog).toContain('project dashboard URL');
     expect(launchEvidenceLog).toContain('Gemini in Firebase switched off');
@@ -4340,9 +4346,16 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('backend provider smoke tests have passed');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
-    expect(submitBlockerTriage).toContain('GitHub Actions CI run `27546422603`');
-    expect(submitBlockerTriage).toContain('bounded E2E workflow run `27546583226`');
-    expect(submitBlockerTriage).toContain('commit `7f3df5e`');
+    expect(submitBlockerTriage).toContain('Recorded gate state on 2026-06-16');
+    expect(submitBlockerTriage).toContain(
+      'formal trademark clearance and social handle reservation recorded as passed'
+    );
+    expect(submitBlockerTriage).toContain(
+      'Social handle reservation: owner-approved reserved handle list completed on 2026-06-16'
+    );
+    expect(submitBlockerTriage).not.toContain('GitHub Actions CI run `27546422603`');
+    expect(submitBlockerTriage).not.toContain('bounded E2E workflow run `27546583226`');
+    expect(submitBlockerTriage).not.toContain('commit `7f3df5e`');
     expect(submitBlockerTriage).not.toContain('27545464804');
     expect(submitBlockerTriage).not.toContain('27545606240');
     expect(submitBlockerTriage).not.toContain('commit `0e0507a`');

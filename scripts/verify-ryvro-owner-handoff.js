@@ -836,6 +836,11 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
+  /\|\s*0f\s*\|[\s\S]*Reserve social handles directly while logged in[\s\S]*✅ Done[\s\S]*@getryvro[\s\S]*LinkedIn `Ryvro`/,
+  'release task 0f'
+);
+requireMatches(
+  releaseTasks,
   /\|\s*20\s*\|[\s\S]*npm run release:env:push -- --force[\s\S]*npm run release:env:files -- --force[\s\S]*passed on 2026-06-14/,
   'release task 20'
 );
