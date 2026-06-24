@@ -1,8 +1,8 @@
 # Ryvro
 
-![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
-![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
-[![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
+![CI Pipeline](https://github.com/IlyasuSeidu/ryvro/workflows/CI%20Pipeline/badge.svg)
+![E2E Tests](https://github.com/IlyasuSeidu/ryvro/workflows/E2E%20Tests/badge.svg)
+[![codecov](https://codecov.io/gh/IlyasuSeidu/ryvro/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/ryvro)
 
 Ryvro is a voice-first shift assistant.
 

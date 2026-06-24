@@ -50,14 +50,14 @@ Ensure you have the following installed:
 2. Clone your fork locally:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Ellie.git
-cd Ellie
+git clone https://github.com/YOUR_USERNAME/ryvro.git
+cd ryvro
 ```
 
 3. Add upstream remote:
 
 ```bash
-git remote add upstream https://github.com/IlyasuSeidu/Ellie.git
+git remote add upstream https://github.com/IlyasuSeidu/ryvro.git
 ```
 
 4. Install dependencies:
