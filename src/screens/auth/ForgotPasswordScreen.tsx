@@ -10,14 +10,12 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
 } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
@@ -25,9 +23,10 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Haptics from 'expo-haptics';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
-import { theme } from '@/utils/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import type { AuthStackParamList } from '@/navigation/AuthNavigator';
+import { AuthBackground } from './AuthBackground';
+import { authStyles, RYVRO_AUTH_COLORS } from './authStyles';
 
 type Nav = NativeStackNavigationProp<AuthStackParamList, 'ForgotPassword'>;
 type Route = RouteProp<AuthStackParamList, 'ForgotPassword'>;
@@ -81,13 +80,7 @@ export const ForgotPasswordScreen: React.FC = () => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <LinearGradient
-        colors={[theme.colors.opacity.gold10, 'transparent']}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 0.4 }}
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-      />
+      <AuthBackground />
 
       <View
         style={[styles.inner, { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 32 }]}
@@ -98,7 +91,7 @@ export const ForgotPasswordScreen: React.FC = () => {
           activeOpacity={0.7}
           testID="forgot-password-back-button"
         >
-          <Ionicons name="arrow-back-outline" size={22} color={theme.colors.dust} />
+          <Ionicons name="arrow-back-outline" size={22} color={RYVRO_AUTH_COLORS.silver} />
         </TouchableOpacity>
 
         {!sent ? (
@@ -119,7 +112,7 @@ export const ForgotPasswordScreen: React.FC = () => {
             <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.form}>
               {error ? (
                 <View style={styles.errorBanner}>
-                  <Ionicons name="alert-circle-outline" size={16} color={theme.colors.error} />
+                  <Ionicons name="alert-circle-outline" size={16} color={RYVRO_AUTH_COLORS.error} />
                   <Text style={styles.errorBannerText}>{error}</Text>
                 </View>
               ) : null}
@@ -134,7 +127,7 @@ export const ForgotPasswordScreen: React.FC = () => {
                   <Ionicons
                     name="mail-outline"
                     size={18}
-                    color={theme.colors.dust}
+                    color={emailError ? RYVRO_AUTH_COLORS.error : RYVRO_AUTH_COLORS.muted}
                     style={styles.inputIcon}
                   />
                   <TextInput
@@ -148,7 +141,7 @@ export const ForgotPasswordScreen: React.FC = () => {
                     placeholder={t('auth.fields.emailPlaceholder', {
                       defaultValue: 'your@email.com',
                     })}
-                    placeholderTextColor={theme.colors.shadow}
+                    placeholderTextColor="rgba(157, 178, 194, 0.58)"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -168,7 +161,7 @@ export const ForgotPasswordScreen: React.FC = () => {
                 testID="send-reset-link-button"
               >
                 {isSubmitting ? (
-                  <ActivityIndicator size="small" color={theme.colors.deepVoid} />
+                  <ActivityIndicator size="small" color={RYVRO_AUTH_COLORS.void} />
                 ) : (
                   <Text style={styles.primaryButtonText}>
                     {t('auth.forgotPassword.sendResetLink', {
@@ -182,7 +175,7 @@ export const ForgotPasswordScreen: React.FC = () => {
         ) : (
           <Animated.View entering={FadeInUp.duration(500)} style={styles.successState}>
             <View style={styles.successIcon}>
-              <Ionicons name="mail-open-outline" size={48} color={theme.colors.sacredGold} />
+              <Ionicons name="mail-open-outline" size={48} color={RYVRO_AUTH_COLORS.cyan} />
             </View>
             <Text style={styles.successTitle}>
               {t('auth.forgotPassword.checkInboxTitle', {
@@ -214,92 +207,4 @@ export const ForgotPasswordScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.deepVoid },
-  inner: { flex: 1, paddingHorizontal: theme.spacing.xl },
-  backButton: { marginBottom: theme.spacing.lg, alignSelf: 'flex-start', padding: 4 },
-  header: { marginBottom: theme.spacing.xl },
-  title: {
-    fontSize: theme.typography.fontSizes.xxl,
-    fontWeight: theme.typography.fontWeights.black,
-    color: theme.colors.paper,
-    marginBottom: theme.spacing.sm,
-  },
-  subtitle: {
-    fontSize: theme.typography.fontSizes.md,
-    color: theme.colors.dust,
-    lineHeight: 22,
-  },
-  form: { gap: theme.spacing.sm },
-  errorBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
-    backgroundColor: 'rgba(239,68,68,0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(239,68,68,0.3)',
-    borderRadius: theme.borderRadius.md,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    marginBottom: theme.spacing.xs,
-  },
-  errorBannerText: { color: theme.colors.error, fontSize: theme.typography.fontSizes.sm, flex: 1 },
-  fieldGroup: { gap: 6, marginBottom: theme.spacing.xs },
-  fieldLabel: {
-    fontSize: theme.typography.fontSizes.sm,
-    fontWeight: theme.typography.fontWeights.semibold,
-    color: theme.colors.paper,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.darkStone,
-    borderWidth: 1,
-    borderColor: theme.colors.softStone,
-    borderRadius: theme.borderRadius.md,
-    paddingHorizontal: theme.spacing.md,
-    height: 52,
-  },
-  inputError: { borderColor: theme.colors.error },
-  inputIcon: { marginRight: theme.spacing.sm },
-  input: { flex: 1, color: theme.colors.paper, fontSize: theme.typography.fontSizes.md },
-  fieldError: { fontSize: 12, color: theme.colors.error },
-  primaryButton: {
-    height: 52,
-    backgroundColor: theme.colors.sacredGold,
-    borderRadius: theme.borderRadius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: theme.spacing.sm,
-  },
-  primaryButtonDisabled: { opacity: 0.6 },
-  primaryButtonText: {
-    color: theme.colors.deepVoid,
-    fontSize: theme.typography.fontSizes.md,
-    fontWeight: theme.typography.fontWeights.bold,
-  },
-  successState: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: theme.spacing.md },
-  successIcon: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: theme.colors.opacity.gold10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold30,
-    marginBottom: theme.spacing.md,
-  },
-  successTitle: {
-    fontSize: theme.typography.fontSizes.xl,
-    fontWeight: theme.typography.fontWeights.bold,
-    color: theme.colors.paper,
-    textAlign: 'center',
-  },
-  successBody: {
-    fontSize: theme.typography.fontSizes.md,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-});
+const styles = authStyles;

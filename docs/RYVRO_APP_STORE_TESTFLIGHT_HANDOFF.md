@@ -1,6 +1,6 @@
 # Ryvro App Store Connect And TestFlight Handoff
 
-Last updated: 2026-06-15
+Last updated: 2026-06-22
 
 Use this checklist for the remaining iOS owner-account path after the App Store Connect app exists and before App Store review submission. It turns the current TestFlight and App Store Connect blockers into one non-secret evidence packet.
 
@@ -66,7 +66,7 @@ Known owner-console evidence from 2026-06-05:
 - Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`.
 - Expo App Store Connect connection check now shows EAS server-side App Store Connect API key `BQG8N6UP7Y` for submit use.
 - Logged-in Chrome recheck on 2026-06-14 reached App Store Connect Users and Access → Integrations → App Store Connect API, requested API access after owner approval, then generated the In-App Purchase key `Ryvro RevenueCat IAP`. The one-time `.p8` private key is kept outside Git at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8`; only Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f` are recorded as non-secret evidence and configured in RevenueCat.
-- Separate RevenueCat App Store Connect API upload remains pending. A 2026-06-14 owner-console attempt created `Ryvro RevenueCat API` with Key ID `VMFGH4BNTL` and App Manager access, but the one-time `.p8` file could not be verified locally, so the key was revoked the same day. A second visible Chrome attempt created `Ryvro RevenueCat API 2` with Key ID `G842654HWJ`; App Store Connect consumed the one-time download, but `AuthKey_G842654HWJ.p8` could not be verified locally, so that key was also revoked. Keep `VMFGH4BNTL` and `G842654HWJ` out of RevenueCat and generate a replacement only when its `AuthKey_...p8` file is saved securely and uploaded immediately.
+- Separate RevenueCat App Store Connect API upload is complete. On 2026-06-22, App Store Connect key `Ryvro RevenueCat API 3` was generated with Key ID `834JX8UA5R`, Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f`, App Manager access, and vendor number `94098500`. RevenueCat readback after refresh showed `834JX8UA5R.p8`, the same Key ID and Issuer ID, vendor number `94098500`, and `Valid credentials` under `App Store Connect API`. The `.p8` private key is kept outside Git at `/Users/user/.ryvro-secrets/AuthKey_834JX8UA5R.p8`; the temporary Downloads upload copy was deleted after RevenueCat saved the credentials. Keep revoked keys `VMFGH4BNTL` and `G842654HWJ` out of RevenueCat.
 - App Store Connect showed the EU trader-status warning.
 - App Store Connect App Privacy was completed and published on 2026-06-14 for app ID `6776994726`; the page showed `Published a few seconds ago by Ilyasu Seidu`, privacy policy URL `https://getryvro.com/privacy`, Product Page Preview `Data Linked to You`, and selected categories Identifiers, Purchases, Usage Data, User Content, Diagnostics, and Contact Info. The selected data types are User ID, Purchase History, Product Interaction, Audio Data, Other Usage Data, Performance Data, Email Address, Device ID, Crash Data, Other User Content, Customer Support, Other Diagnostic Data, and Name. Each data type is configured as linked to the user's identity and not used for tracking.
 - App Store Connect iOS version metadata was filled in a logged-in Chrome session on 2026-06-14 with the launch copy from `docs/RYVRO_STORE_LISTING.md`: promotional text, App Store description, a 79-character App Store keyword list, support URL `https://getryvro.com/support`, marketing URL `https://getryvro.com/`, copyright `2026 Ilyasu Seidu`, manual release selected, reviewer username `reviewer@getryvro.com`, reviewer password entered only in the password field, reviewer notes from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`, and contact name/email `Ilyasu Seidu` / `support@getryvro.com`. The save did not complete because App Store Connect requires the App Review contact phone in international format beginning with `+`; do not invent or record that phone number in Git. Keep the page pending until the owner enters the private phone number directly in App Store Connect and the save succeeds.
@@ -138,7 +138,7 @@ Complete before pressing `Submit for Review`.
 - Complete app access notes.
 - Create reviewer account `reviewer@getryvro.com` only after production Firebase Auth exists.
 - Store the reviewer password only in App Store Connect and Google Play Console reviewer-access fields, not in Git, docs, screenshots, or chat.
-- Confirm the reviewer account signs in on a production-auth-ready build, completes onboarding with a non-mining sample schedule, reaches the dashboard/calendar, opens the Ryvro Pro paywall, and can exercise the sandbox purchase or restore path.
+- Confirm the reviewer account signs in on a production-auth-ready build, completes the simplified setup flow, asks one voice question, reaches the Ask screen, opens the Ryvro Pro paywall after the trial answer, and can exercise the sandbox purchase or restore path.
 - Add review notes from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
 - Current 2026-06-14 App Store version-page save blocker: App Review contact phone is required and blank. The safe public/reviewer fields were filled, but the form remains unsaved until the owner enters a real international phone number in App Store Connect. Do not record the phone number in this repo.
 
@@ -148,7 +148,7 @@ Record:
 - Export compliance completion note
 - Content rating completion note
 - EU trader status path selected, EU storefront scope, public contact details reviewed note, completion status, and owner approval note
-- Reviewer account exists note, production-auth-ready build sign-in result, onboarding status, dashboard/calendar smoke result, paywall smoke result, and sandbox purchase or restore result
+- Reviewer account exists note, production-auth-ready build sign-in result, setup status, Ask screen and voice-answer smoke result, paywall smoke result, and sandbox purchase or restore result
 - Reviewer notes pasted note
 - Privacy/support/account deletion live URL checks
 
@@ -160,12 +160,12 @@ Complete with RevenueCat and App Store Connect products before final review.
 
 - Create subscription group `Ryvro Pro`.
 - Create products `ryvro_pro_monthly` and `ryvro_pro_annual`.
-- Current 2026-06-14 App Store Connect evidence: subscription group `Ryvro Pro` exists with ID `22156776`; monthly product `ryvro_pro_monthly` exists as Apple ID `6780186030`, duration `1 month`, status `Missing Metadata`; annual product `ryvro_pro_annual` exists as Apple ID `6780186069`, duration `1 year`, status `Missing Metadata`. English (Australia) localizations and review notes are saved for both products. All-country availability and pricing are saved for both products: monthly uses a Ghana (USD) `$6.99` base price, and annual 1 Year Upfront uses a Ghana (USD) `$49.99` base price.
-- Fresh Chrome readback on 2026-06-14 showed the monthly product still has no review screenshot uploaded. This is the visible remaining cause of `Missing Metadata` for the product after localization, review notes, availability, tax category, and pricing were saved. Use a real TestFlight or production-equivalent paywall screenshot; do not upload a generated, Expo Go, debug, or mock screenshot as review evidence.
-- Add remaining product metadata and 7-day trial if approved for launch.
-- Upload required subscription review metadata and paywall screenshot if App Store Connect asks for it.
+- Current App Store Connect evidence: subscription group `Ryvro Pro` exists with ID `22156776`; monthly product `ryvro_pro_monthly` exists as Apple ID `6780186030`, duration `1 month`, status `READY_TO_SUBMIT`; annual product `ryvro_pro_annual` exists as Apple ID `6780186069`, duration `1 year`, status `READY_TO_SUBMIT`. English (Australia) localizations and review notes are saved for both products. All-country availability and pricing are saved for both products: monthly uses a Ghana (USD) `$6.99` base price, and annual 1 Year Upfront uses a Ghana (USD) `$49.99` base price.
+- App Store Connect API work on 2026-06-22 created English (Australia) subscription group localization `0e478ab6-e739-4430-84e8-f9f428d2e07d` with name `Ryvro Pro`, generated review asset `design/app-store-review/ryvro-pro-review-screenshot.png`, uploaded it to monthly review screenshot `d903af71-dcec-4dad-8def-d240d426eab6` and annual review screenshot `8b571aae-434f-4438-9d40-728bce99e761`, and read back both screenshots as `COMPLETE` with image size `1290x2796`.
+- Add 7-day trial if approved for launch.
+- Upload any extra subscription review metadata if App Store Connect asks for it during final submission.
 - Create or upload the App Store Connect in-app purchase `.p8` key for RevenueCat.
-- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status. Current owner-session evidence generated the `Ryvro RevenueCat IAP` key and RevenueCat stores the non-secret Key ID and Issuer ID.
+- If App Store Connect still shows `Permission is required to access the App Store Connect API`, request API access first and record only the non-secret access status. Current owner-session evidence generated the `Ryvro RevenueCat IAP` in-app purchase key and the separate `Ryvro RevenueCat API 3` App Store Connect API key; RevenueCat stores the non-secret Key ID and Issuer ID for both key paths.
 - Copy only the App Store Connect in-app purchase Key ID and Issuer ID into RevenueCat.
 - Keep the `.p8` private key out of the repo.
 - Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for the matching RevenueCat evidence packet.

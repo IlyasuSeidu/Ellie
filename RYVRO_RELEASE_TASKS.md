@@ -1,250 +1,215 @@
-# Ryvro — Release Task List
+# Ryvro Release Task List
 
-Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: June 15, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 07:35Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, App Store TestFlight handoff, clearance domain social handoff, submit blocker triage, domain cart evidence, owner runbook verification refresh, verified `getryvro.com` domain control, legal effective dates, live HTTPS launch pages, Play Console physical-device verification evidence, historical rollout report status clarification, Ryvro EAS update URL guidance, Android Firebase service-file guard, and recorded pushed CI evidence in `README.md`, `docs/RYVRO_RELEASE_READINESS_REPORT.md`, and `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`)
+Last updated: June 24, 2026
 
-Legend: ✅ Done · 🔧 Repo or build task · 👤 Owner/account step
+This checklist follows the current Ryvro concept:
 
----
+> Configure your shift once. Ask Ryvro by voice. Get the right shift answer instantly.
 
-## Phase 0 — External Clearance And Reservation
+Ryvro is not being released as a calendar app, dashboard app, roster manager, stats tracker, or multi-language product. Any launch task should support one of these surfaces:
 
-| #   | Task                                                                                                                                                                              | Status                                                                                      |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 0a  | Run repeatable public clearance preflight with `npm run release:clearance` and keep evidence in `docs/RYVRO_RELEASE_READINESS_REPORT.md` / `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` | ✅ Done (latest public evidence: 2026-06-15 07:35Z)                                         |
-| 0b  | 👤 Complete formal trademark/legal clearance for `Ryvro` in launch markets                                                                                                        | ✅ Done (owner-approved search packet completed 2026-06-16)                                 |
-| 0c  | 👤 Reserve or create App Store Connect app name `Ryvro Shift Planner`                                                                                                             | ✅ Done (ASC app ID `6776994726`)                                                           |
-| 0d  | 👤 Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`                                                                                 | ✅ Done (Play app ID `4974146267407561805`)                                                 |
-| 0e  | 👤 Purchase/reserve the launch domain, with `getryvro.com` as the current cleanest public candidate                                                                               | ✅ Done (`getryvro.com` purchased, DNS controlled, Firebase certificate active, HTTPS live) |
-| 0f  | 👤 Reserve social handles directly while logged in, starting with `@ryvro` and falling back to `@getryvro` or `@tryryvro` if needed                                               | ✅ Done (`@getryvro` reserved where handles are needed; LinkedIn `Ryvro`)                   |
+- Onboarding and shift setup.
+- Ask screen.
+- Settings and setup repair.
+- Ryvro Pro paywall.
+- Backend voice answers.
+- Reminders.
+- Legal, store, and account requirements.
 
----
+Legend: Done · Repo task · Owner task · Blocked
 
-## Phase 1 — Code Cleanup (No user input needed)
+## Product Scope
 
-| #   | Task                                                                                                                                                                                          | Status  |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 1   | Hide Schedule + Stats tabs from nav (MainTabNavigator + CustomTabBar)                                                                                                                         | ✅ Done |
-| 2   | Audit and remove unsafe Android permissions (`SYSTEM_ALERT_WINDOW`, `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`)                                                                        | ✅ Done |
-| 3   | Identify and fix any dead/unimplemented quick-action buttons in visible screens                                                                                                               | ✅ Done |
-| 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                                                                                        | ✅ Done |
-| 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass, with CI also running the dedicated `Release Check` job and owner-handoff preflight | ✅ Done |
-| 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                                                                                                     | ✅ Done |
-| 5b  | Add app-level offline/pending-sync status visibility for queued local writes                                                                                                                  | ✅ Done |
-| 5c  | Centralize runtime cache TTL policy for launch offline caches and recovery windows                                                                                                            | ✅ Done |
+### Done
 
----
+- Ryvro brand name, icon direction, domain, social handles, and support address are owner-approved.
+- App brand is Ryvro, with native display name `Ryvro`.
+- Production package identity is `com.ryvro.shiftplanner`.
+- Runtime product language is English-only.
+- Main app surface is the Ask screen.
+- Bottom tabs are removed from the new concept.
+- Settings is opened from the Ask screen.
+- Setup and repair flows use plain-language screens instead of exposing a scary editor as the default path.
+- Shift-specific colors are removed from active app chrome and primary UI surfaces.
+- Voice answers use 12-hour time formatting.
+- Offline answer support exists for exact dates and many date ranges.
+- Online backend support exists for broad natural-language date and range questions.
+- User details can be saved and synced for use in answers.
+- Firebase functions were deployed to project `ryvro-shift-planner`.
 
-## Phase 2 — Config + Identifiers
+### Still Required
 
-| #   | Task                                                                                                                                                                                                                                                         | Status                             |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
-| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)                                                                                                                                                                       | ✅ Done (`com.ryvro.shiftplanner`) |
-| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1`                                                                                                                                                                  | ✅ Done                            |
-| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)                                                                                                                                                                      | ✅ Done                            |
-| 9   | Verify clean generated iOS scaffolding uses `CFBundleDisplayName = Ryvro`, the Ryvro bundle/package source of truth, and archive commands use `RyvroShiftPlanner.xcworkspace` with `-scheme RyvroShiftPlanner`                                               | ✅ Done                            |
-| 10  | Create `eas.json` with development / preview / production build profiles                                                                                                                                                                                     | ✅ Done                            |
-| 10a | Add store listing copy, privacy/support templates, and external service handoff docs                                                                                                                                                                         | ✅ Done                            |
-| 10b | Align research-funnel runtime personas, docs, scoring, and automation prompts with Ryvro's broad launch audience across mining/FIFO, healthcare, security/emergency services, transport/logistics, hospitality/manufacturing, and other rotating-shift teams | ✅ Done                            |
-| 10c | Derive the Google Sign-In iOS URL scheme from `GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` at Expo config build time so production OAuth cannot keep a stale static client scheme                                                             | ✅ Done                            |
-| 10d | Pin dynamic Expo config fallbacks for Apple Sign-In, iOS privacy strings, Android microphone permission, and required native config plugins so generated Ryvro builds keep launch capabilities even if static config inheritance changes                     | ✅ Done                            |
-| 10e | Reject retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts in the Ryvro production env preflight before release builds                                                                                                                     | ✅ Done                            |
-| 10f | Require the Ryvro production env preflight to validate real root-level Firebase native service files for `com.ryvro.shiftplanner`, rejecting tracked local placeholders and generated native-folder paths before release builds                              | ✅ Done                            |
+- Full physical-device QA on iPhone and Android.
+- Full RevenueCat sandbox purchase, restore, relock, and entitlement activation QA.
+- Final App Store screenshots.
+- Final Google Play screenshots.
+- App Store submission.
+- Google Play production submission.
+- Owner legal/content review of public privacy, terms, and support pages.
 
----
+## Onboarding And Setup
 
-## Phase 3 — Subscription: Ryvro Pro (Code — must be done before any store setup)
+The release setup flow must prove the worker can configure an accurate repeating shift pattern without technical knowledge.
 
-> Source: current Ryvro subscription implementation and release-blocker audit.
-> **Must be complete before Phase 4.** Apple does not allow retroactively paywalling a feature that shipped free. The subscription binary must be in the first submitted version.
+### Required QA
 
-| #   | Task                                                                                                                                                                                                    | Status  |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 31  | Install RevenueCat SDK: `npx expo install react-native-purchases` + `react-native-purchases-ui`                                                                                                         | ✅ Done |
-| 32  | Create `src/contexts/SubscriptionContext.tsx` — RevenueCat init, `isPro` state, `openPaywall`, `restorePurchases`                                                                                       | ✅ Done |
-| 33  | Create `src/hooks/useSubscription.ts` — convenience re-export of `useSubscription`                                                                                                                      | ✅ Done |
-| 34  | Create `src/components/subscription/PadlockOverlay.tsx` — absolute overlay rendered over locked calendar weeks                                                                                          | ✅ Done |
-| 35  | Create `src/screens/subscription/PaywallScreen.tsx` — full-screen paywall: gold mic hero, 5 benefit lines, annual pre-selected, "Start 7-Day Free Trial" CTA, Restore Purchases link                    | ✅ Done |
-| 36  | Edit `App.tsx` — wrap app with `<SubscriptionProvider>`, render `<PaywallScreen>` as full-screen overlay when `paywallVisible` is true                                                                  | ✅ Done |
-| 37  | Edit `CustomTabBar.tsx` — gate center mic button: `isPro` → `openModal()`, not Pro → `openPaywall()`                                                                                                    | ✅ Done |
-| 38  | Edit `MonthlyCalendarCard.tsx` + dashboard wiring — current week renders free; all other weeks get `<PadlockOverlay>` at 35% opacity when not Pro                                                       | ✅ Done |
-| 39  | Edit `ProfileScreen.tsx` — add "Ryvro Pro — Active ✓" / "Upgrade to Ryvro Pro" row after Work Stats section                                                                                             | ✅ Done |
-| 40  | Add RevenueCat native/public key and entitlement placeholders to `.env.example`, `.env.production.example`, runtime config, and `npm run release:env:check` (fill real `.env` values after Tasks 42–48) | ✅ Done |
-| 41  | Re-run full quality gate after subscription code is added: `lint` + `type-check` + `test` + `release:check` — all must pass                                                                             | ✅ Done |
+- Fresh install starts with the new Ryvro welcome screen.
+- Setup asks for the repeating pattern in simple language.
+- Known date selection is clear.
+- Known shift selection is clear.
+- Exact phase selection works when the known shift has multiple repeated days.
+- Shift times use AM and PM everywhere.
+- Overnight shift times display as `7:00 PM to 7:00 AM`, without extra next-day helper text.
+- Reminder setup works and schedules real notifications when the user opts in.
+- Final setup review lets the user fix pattern, date, shift type, times, or reminders.
+- The user can try Ryvro voice once after setup.
 
----
+### Do Not Reintroduce
 
-## Phase 4 — Subscription: RevenueCat + Store Products (Owner/account)
+- Main setup entry into the old Universal Shift Builder.
+- Calendar-heavy setup as the primary experience.
+- Shift color selection as a core user task.
+- Multi-language setup.
+- Chat or typing in the onboarding voice trial.
 
-> Source: current Ryvro subscription implementation and release-blocker audit.
-> Complete these account-side steps in parallel with Phase 5. RevenueCat is free to set up now; product IDs must exist before building the production binary.
-> Console setup source of truth: `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
+## Ask Screen
 
-| #   | Task                                                                                                                                                                                                              | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 42  | 👤 Create RevenueCat project → add iOS app (bundle ID: `com.ryvro.shiftplanner`) → copy iOS SDK key → paste into `.env` as `REVENUECAT_IOS_KEY`                                                                   | ✅ Done (RevenueCat app `Ryvro (App Store)` exists as `appd8a95a73e0`; iOS SDK key is copied into local ignored `.env` and pushed to EAS without recording the value)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| 43  | 👤 Add Android app to RevenueCat → copy Android SDK key → paste into `.env` as `REVENUECAT_ANDROID_KEY`                                                                                                           | ✅ Done (RevenueCat app `Ryvro (Play Store)` exists as `appab0f4b628d`; Android SDK key is copied into local ignored `.env` and pushed to EAS without recording the value)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| 44  | 👤 RevenueCat → Entitlements → Add entitlement: ID = `pro`, Display name = `Ryvro Pro`                                                                                                                            | ✅ Done (RevenueCat entitlement `pro` exists with display name `Ryvro Pro` and shows `2 products`; store product validation and sandbox purchase QA remain tracked in Tasks 45, 46, 47, and 49)                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| 45  | 👤 App Store Connect → your app → Subscriptions → create subscription group "Ryvro Pro" → add two products: `ryvro_pro_monthly` ($6.99/mo, 7-day free trial) and `ryvro_pro_annual` ($49.99/yr, 7-day free trial) | 🔧 Partial (App Store Connect group `Ryvro Pro` exists as ID `22156776`; product shells `ryvro_pro_monthly` Apple ID `6780186030` and `ryvro_pro_annual` Apple ID `6780186069` exist; English (Australia) localizations and review notes are saved for both. Logged-in App Store Connect work on 2026-06-14 set all-country availability and subscription pricing: monthly from a Ghana (USD) base price of `$6.99`, and annual 1 Year Upfront from a Ghana (USD) base price of `$49.99`. Both still show `Missing Metadata` until trial decision, review screenshot or paywall image metadata, RevenueCat App Store mapping, and sandbox purchase QA are complete) |
-| 46  | 👤 Google Play Console → Monetize → Subscriptions → create `ryvro_pro_monthly` and `ryvro_pro_annual` with matching pricing and 7-day free trial base plans                                                       | 👤 Todo (blocked until Google Payments merchant account setup unlocks Play subscriptions)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| 47  | 👤 RevenueCat → Products → add both product IDs → attach both to the `pro` entitlement                                                                                                                            | 🔧 Partial (RevenueCat Play Store product records exist and are attached to `pro`; real App Store products and Play subscription products still need store-side validation)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| 48  | 👤 RevenueCat → Offerings → create offering named `default` → add Annual package + Monthly package                                                                                                                | ✅ Done (offering `default` exists with annual package `$rc_annual` and monthly package `$rc_monthly`; trial metadata, RevenueCat App Store product validation, Google Play pricing, and production-equivalent purchase loading remain in Tasks 45, 46, and 49)                                                                                                                                                                                                                                                                                                                                                                                                     |
-| 49  | 👤 Test full subscription flow in RevenueCat sandbox: start trial → `isPro` = true → mic works + calendar unlocks → cancel → locks re-appear → Restore Purchases works                                            | 👤 Todo                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+The Ask screen is the home of the app.
 
----
+### Required QA
 
-## Phase 5 — Accounts + External Setup (Owner/account)
+- Ask screen opens after onboarding.
+- Top-right settings icon opens Settings.
+- Back navigation from Settings returns to Ask.
+- Large mic starts listening.
+- User speaks before Ryvro answers.
+- Ryvro response appears in one polished answer card.
+- Answer includes the user's name when available.
+- Answer sounds friendly and natural.
+- Answer does not start with malformed words such as `there,`.
+- Answer uses 12-hour time.
+- Range answers are structured enough to read and listen to.
+- No chat composer is visible.
+- No typing path is visible.
+- No bottom tab bar is visible.
+- No `Today`, `Schedule`, `Stats`, or `Profile` tab is visible.
 
-| #   | Task                                                                                                                                                                                                                                                                                                                                                                            | Status                                                                                                                                                                       |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 11  | 👤 Enroll Apple Developer account at developer.apple.com ($99/year) — takes 24-48h to approve — **start immediately, runs in parallel with Phase 3**                                                                                                                                                                                                                            | ✅ Done (Team ID `BZ798WZJCB`, membership active through March 11, 2027)                                                                                                     |
-| 12  | 👤 Register App ID on Apple Developer Portal with bundle ID `com.ryvro.shiftplanner` + Push Notifications capability                                                                                                                                                                                                                                                            | ✅ Done (Push Notifications and Sign in with Apple enabled)                                                                                                                  |
-| 13  | 👤 Create app in App Store Connect (name: `Ryvro Shift Planner`, language: English AU, SKU: `ryvro-shift-001`)                                                                                                                                                                                                                                                                  | ✅ Done (ASC app ID `6776994726`)                                                                                                                                            |
-| 14  | 👤 Create app in Google Play Console with matching name                                                                                                                                                                                                                                                                                                                         | ✅ Done (Play Console app `Ryvro Shift Planner`, package `com.ryvro.shiftplanner`, app ID `4974146267407561805`, status Draft)                                               |
-| 15  | 👤 Run `eas login` then `eas init` in the repo root — copy the EAS Project ID UUID                                                                                                                                                                                                                                                                                              | ✅ Done (`@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`)                                                                                                 |
-| 16  | 👤 Copy `.env.production.example` to `.env`, paste `EAS_PROJECT_ID`, Firebase/Google web, iOS, and Android OAuth values, `REVENUECAT_IOS_KEY` / `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY` / `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`, live HTTPS Ryvro-owned legal/support/account deletion URLs, and deployed function URLs, then run `npm run release:env:check` | ✅ Done (`npm run release:env:check`, `npm run release:env:push -- --force`, and `npm run release:env:files -- --force` passed on 2026-06-14; secret values stay out of Git) |
-| 17  | 👤 Set up iOS signing: run `eas credentials --platform ios` → add distribution cert + provisioning profile                                                                                                                                                                                                                                                                      | ✅ Done (distribution certificate and provisioning profile active through March 11, 2027)                                                                                    |
-| 17a | Use `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy                                                                                                                                                                                                                                                                                                            | ✅ Done                                                                                                                                                                      |
-| 17b | Use `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates                                                                                                                                                                                                                                                  | ✅ Done                                                                                                                                                                      |
-| 17c | Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes                                                                                                                                                                                                           | ✅ Done                                                                                                                                                                      |
-| 17d | Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` as the sequenced owner checklist and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as the non-secret evidence ledger for clearance, accounts, Firebase/OAuth, RevenueCat, legal/support, production builds, device QA, and store submission                                                                                                      | ✅ Done                                                                                                                                                                      |
-| 17e | Guard owner-only launch blockers with `npm run release:owner:check` so release verification fails if the account/device handoff stops documenting the app as not yet live                                                                                                                                                                                                       | ✅ Done                                                                                                                                                                      |
-| 17f | Guard final EAS submit readiness with `npm run release:submit:check`; it must fail until EAS submit values are real and all required non-secret evidence rows are `Passed` or explicitly `Not applicable`                                                                                                                                                                       | ✅ Done                                                                                                                                                                      |
-| 17g | Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for Play Console enrollment, service account JSON handling, `eas submit --platform android --latest`, internal testing, Android QA evidence, and production promotion gates                                                                                                                                            | ✅ Done                                                                                                                                                                      |
-| 17h | Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` for Firebase project creation, native service files, OAuth clients, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secret evidence                                                                                                                                                            | ✅ Done                                                                                                                                                                      |
-| 17i | Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for Ryvro Pro entitlement, App Store and Google Play products, RevenueCat offering, SDK key copying, env preflight, and sandbox purchase QA                                                                                                                                                                                     | ✅ Done                                                                                                                                                                      |
-| 17j | Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review gates                                                                                                                                                                    | ✅ Done                                                                                                                                                                      |
-| 17k | Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` for formal clearance, domain purchase, DNS/HTTPS proof, support mailbox, legal page publication, and social handle reservation                                                                                                                                                                                              | ✅ Done                                                                                                                                                                      |
-| 17l | Use `docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md` to group the current `npm run release:submit:check` blockers into the owner workflow order before final submit                                                                                                                                                                                                                        | ✅ Done                                                                                                                                                                      |
+### Example Voice QA Questions
 
----
+- What shift am I on today?
+- What shift am I on tomorrow?
+- Am I working next Saturday?
+- What shift do I have in two weeks?
+- What shift do I have next week Saturday?
+- When is my next day off?
+- What am I working for the next 7 days?
+- What am I working for the next 14 days?
+- What am I working from June 12 to June 27?
+- What did I work last week?
+- What shift is the first Saturday in August?
+- What do I work at the end of the month?
 
-## Phase 6 — Backend + Privacy (Mix of code + manual)
+## Offline And Online Answers
 
-| #   | Task                                                                                                                                                                                                             | Status                                                                                                                                                                                                          |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 18  | Verify Firebase Cloud Functions are deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint and `SHIFT_SCHEDULE_PARSER_URL` endpoint; parser launch evidence must include a valid-prompt `200` draft response | ✅ Done (`ryvroBrain` and `parseShiftScheduleDescription` are deployed; launch evidence includes expected validation `400`, valid voice smoke `200`, minimal parser smoke `200`, and richer parser smoke `200`) |
-| 19  | 👤 Create and publish Privacy Policy — must mention microphone, Firebase, OpenAI, RevenueCat, and subscription terms (Notion page or GitHub Pages) — required before submission                                  | 🔧 Partial (live `https://getryvro.com/privacy/` exists with effective date `June 6, 2026`; owner legal/content review, store-console use, and final privacy-form evidence still pending)                       |
-| 19a | Repo-side Ryvro privacy, terms, support, and email template drafts are ready in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`                                                                                        | ✅ Done                                                                                                                                                                                                         |
+### Required QA
 
----
+- Exact-date questions work offline.
+- Supported range questions work offline.
+- Online backend is used when network is available.
+- Offline fallback is used when backend is unavailable.
+- Backend questions use the deployed `ryvroBrain` function in `ryvro-shift-planner`.
+- Answers are consistent between offline and online for deterministic schedule questions.
 
-## Phase 7 — Build + Test
+## Ryvro Pro
 
-| #   | Task                                                                                                                                                                                                                                                                                                    | Status                                                                                                                                                                                                                                                                                                                                                                                |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 20  | Run `npm run release:env:push` to validate `.env` first, push checked production values to EAS with `eas env:push production --path .env`, then run `npm run release:env:files` to create EAS file variables `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON` from the ignored Firebase service files | ✅ Done (`npm run release:env:check`, `npm run release:env:push -- --force`, and `npm run release:env:files -- --force` passed on 2026-06-14 for EAS project `@ilyasu/ryvro`; secret values and Firebase service-file contents stay out of Git)                                                                                                                                       |
-| 21  | Build production iOS binary after running `npm run release:versions:get` and bumping remote EAS versions with `eas build:version:set`: `eas build --platform ios --profile production`                                                                                                                  | ✅ Done (production-auth-ready EAS build `601af1ee-5192-442f-9caa-deef5b9b6120`, version `1.0.0`, build `4`, commit `1c4a8acbf05d804a363e3efe63f3010c34d6a3e8`, finished on 2026-06-14; IPA inspection confirmed `Ryvro`, bundle `com.ryvro.shiftplanner`, version `1.0.0`, build `4`, production Google iOS URL scheme, and no retired Ellie/ShiftSync text-readable bundle strings) |
-| 22  | Build production Android AAB and submit it to Google Play internal testing                                                                                                                                                                                                                              | ✅ Done (local EAS Android production AAB `build-1781452667575.aab` consumed remote versionCode `8`, proves package `com.ryvro.shiftplanner`, and was uploaded through EAS Submit `cb58e3e5-a4c9-4935-af29-88065f7c3f28`; Android Publisher API readback confirmed internal track release `1.0.0`, status `completed`, versionCode `8`)                                               |
-| 23  | 👤 Install TestFlight build on real iPhone — run full smoke test matrix (see below)                                                                                                                                                                                                                     | 👤 Todo                                                                                                                                                                                                                                                                                                                                                                               |
-| 24  | 👤 Install Play internal testing build or a store-signed Android QA build on a physical device — repeat smoke tests                                                                                                                                                                                     | 👤 Todo                                                                                                                                                                                                                                                                                                                                                                               |
-| 24a | Add a non-secret device QA evidence template for TestFlight iPhone, Android physical/internal-track QA, sandbox purchase, failures, and screenshots                                                                                                                                                     | ✅ Done                                                                                                                                                                                                                                                                                                                                                                               |
+Ryvro uses a hard paywall after one voice trial.
 
-Repo-side offline basics are now covered by NetInfo-aware sync state, pending-sync visibility, and centralized cache TTL policy. Physical-device QA still has to prove the same behavior on production builds with real account credentials.
+### Required QA
 
----
+- New user can complete setup and try voice once.
+- After the first answer, the paywall appears before further voice use.
+- Paying user is not asked to purchase again.
+- Existing active entitlement unlocks voice after login.
+- Restore purchase activates Ryvro Pro when entitlement `pro` is active.
+- RevenueCat products are:
+  - `ryvro_pro_monthly`
+  - `ryvro_pro_annual`
+- RevenueCat entitlement is `pro`.
+- App Store Connect product metadata is complete and products are ready for submission.
+- Google Play subscriptions remain blocked until Play payments and subscription setup are complete.
 
-## Phase 8 — Store Submission (Owner/account)
+## Settings
 
-| #   | Task                                                                                                                                       | Status                                                                                                                                                                                                                                                                                                                                                 |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 25  | 👤 Take screenshots: 3× iOS 6.7" (1290×2796), 3× iPad 12.9" (2048×2732), 2× Android (1080×1920) — include paywall screen as one screenshot | 👤 Todo                                                                                                                                                                                                                                                                                                                                                |
-| 26  | 👤 Upload screenshots + fill App Store metadata, privacy nutrition label, age rating                                                       | 🔧 Partial (App Store privacy form is published and safe iOS version metadata/reviewer fields were filled from repo copy, but the version page did not save because the private App Review contact phone is required; screenshots, age rating, export compliance, EU trader status, subscription metadata, and final review submission remain pending) |
-| 27  | 👤 Complete Google Play data safety + content rating forms — declare in-app purchases                                                      | 🔧 Partial (Play App content `Need attention` tab is clear after saving privacy policy, ads, advertising ID, government apps, financial features, health apps, sign-in details, target audience, content ratings, and Data safety; Play subscription products/base plans and final Publishing overview review submission remain pending)               |
-| 28  | 👤 Submit iOS: `eas submit --platform ios --latest` → verify TestFlight processing → Submit for Review in App Store Connect                | 🔧 Partial (EAS Submit `cd86140b-6b5f-4707-9fa1-fde6beda10fa` uploaded production-auth-ready build `4` to App Store Connect on 2026-06-14; TestFlight internal install QA, App Store metadata save, rating/export/EU trader fields, screenshots, subscription review, and store review submission are still pending)                                   |
-| 29  | Submit Android to Google Play internal track with the service account key and `eas submit --platform android --latest`                     | ✅ Done (EAS Submit `cb58e3e5-a4c9-4935-af29-88065f7c3f28` uploaded versionCode `8` to the Play internal track; Android Publisher API readback confirmed release `1.0.0`, status `completed`, and versionCode `8`)                                                                                                                                     |
-| 30  | 👤 Promote Android from internal track → production in Play Console when ready                                                             | 👤 Todo                                                                                                                                                                                                                                                                                                                                                |
+Settings exists for repair, account, subscription, and support.
 
----
+### Required QA
 
-## Smoke Test Matrix (Tasks 23 + 24 — must all pass)
+- View or fix shift setup opens the new simplified repair path.
+- Shift times opens the new simple time screen.
+- Reminders opens the new reminder screen.
+- User details can be edited and saved.
+- Save button leaves the saving state after success or failure.
+- Manage subscription opens the correct purchase management path.
+- Restore purchase works.
+- Support, privacy, terms, and sign out work.
 
-**Core app:**
+## Store And Legal
 
-1. Fresh install → complete onboarding via Universal Shift Builder template start with a non-mining template such as healthcare, security, emergency services, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, or rail
-2. Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/block-roster or rotating-shift prompt, then review and save the generated schedule
-3. Fresh install → complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled
-4. Profile shift edits reflect immediately on dashboard
-5. Hero/status/tab accent colors switch correctly per active shift
-6. App relaunch preserves all onboarding data (AsyncStorage)
-7. Schedule and Stats tabs are not visible anywhere in the nav
-8. No dead/broken tap targets in any visible screen
+### Done
 
-**Subscription (Ryvro Pro):**
+- Trademark/legal clearance for Ryvro completed on June 16, 2026.
+- Launch markets reviewed: United States, United Kingdom, Australia, Canada, and New Zealand.
+- No blocking conflict found for using Ryvro as the app brand for shift planning software.
+- Approved by Ilyasu Seidu.
+- Social handles reserved:
+  - X: `@getryvro`
+  - Instagram: `@getryvro`
+  - TikTok: `@getryvro`
+  - YouTube: `@getryvro`
+  - LinkedIn: `Ryvro`
+- Domain: `getryvro.com`.
+- Support mailbox: `support@getryvro.com`.
 
-9. Tap center mic (not subscribed) → PaywallScreen appears; annual plan pre-selected; "Start 7-Day Free Trial" button visible
-10. Tap any locked calendar week (not subscribed) → PaywallScreen appears
-11. Start 7-day free trial (RevenueCat sandbox) → `isPro` = true → mic opens voice assistant; full year calendar unlocks
-12. Profile screen shows "Ryvro Pro — Active ✓" when subscribed; shows "Upgrade to Ryvro Pro" row with price when not subscribed
-13. Tap "Restore Purchases" on paywall → purchases restore correctly
-14. Voice assistant opens (subscribed), handles microphone permission flow, and responds
+### Owner Tasks Still Required
 
----
+- Confirm final App Store metadata.
+- Confirm final Google Play metadata.
+- Confirm privacy policy, terms, and support content.
+- Upload final screenshots.
+- Run TestFlight physical-device QA.
+- Run Google Play internal-track physical-device QA.
+- Submit iOS for review.
+- Submit Android for production review when eligible.
 
-## Quality Gate Commands (Tasks 5 + 41 — run in order, all must pass)
+## Quality Gate Commands
+
+Run before release handoff:
 
 ```bash
-cd <repo-root>
-npm ci --legacy-peer-deps
 npm run lint
 npm run type-check
 npm test -- --runInBand --silent
-npm run release:native:check
-npm run release:store:check
-npm run release:owner:check
-npm run backend:build
+npm --prefix backend/functions test
+npm --prefix backend/functions run build
 npm run release:check
-# Final owner-only submission gate after all evidence rows are complete:
-npm run release:submit:check
 ```
 
----
-
-## RC Build Validation Commands (Tasks 21 + 22)
+Deploy backend functions:
 
 ```bash
-# iOS archive
-npx expo prebuild --platform ios --clean
-cd ios && xcodebuild -workspace RyvroShiftPlanner.xcworkspace \
-  -scheme RyvroShiftPlanner -configuration Release \
-  -destination generic/platform=iOS \
-  -archivePath /tmp/Ryvro.xcarchive archive
-
-# Android AAB
-cd <repo-root>
-npx expo prebuild --platform android --clean
-cd android && ./gradlew bundleRelease
+firebase deploy --only functions --project ryvro-shift-planner
 ```
 
----
+## Go Or No-Go
 
-## Go/No-Go Gate — Do Not Submit Until All True
+Do not submit stores until all are true:
 
-**Code quality:**
-
-- [x] `npm run lint` passes
-- [x] `npm run type-check` passes
-- [x] `npm test -- --runInBand --silent` passes cleanly
-- [x] `npm run release:native:check` exits with code 0
-- [x] `npm run release:store:check` exits with code 0
-- [x] `npm run release:owner:check` exits with code 0
-- [x] `npm run backend:build` passes
-- [x] `npm run release:check` exits with code 0
-
-**Subscription readiness:**
-
-- [x] `react-native-purchases` installed and all subscription files created (Tasks 31–40)
-- [x] Quality gate re-run passes after subscription code is added (Task 41)
-- [x] RevenueCat entitlement `pro` and offering `default` configured with monthly and annual package records (Tasks 42–48); store validation and sandbox purchase QA remain open below
-- [ ] App Store Connect subscription products `ryvro_pro_monthly` + `ryvro_pro_annual` launch-ready (Task 45) — product shells, localization, review notes, all-country availability, and pricing are saved, but `Missing Metadata`, trial decision, review screenshot, RevenueCat App Store validation, and sandbox purchase QA remain
-- [ ] Google Play subscription products created with matching IDs (Task 46)
-- [ ] Full subscription sandbox smoke test passes on device (Task 49 + smoke test items 9–14)
-
-**Build and store:**
-
-- [x] iOS archive built with production bundle ID — production-auth-ready EAS iOS build `601af1ee-5192-442f-9caa-deef5b9b6120` uses `com.ryvro.shiftplanner`, version `1.0.0`, build `4`
-- [x] Android AAB built with production ID + valid release signing — EAS Android production AAB `build-1781452667575.aab` used package `com.ryvro.shiftplanner`, versionCode `8`, and was accepted on the Play internal track
-- [ ] Manual smoke tests pass on physical iOS + Android devices (all smoke matrix items)
-- [ ] Privacy Policy live URL and owner review complete — live URL exists and mentions RevenueCat + subscription terms; owner legal/content review still pending (Task 19)
-- [ ] App Store Connect metadata + privacy form + in-app purchase section completed from `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` — privacy is published and safe metadata was entered, but contact phone save, screenshots, age rating, export compliance, EU trader status, subscription metadata, and final review submission remain
-- [ ] Play Console data safety + content forms + in-app products declared completed from `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` — App content declarations are saved, but Play subscription products/base plans and final Publishing overview review submission remain
+- Physical iPhone QA passes.
+- Physical Android QA passes.
+- Ryvro Pro purchase, restore, entitlement, relock, and login persistence pass.
+- Ask screen answers the required voice QA questions.
+- Offline fallback answers deterministic questions.
+- Online backend answers broad natural-language date and range questions.
+- Screenshots match the new Ryvro visual system.
+- Store copy presents Ryvro as a voice shift assistant, not a calendar or dashboard app.
+- Legal/support pages are owner-approved.

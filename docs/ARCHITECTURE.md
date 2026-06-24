@@ -1,504 +1,201 @@
-# Architecture Documentation
+# Ryvro Architecture
 
-## Overview
+Last updated: 2026-06-24
 
-Ryvro is built using a modern React Native architecture with Expo, following best practices for scalability, maintainability, and testability. The application uses a layered architecture with clear separation of concerns.
+Ryvro is a voice-first shift assistant.
 
-## Universal Shift Builder Architecture
+The architecture supports this product promise:
 
-Ryvro uses the Universal Shift Builder as the single schedule setup and editing path. It supports fixed rosters, FIFO blocks, swing rosters, count-based rotations, weekly recurring shifts, one-off exceptions, holiday overrides, reminders, colors, icons, and AI-assisted schedule parsing without routing users through legacy fixed-category onboarding screens.
+> Configure your shift once. Ask Ryvro by voice. Get the right shift answer instantly.
 
-Core architecture points:
+The accurate schedule engine still exists, but the user should not feel like they are managing a calendar, dashboard, or technical roster editor.
 
-- The builder stores schedules as universal shift definitions, recurrence rules, sequence blocks, exceptions, reminder profiles, colors, and icons.
-- Onboarding and Settings both enter the same builder flow instead of separate roster-type screens.
-- Dashboard, calendar, reminders, import/export, and voice assistant surfaces consume the same normalized schedule data.
-- Legacy rotating/FIFO terminology remains only where it helps users recognize a familiar template, not as a separate architecture.
-- Voice assistant context serializes the normalized schedule so backend tools answer block-aware and shift-aware questions through one query surface.
+## Product Surfaces
 
-## Architecture Layers
+### Onboarding And Setup
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Presentation Layer                      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   Screens    │  │  Components  │  │  Navigation  │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Business Logic Layer                    │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │    Hooks     │  │    Utils     │  │    Types     │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       Services Layer                         │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   Firebase   │  │     API      │  │   Storage    │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      External Services                       │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   Firebase   │  │  Third-party │  │    Device    │      │
-│  │   Backend    │  │     APIs     │  │   Storage    │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-```
+Setup captures the minimum data needed for accurate answers:
 
-## Layer Descriptions
+- Repeating shift pattern.
+- Known date.
+- Shift type on the known date.
+- Exact phase when a shift type appears more than once in the cycle.
+- Shift times in 12-hour format.
+- Reminder preference.
 
-### 1. Presentation Layer
+The setup UI is intentionally plain-language and modern. It should not expose engine terms such as phase offset, recurrence rule, sequence block, or builder state.
 
-**Responsibilities:**
+### Ask
 
-- Rendering UI components
-- Handling user interactions
-- Displaying data from business logic layer
-- Navigation between screens
+Ask is the main app surface.
 
-**Components:**
+It owns:
 
-- **Screens**: Full-page views that represent different app sections
-  - Location: `src/screens/`
-  - Examples: `MainDashboardScreen.tsx`, `UniversalShiftBuilderScreen.tsx`, `ProfileScreen.tsx`, `SignInScreen.tsx`
+- Microphone interaction.
+- Listening, processing, and speaking states.
+- One clean Ryvro answer card.
+- Settings entry point.
+- Paywall trigger after the free voice trial.
 
-- **Components**: Reusable UI building blocks
-  - Location: `src/components/`
-  - Examples: `Button.tsx`, `Card.tsx`, `Header.tsx`
+There is no main bottom tab bar in the current concept.
 
-- **Navigation**: Navigation configuration using React Navigation
-  - Location: `src/navigation/`
-  - Examples: `RootNavigator.tsx`, `AuthNavigator.tsx`
+### Settings
 
-**Rules:**
+Settings owns:
 
-- Screens and components should be presentational (dumb components)
-- Business logic should be delegated to hooks and services
-- Direct Firebase/API calls are not allowed in this layer
-- Use TypeScript interfaces for all props
+- Setup repair paths.
+- Shift times.
+- Reminders.
+- User details.
+- Subscription management.
+- Support, privacy, terms, and sign out.
 
-### 2. Business Logic Layer
+Settings should open simplified repair screens first. Any advanced editor must stay hidden as a fallback, not as the default user path.
 
-**Responsibilities:**
+## Schedule Data Flow
 
-- Managing application state
-- Implementing business rules
-- Data transformation and validation
-- Coordinating between UI and services
-
-**Components:**
-
-- **Hooks**: Custom React hooks for state and logic
-  - Location: `src/hooks/`
-  - Examples: `useAuth.ts`, `useUser.ts`, `useForm.ts`
-
-- **Utils**: Pure utility functions
-  - Location: `src/utils/`
-  - Examples: `validation.ts`, `formatters.ts`, `helpers.ts`
-
-- **Types**: TypeScript type definitions
-  - Location: `src/types/`
-  - Examples: `user.ts`, `auth.ts`, `common.ts`
-
-**Rules:**
-
-- Hooks should encapsulate state management logic
-- Utils must be pure functions (no side effects)
-- All business logic must be testable
-- Type definitions should be comprehensive
-
-### 3. Services Layer
-
-**Responsibilities:**
-
-- Managing external service integrations
-- Handling API requests
-- Data persistence
-- Error handling for external calls
-
-**Components:**
-
-- **Firebase Service**: Firebase SDK integration
-  - Location: `src/services/firebase.ts`
-  - Handles: Authentication, Firestore, Storage
-
-- **API Service**: HTTP client for external APIs
-  - Location: `src/services/api.ts`
-  - Handles: REST API calls, request/response interceptors
-
-- **Storage Service**: Local data persistence
-  - Location: `src/services/storage.ts`
-  - Handles: AsyncStorage, SecureStore
-
-**Rules:**
-
-- Services should return Promises
-- Implement proper error handling
-- Use TypeScript for request/response types
-- Services should be singleton instances
-
-### 4. External Services
-
-**Components:**
-
-- Firebase Backend (Authentication, Firestore, Cloud Storage)
-- Third-party APIs (future integrations)
-- Device APIs (Camera, Location, Notifications)
-
-## Data Flow
-
-### Read Flow (Data Fetching)
-
-```
-User Action → Screen → Hook → Service → Firebase → Service → Hook → Screen → UI Update
+```text
+Setup screens
+  -> normalized shift schedule
+  -> local storage
+  -> Firebase sync when available
+  -> offline local brain
+  -> online backend when available
+  -> voice answer card and spoken response
 ```
 
-**Example: Fetching User Profile**
-
-1. User navigates to Profile Screen
-2. Screen calls `useUser()` hook
-3. Hook calls `fetchUserProfile()` from Firebase service
-4. Service makes request to Firebase Firestore
-5. Firebase returns user data
-6. Service transforms data to match TypeScript interface
-7. Hook updates state with data
-8. Screen re-renders with new data
-
-### Write Flow (Data Mutation)
-
-```
-User Action → Screen → Hook → Service → Firebase → Service → Hook → Screen → UI Feedback
-```
-
-**Example: Updating User Profile**
-
-1. User submits profile form
-2. Screen calls `updateProfile()` from `useUser()` hook
-3. Hook validates data using utility functions
-4. Hook calls `updateUserProfile()` from Firebase service
-5. Service makes update request to Firebase Firestore
-6. Firebase returns success/error
-7. Service handles response
-8. Hook updates local state
-9. Screen shows success message or error
-
-## State Management Strategy
-
-### Approach: React Context + Custom Hooks
-
-We use React's built-in Context API combined with custom hooks for state management, avoiding heavy libraries like Redux.
-
-**Rationale:**
-
-- Lightweight and built-in to React
-- Sufficient for most mobile app use cases
-- Better TypeScript support
-- Easier to test and debug
-- Lower learning curve for new developers
-
-### Context Structure
-
-```typescript
-// Auth Context
-const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
-
-// User Context
-const UserContext = React.createContext<UserContextType | undefined>(undefined);
-
-// Theme Context
-const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
-```
-
-### State Organization
-
-- **Global State**: Shared across the entire app
-  - Authentication state (`AuthContext`)
-  - User profile data (`UserContext`)
-  - Theme settings (`ThemeContext`)
-
-- **Local State**: Component-specific state
-  - Form inputs (`useState`)
-  - UI toggles (`useState`)
-  - Component-level caching
-
-### State Update Pattern
-
-```typescript
-// 1. Define context type
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-}
-
-// 2. Create custom hook
-function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-}
-
-// 3. Use in components
-function SignInScreen() {
-  const { signIn, loading } = useAuth();
-  // Component logic
-}
-```
-
-## Navigation Structure
-
-### Navigator Hierarchy
-
-```
-RootNavigator (Stack)
-├── AuthNavigator (Stack) - When not authenticated
-│   ├── SignInScreen
-│   ├── SignUpScreen
-│   └── ForgotPasswordScreen
-│
-└── AppNavigator (Stack) - When authenticated
-    ├── MainTabNavigator (Bottom Tabs)
-    │   ├── DashboardTab
-    │   │   └── MainDashboardScreen
-    │   ├── BuilderTab
-    │   │   └── UniversalShiftBuilderScreen
-    │   ├── ProfileTab (Stack)
-    │   │   ├── ProfileScreen
-    │   │   └── UniversalShiftBuilderScreen (settings entry)
-    │   └── CenterVoiceAction
-    │
-    └── ModalStack (Stack)
-        ├── NotificationModal
-        └── ConfirmationModal
-```
-
-### Navigation Types
-
-1. **Stack Navigator**: For hierarchical navigation (back button)
-2. **Tab Navigator**: For parallel sections (bottom tabs)
-3. **Drawer Navigator**: For side menu (future consideration)
-
-### Deep Linking
-
-Support for deep links using Expo's linking configuration:
-
-```typescript
-const linking = {
-  prefixes: ['ryvro://', 'https://getryvro.com'],
-  config: {
-    screens: {
-      Home: 'home',
-      Profile: 'profile/:userId',
-      Settings: 'settings',
-    },
-  },
-};
-```
-
-## Code Organization
-
-### Directory Structure
-
-```
-src/
-├── components/          # Reusable UI components
-│   ├── common/         # Generic components (Button, Input, Card)
-│   ├── forms/          # Form-specific components
-│   └── layout/         # Layout components (Header, Footer)
-├── screens/            # Full-page screen components
-│   ├── auth/           # Authentication screens
-│   ├── home/           # Home feature screens
-│   └── profile/        # Profile feature screens
-├── navigation/         # Navigation configuration
-├── hooks/              # Custom React hooks
-├── services/           # External service integrations
-├── utils/              # Utility functions
-├── types/              # TypeScript type definitions
-├── constants/          # App constants and configuration
-├── config/             # App configuration files
-└── __tests__/          # Unit tests
-```
-
-### File Naming Conventions
-
-- **Components**: PascalCase (e.g., `Button.tsx`, `UserCard.tsx`)
-- **Hooks**: camelCase with 'use' prefix (e.g., `useAuth.ts`, `useForm.ts`)
-- **Utils**: camelCase (e.g., `validation.ts`, `formatters.ts`)
-- **Types**: PascalCase (e.g., `User.ts`, `Auth.ts`)
-- **Tests**: Match source file with `.test.tsx` suffix
-
-### Import Order
-
-1. React and React Native imports
-2. Third-party library imports
-3. Local component imports
-4. Hook imports
-5. Utility imports
-6. Type imports
-7. Style imports
-
-```typescript
-// 1. React imports
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-// 2. Third-party imports
-import { Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-
-// 3. Component imports
-import Header from '@/components/common/Header';
-import UserCard from '@/components/UserCard';
-
-// 4. Hook imports
-import { useAuth } from '@/hooks/useAuth';
-
-// 5. Utility imports
-import { formatDate } from '@/utils/formatters';
-
-// 6. Type imports
-import { User } from '@/types/user';
-```
-
-## Design Patterns
-
-### 1. Container/Presenter Pattern
-
-Separate data fetching (container) from presentation (presenter).
-
-```typescript
-// Container (MainDashboardScreen.tsx)
-export function MainDashboardScreen() {
-  const { schedule, loading } = useDashboardData();
-  return <DashboardView schedule={schedule} loading={loading} />;
-}
-
-// Presenter (DashboardView.tsx)
-export function DashboardView({ schedule, loading }: DashboardViewProps) {
-  // Pure presentational logic
-}
-```
-
-### 2. Custom Hook Pattern
-
-Encapsulate reusable logic in custom hooks.
-
-```typescript
-function useForm<T>(initialValues: T) {
-  const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState({});
-
-  // Form logic
-
-  return { values, errors, handleChange, handleSubmit };
-}
-```
-
-### 3. Service Pattern
-
-Centralize API and external service calls.
-
-```typescript
-class FirebaseService {
-  async getUser(userId: string): Promise<User> {
-    // Firebase logic
-  }
-
-  async updateUser(userId: string, data: Partial<User>): Promise<void> {
-    // Firebase logic
-  }
-}
-
-export default new FirebaseService();
-```
-
-## Performance Considerations
-
-### 1. Memoization
-
-Use `React.memo`, `useMemo`, and `useCallback` to prevent unnecessary re-renders.
-
-```typescript
-const MemoizedComponent = React.memo(Component);
-
-const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
-
-const memoizedCallback = useCallback(() => doSomething(a, b), [a, b]);
-```
-
-### 2. Lazy Loading
-
-Use dynamic imports for code splitting.
-
-```typescript
-const ProfileScreen = React.lazy(() => import('@/screens/main/ProfileScreen'));
-```
-
-### 3. List Optimization
-
-Use `FlatList` with proper optimization props.
-
-```typescript
-<FlatList
-  data={items}
-  renderItem={renderItem}
-  keyExtractor={(item) => item.id}
-  removeClippedSubviews
-  maxToRenderPerBatch={10}
-  windowSize={10}
-/>
-```
-
-## Security Considerations
-
-### 1. Authentication
-
-- Use Firebase Authentication for user management
-- Store tokens securely using Expo SecureStore
-- Implement automatic token refresh
-- Handle session expiration gracefully
-
-### 2. Data Validation
-
-- Validate all user inputs on the client and server
-- Use TypeScript for compile-time type checking
-- Implement runtime validation with libraries like Zod or Yup
-
-### 3. Sensitive Data
-
-- Never store sensitive data in AsyncStorage
-- Use SecureStore for tokens and credentials
-- Implement proper error handling to avoid leaking sensitive information
-
-## Future Enhancements
-
-### Planned Improvements
-
-1. **Offline Support**: Implement offline-first architecture with local caching
-2. **Push Notifications**: Add Firebase Cloud Messaging for notifications
-3. **Analytics**: Integrate Firebase Analytics for user behavior tracking
-4. **Performance Monitoring**: Add Firebase Performance Monitoring
-5. **Crash Reporting**: Integrate Sentry or Firebase Crashlytics
-6. **Feature Flags**: Implement feature toggles for A/B testing
-
-### Scalability Considerations
-
-- Modular architecture allows easy addition of new features
-- Service layer can be extended with new integrations
-- Navigation structure supports deep nesting
-- State management can be enhanced with more contexts as needed
-
-## References
-
-- [React Native Documentation](https://reactnative.dev/)
-- [Expo Documentation](https://docs.expo.dev/)
-- [React Navigation](https://reactnavigation.org/)
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [TypeScript Best Practices](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
+## Main Runtime Layers
+
+### Presentation
+
+Key areas:
+
+- `src/screens/onboarding/premium/`
+- `src/screens/main/RyvroAskScreen.tsx`
+- `src/screens/main/SimpleSettingsScreen.tsx`
+- `src/components/paywall/`
+- `src/navigation/`
+
+Rules:
+
+- Keep visible copy plain English.
+- Use the Ryvro palette only: dark base, cyan, blue `#147cff`, silver, and muted text.
+- Do not use shift-specific colors in app chrome, cards, tabs, status areas, or primary actions.
+- Do not add typing or chat UI to the main voice experience.
+
+### Schedule Engine
+
+Key areas:
+
+- `src/utils/localShiftBrain.ts`
+- `src/utils/shiftQueryTools.ts`
+- `src/utils/universalShiftUtils.ts`
+- `src/utils/universalShiftScheduleUtils.ts`
+- `src/utils/knownShiftPhase.ts`
+
+Rules:
+
+- Keep deterministic schedule math local and testable.
+- Preserve exact phase alignment.
+- Use 12-hour answer formatting.
+- Prefer structured date/range handling before generic AI text.
+
+### Voice Orchestration
+
+Key areas:
+
+- `src/services/VoiceAssistantService.ts`
+- `src/utils/voiceAssistantPrompts.ts`
+- speech recognition integrations
+- speech output integrations
+
+Rules:
+
+- The user speaks first.
+- Ryvro answers only after speech input is captured.
+- Spoken and written answers should match.
+- Answer text should include the user's name when available.
+- Answers should be friendly without adding duplicate filler.
+
+### Backend
+
+Key areas:
+
+- `backend/functions/src/ryvro-brain.ts`
+- `backend/functions/src/__tests__/ryvro-brain.test.ts`
+
+Production project:
+
+- `ryvro-shift-planner`
+
+Main functions:
+
+- `ryvroBrain`
+- `parseShiftScheduleDescription`
+
+Rules:
+
+- Prefer deterministic date and range resolution before model fallback.
+- Keep exact-date and date-range tools consistent with the offline local brain.
+- Never answer as if a schedule is generic when a saved schedule is available.
+
+### Persistence And Sync
+
+Key areas:
+
+- Firebase Auth
+- Cloud Firestore
+- local storage services
+- user details services
+- onboarding data persistence
+
+Rules:
+
+- User details entered in the app should sync to the backend when possible.
+- Local state should remain usable offline.
+- Save buttons must leave loading state on success or failure.
+- Backend failures should fall back cleanly for deterministic schedule answers.
+
+### Subscription
+
+Key areas:
+
+- `src/contexts/SubscriptionContext.tsx`
+- `src/components/paywall/`
+- RevenueCat SDK integration
+
+Rules:
+
+- Entitlement ID is `pro`.
+- Product IDs are `ryvro_pro_monthly` and `ryvro_pro_annual`.
+- One free voice answer is allowed.
+- After the first answer, ongoing voice use requires Ryvro Pro.
+- A purchased user must not be sent back to the paywall when entitlement is active.
+
+## Date And Range Handling
+
+Ryvro should answer:
+
+- Today.
+- Tomorrow.
+- Exact dates.
+- Named weekdays.
+- Next week and later named weekdays.
+- Next 7 days.
+- Next 14 days.
+- Date ranges such as June 12 to June 27.
+- Last week.
+- First Saturday in August.
+- End of the month.
+
+Range answers must be structured for reading and listening.
+
+## English-Only Runtime
+
+The current product is English-only.
+
+Old locale files may remain in the repository for history or migration, but active runtime screens should not expose multi-language selection or localized product experiences.
+
+## Historical Material
+
+Older documents may mention dashboards, tabs, broad builders, imports, exports, stats, or multi-language launch work. Treat those as history unless the README and this architecture document explicitly say the same thing.

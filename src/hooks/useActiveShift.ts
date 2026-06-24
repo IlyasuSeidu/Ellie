@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { calculateShiftDay } from '@/utils/shiftUtils';
 import { addDays, getToday } from '@/utils/dateUtils';
 import { formatTimeForDisplay } from '@/utils/shiftTimeUtils';
+import { theme } from '@/utils/theme';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import type { ShiftCycle, ShiftType, UniversalShiftDayMeta } from '@/types';
 import i18n from '@/i18n';
@@ -66,7 +67,7 @@ function toUniversalDisplay(universal?: UniversalShiftDayMeta) {
   return {
     title: universal.definitionName,
     subtitle: formatUniversalSubtitle(universal),
-    color: universal.color,
+    color: universal.countsAsWork ? theme.colors.sacredGold : theme.colors.dust,
     icon: universal.icon,
   };
 }

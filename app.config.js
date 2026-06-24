@@ -299,6 +299,7 @@ module.exports = ({ config = {} }) => {
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
     './plugins/withFirebaseCoreConfigure',
+    './plugins/withRyvroStoreKitConfig',
     [
       'expo-build-properties',
       {
@@ -408,8 +409,11 @@ module.exports = ({ config = {} }) => {
   // Use appVersion runtime to avoid local-vs-cloud fingerprint drift during store builds.
   const runtimeVersion = config.runtimeVersion || { policy: 'appVersion' };
   const plugins = ensurePlugin(
-    ensurePlugin(config.plugins || ryvroPlugins, './plugins/withNonModularHeaders'),
-    './plugins/withFirebaseCoreConfigure'
+    ensurePlugin(
+      ensurePlugin(config.plugins || ryvroPlugins, './plugins/withNonModularHeaders'),
+      './plugins/withFirebaseCoreConfigure'
+    ),
+    './plugins/withRyvroStoreKitConfig'
   );
 
   return {
@@ -534,6 +538,14 @@ module.exports = ({ config = {} }) => {
         process.env.REVENUECAT_ANDROID_KEY ||
         process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
         process.env.REVENUECAT_API_KEY ||
+        '',
+      REVENUECAT_TEST_STORE_KEY:
+        process.env.REVENUECAT_TEST_STORE_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY ||
+        '',
+      EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY:
+        process.env.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY ||
+        process.env.REVENUECAT_TEST_STORE_KEY ||
         '',
       API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',

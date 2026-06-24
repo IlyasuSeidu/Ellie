@@ -139,29 +139,29 @@ When local and remote records differ:
 
 Runtime cache TTLs live in `src/config/cacheConfig.ts`.
 
-| Data type                   | Configured TTL | Reasoning                                                |
-| --------------------------- | -------------- | -------------------------------------------------------- |
-| User profile                | 24 hours       | Profile changes are infrequent                           |
-| Shift schedules             | 7 days         | Schedules must survive multi-day outages                 |
-| Active schedule             | 7 days         | Dashboard should remain useful offline                   |
-| Reminder settings           | 7 days         | Reminder state should survive outages                    |
-| Holidays                    | 30 days        | Holiday dates change rarely                              |
-| RevenueCat offerings        | 24 hours       | Prices/packages can change externally                    |
-| Paywall recovery window     | 7 days         | Avoid stale subscription recovery nudges                 |
-| Storage maintenance cadence | 24 hours       | Expired cache sweep without startup cost                 |
-| Voice assistant persistence | 12 hours       | Preserve short-term context and expire stale diagnostics |
-| Voice fallback              | No TTL         | Static bundled behavior                                  |
+| Data type                   | Configured TTL | Reasoning                                                 |
+| --------------------------- | -------------- | --------------------------------------------------------- |
+| User profile                | 24 hours       | Profile changes are infrequent                            |
+| Shift schedules             | 7 days         | Schedules must survive multi-day outages                  |
+| Active schedule             | 7 days         | Ask answers and setup repair should remain useful offline |
+| Reminder settings           | 7 days         | Reminder state should survive outages                     |
+| Holidays                    | 30 days        | Holiday dates change rarely                               |
+| RevenueCat offerings        | 24 hours       | Prices/packages can change externally                     |
+| Paywall recovery window     | 7 days         | Avoid stale subscription recovery nudges                  |
+| Storage maintenance cadence | 24 hours       | Expired cache sweep without startup cost                  |
+| Voice assistant persistence | 12 hours       | Preserve short-term context and expire stale diagnostics  |
+| Voice fallback              | No TTL         | Static bundled behavior                                   |
 
 ---
 
 ## Files That Do Not Need Changes
 
-| File                             | Why                                                 |
-| -------------------------------- | --------------------------------------------------- |
-| `src/utils/offlineFallback.ts`   | Already provides localized fallback answers         |
-| `src/utils/shiftUtils.ts`        | Pure calculations work offline                      |
-| `src/utils/reliableRetry.ts`     | Existing retry utility is suitable for queue writes |
-| `src/services/NetworkService.ts` | Already wraps NetInfo and provides runtime fallback |
+| File                             | Why                                                         |
+| -------------------------------- | ----------------------------------------------------------- |
+| `src/utils/offlineFallback.ts`   | Historical fallback helper; current runtime is English-only |
+| `src/utils/shiftUtils.ts`        | Pure calculations work offline                              |
+| `src/utils/reliableRetry.ts`     | Existing retry utility is suitable for queue writes         |
+| `src/services/NetworkService.ts` | Already wraps NetInfo and provides runtime fallback         |
 
 ---
 

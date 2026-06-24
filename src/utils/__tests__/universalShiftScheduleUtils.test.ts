@@ -59,7 +59,7 @@ const schedule: UniversalShiftSchedule = {
       countsAsWork: false,
       countsAsNight: false,
       countsForStats: true,
-      color: '#78716c',
+      color: '#5f7484',
       icon: 'home',
     },
   ],
@@ -109,8 +109,8 @@ describe('universalShiftScheduleUtils', () => {
 
     expect(display.title).toBe('Night Relief');
     expect(display.icon).toBe('moon');
-    expect(display.color).toBe('#651FFF');
-    expect(display.timeLabel).toBe('6 PM - 6 AM +1');
+    expect(display.color).toBe('#20f4dc');
+    expect(display.timeLabel).toBe('6:00 PM - 6:00 AM +1');
     expect(display.isNight).toBe(true);
   });
 

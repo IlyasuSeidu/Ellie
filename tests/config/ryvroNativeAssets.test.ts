@@ -10,6 +10,62 @@ const readOptional = (relativePath: string): string | null => {
 };
 
 describe('Ryvro native wake-word assets', () => {
+  it('keeps local iOS StoreKit testing wired to Ryvro Pro products', () => {
+    const appConfig = read('app.config.js');
+    const plugin = read('plugins/withRyvroStoreKitConfig.js');
+    const nativeStoreKit = readOptional('ios/RyvroShiftPlanner/RyvroPro.storekit');
+    const nativeScheme = readOptional(
+      'ios/RyvroShiftPlanner.xcodeproj/xcshareddata/xcschemes/RyvroShiftPlanner.xcscheme'
+    );
+    const source = [appConfig, plugin, nativeStoreKit, nativeScheme].filter(Boolean).join('\n');
+
+    expect(appConfig).toContain('./plugins/withRyvroStoreKitConfig');
+    expect(plugin).toContain('StoreKitConfigurationFileReference');
+    expect(source).toContain('../RyvroShiftPlanner/RyvroPro.storekit');
+    expect(source).toContain('22156776');
+    expect(source).toContain('Ryvro Pro');
+    expect(source).toContain('ryvro_pro_monthly');
+    expect(source).toContain('6.99');
+    expect(source).toContain('P1M');
+    expect(source).toContain('ryvro_pro_annual');
+    expect(source).toContain('49.99');
+    expect(source).toContain('P1Y');
+
+    if (nativeStoreKit) {
+      const storeKitConfig = JSON.parse(nativeStoreKit) as {
+        subscriptionGroups?: Array<{
+          id?: string;
+          name?: string;
+          subscriptions?: Array<{
+            productID?: string;
+            displayPrice?: string;
+            recurringSubscriptionPeriod?: string;
+          }>;
+        }>;
+      };
+      const subscriptions = storeKitConfig.subscriptionGroups?.flatMap(
+        (group) => group.subscriptions ?? []
+      );
+
+      expect(storeKitConfig.subscriptionGroups?.[0]?.id).toBe('22156776');
+      expect(storeKitConfig.subscriptionGroups?.[0]?.name).toBe('Ryvro Pro');
+      expect(subscriptions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            productID: 'ryvro_pro_monthly',
+            displayPrice: '6.99',
+            recurringSubscriptionPeriod: 'P1M',
+          }),
+          expect.objectContaining({
+            productID: 'ryvro_pro_annual',
+            displayPrice: '49.99',
+            recurringSubscriptionPeriod: 'P1Y',
+          }),
+        ])
+      );
+    }
+  });
+
   it('uses Ryvro-branded native module identifiers', () => {
     expect(fs.existsSync(path.join(process.cwd(), 'modules/ryvro-openwakeword'))).toBe(true);
     expect(fs.existsSync(path.join(process.cwd(), 'modules/ellie-openwakeword'))).toBe(false);

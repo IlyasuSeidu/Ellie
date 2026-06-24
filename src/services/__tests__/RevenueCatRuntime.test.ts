@@ -157,7 +157,7 @@ describe('RevenueCatRuntime', () => {
     });
   });
 
-  it('treats RevenueCat test keys as missing in app builds', () => {
+  it('treats RevenueCat test keys as missing from normal app key slots', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -181,6 +181,34 @@ describe('RevenueCatRuntime', () => {
       const { getRevenueCatApiKey, getRevenueCatAvailability } = require('../RevenueCatRuntime');
       expect(getRevenueCatApiKey()).toBe('');
       expect(getRevenueCatAvailability().reason).toBe('missing_api_key');
+    });
+  });
+
+  it('uses the dedicated RevenueCat Test Store key for debug iOS builds', () => {
+    jest.isolateModules(() => {
+      jest.doMock('expo-constants', () => ({
+        __esModule: true,
+        default: {
+          expoConfig: {
+            extra: {
+              REVENUECAT_TEST_STORE_KEY: 'test_BV1234567890vCgu',
+              REVENUECAT_IOS_KEY: 'appl_live_key',
+            },
+          },
+        },
+      }));
+      jest.doMock('react-native-purchases', () => ({
+        __esModule: true,
+        LOG_LEVEL: { ERROR: 'ERROR' },
+        default: {
+          configure: jest.fn(),
+        },
+      }));
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { getRevenueCatApiKey, getRevenueCatAvailability } = require('../RevenueCatRuntime');
+      expect(getRevenueCatApiKey()).toBe('test_BV1234567890vCgu');
+      expect(getRevenueCatAvailability().reason).toBeNull();
     });
   });
 

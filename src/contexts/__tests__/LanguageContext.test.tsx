@@ -83,31 +83,31 @@ describe('LanguageContext', () => {
     return captured as { setLanguage: (language: string) => Promise<void> };
   };
 
-  it('switches language without reload when direction does not change', async () => {
+  it('keeps English when a non-English language is requested', async () => {
     const ctx = setup();
 
     await ctx.setLanguage('fr');
 
     await waitFor(() => {
-      expect(mockI18n.changeLanguage).toHaveBeenCalledWith('fr');
+      expect(mockI18n.changeLanguage).not.toHaveBeenCalled();
       expect(reloadAsync).not.toHaveBeenCalled();
       expect(Alert.alert).not.toHaveBeenCalled();
     });
   });
 
-  it('switches to Arabic language in settings flow', async () => {
+  it('does not switch to Arabic in the English-only runtime', async () => {
     const ctx = setup();
 
     await ctx.setLanguage('ar');
 
     await waitFor(() => {
-      expect(mockI18n.changeLanguage).toHaveBeenCalledWith('ar');
-      expect(reloadAsync).toHaveBeenCalled();
+      expect(mockI18n.changeLanguage).not.toHaveBeenCalled();
+      expect(reloadAsync).not.toHaveBeenCalled();
       expect(Alert.alert).not.toHaveBeenCalled();
     });
   });
 
-  it('switches from Arabic to LTR language in settings flow', async () => {
+  it('returns to English from an old RTL state', async () => {
     mockI18n.language = 'ar';
     Object.defineProperty(I18nManager, 'isRTL', {
       configurable: true,

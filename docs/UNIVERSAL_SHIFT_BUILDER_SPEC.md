@@ -2,9 +2,9 @@
 
 ## Status
 
-Implementation specification for the current universal-only Ryvro shift system.
+Historical implementation specification for the old universal-builder-first Ryvro shift system. This is not the current user-facing product flow.
 
-The app is not live, so the legacy rotating/FIFO configuration system has been removed from the product flow. The Universal Shift Builder is now the single shift setup surface for onboarding and settings. Any remaining legacy names in helper files are temporary compatibility shims and should not be expanded into new product behavior.
+The current app concept is: configure your shift once, ask Ryvro by voice, and get the right shift answer instantly. The underlying schedule engine may still use universal schedule helpers, but the old Universal Shift Builder should not be treated as the primary setup or settings experience.
 
 ## Product Goal
 

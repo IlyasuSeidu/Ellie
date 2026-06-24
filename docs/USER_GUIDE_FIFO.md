@@ -1,5 +1,9 @@
 # FIFO User Guide
 
+## Status
+
+Historical guide. This is not the current Ryvro product flow. The current app concept is: configure your shift once, ask Ryvro by voice, and get the right shift answer instantly.
+
 ## What FIFO means
 
 FIFO rosters split your cycle into:

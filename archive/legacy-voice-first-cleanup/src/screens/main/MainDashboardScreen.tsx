@@ -1,0 +1,807 @@
+/**
+ * MainDashboardScreen
+ *
+ * Main screen orchestrator for the dashboard.
+ * Fetches onboarding data from AsyncStorage, builds shift cycle,
+ * computes current shift, monthly data, statistics, and upcoming shifts.
+ * Orchestrates staggered entrance animations for all child components.
+ */
+
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  RefreshControl,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withDelay,
+  withSequence,
+  withSpring,
+  Easing,
+} from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { useSubscription } from '@/hooks/useSubscription';
+import { usePaywallRecovery } from '@/hooks/usePaywallRecovery';
+import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
+import { Analytics } from '@/utils/analytics';
+import * as Haptics from 'expo-haptics';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { theme } from '@/utils/theme';
+import { getShiftDaysInRange, getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
+import { toDateString, getDaysInMonth, addDays } from '@/utils/dateUtils';
+import { formatTimeForDisplay } from '@/utils/shiftTimeUtils';
+import { formatLocalizedDateTime } from '@/utils/i18nFormat';
+import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
+import { type ShiftCycle } from '@/types';
+import { useActiveShift } from '@/hooks/useActiveShift';
+import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
+import type { MonthStatistics, UpcomingShift } from '@/types/dashboard';
+
+// Dashboard components
+import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
+import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatusCard';
+import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
+import { UpcomingShiftsCard } from '@/components/dashboard/UpcomingShiftsCard';
+import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
+import { QuickActionsBar, type QuickAction } from '@/components/dashboard/QuickActionsBar';
+import type { MainStackParamList } from '@/navigation/MainStackNavigator';
+
+type DashboardNavigation = NativeStackNavigationProp<MainStackParamList>;
+
+/**
+ * Calculate monthly statistics
+ */
+function calculateMonthStats(year: number, month: number, cycle: ShiftCycle): MonthStatistics {
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const stats = getShiftStatistics(firstDay, lastDay, cycle);
+  const totalDays = getDaysInMonth(year, month + 1);
+
+  return {
+    workDays: stats.dayShifts + stats.nightShifts + stats.morningShifts + stats.afternoonShifts,
+    offDays: stats.daysOff,
+    totalDays,
+    dayShifts: stats.dayShifts + stats.morningShifts + stats.afternoonShifts,
+    nightShifts: stats.nightShifts,
+    workLifeBalance: totalDays > 0 ? (stats.daysOff / totalDays) * 100 : 0,
+  };
+}
+
+function buildUpcomingTimeDisplay(shift: ReturnType<typeof getShiftDaysInRange>[number]): string {
+  const universal = shift.universal;
+  if (!universal) return '';
+  if (universal.timePolicy === 'all_day') return 'All day';
+  if (universal.timePolicy !== 'timed' || !universal.startTime || !universal.endTime) return '';
+  return `${formatTimeForDisplay(universal.startTime)} - ${formatTimeForDisplay(universal.endTime)}${
+    universal.crossesMidnight ? ' +1' : ''
+  }`;
+}
+
+function buildUpcomingShifts(
+  cycle: ShiftCycle,
+  language: string | undefined,
+  today = new Date()
+): UpcomingShift[] {
+  const startDate = addDays(today, 1);
+  const endDate = addDays(today, 21);
+
+  return getShiftDaysInRange(startDate, endDate, cycle)
+    .filter((shift) => shift.isWorkDay)
+    .slice(0, 3)
+    .map((shift) => {
+      const date = new Date(`${shift.date}T00:00:00`);
+      return {
+        date: shift.date,
+        shiftType: shift.shiftType,
+        isWorkDay: shift.isWorkDay,
+        displayDate: formatLocalizedDateTime(
+          date,
+          { weekday: 'short', month: 'short', day: 'numeric' },
+          language
+        ),
+        timeDisplay: buildUpcomingTimeDisplay(shift),
+        universalDisplay: shift.universal
+          ? {
+              title: shift.universal.definitionName,
+              color: shift.universal.countsAsWork ? theme.colors.sacredGold : theme.colors.dust,
+              icon: shift.universal.icon,
+            }
+          : undefined,
+      };
+    });
+}
+
+/** Glow colors per shift type — used for overnight carry-over on the calendar */
+const SHIFT_GLOW_COLORS: Record<string, string> = {
+  day: '#64B5F6',
+  night: '#B388FF',
+  morning: '#FCD34D',
+  afternoon: '#67E8F9',
+};
+
+// Free users may navigate up to this many months ahead before hitting the Pro gate.
+const FREE_MONTH_AHEAD_LIMIT = 1;
+
+export const MainDashboardScreen: React.FC = () => {
+  const { t, i18n } = useTranslation('dashboard');
+  const { t: tCommon } = useTranslation('common');
+  const isFocused = useIsFocused();
+  const navigation = useNavigation<DashboardNavigation>();
+  const insets = useSafeAreaInsets();
+  const { data: onboardingContextData, updateData, hydrated: onboardingHydrated } = useOnboarding();
+  const [userData, setUserData] = useState<OnboardingData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const now = new Date();
+    return { year: now.getFullYear(), month: now.getMonth() };
+  });
+  const [selectedDay, setSelectedDay] = useState<number | undefined>(undefined);
+  const [showRecoveryPaywall, setShowRecoveryPaywall] = useState(false);
+  const [showFeatureGatePaywall, setShowFeatureGatePaywall] = useState(false);
+
+  // G5: Non-converter recovery — isPro needed for gate + recovery hook
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
+  const { shouldNudge, dismissNudge } = usePaywallRecovery(isPro);
+  const dashboardQuickActions = useMemo<QuickAction[]>(
+    () => [
+      {
+        key: 'builder',
+        icon: 'calendar-outline',
+        label: t('tabs.schedule'),
+      },
+      {
+        key: 'reminders',
+        icon: 'notifications-outline',
+        label: t('quickActions.alerts'),
+      },
+      {
+        key: 'profile',
+        icon: 'person-outline',
+        label: t('quickActions.profile'),
+      },
+      {
+        key: 'export',
+        icon: 'share-outline',
+        label: t('quickActions.export'),
+      },
+    ],
+    [t]
+  );
+
+  // Refresh animation state
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
+  const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasOnboardingContextData = Object.keys(onboardingContextData).length > 0;
+
+  // Refresh success animation values
+  const successBannerOpacity = useSharedValue(0);
+  const successBannerTranslateY = useSharedValue(-40);
+  const successIconScale = useSharedValue(0);
+
+  const successBannerStyle = useAnimatedStyle(() => ({
+    opacity: successBannerOpacity.value,
+    transform: [{ translateY: successBannerTranslateY.value }],
+  }));
+
+  const successIconStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: successIconScale.value }],
+  }));
+
+  /**
+   * Trigger the refresh success animation sequence
+   */
+  const triggerRefreshSuccess = useCallback(() => {
+    setShowRefreshSuccess(true);
+
+    // Animate banner in
+    successBannerOpacity.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) });
+    successBannerTranslateY.value = withSpring(0, { damping: 14, stiffness: 160 });
+
+    // Animate checkmark icon with bounce
+    successIconScale.value = withDelay(
+      100,
+      withSequence(
+        withSpring(1.2, { damping: 8, stiffness: 300 }),
+        withSpring(1, { damping: 12, stiffness: 200 })
+      )
+    );
+
+    // Auto-dismiss after 2 seconds
+    if (refreshSuccessTimeout.current) {
+      clearTimeout(refreshSuccessTimeout.current);
+    }
+    refreshSuccessTimeout.current = setTimeout(() => {
+      successBannerOpacity.value = withTiming(0, { duration: 300 });
+      successBannerTranslateY.value = withTiming(-40, { duration: 300 });
+      setTimeout(() => setShowRefreshSuccess(false), 350);
+    }, 2000);
+  }, [successBannerOpacity, successBannerTranslateY, successIconScale]);
+
+  const syncDashboardData = useCallback(
+    async (isRefresh = false) => {
+      try {
+        setUserData(hasOnboardingContextData ? onboardingContextData : null);
+
+        if (isRefresh) {
+          setLastUpdated(new Date());
+          setRefreshKey((prev) => prev + 1);
+          triggerRefreshSuccess();
+          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        }
+      } catch (error) {
+        console.warn('Failed to load dashboard data:', error);
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [hasOnboardingContextData, onboardingContextData, triggerRefreshSuccess]
+  );
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshSuccessTimeout.current) {
+        clearTimeout(refreshSuccessTimeout.current);
+      }
+    };
+  }, []);
+
+  // Ensure Home reflects latest profile/settings saves whenever the tab regains focus.
+  useEffect(() => {
+    if (!isFocused || !onboardingHydrated) return;
+    void syncDashboardData(false);
+  }, [isFocused, onboardingHydrated, syncDashboardData]);
+
+  // Subscribe to OnboardingContext so Profile → ShiftSettingsPanel saves are
+  // reflected immediately on the Dashboard without requiring a pull-to-refresh.
+  useEffect(() => {
+    if (!onboardingHydrated) return;
+    setUserData(hasOnboardingContextData ? (onboardingContextData as OnboardingData) : null);
+    setLoading(false);
+  }, [hasOnboardingContextData, onboardingContextData, onboardingHydrated]);
+
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    void syncDashboardData(true);
+  }, [syncDashboardData]);
+
+  // Build shift cycle from user data
+  const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
+
+  const [liveTick, setLiveTick] = useState(0);
+  const [clockTick, setClockTick] = useState(0);
+  const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setClockTick((tick) => tick + 1);
+    }, 30000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const now = new Date();
+    const nextRefreshAt = getNextShiftAccentRefreshAt(now, shiftCycle);
+    const delayMs = Math.max(250, nextRefreshAt.getTime() - now.getTime() + 250);
+
+    const timer = setTimeout(() => {
+      setLiveTick((tick) => tick + 1);
+      const nextDate = new Date();
+      const nextDateStr = toDateString(nextDate);
+      setCurrentDateStr((prev) => {
+        if (prev !== nextDateStr) {
+          setCurrentMonth({ year: nextDate.getFullYear(), month: nextDate.getMonth() });
+        }
+        return nextDateStr;
+      });
+    }, delayMs);
+
+    return () => clearTimeout(timer);
+  }, [shiftCycle, userData, liveTick]);
+
+  /**
+   * Format last updated time for display
+   */
+  const lastUpdatedText = useMemo(() => {
+    if (!lastUpdated) return null;
+    void clockTick;
+    const diffMs = Date.now() - lastUpdated.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+
+    if (diffSec < 10) return t('lastUpdated.justNow');
+    if (diffSec < 60) return t('lastUpdated.secondsAgo', { count: diffSec });
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return t('lastUpdated.minutesAgo', { count: diffMin });
+    return formatLocalizedDateTime(
+      lastUpdated,
+      { hour: 'numeric', minute: '2-digit' },
+      i18n.resolvedLanguage ?? i18n.language
+    );
+  }, [i18n.language, i18n.resolvedLanguage, lastUpdated, clockTick, t]);
+
+  // Active shift: time-aware status with overnight carry-over support
+  const activeShift = useActiveShift(shiftCycle, userData, liveTick, currentDateStr);
+
+  // Current month shift days (recalculates on day change for today highlight)
+  const monthShifts = useMemo(() => {
+    if (!shiftCycle) return [];
+    void currentDateStr; // recalc on day change for today indicator
+    const { year, month } = currentMonth;
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    return getShiftDaysInRange(firstDay, lastDay, shiftCycle);
+  }, [shiftCycle, currentMonth, currentDateStr]);
+
+  // Monthly statistics (recalculates on day change)
+  const monthStats = useMemo(() => {
+    if (!shiftCycle) return null;
+    void currentDateStr;
+    const { year, month } = currentMonth;
+    return calculateMonthStats(year, month, shiftCycle);
+  }, [shiftCycle, currentMonth, currentDateStr]);
+
+  const upcomingShifts = useMemo(() => {
+    if (!shiftCycle) return [];
+    void currentDateStr;
+    return buildUpcomingShifts(shiftCycle, i18n.resolvedLanguage ?? i18n.language);
+  }, [currentDateStr, i18n.language, i18n.resolvedLanguage, shiftCycle]);
+
+  // Month navigation
+  const handlePreviousMonth = useCallback(() => {
+    setCurrentMonth((prev) => {
+      const newMonth = prev.month - 1;
+      if (newMonth < 0) {
+        return { year: prev.year - 1, month: 11 };
+      }
+      return { ...prev, month: newMonth };
+    });
+    setSelectedDay(undefined);
+  }, []);
+
+  const handleNextMonth = useCallback(() => {
+    setCurrentMonth((prev) => {
+      const newMonth = prev.month + 1;
+      if (newMonth > 11) {
+        return { year: prev.year + 1, month: 0 };
+      }
+      return { ...prev, month: newMonth };
+    });
+    setSelectedDay(undefined);
+  }, []);
+
+  const handleDayPress = useCallback((day: number) => {
+    setSelectedDay((prev) => (prev === day ? undefined : day));
+  }, []);
+
+  // G6: How many months ahead of today the calendar is currently showing.
+  const monthsAhead = useMemo(() => {
+    const now = new Date();
+    return (currentMonth.year - now.getFullYear()) * 12 + (currentMonth.month - now.getMonth());
+  }, [currentMonth]);
+
+  // G6: Gate forward navigation — free users may go 1 month ahead; beyond that requires Pro.
+  const handleNextMonthGated = useCallback(() => {
+    if (subscriptionLoading) {
+      return;
+    }
+    if (!isPro && monthsAhead >= FREE_MONTH_AHEAD_LIMIT) {
+      Analytics.track('feature_gate_triggered', {
+        feature: 'calendar_full_year',
+        source: 'dashboard',
+        months_ahead: monthsAhead,
+      });
+      setShowFeatureGatePaywall(true);
+      return;
+    }
+    handleNextMonth();
+  }, [handleNextMonth, isPro, monthsAhead, subscriptionLoading]);
+
+  const handleLockedCalendarWeekPress = useCallback(() => {
+    if (subscriptionLoading) {
+      return;
+    }
+    Analytics.track('feature_gate_triggered', {
+      feature: 'calendar_locked_week',
+      source: 'dashboard',
+      months_ahead: monthsAhead,
+    });
+    setShowFeatureGatePaywall(true);
+  }, [monthsAhead, subscriptionLoading]);
+
+  const handleOpenBuilderFromDashboard = useCallback(
+    (source: 'quick_action_builder' | 'quick_action_export') => {
+      if (subscriptionLoading || !userData) {
+        return;
+      }
+
+      if (!isPro) {
+        Analytics.track('feature_gate_triggered', {
+          feature: 'universal_shift_builder',
+          source,
+          months_ahead: monthsAhead,
+        });
+        setShowFeatureGatePaywall(true);
+        return;
+      }
+
+      navigation.navigate('UniversalShiftBuilder', {
+        mode: userData.universalSchedule ? 'edit' : 'create',
+        entryPoint: 'settings',
+        existingSchedule: userData.universalSchedule,
+      });
+    },
+    [isPro, monthsAhead, navigation, subscriptionLoading, userData]
+  );
+
+  const handleDashboardQuickActionPress = useCallback(
+    (key: string) => {
+      Analytics.track('dashboard_quick_action_tapped', {
+        action: key,
+      });
+
+      if (key === 'export') {
+        handleOpenBuilderFromDashboard('quick_action_export');
+        return;
+      }
+
+      if (key === 'builder') {
+        handleOpenBuilderFromDashboard('quick_action_builder');
+        return;
+      }
+
+      navigation.navigate('Settings');
+    },
+    [handleOpenBuilderFromDashboard, navigation]
+  );
+
+  // Avatar change handler — persists new URI to AsyncStorage
+  const handleAvatarChange = useCallback(
+    (newUri: string | null) => {
+      if (!userData) return;
+      const updatedData = { ...userData, avatarUri: newUri ?? undefined };
+      setUserData(updatedData);
+      updateData({ avatarUri: newUri ?? undefined });
+    },
+    [updateData, userData]
+  );
+
+  // Loading state
+  if (loading) {
+    return (
+      <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
+        <ActivityIndicator size="large" color={theme.colors.sacredGold} />
+      </View>
+    );
+  }
+
+  // No data state
+  if (!userData || !shiftCycle || !activeShift || !monthStats) {
+    return (
+      <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
+        <Animated.Text style={styles.errorText}>{t('errors.loadFailed')}</Animated.Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <LinearGradient
+        colors={[theme.colors.deepVoid, theme.colors.darkStone, theme.colors.deepVoid]}
+        locations={[0, 0.5, 1]}
+        style={StyleSheet.absoluteFill}
+      />
+
+      {/* Refresh Success Banner */}
+      {showRefreshSuccess && (
+        <Animated.View
+          style={[styles.refreshSuccessBanner, { top: insets.top + 8 }, successBannerStyle]}
+        >
+          <View style={styles.refreshSuccessContent}>
+            <Animated.View style={successIconStyle}>
+              <Ionicons name="checkmark-circle" size={20} color={theme.colors.success} />
+            </Animated.View>
+            <Text style={styles.refreshSuccessText}>{t('scheduleUpdated')}</Text>
+          </View>
+        </Animated.View>
+      )}
+
+      <ScrollView
+        testID="dashboard-scroll-view"
+        style={[styles.scrollView, { paddingTop: insets.top }]}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={theme.colors.sacredGold}
+            colors={[theme.colors.sacredGold]}
+            progressBackgroundColor={theme.colors.darkStone}
+            title={refreshing ? t('refreshing') : t('pullToRefresh')}
+            titleColor={theme.colors.dust}
+          />
+        }
+      >
+        {/* Last Updated Indicator */}
+        {lastUpdatedText && (
+          <Animated.View
+            entering={FadeIn.duration(300)}
+            exiting={FadeOut.duration(200)}
+            style={styles.lastUpdatedContainer}
+          >
+            <Ionicons name="time-outline" size={12} color={theme.colors.shadow} />
+            <Text style={styles.lastUpdatedText}>
+              {t('lastUpdated.updatedPrefix')}
+              {lastUpdatedText}
+            </Text>
+          </Animated.View>
+        )}
+
+        {/* Personalized Header - keyed for re-entrance animation */}
+        <PersonalizedHeader
+          key={`header-${refreshKey}`}
+          name={userData.name || t('user.defaultName')}
+          occupation={userData.occupation}
+          avatarUri={userData.avatarUri}
+          onAvatarChange={handleAvatarChange}
+          animationDelay={0}
+          liveTick={liveTick}
+          testID="dashboard-header"
+        />
+
+        {/* G5: Recovery nudge — shown to users who declined the paywall during onboarding */}
+        {shouldNudge && !showRecoveryPaywall && (
+          <Animated.View entering={FadeIn.delay(1200).duration(400)} style={styles.recoveryNudge}>
+            <View style={styles.recoveryNudgeInner}>
+              <Ionicons name="lock-open-outline" size={18} color={theme.colors.sacredGold} />
+              <View style={styles.recoveryNudgeContent}>
+                <Text style={styles.recoveryNudgeTitle}>
+                  {tCommon('subscription.recoveryNudge.title')}
+                </Text>
+                <Text style={styles.recoveryNudgeBody}>
+                  {tCommon('subscription.recoveryNudge.body')}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.recoveryNudgeActions}>
+              <TouchableOpacity
+                style={styles.recoveryNudgeCta}
+                onPress={() => setShowRecoveryPaywall(true)}
+                accessibilityRole="button"
+              >
+                <Text style={styles.recoveryNudgeCtaText}>
+                  {tCommon('subscription.recoveryNudge.cta')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => void dismissNudge()}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                accessibilityRole="button"
+              >
+                <Text style={styles.recoveryNudgeDismiss}>
+                  {tCommon('subscription.recoveryNudge.dismiss')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        )}
+
+        <QuickActionsBar
+          actions={dashboardQuickActions}
+          onActionPress={handleDashboardQuickActionPress}
+          animationDelay={260}
+          testID="dashboard-quick-actions"
+        />
+
+        {/* Current Shift Status Card (HERO) */}
+        <CurrentShiftStatusCard
+          key={`status-${refreshKey}`}
+          shiftType={activeShift.shiftType}
+          accentShiftType={activeShift.scheduledShiftType}
+          universalDisplay={activeShift.universalDisplay}
+          universalAccentColor={activeShift.isWorkDay ? theme.colors.sacredGold : theme.colors.dust}
+          countdown={activeShift.countdown ?? undefined}
+          isOnShift={activeShift.isOnShift}
+          animationDelay={100}
+          testID="dashboard-shift-status"
+        />
+
+        <UpcomingShiftsCard
+          key={`upcoming-${refreshKey}`}
+          shifts={upcomingShifts}
+          animationDelay={180}
+          testID="dashboard-upcoming-shifts"
+        />
+
+        {/* Monthly Calendar */}
+        <MonthlyCalendarCard
+          key={`calendar-${refreshKey}`}
+          year={currentMonth.year}
+          month={currentMonth.month}
+          shiftDays={monthShifts}
+          selectedDay={selectedDay}
+          onPreviousMonth={handlePreviousMonth}
+          onNextMonth={handleNextMonthGated}
+          onDayPress={handleDayPress}
+          shiftCycle={shiftCycle ?? undefined}
+          activeGlowColor={
+            activeShift?.isOvernightCarryOver ? SHIFT_GLOW_COLORS[activeShift.shiftType] : undefined
+          }
+          lockNonCurrentWeeks={!isPro && !subscriptionLoading}
+          onLockedWeekPress={handleLockedCalendarWeekPress}
+          animationDelay={200}
+          testID="dashboard-calendar"
+        />
+
+        {/* Statistics Row */}
+        <StatisticsRow
+          key={`stats-${refreshKey}`}
+          workDays={monthStats.workDays}
+          offDays={monthStats.offDays}
+          workLifeBalance={monthStats.workLifeBalance}
+          animationDelay={300}
+          testID="dashboard-stats"
+        />
+      </ScrollView>
+
+      {/* G5: Recovery paywall — surfaces after user declined during onboarding */}
+      {showRecoveryPaywall && (
+        <PaywallScreen
+          onDismiss={() => {
+            setShowRecoveryPaywall(false);
+            // If they just converted, the isPro flip clears the nudge automatically via the hook.
+            // If they dismissed without converting, keep the nudge visible for another chance.
+          }}
+          entryPoint="post_aha"
+        />
+      )}
+
+      {/* G6: Feature gate paywall — surfaces when free user tries to navigate beyond free limit */}
+      {showFeatureGatePaywall && (
+        <PaywallScreen
+          onDismiss={() => setShowFeatureGatePaywall(false)}
+          entryPoint="feature_gate"
+        />
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.deepVoid,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 120,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.deepVoid,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorText: {
+    fontSize: theme.typography.fontSizes.md,
+    color: theme.colors.dust,
+    textAlign: 'center',
+  },
+  // Refresh Success Banner
+  refreshSuccessBanner: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    alignItems: 'center',
+    paddingHorizontal: theme.spacing.lg,
+  },
+  refreshSuccessContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    backgroundColor: theme.colors.darkStone,
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.lg,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.success,
+    shadowColor: theme.colors.success,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  refreshSuccessText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme.colors.success,
+  },
+  // Recovery nudge banner (G5)
+  recoveryNudge: {
+    marginHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.md,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(197,151,92,0.25)',
+    backgroundColor: 'rgba(197,151,92,0.07)',
+    overflow: 'hidden',
+    padding: 14,
+  },
+  recoveryNudgeInner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    marginBottom: 12,
+  },
+  recoveryNudgeContent: {
+    flex: 1,
+  },
+  recoveryNudgeTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: theme.colors.sacredGold,
+    marginBottom: 3,
+  },
+  recoveryNudgeBody: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    lineHeight: 17,
+  },
+  recoveryNudgeActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  recoveryNudgeCta: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: theme.colors.sacredGold,
+  },
+  recoveryNudgeCtaText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: theme.colors.deepVoid,
+    letterSpacing: 0.2,
+  },
+  recoveryNudgeDismiss: {
+    fontSize: 12,
+    color: theme.colors.shadow,
+  },
+
+  // Last Updated Indicator
+  lastUpdatedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    paddingVertical: theme.spacing.xs,
+    marginBottom: theme.spacing.xs,
+  },
+  lastUpdatedText: {
+    fontSize: 11,
+    color: theme.colors.shadow,
+  },
+});

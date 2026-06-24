@@ -68,14 +68,17 @@ const firstNonEmptyString = (...candidates: unknown[]): string => {
   return '';
 };
 
-const isPlaceholderRevenueCatKey = (candidate: string): boolean => {
+const isPlaceholderRevenueCatKey = (
+  candidate: string,
+  options: { allowTestStoreKey?: boolean } = {}
+): boolean => {
   const normalized = candidate.trim();
 
   if (normalized.length === 0) {
     return true;
   }
 
-  if (/^test_/i.test(normalized)) {
+  if (!options.allowTestStoreKey && /^test_/i.test(normalized)) {
     return true;
   }
 
@@ -90,9 +93,14 @@ const isPlaceholderRevenueCatKey = (candidate: string): boolean => {
   return false;
 };
 
-const getUsableRevenueCatKey = (...candidates: unknown[]): string => {
+const isDebugIosRuntime = (): boolean => Platform.OS === 'ios' && __DEV__;
+
+const getUsableRevenueCatKey = (
+  candidates: unknown[],
+  options: { allowTestStoreKey?: boolean } = {}
+): string => {
   const key = firstNonEmptyString(...candidates);
-  if (!key || isPlaceholderRevenueCatKey(key)) {
+  if (!key || isPlaceholderRevenueCatKey(key, options)) {
     return '';
   }
 
@@ -146,8 +154,22 @@ export const getRevenueCatApiKey = (): string => {
 
   const extras = getExpoExtraConfig();
 
+  const debugTestStoreKey = getUsableRevenueCatKey(
+    [
+      extras.REVENUECAT_TEST_STORE_KEY,
+      extras.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY,
+      process.env.REVENUECAT_TEST_STORE_KEY,
+      process.env.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY,
+    ],
+    { allowTestStoreKey: true }
+  );
+
+  if (isDebugIosRuntime() && debugTestStoreKey) {
+    return debugTestStoreKey;
+  }
+
   if (Platform.OS === 'ios') {
-    return getUsableRevenueCatKey(
+    return getUsableRevenueCatKey([
       extras.REVENUECAT_IOS_KEY,
       extras.EXPO_PUBLIC_REVENUECAT_IOS_KEY,
       extras.REVENUECAT_API_KEY,
@@ -155,11 +177,11 @@ export const getRevenueCatApiKey = (): string => {
       process.env.REVENUECAT_IOS_KEY,
       process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY,
       process.env.REVENUECAT_API_KEY,
-      process.env.EXPO_PUBLIC_REVENUECAT_API_KEY
-    );
+      process.env.EXPO_PUBLIC_REVENUECAT_API_KEY,
+    ]);
   }
 
-  return getUsableRevenueCatKey(
+  return getUsableRevenueCatKey([
     extras.REVENUECAT_ANDROID_KEY,
     extras.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY,
     extras.REVENUECAT_API_KEY,
@@ -167,8 +189,8 @@ export const getRevenueCatApiKey = (): string => {
     process.env.REVENUECAT_ANDROID_KEY,
     process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY,
     process.env.REVENUECAT_API_KEY,
-    process.env.EXPO_PUBLIC_REVENUECAT_API_KEY
-  );
+    process.env.EXPO_PUBLIC_REVENUECAT_API_KEY,
+  ]);
 };
 
 export const getRevenueCatAvailability = (): {

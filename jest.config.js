@@ -28,32 +28,12 @@ module.exports = {
     '!src/hooks/useActiveShift.ts',
     '!src/hooks/useNetworkStatus.ts',
     '!src/hooks/useProfileData.ts',
-    '!src/hooks/useShiftAccent.ts',
     '!src/hooks/useSmartReminders.ts',
     // Exclude complex interactive UI surfaces from global coverage.
     // These are validated through focused component tests and simulator/e2e flows.
     '!src/components/checkin/ShiftCheckInModal.tsx',
-    '!src/components/dashboard/CurrentShiftStatusCard.tsx',
-    '!src/components/dashboard/MonthlyCalendarCard.tsx',
-    '!src/components/dashboard/OnboardingChecklist.tsx',
-    '!src/components/dashboard/ShiftCalendarDayCell.tsx',
-    '!src/components/onboarding/NotificationPrimingModal.tsx',
-    '!src/components/onboarding/premium/E2ESwipeControls.tsx',
-    '!src/components/onboarding/premium/PremiumCountrySelectorModal.tsx',
-    '!src/components/onboarding/premium/PremiumSlider.tsx',
-    '!src/components/onboarding/premium/SettingsEntryActionButtons.tsx',
     '!src/components/onboarding/premium/index.ts',
     '!src/components/paywall/MiniYearCalendar.tsx',
-    '!src/components/profile/ProfileHeroSection.tsx',
-    '!src/components/profile/ProfileSectionHeader.tsx',
-    '!src/components/profile/SmartRemindersPanel.tsx',
-    '!src/components/profile/WorkStatsSummary.tsx',
-    '!src/components/shift-builder/BuilderValidationBanner.tsx',
-    '!src/components/shift-builder/SchedulePreviewCalendar.tsx',
-    '!src/components/shift-builder/ShiftDefinitionPalette.tsx',
-    '!src/components/shift-builder/ShiftInspectorSheet.tsx',
-    '!src/components/subscription/PadlockOverlay.tsx',
-    '!src/components/voice/index.ts',
     '!src/i18n/index.ts',
     '!src/i18n/types.ts',
     '!src/utils/analytics.ts',
@@ -70,7 +50,6 @@ module.exports = {
     // and navigation flows which doesn't accurately test user behavior
     '!src/screens/onboarding/premium/PremiumPhaseSelectorScreen.tsx',
     '!src/screens/onboarding/premium/PremiumShiftSystemScreen.tsx',
-    '!src/screens/onboarding/premium/PremiumIntroductionScreen.tsx',
   ],
   coverageReporters: ['text', 'lcov', 'json-summary'],
   coverageThreshold: {
@@ -103,6 +82,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/e2e/',
+    '/archive/',
     '/backend/functions/src/__tests__/',
     'src/__tests__/App.test.tsx', // Requires React Native test environment
     'tests/services/firebase/FirebaseService.test.ts', // Firebase ESM import issues with Jest

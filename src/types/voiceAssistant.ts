@@ -56,6 +56,10 @@ export interface VoiceAssistantUserContext {
   name?: string;
   /** User's occupation */
   occupation?: string;
+  /** User's company or workplace */
+  company?: string;
+  /** Country where the user works, preferably ISO alpha-2 */
+  country?: string;
   /** Serialized ShiftCycle */
   shiftCycle: ShiftCycle;
   /** Current date in YYYY-MM-DD */

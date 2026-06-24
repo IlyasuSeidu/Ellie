@@ -1,639 +1,201 @@
-# Ryvro Shift Planner
+# Ryvro
 
 ![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
 ![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
 [![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
 
-**Ryvro** helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers build reliable schedules from AI, templates, or the Universal Shift Builder. It keeps rotating rosters, block schedules, reminders, exceptions, colors, and calendar exports in one practical shift-work app.
+Ryvro is a voice-first shift assistant.
 
-> **"Did I set my alarm for the right time? Am I on days or nights tomorrow?"**
-> **"When's my next fly-out day?"**
-> **"Am I working on my kid's birthday in March?"**
+The product promise is simple:
 
-Ryvro answers these questions with a glance—no mental math, no counting forward from your start date, no missed shifts.
+> Configure your shift once. Then ask Ryvro by voice anytime and get the right shift answer instantly.
 
----
+Ryvro is built for shift workers who do not want to manage a calendar, study a dashboard, or count through a repeating pattern. They open the app, ask a question, and hear the answer.
 
-## The Problem
+## Current Product Concept
 
-Shift workers operate on repeating cycles, FIFO blocks, overnight rotations, 24-hour duty patterns, weekly venue schedules, and custom rosters that span weeks. Keeping track of which day of the cycle you're on, across months and life events, is mentally exhausting. Workers constantly:
+Ryvro has one main job:
 
-- Lose their place in the 21-day cycle, especially after days off
-- Do mental math to figure out if they're working a specific future date
-- Miss shift start times because they set alarms for the wrong shift
-- Can't plan family events without counting through their pattern manually
+- Help the worker set up an accurate repeating shift pattern.
+- Let the worker ask natural voice questions about that pattern.
+- Answer today, future dates, ranges, next days off, next work days, weekends, and named weekdays clearly.
+- Keep the app simple enough for a non-technical worker to understand without friction.
 
-**The Core Insight**: Humans aren't built to track repeating patterns across months. We need a tool that does the math for us.
+The shipped mental model is not a roster manager. It is not a calendar app. It is not a productivity dashboard. It is a voice assistant for shift answers.
 
----
+## Main Surfaces
 
-## The Solution
+### Onboarding And Setup
 
-Ryvro is a **shift planner for FIFO, rotating, and irregular work** built on a universal schedule engine. It provides:
+The setup flow gathers only what Ryvro needs to answer accurately:
 
-- **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
-- **Long-term planning**: See your schedule months in advance
-- **Smart notifications**: Reminders before shift starts
-- **Offline-first**: Works at remote work locations, in transit, in hospitals, at venues, at depots, or anywhere signal is unreliable
-- **Universal schedule flexibility**: Supports repeating rotations, FIFO/block rosters, irregular one-off swaps, holidays, travel, training, on-call work, leave, and custom cycles
-- **AI + manual setup**: Describe a roster in plain English, start from an industry template, or build it manually
-- **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, current block info, and schedule questions
+- The repeating shift pattern.
+- A known date.
+- The exact shift phase on that known date.
+- Shift times in 12-hour format.
+- Reminder preference.
+- A final setup check before the user tries Ryvro.
 
----
+The setup screens use the new Ryvro visual system: dark base, cyan, blue, silver, and muted text. The UI avoids shift-specific random colors.
 
-## 🚀 Current Features
+### Ask
 
-### Universal Shift Builder
+The Ask screen is the main app surface after onboarding.
 
-- **Universal schedule model**: `UniversalShiftSchedule` is the single source of truth for onboarding, settings, dashboard, reminders, import/export, and voice answers.
-- **AI-assisted schedule drafting**: Natural-language schedule descriptions become editable drafts.
-- **Manual drag-and-drop builder**: Users can define shift types, colors, icons, times, locations, reminder profiles, and sequence order.
-- **Industry launch templates**: Mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, and rail examples.
-- **Exceptions**: Public holiday overrides and one-off irregular swaps without mutating the repeating sequence.
-- **Calendar import/export**: `.ics` export and roster import for Apple Calendar, Google Calendar, Outlook, files, and email.
+It contains:
 
-### Premium Onboarding Flow (Completed)
+- Ryvro brand header.
+- Settings icon in the top-right corner.
+- Large animated microphone.
+- Voice-only interaction.
+- One polished answer card.
 
-Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, replacing the old fixed-pattern onboarding screens. The original onboarding work included a polished, Tinder-inspired experience built with React Native Reanimated 4:
+There is no chat composer, no typing box, and no bottom tab bar in the main concept.
 
-#### 1. **Welcome Screen** - First Impressions Matter
+### Settings
 
-- Orchestrated entrance animations with staggered delays
-- Spring physics for natural motion
-- Accessibility-first with reduced motion support
-- [Read the story →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)
+Settings is opened from the Ask screen. It exists for repair and account tasks:
 
-#### 2. **Introduction Screen** - Conversational Onboarding
+- View or fix shift setup.
+- Edit shift times.
+- Edit reminders.
+- Edit user details.
+- Manage Ryvro Pro.
+- Contact support, privacy, terms, and sign out.
 
-- Progressive disclosure chatbot experience (one question at a time)
-- Ryvro assistant avatar with breathing animation
-- Typing indicators for natural conversation feel
-- Smart editing (long-press any response to rewind conversation)
-- Name personalization ("Great to meet you, John!")
-- Sacred Theme colors throughout (gold and stone)
-- 60fps spring animations for all transitions
-- [Read the story →](build-in-public/emotional-moment/10-conversational-introduction.md)
+Settings should keep advanced setup hidden behind plain-language repair paths.
 
-#### 3. **Universal Shift Builder Entry** - AI, Templates, Or Manual
+### Ryvro Pro
 
-- Describe shifts in natural language
-- Start from industry templates
-- Build shift definitions and sequences manually
-- Preview schedule before saving
+Ryvro uses a hard paywall with one voice trial:
 
-#### 4. **Manual Shift Builder** - Every Work Pattern Is Different
+- A new user can try Ryvro voice once.
+- After the first answer, Ryvro Pro is required for ongoing voice answers.
+- RevenueCat entitlement source of truth is `pro`.
+- Product IDs are `ryvro_pro_monthly` and `ryvro_pro_annual`.
 
-- Drag-and-drop sequence canvas with non-drag reorder controls
-- Per-shift color, icon, name, time, work location, and reminder settings
-- Real-time calendar preview with color-coded blocks
-- Smart validation with helpful warnings
-- Live cycle visualization
-- [Read the story →](build-in-public/user-empathy/05-custom-pattern-builder.md)
+## What Ryvro Answers
 
-#### 5. **Current Position Selection** - Plain-Language Alignment
+Ryvro supports exact-date and range questions through the local offline brain and the online backend.
 
-- Users choose what shift they are currently on without seeing technical terms like `phaseOffset`.
-- Supports positions such as "second night" in a 4 days / 4 nights / 4 off style sequence.
-- Saves internal cycle alignment while keeping the UI understandable.
-- [Read the story →](build-in-public/system-thinking/11-phase-selector-separation.md)
+Examples:
 
-#### 6. **Start Date Selection** - Calendar Intelligence
+- What shift am I on today?
+- What shift am I on tomorrow?
+- Am I working next Saturday?
+- What shift do I have in two weeks?
+- When is my next day off?
+- What am I working from June 12 to June 27?
+- What do I work over the next 14 days?
+- What shift is the first Saturday in August?
+- What do I work at the end of the month?
 
-- Interactive calendar with swipe gestures for month navigation
-- Live shift preview icons and colors on calendar days
-- 7-day timeline showing upcoming shifts
-- Smart defaults (tomorrow as start date)
-- Calendar legend for shift types
-- Uses Universal Shift Builder alignment for accurate positioning
-- [Read the calendar story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
-- [Day positioning story →](build-in-public/user-empathy/09-day-within-phase-positioning.md)
+Answers should be friendly, include the user's name when available, use 12-hour time, and avoid technical schedule language.
 
-#### 7. **Shift Time Input** - Smart Time Configuration
+## Architecture
 
-- Preset and custom shift times
-- Custom time input with 12/24-hour format conversion
-- Auto-detection of day/night/evening/morning buckets based on start time
-- Overnight shift handling (crossing midnight)
-- Duration support for standard and custom shift lengths
-- Live preview of shift start/end times
-- Pattern summary card with floating animations
-- [Read the story →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)
+Ryvro keeps the accurate schedule engine behind a simplified experience.
 
-### Core Technology (Foundation)
+High-level flow:
 
-- **Bulletproof Shift Calculation**: Pure functions for instant, offline calculations
-- **TypeScript + Zod Validation**: Runtime safety for user data
-- **Firebase Backend**: Cloud Firestore for data sync
-- **Sacred Theme System**: Premium design language for shift workers
-- **1,814 Tests**: Comprehensive unit, config, service, and integration coverage
-- [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
+1. Onboarding captures the user's repeating pattern and exact phase.
+2. The app stores the normalized schedule locally and syncs it to Firebase when available.
+3. The offline local brain answers deterministic schedule questions instantly.
+4. The online backend handles broader natural-language questions and range parsing.
+5. The voice surface reads answers aloud and displays a clean answer card.
 
----
+Important implementation areas:
 
-## Release Status Snapshot
+- `src/screens/onboarding/premium/` for the current setup flow.
+- `src/screens/main/RyvroAskScreen.tsx` for the main voice surface.
+- `src/screens/main/SimpleSettingsScreen.tsx` for settings and repair entry points.
+- `src/services/VoiceAssistantService.ts` for voice orchestration.
+- `src/utils/localShiftBrain.ts` for offline answers.
+- `src/utils/shiftQueryTools.ts` for deterministic schedule tools.
+- `backend/functions/src/ryvro-brain.ts` for online backend answers.
 
-Ryvro is release-prep ready in the repository, but it is not live in the App Store or Google Play yet.
+## Visual System
 
-Repo-proven launch state:
+Use only the current Ryvro palette for active surfaces:
 
-- App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`
-- Launch surface: Universal Shift Builder onboarding, dashboard, profile/settings, Ryvro voice entry point, reminders, exceptions, and calendar import/export
-- Support/legal surface: Profile links open the configured support, account deletion, privacy policy, and terms URLs
-- Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
-- Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
-- Recorded local release gate: `npm run release:check` passed TypeScript, 113 Jest suites / 1,814 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-06-15
-- Recorded iOS simulator gate: `npm run test:e2e -- e2e/onboarding.test.ts --reuse` passed the fresh onboarding path into the Universal Shift Builder, `npm run test:e2e -- e2e/dashboard.test.ts --reuse` passed 16 dashboard checks including the active universal shift icon, and `npm run test:e2e -- e2e/critical-mobile.test.ts --reuse` passed auth, onboarding, dashboard, profile, and builder mobile-fit checks
-- Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
-- Recent recorded pushed PR gate: GitHub Actions CI run `27546422603` on commit `7f3df5e` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
-- Recent recorded E2E workflow gate: GitHub Actions run `27546583226` on commit `7f3df5e` passed the bounded E2E Configuration Check; native simulator/emulator Detox jobs remain available through the manual `run_native` workflow input
+- Dark base.
+- Cyan.
+- Blue `#147cff`.
+- Silver.
+- Muted text.
 
-Owner/account work still required before launch:
+Do not use shift-specific color themes for tabs, status areas, cards, or buttons. Shift type can be shown with words and icons, but the app should remain visually consistent.
 
-- Firebase Auth email-template action URL resolution or owner-approved fallback smoke evidence
-- App Store and Google Play subscription-product completion, including Google Payments hold removal for Play products
-- Sandbox purchase QA across trial start, entitlement activation, cancel, relock, and restore
-- Owner/legal review evidence for the live privacy and terms pages
-- App Store content rating, export compliance, EU trader status, reviewer account, subscription review screenshot, and final review submission
-- TestFlight build `4` iPhone smoke test, Play internal-track physical Android smoke test, store screenshots, and final production submission evidence
+## Language
 
-Current launch handoff lives in [docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md](docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md), [docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md](docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md), [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RYVRO_RELEASE_READINESS_REPORT.md), [RYVRO_RELEASE_TASKS.md](RYVRO_RELEASE_TASKS.md), and [docs/RYVRO_EXTERNAL_SERVICE_SETUP.md](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md).
+The active product is English-only.
 
----
+Old locale files may remain for history or migration, but the app runtime should not expose a language picker or localized user-facing copy in the new concept.
 
-## 🛠 Tech Stack
+## Backend And Firebase
 
-### Frontend
+Production Firebase project:
 
-- **Framework**: Expo SDK 54 with React Native 0.81
-- **Language**: TypeScript 5.9 (strict mode)
-- **Animations**: React Native Reanimated 4
-- **Gestures**: React Native Gesture Handler
-- **UI Components**: Custom components with Sacred theme
-- **Navigation**: React Navigation 7.x (Native Stack)
+- `ryvro-shift-planner`
 
-### Backend
+Main functions:
 
-- **Database**: Firebase Cloud Firestore
-- **Authentication**: Firebase Auth
-- **Storage**: Firebase Storage (for icons/assets)
-- **Environment Management**: dotenv with environment validation
+- `ryvroBrain`
+- `parseShiftScheduleDescription`
 
-### State Management
-
-- **Onboarding**: React Context (`OnboardingContext`)
-- **Shift Calculations**: Pure functions (client-side)
-- **User Data**: Firebase Firestore + local state
-
-### Code Quality
-
-- **Linting**: ESLint with TypeScript rules
-- **Formatting**: Prettier
-- **Pre-commit Hooks**: Husky + lint-staged
-- **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,814 tests in the latest release check), React Testing Library, Detox (E2E)
-
-### CI/CD
-
-- **GitHub Actions**: Automated testing and builds
-- **Code Coverage**: Codecov integration
-- **Platform Builds**: EAS Build (iOS/Android)
-
----
-
-## 📦 Getting Started
-
-### Prerequisites
-
-- **Node.js**: v18.x or later
-- **npm**: v9.x or later
-- **Expo CLI**: Latest version
-- **iOS Development** (macOS only):
-  - Xcode 14 or later
-  - CocoaPods
-- **Android Development**:
-  - Android Studio
-  - Android SDK (API 33 or later)
-  - JDK 17
-
-### Installation
+Deploy backend functions:
 
 ```bash
-# 1. Clone the current repository
-git clone https://github.com/IlyasuSeidu/Ellie.git
-cd Ellie
+firebase deploy --only functions --project ryvro-shift-planner
+```
 
-# 2. Install dependencies (use --legacy-peer-deps due to React Native constraints)
-npm install --legacy-peer-deps
+## Development
 
-# 3. Set up local development environment variables
-cp .env.example .env
+Install dependencies:
 
-# 4. Add your local Firebase configuration to .env
-FIREBASE_API_KEY=your-firebase-api-key
-FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
-FIREBASE_PROJECT_ID=your-project-id
-FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
-FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-FIREBASE_APP_ID=your-firebase-app-id
+```bash
+npm ci --legacy-peer-deps
+```
 
-# For production release builds, use .env.production.example instead
-# and run npm run release:env:check before pushing secrets to EAS.
+Start Expo:
 
-# 5. Start the development server
+```bash
 npm start
 ```
 
-### Running the App
+Run the main quality gates:
 
 ```bash
-# iOS Simulator (macOS only)
-npm run ios
-
-# Android Emulator
-npm run android
-
-# Expo Go (physical device)
-npm start  # Then scan QR code with Expo Go app
-```
-
----
-
-## 🧪 Development
-
-### Available Scripts
-
-#### Development
-
-```bash
-npm start                # Start Expo development server
-npm run android          # Run on Android emulator
-npm run ios              # Run on iOS simulator
-npm run web              # Run in web browser (limited support)
-```
-
-#### Code Quality
-
-```bash
-npm run lint             # Run ESLint
-npm run lint:fix         # Fix ESLint errors automatically
-npm run format           # Format code with Prettier
-npm run format:check     # Check if code is formatted
-npm run type-check       # Run TypeScript type checking
-npm run validate         # Run type-check and lint together
-```
-
-#### Testing
-
-```bash
-npm test                 # Run all unit tests
-npm run test:watch       # Run tests in watch mode
-npm run test:coverage    # Run tests with coverage report
-npm run test:e2e         # Run E2E tests (requires built app)
-npm run test:e2e:build   # Build app for E2E testing
-```
-
-#### Specific Test Suites
-
-```bash
-# Test current setup and schedule surfaces
-npm test -- --testPathPattern="PremiumWelcomeScreen"
-npm test -- --testPathPattern="UniversalShiftBuilder"
-npm test -- --testPathPattern="CalendarImportExport"
-
-# Test utils and services
-npm test -- --testPathPattern="shiftUtils"
-npm test -- --testPathPattern="ShiftDataService"
-```
-
----
-
-## 📁 Project Structure
-
-```
-Ryvro/
-├── .github/                      # GitHub configuration & CI/CD workflows
-├── .husky/                       # Git hooks (pre-commit)
-├── assets/                       # Static assets
-│   └── onboarding/
-│       └── icons/
-│           ├── 1x/               # Ryvro onboarding and builder visuals
-│           └── source/           # Source notes for generated assets
-├── src/
-│   ├── components/               # Reusable UI components
-│   │   └── onboarding/
-│   │       └── premium/          # Premium onboarding components
-│   │           ├── PremiumButton.tsx
-│   │           ├── PremiumCalendar.tsx
-│   │           ├── PremiumSlider.tsx
-│   │           └── __tests__/    # Component tests
-│   ├── contexts/                 # React contexts
-│   │   ├── OnboardingContext.tsx # Onboarding state management
-│   │   └── __tests__/
-│   ├── navigation/               # Navigation configuration
-│   │   └── OnboardingNavigator.tsx
-│   ├── screens/                  # Screen components
-│   │   ├── onboarding/
-│   │   │   └── premium/
-│   │   │       ├── PremiumWelcomeScreen.tsx
-│   │   │       ├── PremiumIntroductionScreen.tsx
-│   │   │       └── __tests__/
-│   │   └── main/
-│   │       ├── UniversalShiftBuilderScreen.tsx       # AI/template/manual builder
-│   │       └── __tests__/
-│   ├── services/                 # Backend services
-│   │   ├── AsyncStorageService.ts
-│   │   ├── AuthService.ts
-│   │   ├── FirebaseService.ts
-│   │   ├── ShiftDataService.ts
-│   │   └── __tests__/
-│   ├── types/                    # TypeScript type definitions
-│   │   └── index.ts              # Universal schedule and shift types
-│   ├── utils/                    # Utility functions
-│   │   ├── universalShiftUtils.ts         # Universal shift calculations
-│   │   ├── universalShiftScheduleUtils.ts # Schedule projection helpers
-│   │   ├── dateUtils.ts          # Date manipulation
-│   │   ├── theme.ts              # Sacred theme system
-│   │   └── __tests__/
-│   └── config/                   # App configuration
-│       └── firebase.config.ts
-├── tests/                        # Integration tests
-├── App.tsx                       # Root component
-├── app.json                      # Expo configuration
-└── README.md                     # This file
-```
-
----
-
-## 🎨 Design System - Sacred Theme
-
-Ryvro uses a custom design system called **"Sacred"** - built for shift workers who check their schedules at 4am before heading to a work location, ward, depot, airport, plant, venue, or control room.
-
-### Color Palette
-
-Colors are grounded in low-light shift-work conditions and broad enough for every shift-work setting:
-
-| Name           | Hex       | Usage                                  |
-| -------------- | --------- | -------------------------------------- |
-| **deepVoid**   | `#0C0A09` | Backgrounds and night-shift contrast   |
-| **sacredGold** | `#C5975C` | Primary accents and high-value actions |
-| **paleGold**   | `#F5F1E8` | Body text (4.8:1 contrast, WCAG AA)    |
-| **ashStone**   | `#1C1917` | Card backgrounds (the rock face)       |
-| **warmStone**  | `#A8A29E` | Secondary text                         |
-| **lightStone** | `#78716C` | Labels and hints                       |
-| **dayShift**   | `#2196F3` | Day shift indicators                   |
-| **nightShift** | `#651FFF` | Night shift indicators                 |
-| **daysOff**    | `#FF9800` | Days off indicators                    |
-
-[Read the design story →](build-in-public/design-tradeoff/02-sacred-theme-system.md)
-
----
-
-## 🧭 Roadmap
-
-### ✅ Phase 1: Foundation
-
-- [x] Project setup and development environment
-- [x] TypeScript types and Zod validation
-- [x] Utility functions (shift calculation, date handling)
-- [x] Firebase integration
-- [x] Sacred theme system
-- [x] Testing infrastructure (1,814 tests in the latest release check)
-
-### ✅ Phase 2: Premium Onboarding And Universal Builder
-
-- [x] Welcome screen with orchestrated animations
-- [x] Introduction screen (name, occupation, company, country)
-- [x] Universal Shift Builder in onboarding and Settings
-- [x] AI-assisted schedule drafting
-- [x] Manual shift types, colors, icons, reminders, and sequence editing
-- [x] Exceptions, holiday overrides, import/export, and calendar preview
-- [x] Onboarding navigation flow
-
-### ✅ Phase 3: Core Launch App
-
-- [x] Home dashboard with current/next shift visibility
-- [x] Month calendar preview with colors, icons, overnight shifts, and locked future weeks
-- [x] Profile and shift settings editing
-- [x] Ryvro voice assistant entry point
-- [x] Smart reminder configuration and notification service coverage
-- [x] Calendar import/export from the Universal Shift Builder
-- [x] Dashboard quick actions route to implemented launch surfaces
-
-### 🚧 Phase 4: Store Launch Readiness
-
-- [x] Repo-side Ryvro identity, assets, copy, templates, release docs, and CI gates
-- [x] Public clearance preflight script and current public evidence
-- [x] App Store Connect and Google Play app/package creation, Firebase/OAuth/backend setup, EAS production env push, and TestFlight/internal-track upload evidence
-- [x] Account-owner legal clearance and social handle reservation evidence
-- [ ] Firebase email-template action URL proof, subscription products, and store-compliance fields
-- [ ] Physical iOS and Android smoke tests
-- [ ] Store screenshots, sandbox purchase QA, and final App Store / Google Play submission
-
-### 🔮 Phase 5: Post-Launch Expansion
-
-- [ ] Full Schedule tab
-- [ ] Full Stats/analytics surface
-- [ ] Team sharing and coworker pattern exchange
-- [ ] Advanced shift swap tracking
-- [ ] Deeper earnings and allowance analytics
-- [ ] Automated EAS/Fastlane release lanes
-
----
-
-## 📖 Build-in-Public Journey
-
-I'm building Ryvro in public, documenting every decision, challenge, and lesson learned. Each major feature has a dedicated story:
-
-| Feature                 | Story Angle          | Link                                                                                |
-| ----------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| **Day 1: Foundation**   | System Thinking      | [Read →](build-in-public/system-thinking/01-day-one-foundations.md)                 |
-| **Sacred Theme**        | Design Tradeoff      | [Read →](build-in-public/design-tradeoff/02-sacred-theme-system.md)                 |
-| **Welcome Screen**      | Emotional Moment     | [Read →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)    |
-| **Template Discovery**  | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
-| **Manual Builder**      | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
-| **Start Date Screen**   | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
-| **Shift Time Input**    | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
-| **Shift System**        | System Thinking      | [Read →](build-in-public/system-thinking/08-shift-system-architecture.md)           |
-| **Day Within Phase**    | User Empathy         | [Read →](build-in-public/user-empathy/09-day-within-phase-positioning.md)           |
-| **Introduction Screen** | Emotional Moment     | [Read →](build-in-public/emotional-moment/10-conversational-introduction.md)        |
-| **Current Position**    | System Thinking      | [Read →](build-in-public/system-thinking/11-phase-selector-separation.md)           |
-
-Each story includes:
-
-- Human summary for shift workers
-- Build-in-public post
-- Beginner lesson
-- Expert insight
-- Short video script
-- Future improvements
-
----
-
-## 🧪 Testing Strategy
-
-Ryvro has comprehensive test coverage across all layers:
-
-### Unit Tests (1,814 tests in the latest release check)
-
-- **Utilities**: Shift calculations, date manipulation, validation
-- **Components**: Onboarding, dashboard, voice, profile, and builder components
-- **Services**: Firebase, storage, auth, schedule parsing, notifications, RevenueCat, voice, and analytics
-- **Contexts**: Auth, language, onboarding, and subscription state management
-
-### Integration Tests
-
-- **Services Integration**: Cross-service data flow
-- **Onboarding Flow**: Complete user journey
-
-### E2E Tests
-
-- **Simulator/emulator smoke**: iOS and Android release-style dashboard, auth, onboarding, and profile language flows have repo-documented evidence
-- **Physical device smoke**: still required before store submission
-
-### Test Commands
-
-```bash
-# Run all tests
-npm test
-
-# Run specific test suite
-npm test -- --testPathPattern="PremiumStartDateScreen"
-
-# Watch mode for TDD
-npm run test:watch
-
-# Coverage report
-npm run test:coverage
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-### 1. Code Standards
-
-- **TypeScript**: Strict mode, no `any` types
-- **Testing**: Add tests for all new features
-- **Formatting**: Prettier + ESLint (auto-fixed on commit)
-- **Commits**: Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-
-### 2. Development Workflow
-
-```bash
-# 1. Create feature branch
-git checkout -b feature/your-feature-name
-
-# 2. Make changes and add tests
-# 3. Run validation
-npm run validate
-npm test
-
-# 4. Commit (pre-commit hooks will run automatically)
-git commit -m "feat: add new feature"
-
-# 5. Push and create PR
-git push origin feature/your-feature-name
-```
-
-### 3. Pull Request Template
-
-- Describe what changed and why
-- Link related issues
-- Include screenshots for UI changes
-- Verify all CI checks pass
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Metro bundler cache issues**
-
-```bash
-npx expo start -c
-```
-
-**iOS build failing**
-
-```bash
-cd ios && pod install && cd ..
-npm run ios
-```
-
-**Android build failing**
-
-```bash
-cd android && ./gradlew clean && cd ..
-npm run android
-```
-
-**Type errors after dependency update**
-
-```bash
+npm run lint
 npm run type-check
+npm test -- --runInBand --silent
+npm --prefix backend/functions test
+npm --prefix backend/functions run build
 ```
 
-**Pre-commit hook failing**
+Run the full release gate:
 
 ```bash
-npm run validate
-npm run format
+npm run release:check
 ```
 
-**Firebase connection issues**
+## Release Status
 
-- Verify `.env` file has correct Firebase credentials
-- Check Firebase project is active
-- Ensure Firestore rules allow read/write
+Ryvro is still in launch preparation. The app is not live in the App Store or Google Play until the owner completes store submission, physical-device QA, subscription QA, screenshots, and final review steps.
 
----
+Current launch handoff files:
 
-## 📊 Metrics
+- [Release tasks](RYVRO_RELEASE_TASKS.md)
+- [Release readiness report](docs/RYVRO_RELEASE_READINESS_REPORT.md)
+- [External service setup](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md)
+- [RevenueCat handoff](docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md)
+- [App Store and TestFlight handoff](docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md)
+- [Submit blocker triage](docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md)
 
-### Current Status (as of 2026-06-09 release check)
+## Historical Material
 
-- **Total Tests**: 1,814 passing (113 Jest suites, 4 snapshots)
-- **Test Coverage**:
-  - Branches: 62.03% (≥60% ✅)
-  - Functions: 76.95% (≥70% ✅)
-  - Lines: 73.60% (≥70% ✅)
-  - Statements: 74.27% (≥70% ✅)
-- **TypeScript Errors**: 0
-- **ESLint Errors**: 0
-- **Onboarding Flow**: Universal Shift Builder setup completed (Welcome, Introduction, builder entry, AI/template/manual builder, current-position alignment, preview, completion)
-- **Lines of Code**: ~18,000+
-- **Commits**: 79+
-- **Build Time**: ✅ Passing
-- **CI/CD**: ✅ All workflows green
+The repository still contains historical documents and archived implementation notes from the old builder, dashboard, calendar, and multi-language direction. Those files are engineering history, not the current product model.
 
----
+For any new code, docs, screenshots, store copy, or GitHub issue, use the current concept:
 
-## 📄 License
-
-This project is private and proprietary.
-
----
-
-## 📞 Contact
-
-**GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
-**Repository**: [Current Ryvro app repository](https://github.com/IlyasuSeidu/Ellie)
-
----
-
-## 💡 The Vision
-
-**Ryvro exists because shift work is hard enough without the mental overhead of tracking complex rotating schedules.**
-
-Every feature is designed with one question in mind: _"Will this help a shift worker know what they're working at 4am?"_
-
-If you're a shift worker tired of counting through your pattern, Ryvro is for you.
-
----
-
-_Built with respect for the work, using Expo and React Native._
-
-_"Track your shifts. Own your time."_
+> Configure your shift once. Ask Ryvro by voice. Get the right shift answer instantly.

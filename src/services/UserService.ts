@@ -83,6 +83,8 @@ interface FailedUserMutation extends PendingUserMutation {
   lastError: string;
 }
 
+const PROFILE_SYNC_TIMEOUT_MS = 4500;
+
 /**
  * UserService class
  */
@@ -604,28 +606,35 @@ export class UserService extends FirebaseService {
     }
 
     try {
-      const existing = await this.getUser(userId);
-
-      if (existing) {
-        await this.updateUser(userId, profileUpdates);
-        logger.info('UserService: synced existing user profile from onboarding', { userId });
-        return;
-      }
-
-      const createPayload: UserProfile = {
+      const cachedProfile = await this.getCachedUser(userId);
+      const nextProfile = this.validateUserProfile({
+        ...(cachedProfile ?? {
+          id: userId,
+          createdAt: now,
+          email: normalizedAuthEmail ?? `pending+${userId}@ryvro.local`,
+        }),
         id: userId,
         name: profileUpdates.name ?? 'User',
         occupation: profileUpdates.occupation ?? 'Unknown',
         company: profileUpdates.company ?? 'Unknown',
         country: profileUpdates.country ?? 'US',
-        email: normalizedAuthEmail ?? `pending+${userId}@ryvro.local`,
-        createdAt: now,
+        email: normalizedAuthEmail ?? cachedProfile?.email ?? `pending+${userId}@ryvro.local`,
+        createdAt: cachedProfile?.createdAt ?? now,
         updatedAt: now,
         shiftCycle: profileUpdates.shiftCycle,
-      };
+      });
 
-      await this.createUser(userId, createPayload);
-      logger.info('UserService: created new user profile from onboarding', { userId });
+      await this.commitProfileMutation(
+        userId,
+        nextProfile,
+        () =>
+          this.withProfileSyncTimeout(
+            this.upsert(this.USERS_COLLECTION, userId, nextProfile, { merge: true })
+          ),
+        'profile-sync'
+      );
+
+      logger.info('UserService: synced user profile from onboarding', { userId });
     } catch (error) {
       logger.error('UserService: failed to sync user profile', error as Error, { userId });
       throw error;
@@ -816,6 +825,27 @@ export class UserService extends FirebaseService {
 
       await this.upsert(this.USERS_COLLECTION, userId, fullProfile);
     }
+  }
+
+  private withProfileSyncTimeout<T>(operation: Promise<T>): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const timeout = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => {
+        reject(
+          new NetworkError(
+            'Profile sync timed out. Ryvro saved locally and will retry.',
+            'PROFILE_SYNC_TIMEOUT'
+          )
+        );
+      }, PROFILE_SYNC_TIMEOUT_MS);
+    });
+
+    return Promise.race([operation, timeout]).finally(() => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    });
   }
 
   private async resolveUserForMutation(userId: string): Promise<UserProfile> {

@@ -1,383 +1,123 @@
-/**
- * Premium Completion Screen
- *
- * Celebration and completion screen for onboarding flow.
- * Shows summary of the user's configured schedule and saves onboarding state.
- */
-
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
   ActivityIndicator,
-  AccessibilityInfo,
-  Pressable,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
-  FadeIn,
+  Easing,
   FadeInDown,
-  FadeInUp,
-  FadeInRight,
-  FadeOutUp,
-  withTiming,
-  withDelay,
+  useAnimatedStyle,
+  useSharedValue,
   withRepeat,
   withSequence,
-  useSharedValue,
-  useAnimatedStyle,
-  useAnimatedProps,
-  Easing,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import Svg, { Circle, Path } from 'react-native-svg';
-
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useTranslation } from 'react-i18next';
-import { theme } from '@/utils/theme';
-import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
-import { useOnboarding } from '@/contexts/OnboardingContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
+import { userService } from '@/services/UserService';
+import { appStateStorageService } from '@/services/AppStateStorageService';
+import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
+import { useSubscription } from '@/hooks/useSubscription';
+import { Analytics } from '@/utils/analytics';
+import { triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { logger } from '@/utils/logger';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 import {
   persistOnboardingData,
   setPersistedOnboardingComplete,
 } from '@/utils/onboardingPersistence';
-import { userService } from '@/services/UserService';
-import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
-import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
-import { buildShiftCycle, getShiftDaysInRange } from '@/utils/shiftUtils';
-import type { RootStackParamList } from '@/navigation/AppNavigator';
-import {
-  getPatternDisplayName,
-  getCycleLengthDays,
-  getShiftDurationSummary,
-  getWorkRestRatio,
-  formatShiftTime,
-} from '@/utils/profileUtils';
-import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
-import { logger } from '@/utils/logger';
-import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
-import { Analytics } from '@/utils/analytics';
-import { NotificationPrimingModal } from '@/components/onboarding/NotificationPrimingModal';
-import { useSubscription } from '@/hooks/useSubscription';
-import { appStateStorageService } from '@/services/AppStateStorageService';
-import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
-import { formatLocalizedDate, getLocaleTag } from '@/utils/i18nFormat';
-
-const isJestRuntime = (): boolean =>
-  typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
-const COMPLETION_ANALYTICS_STEP = 12;
-
-function formatRelativeDays(daysAway: number, locale: string): string {
-  const RelativeTimeFormat = Intl.RelativeTimeFormat;
-  if (typeof RelativeTimeFormat === 'function') {
-    return new RelativeTimeFormat(locale, { numeric: 'always' }).format(daysAway, 'day');
-  }
-
-  if (daysAway === 0) return 'today';
-  if (daysAway === 1) return 'in 1 day';
-  if (daysAway === -1) return '1 day ago';
-  return daysAway > 0 ? `in ${daysAway} days` : `${Math.abs(daysAway)} days ago`;
-}
-
-// Animated SVG components
-const AnimatedPath = Animated.createAnimatedComponent(Path);
-
-// Confetti Particle Component
-const ConfettiParticle: React.FC<{ delay: number; angle: number; reducedMotion: boolean }> = ({
-  delay,
-  angle,
-  reducedMotion,
-}) => {
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-  const opacity = useSharedValue(1);
-  const rotation = useSharedValue(0);
-
-  const colors = [
-    theme.colors.sacredGold,
-    '#60A5FA', // Blue
-    '#F59E0B', // Amber
-    '#10B981', // Green
-    '#EC4899', // Pink
-    '#8B5CF6', // Purple
-  ];
-
-  const particleColor = colors[Math.floor(Math.random() * colors.length)];
-
-  useEffect(() => {
-    if (reducedMotion) return;
-
-    translateX.value = withDelay(
-      delay,
-      withTiming(Math.cos(angle) * (Math.random() * 150 + 100), {
-        duration: 1500,
-        easing: Easing.out(Easing.quad),
-      })
-    );
-    translateY.value = withDelay(
-      delay,
-      withTiming(Math.sin(angle) * (Math.random() * 150 + 100) + 300, {
-        duration: 1500,
-        easing: Easing.in(Easing.quad),
-      })
-    );
-    rotation.value = withDelay(delay, withTiming(Math.random() * 720, { duration: 1500 }));
-    opacity.value = withDelay(delay + 1000, withTiming(0, { duration: 500 }));
-  }, [delay, angle, reducedMotion, translateX, translateY, rotation, opacity]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-      { rotate: `${rotation.value}deg` },
-    ],
-    opacity: opacity.value,
-  }));
-
-  if (reducedMotion) return null;
-
-  return (
-    <Animated.View style={[styles.confettiParticle, animatedStyle]}>
-      <View style={[styles.confettiDot, { backgroundColor: particleColor }]} />
-    </Animated.View>
-  );
-};
-
-// Sparkle Component for checkmark decoration
-const Sparkle: React.FC<{ delay: number; angle: number; reducedMotion: boolean }> = ({
-  delay,
-  angle,
-  reducedMotion,
-}) => {
-  const scale = useSharedValue(0);
-  const opacity = useSharedValue(0);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      scale.value = 1;
-      opacity.value = 0.8;
-      return;
-    }
-
-    scale.value = withDelay(
-      delay,
-      withRepeat(
-        withSequence(withTiming(1, { duration: 400 }), withTiming(0.8, { duration: 400 })),
-        -1,
-        true
-      )
-    );
-    opacity.value = withDelay(delay, withTiming(0.8, { duration: 300 }));
-  }, [delay, reducedMotion, scale, opacity]);
-
-  const sparkleStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: Math.cos(angle) * 70 },
-      { translateY: Math.sin(angle) * 70 },
-      { scale: scale.value },
-    ],
-    opacity: opacity.value,
-  }));
-
-  return (
-    <Animated.View style={[styles.sparkle, sparkleStyle]}>
-      <Ionicons name="sparkles" size={16} color={theme.colors.sacredGold} />
-    </Animated.View>
-  );
-};
 
 export interface PremiumCompletionScreenProps {
   onComplete?: () => void;
   testID?: string;
 }
 
-interface FeaturePill {
-  id: string;
-  translationKey: string;
-  icon: keyof typeof Ionicons.glyphMap;
-  text: string;
-  description: string;
-  color: string;
-}
+const RYVRO_COLORS = {
+  void: '#02070b',
+  ink: '#07121a',
+  panel: 'rgba(8, 22, 31, 0.84)',
+  panelStrong: 'rgba(13, 34, 48, 0.96)',
+  cyan: '#20f4dc',
+  blue: '#147cff',
+  silver: '#d6e7f2',
+  muted: '#9db2c2',
+  line: 'rgba(191, 231, 255, 0.2)',
+  error: '#ff8a80',
+} as const;
 
-const FEATURE_HIGHLIGHTS: FeaturePill[] = [
-  {
-    id: '1',
-    translationKey: 'reminders',
-    text: 'Smart shift reminders',
-    icon: 'notifications-outline',
-    description: 'Never miss a shift with intelligent notifications that adapt to your rotation',
-    color: theme.colors.sacredGold,
-  },
-  {
-    id: '2',
-    translationKey: 'sleep',
-    text: 'Sleep tracking & insights',
-    icon: 'moon-outline',
-    description: 'Optimize your rest between shifts with personalized sleep analytics',
-    color: '#60A5FA', // Blue
-  },
-  {
-    id: '3',
-    translationKey: 'fatigue',
-    text: 'Fatigue monitoring',
-    icon: 'battery-charging-outline',
-    description: 'Track your energy levels and get alerts when fatigue risk is high',
-    color: '#F59E0B', // Amber
-  },
-  {
-    id: '4',
-    translationKey: 'team',
-    text: 'Team coordination',
-    icon: 'people-outline',
-    description: 'See your crew schedule and coordinate handovers seamlessly',
-    color: '#10B981', // Green
-  },
-  {
-    id: '5',
-    translationKey: 'balance',
-    text: 'Work-life balance',
-    icon: 'fitness-outline',
-    description: 'Maintain healthy routines with activity and wellness tracking',
-    color: '#EC4899', // Pink
-  },
-  {
-    id: '6',
-    translationKey: 'earnings',
-    text: 'Earnings calculator',
-    icon: 'calculator-outline',
-    description: 'Automatically calculate overtime, penalties, and shift allowances',
-    color: '#8B5CF6', // Purple
-  },
-  {
-    id: '7',
-    translationKey: 'meals',
-    text: 'Meal & hydration',
-    icon: 'restaurant-outline',
-    description: 'Stay healthy with meal timing suggestions and hydration reminders',
-    color: '#14B8A6', // Teal
-  },
-];
+const COMPLETION_ANALYTICS_STEP = 12;
 
 export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = ({
   onComplete,
   testID = 'premium-completion-screen',
 }) => {
-  useEffect(() => {
-    Analytics.onboardingStepViewed('completion', COMPLETION_ANALYTICS_STEP);
-  }, []);
-
-  const { t, i18n } = useTranslation('onboarding');
+  const insets = useSafeAreaInsets();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { data, validateData } = useOnboarding();
   const { user } = useAuth();
   const { isPro, isLoading: subscriptionLoading } = useSubscription();
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const currentPlatform = Platform.OS;
-
-  // State
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [selectedCheckIn, setSelectedCheckIn] = useState<string | null>(null);
-  const scrollViewRef = useRef<ScrollView>(null);
-  const featuresSectionYRef = useRef(0);
-  const notificationPromptTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const completionTrackedRef = useRef(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const trackedRef = useRef(false);
 
-  // Animation values
-  const checkmarkProgress = useSharedValue(0);
-  const glowOpacity = useSharedValue(0);
-
-  // Check for reduced motion
-  useEffect(() => {
-    const checkReducedMotion = async () => {
-      const isReducedMotionEnabled = await AccessibilityInfo.isReduceMotionEnabled();
-      setReducedMotion(isReducedMotionEnabled);
-    };
-    checkReducedMotion();
-  }, []);
+  const contentOpacity = useSharedValue(0);
+  const contentTranslateY = useSharedValue(24);
+  const checkScale = useSharedValue(0.92);
+  const orbitRotation = useSharedValue(0);
 
   useEffect(() => {
-    return () => {
-      if (notificationPromptTimerRef.current) {
-        clearTimeout(notificationPromptTimerRef.current);
-      }
-    };
-  }, []);
+    Analytics.onboardingStepViewed('completion', COMPLETION_ANALYTICS_STEP);
+    contentOpacity.value = withTiming(1, { duration: 420, easing: Easing.out(Easing.cubic) });
+    contentTranslateY.value = withSpring(0, { damping: 18, stiffness: 170 });
+    checkScale.value = withRepeat(
+      withSequence(
+        withTiming(1.05, { duration: 1100, easing: Easing.inOut(Easing.ease) }),
+        withTiming(1, { duration: 1100, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      true
+    );
+    orbitRotation.value = withRepeat(
+      withTiming(360, { duration: 12000, easing: Easing.linear }),
+      -1,
+      false
+    );
+  }, [checkScale, contentOpacity, contentTranslateY, orbitRotation]);
 
-  // Trigger success haptic and animations on mount
-  useEffect(() => {
-    const triggerCelebration = async () => {
-      // Success haptic
-      await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
-        source: 'PremiumCompletionScreen.triggerCelebration',
-      });
-
-      // Animate checkmark
-      checkmarkProgress.value = withDelay(
-        300,
-        withTiming(1, {
-          duration: 1000,
-          easing: Easing.bezier(0.4, 0.0, 0.2, 1),
-        })
-      );
-
-      // Pulse glow effect
-      glowOpacity.value = withDelay(
-        1500,
-        withRepeat(
-          withSequence(withTiming(0.6, { duration: 1500 }), withTiming(0.3, { duration: 1500 })),
-          -1,
-          true
-        )
-      );
-    };
-
-    triggerCelebration();
-  }, [checkmarkProgress, glowOpacity]);
-
-  // Animated props for checkmark
-  const checkmarkAnimatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: 100 - checkmarkProgress.value * 100,
+  const contentAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: contentOpacity.value,
+    transform: [{ translateY: contentTranslateY.value }],
   }));
 
-  const glowStyle = useAnimatedStyle(() => ({
-    opacity: glowOpacity.value,
+  const checkAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: checkScale.value }],
   }));
 
-  // Validation logic is now handled by OnboardingContext.validateData()
-  // No need for duplicate validation function here
+  const orbitAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${orbitRotation.value}deg` }],
+  }));
 
-  // Save onboarding data
-  const saveOnboardingData = async (): Promise<void> => {
+  const saveOnboardingData = async () => {
     setIsSaving(true);
     setSaveError(null);
 
-    // Validate data BEFORE saving (using context validation)
     const validation = validateData();
-
     if (!validation.isValid) {
-      setSaveError(
-        String(
-          t('completion.errors.missingRequiredInformation', {
-            fields: validation.missingFields.join(', '),
-            defaultValue:
-              'Missing required information: {{fields}}. Please go back and complete all steps.',
-          })
-        )
-      );
-      await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
-        source: 'PremiumCompletionScreen.saveOnboardingData.error',
-      });
+      setSaveError(`Missing required information: ${validation.missingFields.join(', ')}.`);
       setIsSaving(false);
       return;
     }
@@ -386,81 +126,38 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       await setPersistedOnboardingComplete(true);
       await persistOnboardingData(data);
 
-      // Sync onboarding data to Firestore if user is authenticated.
       if (user) {
         try {
           await userService.createOrSyncUserProfile(user.uid, data, user.email);
-          logger.info('Onboarding data synced to Firestore', { userId: user.uid });
         } catch (syncError) {
-          // Do not block completion flow if sync fails; local onboarding save already succeeded.
           logger.error('Failed to sync onboarding data to Firestore', syncError as Error, {
             userId: user.uid,
           });
         }
       }
 
-      setIsSaved(true);
-
-      if (!completionTrackedRef.current) {
-        completionTrackedRef.current = true;
-        const installTime = (await appStateStorageService.getInstallStartedAt()) ?? 0;
+      if (!trackedRef.current) {
+        trackedRef.current = true;
+        const installStartedAt = (await appStateStorageService.getInstallStartedAt()) ?? 0;
         const timeToCompleteSeconds =
-          Number.isFinite(installTime) && installTime > 0
-            ? Math.max(0, Math.round((Date.now() - installTime) / 1000))
+          Number.isFinite(installStartedAt) && installStartedAt > 0
+            ? Math.max(0, Math.round((Date.now() - installStartedAt) / 1000))
             : 0;
-
         const cachedIsPro = subscriptionLoading
           ? await subscriptionEntitlementCacheService.getCachedIsPro(user?.uid ?? null)
           : null;
-        const resolvedIsPro = isPro || cachedIsPro === true;
 
         Analytics.onboardingCompleted({
           schedule_name: data.universalSchedule?.name ?? null,
           country: data.country ?? null,
           pain_point: data.painPoint ?? null,
           time_to_complete_seconds: timeToCompleteSeconds,
-          is_pro: resolvedIsPro,
-          platform: currentPlatform,
+          is_pro: isPro || cachedIsPro === true,
+          platform: Platform.OS,
         });
       }
 
-      const shouldShowNotificationPrompt = async (): Promise<boolean> => {
-        if (await appStateStorageService.getNotificationSoftDeclined()) {
-          return false;
-        }
-
-        if (!isJestRuntime()) {
-          try {
-            const { notificationService } = await import('@/services/NotificationService');
-            const permissionStatus = await notificationService.getPermissionStatus();
-            if (permissionStatus === 'granted' || permissionStatus === 'denied') {
-              return false;
-            }
-          } catch {
-            // Fall back to the soft prompt when the permission status cannot be read.
-          }
-        }
-
-        return true;
-      };
-
-      if (await shouldShowNotificationPrompt()) {
-        notificationPromptTimerRef.current = setTimeout(() => {
-          Analytics.notificationPermissionSoftShown();
-          setShowNotificationModal(true);
-        }, 1500);
-      }
-
-      const firstName = data.name?.trim().split(' ')[0] ?? 'there';
-      if (!isJestRuntime()) {
-        void import('@/services/NotificationService')
-          .then(({ notificationService }) =>
-            notificationService.scheduleOnboardingEngagementSequence(firstName)
-          )
-          .catch(() => undefined);
-      }
-
-      // Trigger success haptic
+      setIsSaved(true);
       await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumCompletionScreen.saveOnboardingData.success',
       });
@@ -475,22 +172,13 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     }
   };
 
-  // Save data on mount
   useEffect(() => {
-    saveOnboardingData();
+    void saveOnboardingData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlatform]);
+  }, []);
 
-  // Handle retry
-  const handleRetry = () => {
-    saveOnboardingData();
-  };
-
-  // Handle completion - navigate to Main Dashboard
-  const handleGetStarted = () => {
+  const enterApp = () => {
     if (!isSaved) return;
-
-    // Call completion callback if provided
     onComplete?.();
 
     const parentNavigation =
@@ -506,912 +194,233 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       return;
     }
 
-    // Fallback for test/mocked navigation objects
-    if (typeof navigation.navigate === 'function') {
-      navigation.navigate('Main');
-    }
+    navigation.navigate('Main');
   };
-
-  // Handle feature pill expansion
-  const handleFeaturePillPress = useCallback(
-    (featureId: string) => {
-      const isAlreadySelected = expandedFeature === featureId;
-      setExpandedFeature(isAlreadySelected ? null : featureId);
-
-      if (!isAlreadySelected && scrollViewRef.current) {
-        requestAnimationFrame(() => {
-          scrollViewRef.current?.scrollTo({
-            y: Math.max(featuresSectionYRef.current - 130, 0),
-            animated: true,
-          });
-        });
-      }
-
-      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-        source: 'PremiumCompletionScreen.handleFeaturePillPress',
-      });
-    },
-    [expandedFeature]
-  );
-
-  const selectedFeature = useMemo(
-    () =>
-      FEATURE_HIGHLIGHTS.map((feature) => ({
-        ...feature,
-        text: String(
-          t(`completion.features.${feature.translationKey}`, {
-            defaultValue: feature.text,
-          })
-        ),
-        description: String(
-          t(`completion.features.${feature.translationKey}Desc`, {
-            defaultValue: feature.description,
-          })
-        ),
-      })).find((feature) => feature.id === expandedFeature) ?? null,
-    [expandedFeature, t]
-  );
-
-  const featureHighlights = useMemo(
-    () =>
-      FEATURE_HIGHLIGHTS.map((feature) => ({
-        ...feature,
-        text: String(
-          t(`completion.features.${feature.translationKey}`, {
-            defaultValue: feature.text,
-          })
-        ),
-        description: String(
-          t(`completion.features.${feature.translationKey}Desc`, {
-            defaultValue: feature.description,
-          })
-        ),
-      })),
-    [t]
-  );
-
-  const displayName = useMemo(() => {
-    const trimmedName = data.name?.trim();
-    if (!trimmedName) return null;
-    return trimmedName.split(/\s+/)[0] ?? trimmedName;
-  }, [data.name]);
-
-  // Format schedule name for display
-  const isUniversalSchedule = !!data.universalSchedule;
-
-  const getPatternName = (): string =>
-    isUniversalSchedule && data.universalSchedule
-      ? data.universalSchedule.name
-      : getPatternDisplayName(data);
-
-  const getSetupLabel = (): string => getPatternName();
-
-  const getScheduleEngineName = (): string =>
-    String(
-      t('completion.summary.scheduleEngine', {
-        defaultValue: 'Universal custom shifts',
-      })
-    );
-
-  const getScheduleTypeName = (): string =>
-    String(
-      t('completion.summary.scheduleType', {
-        defaultValue: 'Universal schedule',
-      })
-    );
-
-  const getUniversalCycleSummary = (): string => {
-    const cycleDays = getCycleLengthDays(data);
-    const ratio = getWorkRestRatio(data);
-    const duration = getShiftDurationSummary(data);
-    return `${cycleDays ?? '-'} days • ${ratio} work/rest • ${duration} per shift`;
-  };
-
-  // Format date
-  const formatDate = (date?: Date): string => {
-    if (!date) return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
-    return formatLocalizedDate(
-      date,
-      {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      },
-      i18n.resolvedLanguage ?? i18n.language
-    );
-  };
-
-  const formatDateValue = (date?: Date | string): string => {
-    if (!date) return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
-    return formatDate(typeof date === 'string' ? new Date(`${date}T00:00:00`) : date);
-  };
-
-  const getShiftLabel = useCallback(
-    (shiftType: 'day' | 'night' | 'morning' | 'afternoon'): string => {
-      const keyMap = {
-        day: 'shiftLabels.day',
-        night: 'shiftLabels.night',
-        morning: 'shiftLabels.morning',
-        afternoon: 'shiftLabels.afternoon',
-      } as const;
-
-      return String(
-        t(keyMap[shiftType], {
-          ns: 'dashboard',
-          defaultValue: `${shiftType.charAt(0).toUpperCase() + shiftType.slice(1)} Shift`,
-        })
-      );
-    },
-    [t]
-  );
-
-  // Format shift times - returns array of shift time entries
-  const getShiftTimeEntries = (): Array<{ label: string; value: string }> => {
-    if (isUniversalSchedule && data.universalSchedule) {
-      return data.universalSchedule.shiftDefinitions.map((definition) => {
-        let value = String(
-          t('completion.summary.notTimed', {
-            defaultValue: 'Not timed',
-          })
-        );
-        if (definition.timePolicy === 'all_day') {
-          value = String(
-            t('completion.summary.allDay', {
-              defaultValue: 'All day',
-            })
-          );
-        } else if (definition.startTime && definition.endTime) {
-          value = `${formatShiftTime(definition.startTime)} - ${formatShiftTime(definition.endTime)}`;
-        }
-
-        return {
-          label: definition.name,
-          value,
-        };
-      });
-    }
-
-    const shiftTimes = getShiftTimesFromData(data);
-    const entries = shiftTimes.map((st) => ({
-      label: getShiftLabel(st.type),
-      value: `${st.startTime} - ${st.endTime}`,
-    }));
-
-    // If no shift times configured, show placeholder
-    if (entries.length === 0) {
-      entries.push({
-        label: String(t('completion.summary.shiftTimes', { defaultValue: 'Shift Times' })),
-        value: String(t('completion.summary.notSet', { defaultValue: 'Not set' })),
-      });
-    }
-
-    return entries;
-  };
-
-  const nextShiftCountdown = useMemo(() => {
-    const cycle = buildShiftCycle(data);
-    if (!cycle) return null;
-
-    const now = new Date();
-    const end = new Date(now.getFullYear() + 1, 11, 31);
-    const shiftDays = getShiftDaysInRange(now, end, cycle);
-    const nextShiftDay = shiftDays.find((shiftDay) => shiftDay.shiftType !== 'off');
-    if (!nextShiftDay) return null;
-
-    const shiftDate = new Date(`${nextShiftDay.date}T00:00:00`);
-    const daysAway = Math.max(
-      0,
-      Math.ceil((shiftDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-    );
-
-    return { date: shiftDate, daysAway };
-  }, [data]);
-
-  const nextShiftRelativeText = useMemo(() => {
-    if (!nextShiftCountdown) {
-      return null;
-    }
-
-    return formatRelativeDays(
-      nextShiftCountdown.daysAway,
-      getLocaleTag(i18n.resolvedLanguage ?? i18n.language)
-    );
-  }, [i18n.language, i18n.resolvedLanguage, nextShiftCountdown]);
 
   return (
     <View style={styles.container} testID={testID}>
-      {/* Progress Header */}
-      <ProgressHeader
-        currentStep={ONBOARDING_STEPS.COMPLETION}
-        totalSteps={TOTAL_ONBOARDING_STEPS}
+      <LinearGradient
+        colors={[RYVRO_COLORS.ink, RYVRO_COLORS.void, '#000204']}
+        locations={[0, 0.58, 1]}
+        style={StyleSheet.absoluteFill}
       />
+      <View style={styles.cyanGlow} />
+      <View style={styles.blueGlow} />
+      <Animated.View style={[styles.orbit, orbitAnimatedStyle]} pointerEvents="none" />
 
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        testID="completion-scroll-view"
+      <Animated.View
+        style={[
+          styles.content,
+          contentAnimatedStyle,
+          {
+            paddingTop: Math.max(insets.top + 26, 54),
+            paddingBottom: Math.max(insets.bottom + 30, 48),
+          },
+        ]}
       >
-        {/* Animated Checkmark Circle */}
-        <Animated.View
-          entering={reducedMotion ? undefined : FadeIn.duration(500)}
-          style={styles.checkmarkContainer}
-        >
-          {/* Glow effect */}
-          <Animated.View style={[styles.glow, glowStyle]} />
-
-          {/* Confetti explosion */}
-          <View style={styles.confettiContainer} pointerEvents="none">
-            {Array.from({ length: 30 }).map((_, i) => (
-              <ConfettiParticle
-                key={i}
-                delay={1000 + i * 20}
-                angle={(Math.PI * 2 * i) / 30}
-                reducedMotion={reducedMotion}
-              />
-            ))}
-          </View>
-
-          {/* Sparkles around checkmark */}
-          <View style={styles.sparklesContainer}>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Sparkle
-                key={i}
-                delay={1000 + i * 100}
-                angle={(Math.PI * 2 * i) / 6}
-                reducedMotion={reducedMotion}
-              />
-            ))}
-          </View>
-
-          {/* SVG Circle and Checkmark */}
-          <Svg width={120} height={120} viewBox="0 0 120 120">
-            {/* Gradient border circle */}
-            <Circle
-              cx={60}
-              cy={60}
-              r={56}
-              fill="transparent"
-              stroke={theme.colors.sacredGold}
-              strokeWidth={4}
-            />
-
-            {/* Checkmark path */}
-            <AnimatedPath
-              d="M 35 60 L 50 75 L 85 40"
-              fill="transparent"
-              stroke={theme.colors.paper}
-              strokeWidth={6}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeDasharray="100"
-              animatedProps={checkmarkAnimatedProps}
-            />
-          </Svg>
+        <Animated.View style={[styles.checkShell, checkAnimatedStyle]}>
+          <LinearGradient colors={[RYVRO_COLORS.cyan, RYVRO_COLORS.blue]} style={styles.checkIcon}>
+            <Ionicons name="checkmark" size={44} color={RYVRO_COLORS.void} />
+          </LinearGradient>
         </Animated.View>
 
-        {/* Title */}
-        <Animated.Text
-          entering={reducedMotion ? undefined : FadeInDown.delay(400).duration(500)}
-          style={styles.title}
-        >
-          {displayName
-            ? t('completion.title_named', {
-                name: displayName,
-                defaultValue: "{{name}}, you're all set.",
-              })
-            : t('completion.title', { defaultValue: "You're all set." })}
-        </Animated.Text>
+        <Text style={styles.headline}>You’re set.</Text>
+        <Text style={styles.support}>Ask Ryvro about your shift.</Text>
 
-        {/* Subtitle */}
-        <Animated.Text
-          entering={reducedMotion ? undefined : FadeInDown.delay(500).duration(500)}
-          style={styles.subtitle}
-        >
-          {t('completion.setupReady', {
-            setup: getSetupLabel(),
-            defaultValue: 'Your {{setup}} schedule is ready.',
-          })}
-        </Animated.Text>
-        <Animated.Text
-          entering={reducedMotion ? undefined : FadeInDown.delay(560).duration(500)}
-          style={styles.subtitleSecondary}
-        >
-          {t('completion.reminderPromise', {
-            defaultValue: 'Ryvro will remind you before every shift.',
-          })}
-        </Animated.Text>
-
-        {/* Summary Card */}
-        <Animated.View
-          entering={reducedMotion ? undefined : FadeInUp.delay(800).duration(500)}
-          style={styles.summaryCard}
-        >
-          <View style={styles.summaryHeader}>
-            <Ionicons name="person-circle-outline" size={24} color={theme.colors.sacredGold} />
-            <Text style={styles.summaryHeaderText}>
-              {t('completion.summary.title', { defaultValue: 'Your profile' })}
-            </Text>
+        <Animated.View entering={FadeInDown.delay(220).duration(420)} style={styles.card}>
+          <View style={styles.cardRow}>
+            <Ionicons name="mic" size={22} color={RYVRO_COLORS.cyan} />
+            <Text style={styles.cardText}>Ask by voice anytime.</Text>
           </View>
-
-          <View style={styles.summaryContent}>
-            {(
-              [
-                data.name
-                  ? {
-                      icon: 'person-outline',
-                      label: String(t('completion.summary.name', { defaultValue: 'Name' })),
-                      value: data.name,
-                    }
-                  : undefined,
-                data.company
-                  ? {
-                      icon: 'business-outline',
-                      label: String(t('completion.summary.company', { defaultValue: 'Company' })),
-                      value: data.company,
-                    }
-                  : undefined,
-                {
-                  icon: 'swap-horizontal-outline',
-                  label: String(
-                    t('completion.summary.scheduleType', { defaultValue: 'Schedule Type' })
-                  ),
-                  value: getScheduleTypeName(),
-                },
-                {
-                  icon: 'layers-outline',
-                  label: String(
-                    t('completion.summary.scheduleEngine', { defaultValue: 'Schedule Engine' })
-                  ),
-                  value: getScheduleEngineName(),
-                },
-                {
-                  icon: 'refresh-outline',
-                  label: String(t('completion.summary.pattern', { defaultValue: 'Pattern' })),
-                  value: getPatternName(),
-                },
-                {
-                  icon: 'sync-outline',
-                  label: String(t('completion.summary.cycle', { defaultValue: 'Cycle' })),
-                  value: getUniversalCycleSummary(),
-                },
-                {
-                  icon: 'calendar-outline',
-                  label: String(t('completion.summary.startDate', { defaultValue: 'Start Date' })),
-                  value: formatDateValue(data.universalSchedule?.anchorDate),
-                },
-                // Spread all shift time entries (supports multiple shifts)
-                ...getShiftTimeEntries().map((entry) => ({
-                  icon: 'time-outline',
-                  label: entry.label,
-                  value: entry.value,
-                })),
-              ] as Array<{ icon: string; label: string; value: string } | undefined>
-            )
-              .filter(Boolean)
-              .map((item, index) => {
-                // Type narrowing: After filter(Boolean), item is guaranteed to be defined
-                const summaryItem = item as { icon: string; label: string; value: string };
-                return (
-                  <Animated.View
-                    key={summaryItem.label}
-                    entering={
-                      reducedMotion
-                        ? undefined
-                        : FadeInRight.duration(400)
-                            .delay(800 + index * 100)
-                            .springify()
-                    }
-                    style={styles.summaryRow}
-                  >
-                    <Ionicons
-                      name={summaryItem.icon as keyof typeof Ionicons.glyphMap}
-                      size={20}
-                      color={theme.colors.sacredGold}
-                    />
-                    <View style={styles.summaryRowContent}>
-                      <Text style={styles.summaryLabel}>{summaryItem.label}</Text>
-                      <Text style={styles.summaryValue}>
-                        {summaryItem.value ||
-                          String(t('completion.summary.notSet', { defaultValue: 'Not set' }))}
-                      </Text>
-                    </View>
-                  </Animated.View>
-                );
-              })}
-
-            {nextShiftCountdown && (
-              <View style={styles.countdownRow}>
-                <Ionicons name="time-outline" size={20} color={theme.colors.sacredGold} />
-                <Text style={styles.countdownText}>
-                  {t('completion.nextShiftCountdown', {
-                    relative: nextShiftRelativeText,
-                    date: formatDate(nextShiftCountdown.date),
-                    defaultValue: `Next shift ${nextShiftRelativeText} (${formatDate(nextShiftCountdown.date)})`,
-                  })}
-                </Text>
-              </View>
-            )}
+          <View style={styles.cardDivider} />
+          <View style={styles.cardRow}>
+            <Ionicons name="calendar-clear" size={22} color={RYVRO_COLORS.cyan} />
+            <Text style={styles.cardText}>Ryvro knows your shift pattern.</Text>
+          </View>
+          <View style={styles.cardDivider} />
+          <View style={styles.cardRow}>
+            <Ionicons name="time" size={22} color={RYVRO_COLORS.cyan} />
+            <Text style={styles.cardText}>Today and next shift are ready.</Text>
           </View>
         </Animated.View>
 
-        {/* Feature Highlights */}
-        <Animated.View
-          entering={reducedMotion ? undefined : FadeIn.delay(1200).duration(500)}
-          style={styles.featuresSection}
-          onLayout={(event) => {
-            featuresSectionYRef.current = event.nativeEvent.layout.y;
-          }}
-        >
-          <Text style={styles.featuresTitle}>
-            {t('completion.featuresTitle', { defaultValue: 'What you can do with Ryvro' })}
-          </Text>
-
-          {selectedFeature ? (
-            <Animated.View
-              entering={reducedMotion ? undefined : FadeInDown.duration(260)}
-              exiting={reducedMotion ? undefined : FadeOutUp.duration(180)}
-              style={styles.featureDetailCard}
-            >
-              <View style={styles.featureDetailHeader}>
-                <Ionicons name={selectedFeature.icon} size={18} color={selectedFeature.color} />
-                <Text style={styles.featureDetailTitle}>{selectedFeature.text}</Text>
-              </View>
-              <Text style={styles.featureDetailText}>{selectedFeature.description}</Text>
-            </Animated.View>
-          ) : (
-            <Text style={styles.featureHintText}>
-              {t('completion.featureHint', {
-                defaultValue: 'Tap a feature chip to see more details.',
-              })}
-            </Text>
-          )}
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.featuresScroll}
-          >
-            {featureHighlights.map((feature, index) => (
-              <Pressable key={feature.id} onPress={() => handleFeaturePillPress(feature.id)}>
-                <Animated.View
-                  entering={
-                    reducedMotion ? undefined : FadeIn.delay(1500 + index * 100).duration(300)
-                  }
-                  style={[
-                    styles.featurePill,
-                    expandedFeature === feature.id && styles.featurePillExpanded,
-                  ]}
-                >
-                  <View style={styles.featurePillContent}>
-                    <Ionicons name={feature.icon} size={20} color={feature.color} />
-                    <Text
-                      style={[
-                        styles.featurePillText,
-                        expandedFeature === feature.id && styles.featurePillTextExpanded,
-                      ]}
-                    >
-                      {feature.text}
-                    </Text>
-                  </View>
-                </Animated.View>
-              </Pressable>
-            ))}
-          </ScrollView>
-        </Animated.View>
-
-        <View style={styles.checkInSection}>
-          <Text style={styles.checkInTitle}>
-            {t('completion.checkInTitle', {
-              defaultValue: 'When do you check your schedule?',
-            })}
-          </Text>
-          <View style={styles.checkInOptions}>
-            {(['Morning', 'Midday', 'Evening'] as const).map((time, index) => {
-              const hours = [7, 12, 18][index];
-              const isSelected = selectedCheckIn === time;
-              return (
-                <Pressable
-                  key={time}
-                  style={[styles.checkInChip, isSelected && styles.checkInChipSelected]}
-                  onPress={() => {
-                    setSelectedCheckIn(time);
-                    if (!isJestRuntime()) {
-                      void import('@/services/NotificationService')
-                        .then(({ notificationService }) =>
-                          notificationService.scheduleDaily(
-                            hours,
-                            String(
-                              t('completion.checkInNotificationTitle', {
-                                defaultValue: 'Your schedule today',
-                              })
-                            ),
-                            String(
-                              t('completion.checkInNotificationBody', {
-                                defaultValue: 'Tap to see your upcoming shifts.',
-                              })
-                            )
-                          )
-                        )
-                        .catch(() => undefined);
-                    }
-                  }}
-                >
-                  <Text
-                    style={[styles.checkInChipText, isSelected && styles.checkInChipTextSelected]}
-                  >
-                    {t(`completion.checkIn.${time.toLowerCase()}`, { defaultValue: time })}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
-
-        {/* Error Message */}
-        {saveError && (
-          <Animated.View entering={FadeIn.duration(300)} style={styles.errorContainer}>
-            <Ionicons name="alert-circle-outline" size={20} color={theme.colors.error} />
+        {saveError ? (
+          <View style={styles.errorBox}>
             <Text style={styles.errorText}>{saveError}</Text>
-          </Animated.View>
-        )}
+          </View>
+        ) : null}
 
-        {/* Loading or Get Started Button */}
-        <Animated.View
-          entering={reducedMotion ? undefined : FadeInUp.delay(2000).duration(500)}
-          style={styles.buttonContainer}
-        >
-          {isSaving ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color={theme.colors.sacredGold} />
-              <Text style={styles.loadingText}>
-                {t('completion.loading', { defaultValue: 'Setting up your calendar...' })}
-              </Text>
-            </View>
-          ) : saveError ? (
-            <PremiumButton
-              title={t('completion.tryAgain', { defaultValue: 'Try Again' })}
-              onPress={handleRetry}
-              variant="primary"
-              size="large"
-              accessibilityLabel={t('completion.retryA11yLabel', {
-                defaultValue: 'Retry saving your data',
-              })}
-              accessibilityHint={t('completion.retryA11yHint', {
-                defaultValue: 'Tap to try saving your data again',
-              })}
-            />
-          ) : (
-            <PremiumButton
-              title={t('welcome.getStarted')}
-              onPress={handleGetStarted}
-              variant="primary"
-              size="large"
-              titleNumberOfLines={1}
-              disabled={!isSaved}
-              testID="completion-get-started-button"
-              icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
-              iconPosition="right"
-              accessibilityLabel={t('completion.getStartedA11yLabel', {
-                defaultValue: 'Get started with Ryvro',
-              })}
-              accessibilityHint={t('completion.getStartedA11yHint', {
-                defaultValue: 'Tap to start using the app',
-              })}
-            />
-          )}
-        </Animated.View>
-      </ScrollView>
-
-      <NotificationPrimingModal
-        visible={showNotificationModal}
-        onAllow={async () => {
-          setShowNotificationModal(false);
-          let granted = false;
-          if (!isJestRuntime()) {
-            try {
-              const { notificationService } = await import('@/services/NotificationService');
-              granted = await notificationService.requestPermissions();
-            } catch {
-              granted = false;
+        <View style={styles.bottomPanel}>
+          <PremiumButton
+            title={isSaving ? 'Saving...' : 'Ask Ryvro'}
+            onPress={enterApp}
+            disabled={!isSaved || isSaving}
+            variant="primary"
+            size="large"
+            primaryGradientColors={[RYVRO_COLORS.cyan, RYVRO_COLORS.blue]}
+            icon={
+              isSaving ? (
+                <ActivityIndicator size="small" color={RYVRO_COLORS.void} />
+              ) : (
+                <Ionicons name="mic-circle" size={28} color={RYVRO_COLORS.void} />
+              )
             }
-          }
-          if (granted) {
-            void appStateStorageService.setNotificationSoftDeclined(false);
-            Analytics.notificationPermissionGranted();
-            Analytics.track('notification_permission_requested', { result: 'granted' });
-          } else {
-            Analytics.notificationPermissionDeclined();
-            Analytics.track('notification_permission_requested', { result: 'denied' });
-          }
-        }}
-        onDecline={() => {
-          setShowNotificationModal(false);
-          void appStateStorageService.setNotificationSoftDeclined(true);
-          Analytics.notificationPermissionDeclined();
-          Analytics.track('notification_permission_requested', { result: 'skipped' });
-        }}
-      />
+            iconPosition="right"
+            style={styles.primaryButton}
+            contentStyle={styles.primaryButtonContent}
+            textStyle={styles.primaryButtonText}
+            testID={`${testID}-enter-app`}
+          />
+
+          {saveError ? (
+            <TouchableOpacity onPress={saveOnboardingData} style={styles.retryButton}>
+              <Text style={styles.retryText}>Try saving again</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </Animated.View>
     </View>
   );
 };
 
+export default PremiumCompletionScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.deepVoid,
+    backgroundColor: RYVRO_COLORS.void,
   },
-  scrollView: {
+  cyanGlow: {
+    position: 'absolute',
+    top: -104,
+    left: -112,
+    width: 290,
+    height: 290,
+    borderRadius: 145,
+    backgroundColor: 'rgba(32, 244, 220, 0.16)',
+  },
+  blueGlow: {
+    position: 'absolute',
+    top: 126,
+    right: -150,
+    width: 340,
+    height: 340,
+    borderRadius: 170,
+    backgroundColor: 'rgba(20, 124, 255, 0.16)',
+  },
+  orbit: {
+    position: 'absolute',
+    top: 196,
+    alignSelf: 'center',
+    width: 286,
+    height: 286,
+    borderRadius: 143,
+    borderWidth: 1,
+    borderColor: 'rgba(32, 244, 220, 0.12)',
+    borderRightColor: 'rgba(20, 124, 255, 0.45)',
+  },
+  content: {
     flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: theme.spacing.xl,
-    paddingBottom: theme.spacing.xxxl,
+    paddingHorizontal: 24,
     alignItems: 'center',
   },
-  // Checkmark Circle
-  checkmarkContainer: {
-    marginTop: theme.spacing.xxxl,
-    marginBottom: theme.spacing.xl,
+  checkShell: {
+    marginTop: 48,
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    padding: 8,
+    backgroundColor: 'rgba(32, 244, 220, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(32, 244, 220, 0.24)',
+  },
+  checkIcon: {
+    flex: 1,
+    borderRadius: 44,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  confettiContainer: {
-    position: 'absolute',
-    width: '100%',
-    height: 400,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  confettiParticle: {
-    position: 'absolute',
-  },
-  confettiDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  sparklesContainer: {
-    position: 'absolute',
-    width: 120,
-    height: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sparkle: {
-    position: 'absolute',
-  },
-  glow: {
-    position: 'absolute',
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: theme.colors.sacredGold,
-    opacity: 0.3,
-  },
-  // Text
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: theme.colors.paper,
+  headline: {
+    marginTop: 28,
+    color: RYVRO_COLORS.silver,
+    fontSize: 48,
+    lineHeight: 54,
+    fontWeight: '900',
     textAlign: 'center',
-    marginBottom: theme.spacing.sm,
   },
-  subtitle: {
-    fontSize: 18,
-    color: theme.colors.dust,
+  support: {
+    marginTop: 10,
+    color: RYVRO_COLORS.muted,
+    fontSize: 21,
+    lineHeight: 29,
+    fontWeight: '800',
     textAlign: 'center',
-    marginBottom: theme.spacing.sm,
   },
-  subtitleSecondary: {
-    fontSize: 16,
-    color: theme.colors.shadow,
-    textAlign: 'center',
-    marginBottom: theme.spacing.xxxl,
-  },
-  // Summary Card
-  summaryCard: {
-    width: '100%',
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 16,
+  card: {
+    alignSelf: 'stretch',
+    marginTop: 34,
+    padding: 20,
+    borderRadius: 28,
+    backgroundColor: RYVRO_COLORS.panel,
     borderWidth: 1,
-    borderColor: theme.colors.softStone,
-    padding: theme.spacing.lg,
-    marginBottom: theme.spacing.xl,
+    borderColor: RYVRO_COLORS.line,
   },
-  summaryHeader: {
+  cardRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.sm,
-    marginBottom: theme.spacing.lg,
-  },
-  summaryHeaderText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: theme.colors.sacredGold,
-  },
-  summaryContent: {
-    gap: theme.spacing.md,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.md,
-    marginBottom: theme.spacing.sm,
-  },
-  summaryRowContent: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  summaryLabel: {
-    fontSize: 14,
-    color: theme.colors.dust,
-  },
-  summaryValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: theme.colors.paper,
-    textAlign: 'right',
-    flex: 1,
-    marginLeft: theme.spacing.md,
-  },
-  countdownRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 8,
-  },
-  countdownText: {
-    fontSize: 14,
-    color: theme.colors.paper,
-    flex: 1,
-  },
-  // Features
-  featuresSection: {
-    width: '100%',
-    marginBottom: theme.spacing.xl,
-  },
-  featuresTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: theme.colors.dust,
-    marginBottom: theme.spacing.md,
-    textAlign: 'center',
-  },
-  featuresScroll: {
-    paddingVertical: theme.spacing.sm,
-    gap: theme.spacing.sm,
-  },
-  featureHintText: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    marginBottom: theme.spacing.sm,
-    textAlign: 'center',
-  },
-  featureDetailCard: {
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold20,
-    backgroundColor: theme.colors.softStone,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-    marginBottom: theme.spacing.sm,
-  },
-  featureDetailHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
-    marginBottom: theme.spacing.xs,
-  },
-  featureDetailTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: theme.colors.paper,
-    flex: 1,
-  },
-  featureDetailText: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    lineHeight: 19,
-  },
-  featurePill: {
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: theme.colors.sacredGold,
-    marginRight: theme.spacing.sm,
-    minWidth: 200,
-  },
-  featurePillExpanded: {
-    borderColor: theme.colors.sacredGold,
-    backgroundColor: theme.colors.softStone,
-  },
-  featurePillContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
-  },
-  featurePillText: {
-    fontSize: 14,
-    color: theme.colors.paper,
-    flex: 1,
-  },
-  featurePillTextExpanded: {
-    color: theme.colors.paleGold,
-    fontWeight: '700',
-  },
-  checkInSection: {
-    width: '100%',
-    marginBottom: theme.spacing.lg,
-    alignItems: 'center',
-  },
-  checkInTitle: {
-    fontSize: 15,
-    color: theme.colors.dust,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  checkInOptions: {
-    flexDirection: 'row',
     gap: 12,
   },
-  checkInChip: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
+  cardText: {
+    flex: 1,
+    color: RYVRO_COLORS.silver,
+    fontSize: 18,
+    lineHeight: 25,
+    fontWeight: '800',
+  },
+  cardDivider: {
+    height: 1,
+    backgroundColor: RYVRO_COLORS.line,
+    marginVertical: 15,
+  },
+  errorBox: {
+    alignSelf: 'stretch',
+    marginTop: 18,
+    padding: 14,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 138, 128, 0.1)',
     borderWidth: 1,
-    borderColor: theme.colors.softStone,
-  },
-  checkInChipSelected: {
-    borderColor: theme.colors.sacredGold,
-    backgroundColor: 'rgba(212,168,106,0.1)',
-  },
-  checkInChipText: {
-    fontSize: 14,
-    color: theme.colors.dust,
-  },
-  checkInChipTextSelected: {
-    color: theme.colors.sacredGold,
-    fontWeight: '600',
-  },
-  // Error
-  errorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.sm,
-    padding: theme.spacing.md,
-    backgroundColor: theme.colors.errorBg,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: theme.colors.error,
-    marginBottom: theme.spacing.lg,
-    width: '100%',
+    borderColor: 'rgba(255, 138, 128, 0.28)',
   },
   errorText: {
-    flex: 1,
-    fontSize: 14,
-    color: theme.colors.error,
+    color: RYVRO_COLORS.error,
+    fontSize: 15,
+    lineHeight: 21,
+    fontWeight: '800',
+    textAlign: 'center',
   },
-  // Loading
-  loadingContainer: {
-    alignItems: 'center',
-    gap: theme.spacing.md,
-    paddingVertical: theme.spacing.lg,
+  bottomPanel: {
+    alignSelf: 'stretch',
+    marginTop: 'auto',
   },
-  loadingText: {
-    fontSize: 16,
-    color: theme.colors.dust,
-  },
-  // Button
-  buttonContainer: {
+  primaryButton: {
     width: '100%',
-    marginTop: theme.spacing.lg,
+  },
+  primaryButtonContent: {
+    minHeight: 72,
+  },
+  primaryButtonText: {
+    color: RYVRO_COLORS.void,
+    fontSize: 22,
+    fontWeight: '900',
+  },
+  retryButton: {
+    alignSelf: 'center',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+  },
+  retryText: {
+    color: RYVRO_COLORS.muted,
+    fontSize: 15,
+    fontWeight: '800',
   },
 });
-
-export default PremiumCompletionScreen;

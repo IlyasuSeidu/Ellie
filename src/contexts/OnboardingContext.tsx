@@ -9,24 +9,29 @@
  * 1. **Welcome** (PremiumWelcomeScreen)
  *    - No data collected
  *
- * 2. **Pain Hook** (PremiumPainHookScreen)
- *    - User identifies the biggest current schedule pain point
- *    - Collects: painPoint
+ * 2. **Setup Intro** (PremiumSetupIntroScreen)
+ *    - Explains the simple chat setup path
  *
- * 3. **Introduction** (PremiumIntroductionScreen)
- *    - Chat-based user profile collection
- *    - Collects: name, occupation, company, country
+ * 3. **Guided Shift Chat** (PremiumGuidedShiftChatScreen)
+ *    - User describes their repeating pattern in plain English
+ *    - Parser creates a draft schedule for confirmation
  *
- * 4. **Universal Shift Builder** (UniversalShiftBuilderScreen)
- *    - AI-assisted or manual schedule creation
- *    - Collects: universalSchedule
+ * 4. **Shift Times** (PremiumShiftTimesScreen)
+ *    - User confirms plain AM/PM shift start and finish times
  *
- * 5. **Aha Moment** (PremiumAhaMomentScreen)
- *    - Shows calendar payoff and value framing
+ * 5. **Known Date And Shift** (PremiumKnownShiftDateScreen, PremiumKnownShiftTypeScreen)
+ *    - User anchors the pattern with one date and the shift they had
  *
- * 6. **Completion** (PremiumCompletionScreen)
+ * 6. **Schedule Preview** (PremiumSchedulePreviewScreen)
+ *    - Shows the next calculated shifts
+ *    - Collects: universalSchedule after the user confirms it looks right
+ *
+ * 7. **Setup Summary And Reminders**
+ *    - Saves the confirmed schedule and optional reminders
+ *
+ * 8. **Aha Moment And Completion**
+ *    - Lets the user try Ryvro by voice, then enters the app
  *    - Validates all collected data
- *    - Displays summary
  *    - Saves to AsyncStorage
  *
  * ## Usage:
@@ -63,11 +68,9 @@ import {
 } from '@/utils/onboardingPersistence';
 
 export interface OnboardingData {
-  // Step 2: Pain Hook (PremiumPainHookScreen)
-  /** User's self-identified pain point — used for AhaMoment personalisation and analytics segmentation */
+  /** Optional personalization signal kept for older saved onboarding data */
   painPoint?: 'cycle_lost' | 'wrong_alarm' | 'days_off' | 'family' | 'mental_math';
 
-  // Step 3: Introduction (PremiumIntroductionScreen)
   /** User's full name */
   name?: string;
 
@@ -281,8 +284,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
         })
       );
 
-    // Profile fields are optional in the compressed onboarding flow.
-    // Users can complete them later from Profile/Introduction.
+    // Profile fields are optional. Ryvro only needs the schedule to answer by voice.
 
     if (
       !data.universalSchedule?.name ||

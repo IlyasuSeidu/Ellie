@@ -29,8 +29,8 @@ const MONTH_LABELS = [
 const SHIFT_COLORS: Record<string, string> = {
   day: '#2196F3',
   night: '#651FFF',
-  morning: '#F59E0B',
-  afternoon: '#F59E0B',
+  morning: '#20f4dc',
+  afternoon: '#19bdb5',
   off: theme.colors.softStone,
 };
 

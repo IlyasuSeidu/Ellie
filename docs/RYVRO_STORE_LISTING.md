@@ -1,179 +1,165 @@
 # Ryvro Store Listing Pack
 
-Last updated: 2026-05-31
+Last updated: 2026-06-24
 
-This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the FIFO and rotating-shift launch wedge sharp without trapping Ryvro in a single-industry frame.
+This is the current source copy for App Store Connect, Google Play Console, screenshots, social profiles, and launch review notes.
 
-Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes. Use `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for the exact screenshot capture file names, preconditions, and evidence-log fields.
+The product position is:
 
-## Source Requirements
+> Configure your shift once. Ask Ryvro by voice. Get the right shift answer instantly.
 
-- Apple requires a privacy policy URL for all apps in App Store Connect app privacy metadata.
-- Google Play main store listing fields include an app name, short description, and full description. Google Play lists a 30 character app name limit, an 80 character short description limit, and a 4000 character full description limit.
-- Google Play metadata must be clear, accurate, not misleading, and should not use ranking, price, or promotional claims in the title, icon, screenshots, or description.
-
-Sources:
-
-- Apple App Store Connect app privacy reference: https://developer.apple.com/help/app-store-connect/reference/app-information/app-privacy
-- Apple App Store Connect manage app privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy
-- Google Play create and set up your app: https://support.google.com/googleplay/android-developer/answer/9859152
-- Google Play metadata policy: https://support.google.com/googleplay/android-developer/answer/9898842
+Ryvro should not be presented as a calendar app, dashboard app, roster manager, stats tracker, or broad productivity tool.
 
 ## App Identity
 
 - App Store name: Ryvro Shift Planner
 - Google Play app name: Ryvro Shift Planner
 - Native display name: Ryvro
-- Bundle ID: com.ryvro.shiftplanner
-- Android package: com.ryvro.shiftplanner
+- Bundle ID: `com.ryvro.shiftplanner`
+- Android package: `com.ryvro.shiftplanner`
 - Primary category: Productivity
 - Secondary category: Utilities
-- Launch audience: FIFO crews, rotating shift workers, miners, healthcare teams, security, emergency services, transport, hospitality, and manufacturing workers
-- Expansion audience: aviation, rail, logistics, call-center operations, utilities, oil and gas, and other shift workers
+- Launch audience: shift workers who need fast voice answers about their own schedule
+- Support URL: `https://getryvro.com/support`
+- Privacy URL: `https://getryvro.com/privacy`
+- Terms URL: `https://getryvro.com/terms`
 
 ## App Store Subtitle
 
-AI schedules for shift workers
+Voice answers for shifts
 
 ## Google Play Short Description
 
-AI shift planner for FIFO, nights, rosters, reminders, and calendars.
+Ask by voice and know your shift instantly.
 
-Character count: 67
+Character count: 44
 
 ## Promotional Text
 
-Build your shift pattern with AI, edit it manually, add exceptions, and export your roster to your calendar.
+Set your repeating shift once, then ask Ryvro what you work today, tomorrow, next week, or across a date range.
 
 ## App Store Description
 
-Ryvro helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers know exactly what they are working today, tomorrow, and months from now.
+Ryvro is a voice shift assistant for workers who do not want to count through a pattern or search a calendar.
 
-Describe your shift pattern in plain English, start from a template, or build it manually with the Universal Shift Builder. Ryvro turns repeating rosters, night shifts, days off, travel days, training, on-call work, holidays, and one-off swaps into a clear schedule you can trust.
+Set up your repeating shift once. Then ask Ryvro by voice and get a clear answer instantly.
 
-Built for real shift work:
+Ask questions like:
 
-- AI-assisted shift builder for natural-language schedules
-- Manual Universal Shift Builder for custom rotations
-- Launch templates for mining/FIFO plus healthcare, security, emergency services, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, and rail
-- Day, night, evening, morning, travel, training, on-call, leave, holiday, and custom shift types
-- Shift colors and icons that show across the calendar and dashboard
-- One-off irregular exceptions for swaps and roster changes
-- Holiday exceptions for public holidays and special days
-- Reminder profiles per shift type
-- Calendar import and export
-- Offline-first schedule visibility for low-signal work environments
+- What shift am I on today?
+- Am I working next Saturday?
+- When is my next day off?
+- What shift do I have next week?
+- What am I working from June 12 to June 27?
 
-Ryvro started from real FIFO and rotating-shift pain, then grew into a universal schedule engine for almost any worker whose life runs around shifts.
+Ryvro can answer exact dates, weekdays, upcoming weeks, date ranges, and days off from your saved shift pattern.
+
+Built for simple shift answers:
+
+- Voice-first Ask screen
+- Clear setup for repeating shift patterns
+- Exact phase setup so the pattern lines up correctly
+- AM and PM shift times
+- Friendly spoken and written answers
+- Simple reminders before work
+- Offline fallback for deterministic schedule questions
+- Online backend for broader natural-language questions
 
 Ryvro is a personal planning aid. It does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems.
 
-Use Ryvro to stop counting through your roster manually and start planning your life with confidence.
-
 ## Google Play Full Description
 
-Ryvro is an AI-assisted shift planner for FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers.
+Ryvro is a voice-first shift assistant.
 
-If your schedule repeats, rotates, swaps, runs overnight, changes by work location, or does not fit a simple 9-to-5 calendar, Ryvro helps you turn it into a clear plan.
+If your work pattern repeats, Ryvro helps you set it up once and ask questions by voice anytime.
 
-Build your schedule three ways:
+Instead of opening a calendar or counting days, ask:
 
-- Describe your shift pattern in words
-- Start from a shift-work template
-- Build manually with the Universal Shift Builder
+- What shift am I on today?
+- What shift do I have tomorrow?
+- Am I working next Saturday?
+- When is my next day off?
+- What do I work for the next 14 days?
+- What am I working from June 12 to June 27?
 
-Ryvro supports:
+Ryvro answers from your saved shift pattern in plain English. When your shift has times, Ryvro uses AM and PM formatting so the answer is easy to hear and read.
 
-- FIFO and mining rosters
-- 4 days, 4 nights, 4 off
-- 2-2-3 and Pitman-style schedules
-- 24/48 emergency service shifts
-- early, late, and night transport patterns
-- hospitality and retail weekly patterns
-- manufacturing continental rotations
-- custom sequences for any shift worker
+What Ryvro includes:
 
-Key features:
+- Voice-first shift answers
+- Simple setup for repeating patterns
+- Known-date alignment so your schedule starts in the right place
+- Day, night, off, and custom shift support
+- Simple work reminders
+- Offline fallback for common schedule questions
+- Online support for broader date and range questions
+- Ryvro Pro for ongoing voice answers after the first trial answer
 
-- AI shift builder for natural-language schedule setup
-- Manual drag-and-drop style Universal Shift Builder
-- Shift names, colors, icons, start times, and end times
-- Day, night, evening, morning, travel, training, on-call, leave, holiday, and custom shift types
-- Calendar preview before saving
-- Dashboard colors and icons for the current shift
-- One-off exceptions for swaps or changed days
-- Holiday exceptions for public holidays and special work rules
-- Reminder profiles per shift type
-- Calendar import and export
-- Offline-first access to your schedule
-
-Ryvro is built for shift workers who need certainty: whether you are heading to work, starting nights, planning family time, checking your next rest block, or trying to avoid setting the wrong alarm.
-
-Miner-first at launch. Universal by design.
+Ryvro is built for shift workers who need a straight answer, not a complicated schedule manager.
 
 Ryvro is a personal planning aid. It does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems.
 
 ## Keywords
 
-shift planner, roster, FIFO, mining roster, shift calendar, night shift, work schedule, rotation, days off, shift reminders, 4 on 4 off, 2-2-3, Pitman schedule, nurse schedule, security roster, firefighter schedule, transport roster
+shift assistant, shift planner, voice assistant, shift work, night shift, day shift, days off, work schedule, rotating shifts, shift reminders, roster questions
 
 ## Screenshot Set
 
-1. AI Builder
-   - Caption: Describe your shifts in plain English
-   - Screen: Universal Shift Builder AI prompt and generated preview
+1. Welcome
+   - Caption: Ask Ryvro what shift you have
+   - Screen: new Ryvro welcome screen
 
-2. Manual Builder
-   - Caption: Build any rotation manually
-   - Screen: shift definitions, colors, icons, and sequence builder
+2. Setup
+   - Caption: Set your shift pattern once
+   - Screen: simple pattern setup
 
-3. Calendar Preview
-   - Caption: See days, nights, off days, and swaps
-   - Screen: monthly calendar with colored shift icons
+3. Known Date
+   - Caption: Line up your schedule accurately
+   - Screen: known date and shift phase setup
 
-4. Dashboard
-   - Caption: Know what you are working now
-   - Screen: current shift, next shift, countdown, and quick actions
+4. Try Ryvro
+   - Caption: Ask your first question by voice
+   - Screen: onboarding voice trial
 
-5. Exceptions
-   - Caption: Handle holidays and one-off changes
-   - Screen: holiday exception and swap editing
+5. Ask
+   - Caption: Get the right answer instantly
+   - Screen: main Ask screen with answer card
 
 6. Reminders
-   - Caption: Set reminders per shift type
-   - Screen: advanced reminder profiles
+   - Caption: Get reminded before work
+   - Screen: reminder setup
 
-7. Templates
-   - Caption: Start from real shift-work templates
-   - Screen: mining/FIFO, healthcare, security, emergency, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, and rail templates
+7. Ryvro Pro
+   - Caption: Ask Ryvro every day
+   - Screen: paywall
 
 ## Launch Landing Page Copy
 
-Use this source copy for `https://getryvro.com` or the final controlled Ryvro launch domain after the owner completes domain reservation.
-
 Hero:
 
-- Headline: Ryvro Shift Planner
-- Subheadline: AI schedules, reminders, and calendar exports for FIFO, nights, rotating rosters, and irregular shift work.
-- Primary CTA: Download Ryvro
-- Secondary CTA: See shift templates
+- Headline: Ryvro
+- Subheadline: Configure your shift once. Ask by voice anytime. Know your shift instantly.
+- Primary CTA: Try Ryvro
+- Secondary CTA: Contact support
 
 Primary sections:
 
-1. Build your schedule three ways
-   - Describe your roster in plain English.
-   - Start from templates for FIFO, healthcare, security, emergency services, manufacturing, offshore, transport, warehouse, hospitality, aviation, and rail.
-   - Fine-tune shifts manually with colors, icons, times, reminders, exceptions, and calendar export.
+1. Ask, do not count
+   - Ask about today, tomorrow, next week, a named weekday, or a date range.
+   - Ryvro answers from your saved shift pattern.
+   - Responses are clear enough to hear and read quickly.
 
-2. Know what you are working next
-   - See today's shift, the next shift, countdowns, days off, and upcoming changes.
-   - Keep your schedule available offline for low-signal work locations.
-   - Export shifts to your calendar with locations and one-off notes.
+2. Setup that lines up correctly
+   - Add your repeating pattern.
+   - Pick a known date.
+   - Tell Ryvro the exact shift phase on that date.
+   - Add shift times in AM and PM format.
 
-3. Built for shift workers, not just one industry
-   - Ryvro started with FIFO and mining schedules.
-   - The schedule engine supports rotating teams, nights, on-call work, travel days, training, holidays, swaps, and custom patterns.
-   - Use Ryvro as a personal planning aid alongside your official employer roster.
+3. Built for shift workers
+   - Simple reminders.
+   - Offline fallback for common questions.
+   - Ryvro Pro for ongoing voice answers.
+   - Personal planning only, not an employer roster replacement.
 
 Footer links:
 
@@ -186,9 +172,45 @@ Footer disclaimer:
 
 Ryvro is a personal planning aid. It does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems.
 
+## Submission Screenshot Capture Plan
+
+Capture from production, TestFlight, or Play internal builds only.
+
+Required capture matrix:
+
+- App Store iPhone 6.9 inch bucket: 4 screenshots at 1290 x 2796.
+- App Store iPad 13 inch bucket: 3 screenshots at 2048 x 2732.
+- Google Play phone: at least 4 screenshots at 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha.
+
+Use the current Ryvro screens: Welcome, Setup, Ask, and Paywall.
+
+Required source files:
+
+- `app-store-iphone-01-welcome.png`
+- `app-store-iphone-02-setup.png`
+- `app-store-iphone-03-ask.png`
+- `app-store-iphone-04-paywall.png`
+- `app-store-ipad-01-welcome.png`
+- `app-store-ipad-02-ask.png`
+- `app-store-ipad-03-paywall.png`
+- `google-play-phone-01-welcome.png`
+- `google-play-phone-02-setup.png`
+- `google-play-phone-03-ask.png`
+- `google-play-phone-04-paywall.png`
+
+Ryvro Pro paywall screen showing current monthly and annual choices.
+
+Use reviewer account `reviewer@getryvro.com` only when an account is visible.
+
 ## Social Profile Source Copy
 
-Use these profiles only after the owner reserves the final handle on each platform. Start with `@ryvro`; fall back consistently to `@getryvro` or `@tryryvro` if `@ryvro` cannot be reserved.
+Reserved handles:
+
+- X: `@getryvro`
+- Instagram: `@getryvro`
+- TikTok: `@getryvro`
+- YouTube: `@getryvro`
+- LinkedIn: `Ryvro`
 
 Display name:
 
@@ -196,88 +218,24 @@ Display name:
 
 Short bio:
 
-- AI shift planner for FIFO, nights, rotating rosters, reminders, and calendar export.
+- Voice answers for shift workers.
 
 Long bio:
 
-- Ryvro helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers plan complex rosters with AI, templates, reminders, exceptions, and calendar export.
+- Configure your shift once. Ask Ryvro by voice anytime and get the right shift answer instantly.
 
 Launch post:
 
-- Meet Ryvro Shift Planner: AI schedules for FIFO, nights, rotating rosters, and irregular shift work. Start from a template, describe your roster, or build it manually. Miner-first at launch. Universal by design.
+- Meet Ryvro: a voice shift assistant for workers who need a straight answer. Set up your repeating shift once, then ask what you work today, next week, or across a date range.
 
 Profile link:
 
 - `https://getryvro.com`
 
-Do not use:
-
-- Claims that Ryvro is already live before App Store and Play evidence exists.
-- Claims that Ryvro replaces official employer rostering, payroll, HR, compliance, dispatch, clinical, aviation, rail, fatigue-management, or safety systems.
-- Mining-only bios that make the product sound unusable for healthcare, security, transport, hospitality, manufacturing, emergency services, aviation, or rail.
-
-## Submission Screenshot Capture Plan
-
-Capture these store-ready sets after the production/TestFlight/internal builds are installed and the reviewer account is configured:
-
-- App Store iPhone 6.9 inch bucket: 3 screenshots at 1290 x 2796
-- App Store iPad 13 inch bucket: 3 screenshots at 2048 x 2732
-- Google Play phone: at least 2 screenshots at 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha
-- Capture from production, TestFlight, or Play internal builds only; do not use Expo Go or development-client screenshots for store submission.
-- Use the reviewer account `reviewer@getryvro.com` with a saved non-mining schedule and a configured Ryvro Pro sandbox path before capture.
-- Prefer four Google Play phone screenshots for recommendation surfaces. If only the minimum two are uploaded, add the paywall screenshot as the third frame when subscriptions are submitted for review.
-
-Minimum launch sequence:
-
-1. Universal Shift Builder template screen showing FIFO, healthcare, oil/gas offshore, warehouse logistics, aviation, and rail options.
-2. Dashboard/calendar screen showing current shift color, next shift, and calendar icons.
-3. Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link.
-
-Required capture matrix:
-
-| Store surface          | Size / device target                                 | Required frames                                                                                           |
-| ---------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| App Store iPhone       | 1290 x 2796, 6.9 inch bucket                         | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
-| App Store iPad         | 2048 x 2732, 13 inch bucket                          | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
-| Google Play phone      | 1080 x 1920 or higher, 9:16, no alpha, max 3840 side | Template start and dashboard/calendar, with Ryvro Pro paywall included when using more than 2 screenshots |
-| Internal QA attachment | Native screenshots or video                          | Any failed smoke-test path, including auth, reminders, import/export, purchases, assistant, or offline    |
-
-Name captured files with the store, device class, frame number, and screen purpose, for example `app-store-iphone-01-template-start.png`, `app-store-ipad-03-paywall.png`, and `google-play-phone-02-dashboard-calendar.png`.
-
-Optional extra screenshots:
-
-- AI Builder prompt and generated preview.
-- Manual sequence editor with colors/icons.
-- Holiday and one-off exception editor.
-- Reminder profile setup.
-
-## App Review Notes
-
-Ryvro creates shift schedules from manual input, templates, or user-provided natural-language descriptions. It stores user schedule data, reminders, profile fields, and app settings. Voice and AI features may use third-party providers when enabled. Subscription access is handled through RevenueCat and the native app stores.
-
-Test account:
-
-- Email: reviewer@getryvro.com
-- Password: create a fresh strong password in Firebase Auth immediately before submission and enter it only in App Store Connect / Google Play review notes
-- Support contact: support@getryvro.com
-- Subscription state: include either a sandbox subscription path or reviewer instructions for the unlocked test account
-
-Review paths:
-
-- Create account or sign in
-- Complete onboarding
-- Use Universal Shift Builder
-- Save a schedule
-- View dashboard and calendar
-- Open settings and edit schedule
-- Test paywall or sandbox subscription if requested
-
 ## Do Not Use
 
-- "Best ever"
-- "#1 shift app"
-- "Guaranteed"
-- Anonymous testimonials
-- Price claims in screenshots or promotional graphics
-- Claims that Ryvro replaces employer payroll, HR, or official rostering systems
-- Claims that Ryvro replaces clinical, dispatch, aviation, rail, transport compliance, fatigue-management, or safety systems
+- Claims that Ryvro is already live before store evidence exists.
+- Claims that Ryvro replaces an official employer roster.
+- Messaging that makes Ryvro sound like a calendar dashboard, workforce manager, payroll tool, HR system, or safety system.
+- Store screenshots centered on old dashboards, stats, old tabs, or the old Universal Shift Builder.
+- Shift-specific random color systems in screenshots.

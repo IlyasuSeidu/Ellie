@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import * as SplashScreen from 'expo-splash-screen';
 import { LogBox, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,11 +10,10 @@ import { AuthProvider } from './src/contexts/AuthContext';
 import { OnboardingProvider, useOnboardingOptional } from './src/contexts/OnboardingContext';
 import { LanguageProvider } from './src/contexts/LanguageContext';
 import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
-import { SubscriptionProvider } from './src/contexts/SubscriptionContext';
+import { SubscriptionProvider, type OpenPaywallOptions } from './src/contexts/SubscriptionContext';
 import { useSmartReminders } from './src/hooks/useSmartReminders';
 import { expoNotificationScheduler } from './src/services/ExpoNotificationScheduler';
 import { notificationService } from './src/services/NotificationService';
-import { useShiftAccent } from './src/hooks/useShiftAccent';
 import { appStateStorageService } from './src/services/AppStateStorageService';
 import { OfflineBanner } from './src/components/system/OfflineBanner';
 import { PostShiftCheckInController } from './src/components/checkin/PostShiftCheckInController';
@@ -22,16 +22,20 @@ import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
 
 notificationService.setScheduler(expoNotificationScheduler);
 
+void SplashScreen.preventAutoHideAsync().catch(() => {
+  // The native splash may already be hidden during fast refresh or tests.
+});
+
 if (__DEV__) {
   // React Native 0.81 / iOS can emit this from native animated internals during
   // navigator and gesture-driven transitions even when app listeners are healthy.
   // Keep the console usable without suppressing unrelated warnings.
-  LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
+  LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered']);
 }
 
 function AppContent() {
   const insets = useSafeAreaInsets();
-  const { statusAreaColor } = useShiftAccent();
+  const statusAreaColor = '#02070b';
   useSmartReminders();
 
   useEffect(() => {
@@ -65,19 +69,27 @@ function AppContent() {
 }
 
 function AppShell() {
-  const [showGlobalPaywall, setShowGlobalPaywall] = useState(false);
+  const [globalPaywallOptions, setGlobalPaywallOptions] = useState<OpenPaywallOptions | null>(null);
   const onboarding = useOnboardingOptional();
 
   return (
-    <SubscriptionProvider onOpenPaywall={() => setShowGlobalPaywall(true)}>
+    <SubscriptionProvider
+      onOpenPaywall={(options) =>
+        setGlobalPaywallOptions({
+          entryPoint: options?.entryPoint ?? 'feature_gate',
+          allowDismiss: options?.allowDismiss ?? true,
+        })
+      }
+    >
       <VoiceAssistantProvider>
         <AppContent />
         <PostShiftCheckInController />
-        {showGlobalPaywall ? (
+        {globalPaywallOptions ? (
           <PaywallScreen
-            onDismiss={() => setShowGlobalPaywall(false)}
+            onDismiss={() => setGlobalPaywallOptions(null)}
             onboardingData={onboarding?.data}
-            entryPoint="feature_gate"
+            entryPoint={globalPaywallOptions.entryPoint ?? 'feature_gate'}
+            allowDismiss={globalPaywallOptions.allowDismiss}
           />
         ) : null}
       </VoiceAssistantProvider>
@@ -86,8 +98,14 @@ function AppShell() {
 }
 
 export default function App() {
+  const handleRootLayout = () => {
+    void SplashScreen.hideAsync().catch(() => {
+      // Do not block the app if the native splash has already been dismissed.
+    });
+  };
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }} onLayout={handleRootLayout}>
       <SafeAreaProvider>
         <AuthProvider>
           <OnboardingProvider>

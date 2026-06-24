@@ -6,12 +6,12 @@ This guide covers building and deploying the Ryvro application to iOS and Androi
 
 Current Ryvro release source of truth:
 
-- `docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md` for the minimum store-release sequence.
+- `RYVRO_RELEASE_TASKS.md` for the current store-release sequence.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, RevenueCat, App Store Connect, Play Console, domain, social, and support setup.
 - `RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md` for production environment values.
 - `RYVRO_RELEASE_TASKS.md` for owner/account steps that cannot be completed from the repo.
 
-## Release Checklist (Ryvro Universal Builder + Voice)
+## Release Checklist (Ryvro Voice Assistant)
 
 Before cutting a release, run this gate in order:
 
@@ -23,11 +23,10 @@ Before cutting a release, run this gate in order:
    - `npx expo run:ios`
    - `npx expo run:android`
 6. Smoke pass:
-   - Universal Builder onboarding path: AI description, manual builder, and template start
-   - Settings Universal Builder entry: AI rewrite and manual edit
-   - Dashboard colors/icons for current, next, holiday exception, one-off exception, imported day, and overnight shift
-   - Calendar import/export, reminder profiles, and exception editing
-   - Voice assistant: no-speech/offline/backend failure/wake-word-unavailable paths
+   - Simplified setup path: pattern, known date, exact phase, shift times, reminders
+   - Settings repair paths: setup, times, reminders, user details
+   - Ask screen: voice trial, answer card, online answer, offline fallback, and purchased-user path
+   - Paywall: trial gate, sandbox purchase, entitlement activation, restore, and relock
 7. Update release notes:
    - `SHIFT_WORKER_APP_REBRAND_AUDIT.md` and the release notes for the current PR/release branch
 

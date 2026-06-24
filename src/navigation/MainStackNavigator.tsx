@@ -1,30 +1,56 @@
 /**
  * MainStackNavigator
  *
- * Native stack wrapping the bottom-tab navigator so full-screen modal
- * screens (e.g. UniversalShiftBuilder) can be pushed on top of the tabs
- * without breaking the tab bar.
+ * Native stack for the main app.
+ * Ryvro opens directly into the voice assistant after onboarding.
  */
 
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
-import { MainTabNavigator } from './MainTabNavigator';
+import { VoiceAssistantScreen } from '@/screens/main/VoiceAssistantScreen';
+import { SimpleSettingsScreen } from '@/screens/main/SimpleSettingsScreen';
 import {
-  UniversalShiftBuilderScreen,
-  type UniversalShiftBuilderParams,
-} from '@/screens/main/UniversalShiftBuilderScreen';
+  RepairFixMenuScreen,
+  RepairKnownShiftDateScreen,
+  RepairKnownShiftPhaseScreen,
+  RepairKnownShiftTypeScreen,
+  RepairPatternScreen,
+  RepairReminderSetupScreen,
+  RepairSchedulePreviewScreen,
+  RepairShiftTimesScreen,
+} from '@/screens/main/setup/RepairSetupScreens';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 // ── Param list ────────────────────────────────────────────────────────────────
 
 export type MainStackParamList = {
-  MainTabs: undefined;
-  UniversalShiftBuilder: UniversalShiftBuilderParams;
+  Ask: undefined;
+  Settings: undefined;
+  GuidedShiftChatSetup: undefined;
+  ShiftTimesSetup: OnboardingStackParamList['ShiftTimesSetup'];
+  KnownShiftDateSetup: OnboardingStackParamList['KnownShiftDateSetup'];
+  KnownShiftTypeSetup: OnboardingStackParamList['KnownShiftTypeSetup'];
+  KnownShiftPhaseSetup: OnboardingStackParamList['KnownShiftPhaseSetup'];
+  SchedulePreviewSetup: OnboardingStackParamList['SchedulePreviewSetup'];
+  FixMenuSetup: OnboardingStackParamList['FixMenuSetup'];
+  ReminderSetup: OnboardingStackParamList['ReminderSetup'];
 };
 
 // ── Navigator ─────────────────────────────────────────────────────────────────
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
+
+const repairScreenOptions = {
+  headerShown: true,
+  headerTransparent: true,
+  headerTitle: '',
+  headerBackTitle: 'Settings',
+  headerTintColor: theme.colors.paper,
+  headerShadowVisible: false,
+  animation: 'slide_from_right' as const,
+  contentStyle: { backgroundColor: theme.colors.deepVoid },
+};
 
 export const MainStackNavigator: React.FC = () => {
   return (
@@ -34,16 +60,54 @@ export const MainStackNavigator: React.FC = () => {
         contentStyle: { backgroundColor: theme.colors.deepVoid },
       }}
     >
-      <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+      <Stack.Screen name="Ask" component={VoiceAssistantScreen} />
       <Stack.Screen
-        name="UniversalShiftBuilder"
-        component={UniversalShiftBuilderScreen}
+        name="Settings"
+        component={SimpleSettingsScreen}
         options={{
-          presentation: 'fullScreenModal',
-          headerShown: false,
-          animation: 'slide_from_bottom',
+          animation: 'slide_from_right',
           contentStyle: { backgroundColor: theme.colors.deepVoid },
         }}
+      />
+      <Stack.Screen
+        name="GuidedShiftChatSetup"
+        component={RepairPatternScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="ShiftTimesSetup"
+        component={RepairShiftTimesScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="KnownShiftDateSetup"
+        component={RepairKnownShiftDateScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="KnownShiftTypeSetup"
+        component={RepairKnownShiftTypeScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="KnownShiftPhaseSetup"
+        component={RepairKnownShiftPhaseScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="SchedulePreviewSetup"
+        component={RepairSchedulePreviewScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="FixMenuSetup"
+        component={RepairFixMenuScreen}
+        options={repairScreenOptions}
+      />
+      <Stack.Screen
+        name="ReminderSetup"
+        component={RepairReminderSetupScreen}
+        options={repairScreenOptions}
       />
     </Stack.Navigator>
   );

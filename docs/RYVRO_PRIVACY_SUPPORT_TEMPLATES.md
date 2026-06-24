@@ -53,15 +53,13 @@ Account information:
 - name
 - email address
 - authentication provider identifiers
-- profile settings such as country, occupation, workplace, and language
+- profile settings such as name and optional account details
 
 Schedule information:
 
-- shift names, colors, icons, start times, and end times
-- repeating patterns and templates
-- holiday exceptions and one-off exceptions
+- shift names, start times, and end times
+- repeating patterns and known-date setup answers
 - reminder settings
-- calendar import/export metadata
 
 Device and app information:
 
@@ -72,9 +70,8 @@ Device and app information:
 
 Voice and AI information:
 
-- typed or spoken schedule questions
+- spoken schedule questions
 - schedule context needed to answer the question
-- AI builder prompts used to draft schedules
 
 Payment information:
 
@@ -198,12 +195,10 @@ Include:
 
 Common support topics:
 
-- building a schedule
-- editing a saved schedule
-- using AI builder
-- importing or exporting a calendar
-- changing a one-off day
-- holiday exceptions
+- setting up a shift pattern
+- fixing a saved setup
+- asking Ryvro by voice
+- changing shift times
 - reminders
 - subscription and restore purchases
 - account deletion
@@ -218,7 +213,7 @@ Users can request deletion of their Ryvro account and associated app data at:
 
 To request deletion, email support@getryvro.com with the subject "Ryvro account deletion request" and include the email address used for the Ryvro account.
 
-Ryvro account deletion covers saved account profile data, schedules, shift templates, exceptions, reminder settings, AI builder prompts retained with the account, and app settings associated with the account.
+Ryvro account deletion covers saved account profile data, shift schedules, setup answers, reminder settings, voice-question records retained with the account, and app settings associated with the account.
 
 Account deletion does not automatically cancel App Store or Google Play subscriptions. Users must cancel active subscriptions through their Apple ID or Google Play account to stop future billing.
 
@@ -275,19 +270,19 @@ If it still does not restore, send us:
 
 Ryvro Support
 
-### Calendar Import Help
+### Setup Help
 
-Subject: Ryvro calendar import help
+Subject: Ryvro setup help
 
 Hi [name],
 
-Ryvro can import supported calendar files when the file includes shift events with dates and times. If import does not look right, send the file source, the expected pattern, and a screenshot of the incorrect result.
+Ryvro needs your repeating pattern, a known date, and the exact shift you were on that date so it can answer accurately. If the answer does not look right, send the pattern you expected, the date you checked, and a screenshot of the incorrect result.
 
 Do not send sensitive employer documents unless you are comfortable sharing them with support.
 
 Ryvro Support
 
-### AI Builder Correction Help
+### Voice Answer Correction Help
 
 Subject: Ryvro AI Builder correction
 

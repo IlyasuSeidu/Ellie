@@ -96,40 +96,34 @@ describe('Ryvro documentation archive', () => {
     expect(archiveReadme).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
   });
 
-  it('describes the current setup path as the Universal Shift Builder', () => {
+  it('describes the current setup path as simplified voice-first Ryvro setup', () => {
     const readme = read('README.md');
 
-    expect(readme).toContain('Universal Shift Builder');
-    expect(readme).toContain('AI/template/manual builder');
+    expect(readme).toContain('Configure your shift once. Ask Ryvro by voice.');
+    expect(readme).toContain('The setup flow gathers only what Ryvro needs to answer accurately');
+    expect(readme).toContain('There is no chat composer, no typing box, and no bottom tab bar');
     expect(readme).not.toContain('Phase Selector');
     expect(readme).not.toContain('Onboarding Screens');
     expect(readme).not.toContain('Pattern Selection');
   });
 
-  it('keeps architecture docs centered on the Universal Shift Builder source of truth', () => {
+  it('keeps architecture docs centered on the Ask screen and simplified setup', () => {
     const architecture = read('docs/ARCHITECTURE.md');
 
-    expect(architecture).toContain(
-      'Ryvro uses the Universal Shift Builder as the single schedule setup and editing path'
-    );
-    expect(architecture).toContain(
-      'Dashboard, calendar, reminders, import/export, and voice assistant surfaces consume the same normalized schedule data'
-    );
-    expect(architecture).toContain(
-      'Legacy rotating/FIFO terminology remains only where it helps users recognize a familiar template'
-    );
+    expect(architecture).toContain('Ask is the main app surface');
+    expect(architecture).toContain('Setup captures the minimum data needed for accurate answers');
+    expect(architecture).toContain('There is no main bottom tab bar in the current concept');
     expect(architecture).not.toContain(
       'route users through legacy fixed-category onboarding screens'
     );
     expect(architecture).not.toContain('FIFO is the primary schedule architecture');
   });
 
-  it('keeps active FIFO guidance template-specific instead of app-wide architecture', () => {
+  it('marks FIFO guidance as historical instead of current app-wide architecture', () => {
     const fifoGuide = read('docs/USER_GUIDE_FIFO.md');
 
-    expect(fifoGuide).toContain('Open the Universal Shift Builder from onboarding or Settings');
-    expect(fifoGuide).toContain('Choose the mining/FIFO template');
-    expect(fifoGuide).toContain('optional work-location details in the builder preview');
+    expect(fifoGuide).toContain('Historical guide');
+    expect(fifoGuide).toContain('not the current Ryvro product flow');
     expect(fifoGuide).toContain('Work block**: consecutive days working');
     expect(fifoGuide).not.toContain('Ryvro only supports FIFO');
     expect(fifoGuide).not.toContain('All users must choose FIFO');

@@ -1,6 +1,6 @@
 # Ryvro External Service Setup
 
-Last updated: 2026-06-05
+Last updated: 2026-06-22
 
 This is the account-side setup checklist for services that cannot be fully changed from the repo. It translates the repo identity into exact console values.
 
@@ -178,7 +178,7 @@ Current non-secret dashboard state from logged-in owner-console work through 202
 - Historical setup guidance included upload the Google Play service account credentials JSON to RevenueCat; keep that JSON ignored and record only non-secret connection status.
 - iOS app: saved as `Ryvro (App Store)` with bundle `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appd8a95a73e0`, and REST API identifier `appd8a95a73e0`.
 - App Store Connect in-app purchase key: generated for RevenueCat on 2026-06-14 with Key ID `YMBX7HL47H` and Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f`; the `.p8` private key is stored outside the repo at `/Users/user/.ryvro-secrets/SubscriptionKey_YMBX7HL47H.p8` and must not be committed or pasted.
-- RevenueCat App Store Connect API key: still pending. Logged-in owner-console work on 2026-06-14 created a separate App Store Connect API key named `Ryvro RevenueCat API` with Key ID `VMFGH4BNTL` and App Manager access, but the one-time `.p8` private key file could not be found in Downloads, the secure Ryvro secrets folder, common user folders, Chrome profile storage, Spotlight results, or the Codex temp area. A second visible Chrome attempt created `Ryvro RevenueCat API 2` with Key ID `G842654HWJ`; App Store Connect consumed the one-time download, but `AuthKey_G842654HWJ.p8` was not found in Downloads, Desktop, Documents, the secure Ryvro secrets folder, Spotlight results, temp folders, or Chrome profile storage. Both keys were revoked the same day and now appear under revoked keys for 30 days. RevenueCat still shows its separate App Store Connect API key upload as required for product import and pricing automation.
+- RevenueCat App Store Connect API key: configured and validated on 2026-06-22. App Store Connect key `Ryvro RevenueCat API 3` uses Key ID `834JX8UA5R`, Issuer ID `35e6ee90-4048-4a23-8835-1f05427cec0f`, App Manager access, and vendor number `94098500`. RevenueCat readback after refresh showed the uploaded file `834JX8UA5R.p8`, matching Key ID and Issuer ID, vendor number `94098500`, and `Valid credentials` under `App Store Connect API`. The `.p8` private key is stored outside Git at `/Users/user/.ryvro-secrets/AuthKey_834JX8UA5R.p8`; do not paste or commit the key contents. Earlier keys `VMFGH4BNTL` and `G842654HWJ` were revoked and must not be used.
 - RevenueCat SDK keys: the ignored local `.env` now contains real iOS `appl_...` and Android `goog_...` SDK keys mirrored into their Expo public variables without recording the values.
 
 Target apps:
@@ -415,8 +415,8 @@ Before submitting:
 - Universal Builder works from settings.
 - AI Builder creates a draft.
 - Manual builder saves a schedule.
-- Calendar shows colors and icons.
-- Dashboard shows current shift colors/icons.
+- Ask screen shows the saved schedule answer clearly.
+- Settings repair paths open the simplified setup, time, and reminder screens.
 - Holiday exception changes one public holiday.
 - One-off exception changes one date.
 - Reminder profiles save.
@@ -426,6 +426,6 @@ Before submitting:
 - Sandbox purchase activates Ryvro Pro.
 - Restore purchases works.
 - Push/local notifications work.
-- Offline dashboard still shows saved schedule.
+- Offline Ask fallback still answers deterministic schedule questions.
 - Production Firebase rules/indexes are deployed.
 - App Store / Play Console metadata matches `docs/RYVRO_STORE_LISTING.md`.

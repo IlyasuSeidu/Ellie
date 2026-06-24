@@ -10,13 +10,13 @@ import { ryvroBrainConfig, isConfiguredRyvroBrainUrl, voiceAssistantConfig } fro
 import { logger } from '@/utils/logger';
 import type {
   RyvroBrainErrorPayload,
-  RyvroBrainRequest,
   RyvroBrainResponse,
   RyvroBrainResponseEnvelope,
   VoiceAssistantErrorType,
   VoiceAssistantUserContext,
   VoiceMessage,
 } from '@/types/voiceAssistant';
+import type { ShiftCycle, ShiftType } from '@/types';
 
 type AbortReason = 'none' | 'timeout' | 'user' | 'superseded';
 
@@ -27,6 +27,35 @@ interface RyvroBrainServiceErrorOptions {
   code?: string;
   requestId?: string;
   statusCode?: number;
+}
+
+type BackendCompatibleShiftCycle = ShiftCycle & {
+  scheduleMode: 'universal';
+  universalSchedule: ShiftCycle;
+  patternType: string;
+  shiftSystem: '2-shift' | '3-shift';
+  daysOn: number;
+  nightsOn: number;
+  daysOff: number;
+  startDate: string;
+  phaseOffset: number;
+};
+
+type BackendCompatibleUserContext = Omit<VoiceAssistantUserContext, 'name' | 'shiftCycle'> & {
+  name: string;
+  shiftCycle: BackendCompatibleShiftCycle;
+  shiftSystem: '2-shift' | '3-shift';
+  shiftTimes: Array<{
+    type: ShiftType | string;
+    startTime: string;
+    endTime: string;
+  }>;
+};
+
+interface BackendCompatibleRyvroBrainRequest {
+  query: string;
+  userContext: BackendCompatibleUserContext;
+  conversationHistory: Array<{ role: 'user' | 'assistant'; text: string }>;
 }
 
 export class RyvroBrainServiceError extends Error {
@@ -78,7 +107,11 @@ function normalizeBackendError(
           ? 'rate_limited'
           : structuredError.code === 'provider_timeout'
             ? 'timeout'
-            : 'backend_error',
+            : structuredError.code === 'invalid_user_context' ||
+                structuredError.code === 'missing_user_context' ||
+                structuredError.code === 'invalid_request'
+              ? 'unknown'
+              : 'backend_error',
       message: structuredError.message,
       retryable: structuredError.retryable,
       code: structuredError.code,
@@ -129,6 +162,66 @@ function normalizeBackendError(
     requestId,
     statusCode,
   });
+}
+
+function getBackendShiftBucket(definition: ShiftCycle['shiftDefinitions'][number]): ShiftType {
+  if (definition.kind === 'off' || !definition.countsAsWork) return 'off';
+  if (definition.countsAsNight) return 'night';
+  return 'day';
+}
+
+function buildBackendCompatibleUserContext(
+  userContext: VoiceAssistantUserContext
+): BackendCompatibleUserContext {
+  const schedule = userContext.shiftCycle;
+  const sequenceDefinitions = schedule.sequence
+    .map((item) =>
+      schedule.shiftDefinitions.find((definition) => definition.id === item.shiftDefinitionId)
+    )
+    .filter((definition): definition is ShiftCycle['shiftDefinitions'][number] =>
+      Boolean(definition)
+    );
+
+  const workDefinitions = sequenceDefinitions.filter(
+    (definition) => definition.kind !== 'off' && definition.countsAsWork
+  );
+  const nightDefinitions = workDefinitions.filter((definition) => definition.countsAsNight);
+  const offDefinitions = sequenceDefinitions.filter(
+    (definition) => definition.kind === 'off' || !definition.countsAsWork
+  );
+  const shiftTimes = schedule.shiftDefinitions
+    .filter(
+      (definition) =>
+        definition.kind !== 'off' &&
+        definition.timePolicy === 'timed' &&
+        definition.startTime &&
+        definition.endTime
+    )
+    .map((definition) => ({
+      type: getBackendShiftBucket(definition),
+      startTime: definition.startTime as string,
+      endTime: definition.endTime as string,
+    }));
+
+  return {
+    ...userContext,
+    name: userContext.name?.trim() || 'Ryvro user',
+    scheduleName: userContext.scheduleName || schedule.name,
+    shiftSystem: '2-shift',
+    shiftTimes,
+    shiftCycle: {
+      ...schedule,
+      scheduleMode: 'universal',
+      universalSchedule: schedule,
+      patternType: 'universal',
+      shiftSystem: '2-shift',
+      daysOn: Math.max(0, workDefinitions.length - nightDefinitions.length),
+      nightsOn: nightDefinitions.length,
+      daysOff: offDefinitions.length,
+      startDate: schedule.anchorDate,
+      phaseOffset: schedule.phaseOffset,
+    },
+  };
 }
 
 function normalizeSuccessResponse(parsedBody: unknown): RyvroBrainResponse {
@@ -226,9 +319,9 @@ class RyvroBrainService {
         text: msg.text,
       }));
 
-    const requestBody: RyvroBrainRequest = {
+    const requestBody: BackendCompatibleRyvroBrainRequest = {
       query: sanitizedQuery,
-      userContext,
+      userContext: buildBackendCompatibleUserContext(userContext),
       conversationHistory: history,
     };
 

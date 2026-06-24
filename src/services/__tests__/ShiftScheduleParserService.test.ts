@@ -87,7 +87,7 @@ const validScheduleDraft: UniversalShiftSchedule = {
       countsAsWork: false,
       countsAsNight: false,
       countsForStats: true,
-      color: '#78716c',
+      color: '#5f7484',
       icon: 'home',
     },
   ],

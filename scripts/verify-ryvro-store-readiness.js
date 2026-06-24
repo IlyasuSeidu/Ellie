@@ -71,8 +71,8 @@ const screenshotPlan = extractSection(storeListing, 'Submission Screenshot Captu
   ['App Store name: Ryvro Shift Planner', storeListing, 'store listing app identity'],
   ['Google Play app name: Ryvro Shift Planner', storeListing, 'store listing app identity'],
   ['Native display name: Ryvro', storeListing, 'store listing app identity'],
-  ['Bundle ID: com.ryvro.shiftplanner', storeListing, 'store listing app identity'],
-  ['Android package: com.ryvro.shiftplanner', storeListing, 'store listing app identity'],
+  ['Bundle ID: `com.ryvro.shiftplanner`', storeListing, 'store listing app identity'],
+  ['Android package: `com.ryvro.shiftplanner`', storeListing, 'store listing app identity'],
   ['Reviewer account: reviewer@getryvro.com', submissionDraft, 'store submission draft'],
   ['Subscription entitlement: pro', submissionDraft, 'store submission draft'],
   ['Monthly product: ryvro_pro_monthly', submissionDraft, 'store submission draft'],
@@ -157,31 +157,33 @@ if (!appStoreDescription) {
 }
 
 [
-  'App Store iPhone 6.9 inch bucket: 3 screenshots at 1290 x 2796',
+  'App Store iPhone 6.9 inch bucket: 4 screenshots at 1290 x 2796',
   'App Store iPad 13 inch bucket: 3 screenshots at 2048 x 2732',
-  'Google Play phone: at least 2 screenshots at 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha',
-  'Prefer four Google Play phone screenshots for recommendation surfaces',
-  'Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link',
+  'Google Play phone: at least 4 screenshots at 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha',
+  'Use the current Ryvro screens: Welcome, Setup, Ask, and Paywall',
+  'Ryvro Pro paywall screen showing current monthly and annual choices',
   'Capture from production, TestFlight, or Play internal builds only',
   'reviewer@getryvro.com',
   'Required capture matrix',
-  'app-store-iphone-01-template-start.png',
-  'google-play-phone-02-dashboard-calendar.png',
+  'app-store-iphone-01-welcome.png',
+  'google-play-phone-03-ask.png',
 ].forEach((expected) => requireIncludes(screenshotPlan, expected, 'store screenshot capture plan'));
 
 [
   '# Ryvro Screenshot Capture Checklist',
   'Do not use Expo Go, web previews, local development-client screenshots',
   'reviewer@getryvro.com',
-  'app-store-iphone-01-template-start.png',
-  'app-store-iphone-02-dashboard-calendar.png',
-  'app-store-iphone-03-paywall.png',
-  'app-store-ipad-01-template-start.png',
-  'app-store-ipad-02-dashboard-calendar.png',
+  'app-store-iphone-01-welcome.png',
+  'app-store-iphone-02-setup.png',
+  'app-store-iphone-03-ask.png',
+  'app-store-iphone-04-paywall.png',
+  'app-store-ipad-01-welcome.png',
+  'app-store-ipad-02-ask.png',
   'app-store-ipad-03-paywall.png',
-  'google-play-phone-01-template-start.png',
-  'google-play-phone-02-dashboard-calendar.png',
-  'google-play-phone-03-paywall.png',
+  'google-play-phone-01-welcome.png',
+  'google-play-phone-02-setup.png',
+  'google-play-phone-03-ask.png',
+  'google-play-phone-04-paywall.png',
   '1290 x 2796',
   '2048 x 2732',
   '1080 x 1920 or higher',
@@ -228,12 +230,8 @@ forbiddenClaims.forEach((pattern) => {
   }
 });
 
-if (
-  !/healthcare/i.test(storeListing) ||
-  !/aviation/i.test(storeListing) ||
-  !/rail/i.test(storeListing)
-) {
-  addError('Store listing must keep the launch audience broader than mining/FIFO');
+if (!/shift workers/i.test(storeListing) || /miner-first/i.test(storeListing)) {
+  addError('Store listing must present Ryvro for broad shift workers, not a mining-only wedge');
 }
 
 if (!submissionDraft.includes('No, Ryvro does not use collected data to track users')) {

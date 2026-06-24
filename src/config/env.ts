@@ -28,13 +28,6 @@ export interface SupportedLocale {
 export const SUPPORTED_LOCALES: SupportedLocale[] = [
   { code: 'en-US', label: 'English (US)', ttsLanguage: 'en-US' },
   { code: 'en-GB', label: 'English (UK)', ttsLanguage: 'en-GB' },
-  { code: 'de-DE', label: 'Deutsch', ttsLanguage: 'de-DE' },
-  { code: 'fr-FR', label: 'Fran\u00e7ais', ttsLanguage: 'fr-FR' },
-  { code: 'es-ES', label: 'Espa\u00f1ol', ttsLanguage: 'es-ES' },
-  { code: 'nl-NL', label: 'Nederlands', ttsLanguage: 'nl-NL' },
-  { code: 'sv-SE', label: 'Svenska', ttsLanguage: 'sv-SE' },
-  { code: 'nb-NO', label: 'Norsk', ttsLanguage: 'nb-NO' },
-  { code: 'da-DK', label: 'Dansk', ttsLanguage: 'da-DK' },
 ];
 
 /**

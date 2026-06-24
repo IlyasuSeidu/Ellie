@@ -199,7 +199,6 @@ export function buildUniversalScheduleIcs(
       lines.push(`LOCATION:${escapeIcsText(universal.locationName)}`);
     }
     lines.push(`X-RYVRO-SHIFT-ID:${escapeIcsText(universal.definitionId)}`);
-    lines.push(`X-RYVRO-SHIFT-COLOR:${escapeIcsText(universal.color)}`);
     lines.push(`X-RYVRO-SHIFT-ICON:${escapeIcsText(universal.icon)}`);
 
     const parsedDayDate = parseDate(day.date);
@@ -366,7 +365,7 @@ function buildDefinitionFromEvent(
       : IMPORT_COLORS[existingCount % IMPORT_COLORS.length]
     : kind === 'leave'
       ? '#16a34a'
-      : '#78716c';
+      : '#5f7484';
 
   return {
     id: `imported_${slug(event.summary)}_${existingCount}`,

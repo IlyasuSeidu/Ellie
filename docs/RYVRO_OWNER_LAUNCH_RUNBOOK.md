@@ -36,7 +36,7 @@ Do not submit to App Store review or Google Play production until all of these a
 - `npm run release:env:check` passes with the real production `.env`.
 - Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints are deployed and smoke-tested.
 - RevenueCat products, entitlement `pro`, and offering `default` are connected to App Store and Play subscription products.
-- Physical iOS and Android smoke tests pass with real auth, purchases, reminders, calendar import/export, and assistant flows.
+- Physical iOS and Android smoke tests pass with real auth, purchases, reminders, setup repair, and assistant flows.
 - Store screenshots, app privacy, data safety, content rating, in-app purchase declarations, and reviewer notes are complete.
 - `npm run release:submit:check` passes after the evidence log is completed and EAS submit values are real.
 
@@ -265,14 +265,14 @@ Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for the matching TestFlight gro
 
 Must-pass coverage:
 
-- Fresh install and onboarding through non-mining template start.
-- Fresh install and onboarding through FIFO/block-roster or rotating-shift AI description.
-- Fresh install and onboarding through manual custom setup.
+- Fresh install and simplified shift setup.
+- Known date, known shift type, exact phase, shift times, and reminder setup.
+- Setup review and repair paths.
 - Email auth, Google Sign-In, and Apple Sign-In where platform-available.
-- Dashboard colors/icons, settings edits, reminders, exceptions, import/export, and app relaunch persistence.
-- Paywall, sandbox trial, entitlement activation, locked calendar behavior, center mic unlock, and restore purchases.
-- Voice assistant permission flow and basic response path.
-- Offline saved-schedule visibility and pending-sync indicator.
+- Settings edits, reminders, user details, and app relaunch persistence.
+- Paywall, sandbox trial, entitlement activation, trial gate, mic unlock, and restore purchases.
+- Voice assistant permission flow, first trial answer, and post-purchase response path.
+- Offline exact-date and range answers, plus pending-sync indicator.
 
 Evidence to record:
 

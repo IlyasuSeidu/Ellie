@@ -1,0 +1,431 @@
+/**
+ * ShiftCalendarDayCell Component
+ *
+ * Premium calendar day cell with shift type visualization.
+ * Color-coded backgrounds, shift type badges,
+ * 3-layer today indicator with pulsing glow ring,
+ * premium bounce press animation, and selected day glow.
+ */
+
+import React, { useMemo } from 'react';
+import { View, Image, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { theme } from '@/utils/theme';
+import { type ShiftType } from '@/types';
+
+export interface ShiftCalendarDayCellProps {
+  /** Day number (1-31) */
+  day: number;
+  /** Shift type for this day */
+  shiftType?: ShiftType;
+  /** Whether this day is today */
+  isToday?: boolean;
+  /** Whether this day is selected */
+  selected?: boolean;
+  /** Whether this day is in a different month (greyed out) */
+  isOtherMonth?: boolean;
+  /** Press handler */
+  onPress?: (day: number) => void;
+  /** Stagger delay for entrance animation (reserved for parent control) */
+  animationDelay?: number;
+  /** Override glow color for today's cell (e.g. during overnight carry-over) */
+  activeGlowColor?: string;
+  /** Universal shift display metadata. When present, this overrides legacy badge styling. */
+  universalDisplay?: {
+    title: string;
+    color: string;
+    icon: string;
+  };
+  /** Test ID */
+  testID?: string;
+}
+
+/* eslint-disable @typescript-eslint/no-var-requires */
+/** 3D assets for shift types */
+const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const MORNING_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
+const AFTERNOON_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
+const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
+const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
+/* eslint-enable @typescript-eslint/no-var-requires */
+
+/** Color config per shift type */
+const SHIFT_COLORS: Record<
+  ShiftType,
+  { bg: string; badge: string; text: string; icon?: keyof typeof Ionicons.glyphMap }
+> = {
+  day: {
+    bg: 'rgba(33, 150, 243, 0.15)',
+    badge: '#BBDEFB',
+    text: '#64B5F6',
+  },
+  night: {
+    bg: 'rgba(101, 31, 255, 0.15)',
+    badge: '#fff',
+    text: '#B388FF',
+  },
+  morning: {
+    bg: 'rgba(32, 244, 220, 0.15)',
+    badge: 'rgba(32, 244, 220, 0.25)',
+    text: '#FCD34D',
+  },
+  afternoon: {
+    bg: 'rgba(6, 182, 212, 0.15)',
+    badge: 'rgba(6, 182, 212, 0.25)',
+    text: '#67E8F9',
+  },
+  off: {
+    bg: 'rgba(120, 113, 108, 0.1)',
+    badge: '#5f7484',
+    text: '#9db2c2',
+  },
+};
+
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+
+export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
+  day,
+  shiftType,
+  isToday = false,
+  selected = false,
+  isOtherMonth = false,
+  activeGlowColor,
+  universalDisplay,
+  onPress,
+  testID,
+}) => {
+  const { t } = useTranslation('dashboard');
+  const universalColor = useMemo(() => {
+    if (!universalDisplay) return null;
+    return {
+      bg: `${universalDisplay.color}20`,
+      badge: selected ? 'rgba(255,255,255,0.3)' : universalDisplay.color,
+      text: universalDisplay.color,
+    };
+  }, [selected, universalDisplay]);
+
+  const shiftColor = useMemo(() => {
+    if (universalColor) {
+      return universalColor;
+    }
+    return shiftType ? SHIFT_COLORS[shiftType] : null;
+  }, [shiftType, universalColor]);
+
+  // ── Press scale animation (premium bounce) ──
+  const scale = useSharedValue(1);
+
+  const handlePressIn = () => {
+    if (!isOtherMonth) {
+      scale.value = withSpring(0.88, { damping: 15, stiffness: 400 });
+    }
+  };
+
+  const handlePressOut = () => {
+    if (!isOtherMonth) {
+      scale.value = withSequence(
+        withSpring(1.05, { damping: 8, stiffness: 350 }),
+        withSpring(1.0, { damping: 12, stiffness: 300 })
+      );
+    }
+  };
+
+  const handlePress = () => {
+    if (!isOtherMonth && onPress) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      onPress(day);
+    }
+  };
+
+  const pressStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  // ── Today 3-layer pulsing glow ──
+  const pulseScale = useSharedValue(1);
+  const todayGlowOpacity = useSharedValue(0.15);
+
+  React.useEffect(() => {
+    if (isToday) {
+      const minOpacity = 0.15;
+      const maxOpacity = 0.35;
+
+      // Layer 1: glow opacity pulse
+      todayGlowOpacity.value = withRepeat(
+        withSequence(
+          withTiming(maxOpacity, { duration: 1200 }),
+          withTiming(minOpacity, { duration: 1200 })
+        ),
+        -1,
+        true
+      );
+      // Layer 2: ring scale pulse
+      pulseScale.value = withRepeat(
+        withSequence(withTiming(1.08, { duration: 1500 }), withTiming(1.0, { duration: 1500 })),
+        -1,
+        true
+      );
+    }
+  }, [isToday, pulseScale, todayGlowOpacity]);
+
+  const todayGlowStyle = useAnimatedStyle(() => ({
+    opacity: todayGlowOpacity.value,
+  }));
+
+  const todayRingStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: pulseScale.value }],
+  }));
+
+  // Resolve glow color: carry-over color, universal shift color, or default gold.
+  const glowColor = useMemo(() => {
+    if (activeGlowColor) return activeGlowColor;
+    if (universalDisplay?.color) return universalDisplay.color;
+    return theme.colors.sacredGold;
+  }, [activeGlowColor, universalDisplay?.color]);
+
+  const glowColor30 = useMemo(() => {
+    if (activeGlowColor) return `${activeGlowColor}4D`;
+    if (universalDisplay?.color) return `${universalDisplay.color}4D`;
+    return theme.colors.opacity.gold30;
+  }, [activeGlowColor, universalDisplay?.color]);
+
+  const containerBg = selected ? theme.colors.sacredGold : (shiftColor?.bg ?? 'transparent');
+
+  const dayTextColor = isOtherMonth
+    ? theme.colors.shadow
+    : selected
+      ? '#fff'
+      : isToday
+        ? glowColor
+        : theme.colors.paper;
+
+  const todayText = isToday
+    ? t('calendar.accessibility.todaySuffix', { defaultValue: ', Today' })
+    : '';
+  const shiftText = universalDisplay
+    ? t('calendar.accessibility.shiftSuffix', {
+        shiftName: universalDisplay.title,
+        defaultValue: ', {{shiftName}}',
+      })
+    : shiftType
+      ? t('calendar.accessibility.shiftSuffix', {
+          shiftName: t(`calendar.accessibility.shiftNames.${shiftType}`, {
+            defaultValue: `${shiftType} shift`,
+          }),
+          defaultValue: ', {{shiftName}}',
+        })
+      : '';
+  const accessibilityLabel = t('calendar.accessibility.dayLabel', {
+    day,
+    todayText,
+    shiftText,
+    defaultValue: 'Day {{day}}{{todayText}}{{shiftText}}',
+  });
+
+  return (
+    <AnimatedTouchable
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      activeOpacity={1}
+      disabled={isOtherMonth}
+      style={[styles.container, pressStyle]}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ disabled: isOtherMonth, selected }}
+      testID={testID}
+    >
+      {/* Today 3-layer glow: Layer 1 — glow background */}
+      {isToday && !selected && (
+        <Animated.View style={[styles.todayGlow, { backgroundColor: glowColor }, todayGlowStyle]} />
+      )}
+
+      {/* Today 3-layer glow: Layer 2 — pulsing outer ring */}
+      {isToday && !selected && (
+        <Animated.View style={[styles.todayRing, { borderColor: glowColor30 }, todayRingStyle]} />
+      )}
+
+      {/* Selected day glow */}
+      {selected && <View style={styles.selectedGlow} />}
+
+      {/* Cell content (Layer 3 / main) */}
+      <View
+        style={[
+          styles.cellBackground,
+          { backgroundColor: containerBg },
+          selected && styles.selectedBorder,
+        ]}
+      >
+        {/* Day number */}
+        <Animated.Text
+          style={[
+            styles.dayText,
+            { color: dayTextColor },
+            isToday && !selected && styles.todayText,
+          ]}
+        >
+          {day}
+        </Animated.Text>
+
+        {/* Shift type badge */}
+        {shiftColor && !isOtherMonth && (
+          <View
+            style={[
+              styles.badge,
+              styles.badgeLarge,
+              {
+                backgroundColor: selected ? 'rgba(255,255,255,0.3)' : shiftColor.badge,
+              },
+            ]}
+          >
+            {universalDisplay ? (
+              <Ionicons
+                testID={`${testID ?? `calendar-day-${day}`}-universal-icon`}
+                name={universalDisplay.icon as keyof typeof Ionicons.glyphMap}
+                size={16}
+                color={selected ? '#fff' : '#fff'}
+              />
+            ) : shiftType === 'day' ? (
+              <Image source={DAY_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : shiftType === 'night' ? (
+              <Image source={NIGHT_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : shiftType === 'morning' ? (
+              <Image source={MORNING_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : shiftType === 'afternoon' ? (
+              <Image source={AFTERNOON_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : shiftType === 'off' ? (
+              <Image source={OFF_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : null}
+          </View>
+        )}
+      </View>
+    </AnimatedTouchable>
+  );
+};
+
+const CELL_SIZE = 44;
+const CELL_HEIGHT = 72;
+
+const styles = StyleSheet.create({
+  container: {
+    width: CELL_SIZE,
+    height: CELL_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    zIndex: 1,
+  },
+  todayGlow: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    right: -2,
+    bottom: 2,
+    borderRadius: theme.borderRadius.sm + 4,
+    zIndex: 0,
+  },
+  todayRing: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 4,
+    borderRadius: theme.borderRadius.sm + 2,
+    borderWidth: 1.5,
+    zIndex: 1,
+  },
+  selectedGlow: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    right: -2,
+    bottom: 2,
+    borderRadius: theme.borderRadius.sm + 4,
+    backgroundColor: theme.colors.sacredGold,
+    opacity: 0.25,
+    zIndex: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 6,
+      },
+    }),
+  },
+  cellBackground: {
+    width: CELL_SIZE - 4,
+    height: CELL_HEIGHT - 6,
+    borderRadius: theme.borderRadius.sm,
+    position: 'relative',
+    zIndex: 2,
+  },
+  selectedBorder: {
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  dayText: {
+    fontSize: theme.typography.fontSizes.lg,
+    fontWeight: theme.typography.fontWeights.semibold,
+    position: 'absolute',
+    top: 4,
+    left: 6,
+  },
+  todayText: {
+    fontWeight: theme.typography.fontWeights.bold,
+  },
+  badge: {
+    position: 'absolute',
+    bottom: 1,
+    right: 1,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  badgeImage: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
+  },
+  badgeLarge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+  },
+  badgeImageLarge: {
+    width: 28,
+    height: 28,
+    resizeMode: 'contain',
+  },
+});

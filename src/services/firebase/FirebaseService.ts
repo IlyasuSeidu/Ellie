@@ -34,7 +34,12 @@ import { asyncStorageService } from '@/services/AsyncStorageService';
 import { shouldUseNativeFirebaseFullStack } from '@/services/firebase/nativeAvailability';
 import { logger } from '@/utils/logger';
 import { FirebaseError, NetworkError } from '@/utils/errorUtils';
-import { retry, criticalRetryOptions } from '@/utils/reliableRetry';
+import {
+  retry,
+  criticalRetryOptions,
+  normalRetryOptions,
+  type RetryOptions,
+} from '@/utils/reliableRetry';
 import { networkService } from '@/services/NetworkService';
 
 /**
@@ -45,6 +50,15 @@ export interface NetworkState {
 }
 
 type FirestoreLogLevel = 'error' | 'warn' | 'debug' | 'none';
+type FirestoreOperation =
+  | 'create'
+  | 'read'
+  | 'update'
+  | 'upsert'
+  | 'delete'
+  | 'query'
+  | 'subscribe'
+  | 'subscribeToQuery';
 
 export interface FirestoreOperationOptions {
   logLevel?: FirestoreLogLevel;
@@ -62,6 +76,15 @@ export class FirebaseService {
   protected auth: Auth;
   private networkState: NetworkState = { isConnected: true };
   private unsubscribeNetwork: (() => void) | null = null;
+  private static readonly TRANSIENT_FIRESTORE_CODES = new Set([
+    'aborted',
+    'cancelled',
+    'deadline-exceeded',
+    'internal',
+    'resource-exhausted',
+    'unavailable',
+    'unknown',
+  ]);
 
   constructor() {
     const firebaseInstances = getFirebaseInstances();
@@ -206,47 +229,26 @@ export class FirebaseService {
           }
           return result;
         } catch (error) {
-          const handledError = this.handleFirestoreError(error as FirestoreError, 'read', options);
-          if (this.useSdkOfflinePersistence && handledError instanceof NetworkError) {
-            try {
-              const docRef = doc(this.db, collectionName, docId);
-              const cachedDoc = await getDocFromCache(docRef);
-              if (cachedDoc.exists()) {
-                const result = {
-                  id: cachedDoc.id,
-                  ...(cachedDoc.data() as Record<string, unknown>),
-                } as unknown as T;
-                logger.warn('Serving Firestore native cached document after read failure', {
-                  collection: collectionName,
-                  docId,
-                });
-                return result;
-              }
-              return null;
-            } catch {
-              // Let the original error surface when native cache has nothing usable.
-            }
-          } else if (handledError instanceof NetworkError) {
-            const cached = await this.getCachedDocument<T>(collectionName, docId);
-            if (cached !== null) {
-              logger.warn('Falling back to cached document after Firestore read failure', {
-                collection: collectionName,
-                docId,
-              });
-              return cached;
-            }
+          const handledError = this.handleFirestoreError(error as FirestoreError, 'read', {
+            ...options,
+            logLevel: options.logLevel ?? 'none',
+          });
+          const cached = await this.resolveCachedDocumentAfterTransientFailure<T>(
+            collectionName,
+            docId,
+            handledError
+          );
+          if (cached !== undefined) {
+            return cached;
           }
 
           throw handledError;
         }
       },
-      {
-        ...criticalRetryOptions,
-        shouldRetry: (error) =>
-          error instanceof NetworkError ||
-          error.message.includes('network') ||
-          error.message.includes('unavailable'),
-      }
+      this.getFirestoreRetryOptions('read', {
+        collection: collectionName,
+        docId,
+      })
     );
   }
 
@@ -433,42 +435,25 @@ export class FirebaseService {
 
           return results;
         } catch (error) {
-          const handledError = this.handleFirestoreError(error as FirestoreError, 'query', options);
-          if (this.useSdkOfflinePersistence && handledError instanceof NetworkError) {
-            try {
-              const collectionRef = collection(this.db, collectionName);
-              const q = query(collectionRef, ...constraints);
-              const cachedSnapshot = await getDocsFromCache(q);
-              const results = this.mapQuerySnapshot<T>(cachedSnapshot);
-              logger.warn('Serving Firestore native cached query after read failure', {
-                collection: collectionName,
-                resultCount: results.length,
-              });
-              return results;
-            } catch {
-              // Let the original error surface when native cache has no query data.
-            }
-          } else if (handledError instanceof NetworkError) {
-            const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
-            if (cached !== null) {
-              logger.warn('Falling back to cached query after Firestore query failure', {
-                collection: collectionName,
-                resultCount: cached.length,
-              });
-              return cached;
-            }
+          const handledError = this.handleFirestoreError(error as FirestoreError, 'query', {
+            ...options,
+            logLevel: options.logLevel ?? 'none',
+          });
+          const cached = await this.resolveCachedQueryAfterTransientFailure<T>(
+            collectionName,
+            constraints,
+            handledError
+          );
+          if (cached !== undefined) {
+            return cached;
           }
 
           throw handledError;
         }
       },
-      {
-        ...criticalRetryOptions,
-        shouldRetry: (error) =>
-          error instanceof NetworkError ||
-          error.message.includes('network') ||
-          error.message.includes('unavailable'),
-      }
+      this.getFirestoreRetryOptions('query', {
+        collection: collectionName,
+      })
     );
   }
 
@@ -633,17 +618,24 @@ export class FirebaseService {
    */
   private handleFirestoreError(
     error: FirestoreError,
-    operation: string,
+    operation: FirestoreOperation,
     options: FirestoreOperationOptions = {}
   ): Error {
-    const errorCode = error.code;
+    const errorCode = this.normalizeFirestoreErrorCode(error.code);
     const errorMessage = error.message;
+    const isTransientNetworkError = this.isTransientFirestoreCode(errorCode);
+    const resolvedLogLevel =
+      options.logLevel ??
+      (isTransientNetworkError && (operation === 'read' || operation === 'query')
+        ? 'warn'
+        : 'error');
     const logPayload = {
       code: errorCode,
+      rawCode: error.code,
       operation,
     };
 
-    switch (options.logLevel ?? 'error') {
+    switch (resolvedLogLevel) {
       case 'warn':
         logger.warn(`Firestore ${operation} error`, {
           ...logPayload,
@@ -674,6 +666,10 @@ export class FirebaseService {
 
     // Map Firestore error codes to custom errors
     switch (errorCode) {
+      case 'aborted':
+      case 'cancelled':
+      case 'internal':
+      case 'resource-exhausted':
       case 'unavailable':
       case 'deadline-exceeded':
         return new NetworkError(
@@ -710,6 +706,125 @@ export class FirebaseService {
    */
   public getNetworkState(): NetworkState {
     return { ...this.networkState };
+  }
+
+  private normalizeFirestoreErrorCode(code: string | undefined): string {
+    if (!code) return 'unknown';
+    return code.startsWith('firestore/') ? code.slice('firestore/'.length) : code;
+  }
+
+  private isTransientFirestoreCode(code: string): boolean {
+    return FirebaseService.TRANSIENT_FIRESTORE_CODES.has(code);
+  }
+
+  private isRetryableFirestoreError(error: Error): boolean {
+    if (error instanceof NetworkError) return true;
+    const message = error.message.toLowerCase();
+    return (
+      message.includes('network') ||
+      message.includes('unavailable') ||
+      message.includes('deadline-exceeded') ||
+      message.includes('resource-exhausted')
+    );
+  }
+
+  private getFirestoreRetryOptions(
+    operation: 'read' | 'query',
+    context: Record<string, string | number>
+  ): RetryOptions {
+    return {
+      ...normalRetryOptions,
+      initialDelay: 350,
+      maxDelay: 2500,
+      shouldRetry: (error) => this.isRetryableFirestoreError(error),
+      onRetry: (attempt, error) => {
+        logger.warn(`Firestore ${operation} transient failure; retrying`, {
+          ...context,
+          attempt,
+          code: error instanceof NetworkError ? error.code : undefined,
+          message: error.message,
+        });
+      },
+    };
+  }
+
+  private async resolveCachedDocumentAfterTransientFailure<T extends DocumentData>(
+    collectionName: string,
+    docId: string,
+    error: Error
+  ): Promise<T | null | undefined> {
+    if (!(error instanceof NetworkError)) {
+      return undefined;
+    }
+
+    if (this.useSdkOfflinePersistence) {
+      try {
+        const docRef = doc(this.db, collectionName, docId);
+        const cachedDoc = await getDocFromCache(docRef);
+        if (cachedDoc.exists()) {
+          const result = {
+            id: cachedDoc.id,
+            ...(cachedDoc.data() as Record<string, unknown>),
+          } as unknown as T;
+          logger.warn('Serving Firestore native cached document after transient read failure', {
+            collection: collectionName,
+            docId,
+          });
+          return result;
+        }
+        return undefined;
+      } catch {
+        return undefined;
+      }
+    }
+
+    const cached = await this.getCachedDocument<T>(collectionName, docId);
+    if (cached !== null) {
+      logger.warn('Falling back to cached document after transient Firestore read failure', {
+        collection: collectionName,
+        docId,
+      });
+      return cached;
+    }
+
+    return undefined;
+  }
+
+  private async resolveCachedQueryAfterTransientFailure<T extends DocumentData>(
+    collectionName: string,
+    constraints: QueryConstraint[],
+    error: Error
+  ): Promise<T[] | undefined> {
+    if (!(error instanceof NetworkError)) {
+      return undefined;
+    }
+
+    if (this.useSdkOfflinePersistence) {
+      try {
+        const collectionRef = collection(this.db, collectionName);
+        const q = query(collectionRef, ...constraints);
+        const cachedSnapshot = await getDocsFromCache(q);
+        const results = this.mapQuerySnapshot<T>(cachedSnapshot);
+        logger.warn('Serving Firestore native cached query after transient read failure', {
+          collection: collectionName,
+          resultCount: results.length,
+        });
+        return results;
+      } catch {
+        return undefined;
+      }
+    }
+
+    const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
+    if (cached !== null) {
+      logger.warn('Falling back to cached query after transient Firestore query failure', {
+        collection: collectionName,
+        resultCount: cached.length,
+      });
+      return cached;
+    }
+
+    return undefined;
   }
 
   private getDocumentCacheKey(collectionName: string, docId: string): string {

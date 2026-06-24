@@ -3,6 +3,12 @@
 Last updated: June 6, 2026
 Repository: repo root
 
+Status: Historical deployment plan. This file predates the current voice-first Ryvro concept and should not be used as the current launch checklist.
+
+Current concept: configure your shift once, ask Ryvro by voice, and get the right shift answer instantly.
+
+Current launch checklist: use `RYVRO_RELEASE_TASKS.md` and `docs/RYVRO_RELEASE_READINESS_REPORT.md`.
+
 ## 1. Goal
 
 Ship Ryvro to:

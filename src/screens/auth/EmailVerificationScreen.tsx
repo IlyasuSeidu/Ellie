@@ -6,9 +6,8 @@
  */
 
 import React, { useEffect, useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
@@ -17,10 +16,11 @@ import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { getFirebaseAuth } from '@/config/firebase';
 import { readPersistedOnboardingCompletionStatus } from '@/utils/onboardingPersistence';
-import { theme } from '@/utils/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import type { AuthStackParamList } from '@/navigation/AuthNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
+import { AuthBackground } from './AuthBackground';
+import { authStyles, RYVRO_AUTH_COLORS } from './authStyles';
 
 type Nav = NativeStackNavigationProp<AuthStackParamList, 'EmailVerification'>;
 type Route = RouteProp<AuthStackParamList, 'EmailVerification'>;
@@ -162,17 +162,11 @@ export const EmailVerificationScreen: React.FC = () => {
     <View
       style={[styles.container, { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 32 }]}
     >
-      <LinearGradient
-        colors={[theme.colors.opacity.gold10, 'transparent']}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 0.4 }}
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-      />
+      <AuthBackground />
 
       <Animated.View entering={FadeInUp.duration(500)} style={styles.content}>
         <View style={styles.iconContainer}>
-          <Ionicons name="mail-unread-outline" size={56} color={theme.colors.sacredGold} />
+          <Ionicons name="mail-unread-outline" size={56} color={RYVRO_AUTH_COLORS.cyan} />
         </View>
 
         <Text style={styles.title}>
@@ -196,13 +190,13 @@ export const EmailVerificationScreen: React.FC = () => {
 
         {error ? (
           <View style={styles.errorBanner}>
-            <Ionicons name="alert-circle-outline" size={16} color={theme.colors.error} />
+            <Ionicons name="alert-circle-outline" size={16} color={RYVRO_AUTH_COLORS.error} />
             <Text style={styles.errorBannerText}>{error}</Text>
           </View>
         ) : null}
 
         <View style={styles.pollingRow}>
-          <ActivityIndicator size="small" color={theme.colors.dust} />
+          <ActivityIndicator size="small" color={RYVRO_AUTH_COLORS.cyan} />
           <Text style={styles.pollingText}>
             {t('auth.emailVerification.waiting', {
               defaultValue: 'Waiting for verification…',
@@ -218,7 +212,7 @@ export const EmailVerificationScreen: React.FC = () => {
           testID="resend-verification-button"
         >
           {isResending ? (
-            <ActivityIndicator size="small" color={theme.colors.sacredGold} />
+            <ActivityIndicator size="small" color={RYVRO_AUTH_COLORS.cyan} />
           ) : (
             <Text style={styles.resendText}>
               {resendCooldown > 0
@@ -250,74 +244,4 @@ export const EmailVerificationScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.deepVoid },
-  content: {
-    flex: 1,
-    paddingHorizontal: theme.spacing.xl,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: theme.spacing.md,
-  },
-  iconContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: theme.colors.opacity.gold10,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  title: {
-    fontSize: theme.typography.fontSizes.xxl,
-    fontWeight: theme.typography.fontWeights.black,
-    color: theme.colors.paper,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: theme.typography.fontSizes.md,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-  instructions: {
-    fontSize: theme.typography.fontSizes.sm,
-    color: theme.colors.shadow,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-  errorBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
-    backgroundColor: 'rgba(239,68,68,0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(239,68,68,0.3)',
-    borderRadius: theme.borderRadius.md,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-  },
-  errorBannerText: {
-    color: theme.colors.error,
-    fontSize: theme.typography.fontSizes.sm,
-    flex: 1,
-  },
-  pollingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.sm,
-    marginTop: theme.spacing.sm,
-  },
-  pollingText: { fontSize: theme.typography.fontSizes.sm, color: theme.colors.dust },
-  resendButton: { paddingVertical: theme.spacing.sm, paddingHorizontal: theme.spacing.lg },
-  resendButtonDisabled: { opacity: 0.5 },
-  resendText: {
-    color: theme.colors.sacredGold,
-    fontSize: theme.typography.fontSizes.sm,
-    fontWeight: theme.typography.fontWeights.semibold,
-  },
-  skipButton: { paddingVertical: theme.spacing.sm },
-  skipText: { color: theme.colors.shadow, fontSize: theme.typography.fontSizes.sm },
-});
+const styles = authStyles;

@@ -32,7 +32,7 @@ describe('RevenueCatEntitlements', () => {
     });
   });
 
-  it('uses only the canonical Ryvro launch entitlement by default', () => {
+  it('uses the canonical Ryvro launch entitlement first by default', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -49,12 +49,12 @@ describe('RevenueCatEntitlements', () => {
         hasActiveProEntitlement,
       } = require('../RevenueCatEntitlements');
 
-      expect(getRevenueCatEntitlementIds()).toEqual(['pro']);
+      expect(getRevenueCatEntitlementIds()[0]).toBe('pro');
       expect(hasActiveProEntitlement(makeCustomerInfo(['pro']))).toBe(true);
     });
   });
 
-  it('matches the canonical pro entitlement id only', () => {
+  it('matches the canonical pro entitlement id and Ryvro dashboard aliases', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -73,12 +73,13 @@ describe('RevenueCatEntitlements', () => {
 
       expect(hasActiveProEntitlement(makeCustomerInfo(['pro']))).toBe(true);
       expect(getActiveProEntitlement(makeCustomerInfo(['pro']))?.identifier).toBe('pro');
-      expect(hasActiveProEntitlement(makeCustomerInfo(['premium']))).toBe(false);
-      expect(getActiveProEntitlement(makeCustomerInfo(['premium']))).toBeNull();
+      expect(hasActiveProEntitlement(makeCustomerInfo(['ryvro_pro']))).toBe(true);
+      expect(hasActiveProEntitlement(makeCustomerInfo(['Ryvro Pro']))).toBe(true);
+      expect(hasActiveProEntitlement(makeCustomerInfo(['premium']))).toBe(true);
     });
   });
 
-  it('does not accept retired or loose entitlement names for this pre-launch rebrand', () => {
+  it('does not accept retired Ellie entitlement names for this Ryvro launch', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -104,16 +105,8 @@ describe('RevenueCatEntitlements', () => {
           'ellie_miner_shift_assistant_pro',
           'miner_shift_assistant_pro',
           'Ellie: Miner Shift Assistant Pro',
-          'premium',
-          'ryvro_pro',
-          'ryvro-premium',
-          'ryvro_shift_planner_pro',
-          'Ryvro Shift Planner Pro',
         ])
       );
-      expect(hasActiveProEntitlement(makeCustomerInfo(['premium']))).toBe(false);
-      expect(hasActiveProEntitlement(makeCustomerInfo(['ryvro_shift_planner_pro']))).toBe(false);
-      expect(hasActiveProEntitlement(makeCustomerInfo(['Ryvro Shift Planner Pro']))).toBe(false);
       expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie Shift Planner Pro']))).toBe(false);
       expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie: Miner Shift Assistant Pro']))).toBe(
         false
@@ -164,7 +157,9 @@ describe('RevenueCatEntitlements', () => {
 
       expect(getPrimaryRevenueCatEntitlementId()).toBe('custom_partner_pro');
       expect(getRevenueCatEntitlementIds()[0]).toBe('custom_partner_pro');
-      expect(getRevenueCatEntitlementIds()).toEqual(['custom_partner_pro', 'pro']);
+      expect(getRevenueCatEntitlementIds()).toEqual(
+        expect.arrayContaining(['custom_partner_pro', 'pro', 'ryvro_pro', 'Ryvro Pro'])
+      );
     });
   });
 });

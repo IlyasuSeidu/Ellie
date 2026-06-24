@@ -87,7 +87,7 @@ const off = definition('off', 'Day Off', undefined, undefined, '#94A3B8', 'home'
   kind: 'off',
 });
 const early = definition('early', 'Early Shift', '05:00', '13:00', '#0EA5E9', 'partly-sunny');
-const late = definition('late', 'Late Shift', '13:00', '21:00', '#F59E0B', 'time');
+const late = definition('late', 'Late Shift', '13:00', '21:00', '#19bdb5', 'time');
 const travel = definition('travel', 'Travel Day', '08:00', '16:00', '#14B8A6', 'airplane', {
   kind: 'travel',
   reminderProfile: { earlyReminderHours: 24 },
@@ -244,7 +244,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     title: 'Hospitality Five On / Two Off',
     subtitle: 'Simple repeating week for venue, retail, hotel, and duty managers.',
     aiPromptExample: 'I work five late shifts from 2pm to 10pm, then two days off.',
-    visual: visual('Hotel', 'restaurant', '#F59E0B'),
+    visual: visual('Hotel', 'restaurant', '#19bdb5'),
     schedule: schedule(
       'Hospitality 5/2',
       [late, off],
@@ -299,7 +299,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     subtitle: 'FIFO pattern for mining, offshore, and remote operations crews.',
     aiPromptExample:
       'I do FIFO mining: 14 days at the work location, travel home, then 14 days off.',
-    visual: visual('Mine', 'hammer', '#D97706'),
+    visual: visual('Mine', 'hammer', '#20f4dc'),
     schedule: schedule(
       'Mining FIFO 14/14',
       [day, travel, off],

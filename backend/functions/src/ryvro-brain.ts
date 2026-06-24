@@ -24,6 +24,39 @@ const OPENAI_MODEL = 'gpt-4o-mini';
 const MAX_TOOL_ROUNDS = 5;
 const DEFAULT_PROVIDER_TIMEOUT_MS = 25000;
 
+const MONTH_NAMES = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+] as const;
+
+const WEEKDAY_NAMES = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+] as const;
+
+const ORDINALS: Record<string, number> = {
+  first: 1,
+  second: 2,
+  third: 3,
+  fourth: 4,
+  fifth: 5,
+};
+
 interface OpenAIErrorShape {
   status?: number;
   code?: string;
@@ -51,6 +84,230 @@ export class RyvroBrainProcessingError extends Error {
     this.statusCode = statusCode;
     this.providerStatus = providerStatus;
   }
+}
+
+function parseLocalDate(dateText: string): Date {
+  return new Date(`${dateText}T00:00:00`);
+}
+
+function addDays(date: Date, days: number): Date {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+function toDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function startOfWeek(date: Date): Date {
+  return addDays(date, -date.getDay());
+}
+
+function endOfMonth(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+}
+
+function cleanQuery(query: string): string {
+  return query
+    .toLowerCase()
+    .replace(/[?!.,]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function monthIndex(monthName: string): number {
+  return MONTH_NAMES.indexOf(monthName.toLowerCase() as (typeof MONTH_NAMES)[number]);
+}
+
+function weekdayIndex(weekdayName: string): number {
+  return WEEKDAY_NAMES.indexOf(weekdayName.toLowerCase() as (typeof WEEKDAY_NAMES)[number]);
+}
+
+function stripOrdinalSuffix(value: string): number {
+  return Number(value.replace(/(st|nd|rd|th)$/i, ''));
+}
+
+function parseMonthDay(monthName: string, dayText: string, fallbackYear: number): Date | undefined {
+  const month = monthIndex(monthName);
+  const day = stripOrdinalSuffix(dayText);
+  if (month < 0 || !Number.isFinite(day) || day < 1 || day > 31) {
+    return undefined;
+  }
+  return new Date(fallbackYear, month, day);
+}
+
+function resolveOrdinalWeekdayInMonth(
+  query: string,
+  fallbackYear: number
+): { date: string } | undefined {
+  const match = query.match(
+    /\b(first|second|third|fourth|fifth)\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\s+(?:in|of)\s+(january|february|march|april|may|june|july|august|september|october|november|december)\b/
+  );
+
+  if (!match) {
+    return undefined;
+  }
+
+  const ordinal = ORDINALS[match[1]];
+  const weekday = weekdayIndex(match[2]);
+  const month = monthIndex(match[3]);
+  if (!ordinal || weekday < 0 || month < 0) {
+    return undefined;
+  }
+
+  const firstOfMonth = new Date(fallbackYear, month, 1);
+  const offset = (weekday - firstOfMonth.getDay() + 7) % 7;
+  const resolved = addDays(firstOfMonth, offset + (ordinal - 1) * 7);
+  if (resolved.getMonth() !== month) {
+    return undefined;
+  }
+
+  return { date: toDateString(resolved) };
+}
+
+function resolveDirectDateRange(
+  query: string,
+  currentDate: Date
+): { startDate: string; endDate: string } | undefined {
+  const nextDaysMatch = query.match(/\bnext\s+(\d{1,2})\s+days?\b/);
+  if (nextDaysMatch) {
+    const days = Number(nextDaysMatch[1]);
+    if (Number.isFinite(days) && days > 0 && days <= 62) {
+      return {
+        startDate: toDateString(currentDate),
+        endDate: toDateString(addDays(currentDate, days - 1)),
+      };
+    }
+  }
+
+  if (/\blast\s+week\b|\bprevious\s+week\b/.test(query)) {
+    const thisWeekStart = startOfWeek(currentDate);
+    const previousWeekStart = addDays(thisWeekStart, -7);
+    return {
+      startDate: toDateString(previousWeekStart),
+      endDate: toDateString(addDays(previousWeekStart, 6)),
+    };
+  }
+
+  if (/\bfrom\s+today\s+to\s+(?:the\s+)?end\s+of\s+(?:the\s+)?month\b/.test(query)) {
+    return {
+      startDate: toDateString(currentDate),
+      endDate: toDateString(endOfMonth(currentDate)),
+    };
+  }
+
+  if (/\bend\s+of\s+(?:the\s+)?month\b/.test(query)) {
+    const monthEnd = endOfMonth(currentDate);
+    return {
+      startDate: toDateString(addDays(monthEnd, -6)),
+      endDate: toDateString(monthEnd),
+    };
+  }
+
+  const monthNames = MONTH_NAMES.join('|');
+  const dayPattern = String.raw`\d{1,2}(?:st|nd|rd|th)?`;
+  const monthRangeMatch = query.match(
+    new RegExp(
+      String.raw`\b(?:from|between)\s+(${monthNames})\s+(${dayPattern})\s+(?:to|and)\s+(?:(${monthNames})\s+)?(${dayPattern})\b`
+    )
+  );
+  if (monthRangeMatch) {
+    const start = parseMonthDay(monthRangeMatch[1], monthRangeMatch[2], currentDate.getFullYear());
+    const end = parseMonthDay(
+      monthRangeMatch[3] ?? monthRangeMatch[1],
+      monthRangeMatch[4],
+      currentDate.getFullYear()
+    );
+    if (start && end) {
+      if (end < start) {
+        end.setFullYear(end.getFullYear() + 1);
+      }
+      return { startDate: toDateString(start), endDate: toDateString(end) };
+    }
+  }
+
+  const sameMonthRangeMatch = query.match(
+    new RegExp(
+      String.raw`\bfrom\s+(?:the\s+)?(${dayPattern})\s+to\s+(?:the\s+)?(${dayPattern})\s+of\s+(${monthNames})\b`
+    )
+  );
+  if (sameMonthRangeMatch) {
+    const start = parseMonthDay(
+      sameMonthRangeMatch[3],
+      sameMonthRangeMatch[1],
+      currentDate.getFullYear()
+    );
+    const end = parseMonthDay(
+      sameMonthRangeMatch[3],
+      sameMonthRangeMatch[2],
+      currentDate.getFullYear()
+    );
+    if (start && end) {
+      return { startDate: toDateString(start), endDate: toDateString(end) };
+    }
+  }
+
+  return undefined;
+}
+
+function isShiftQuestion(query: string): boolean {
+  return /\b(shift|work|working|off|schedule|roster|am i|do i|have|next|from|between|last week|end of)\b/.test(
+    query
+  );
+}
+
+export function resolveDirectScheduleQuery(
+  request: RyvroBrainRequest
+): { toolName: string; input: Record<string, unknown> } | undefined {
+  const query = cleanQuery(request.query);
+  if (!isShiftQuestion(query)) {
+    return undefined;
+  }
+
+  const currentDate = parseLocalDate(request.userContext.currentDate);
+  const exactDate = resolveOrdinalWeekdayInMonth(query, currentDate.getFullYear());
+  if (exactDate) {
+    return { toolName: 'get_shift_for_date', input: exactDate };
+  }
+
+  const range = resolveDirectDateRange(query, currentDate);
+  if (range) {
+    return { toolName: 'get_shifts_in_range', input: range };
+  }
+
+  return undefined;
+}
+
+function tryDirectScheduleAnswer(
+  request: RyvroBrainRequest,
+  requestId: string
+): RyvroBrainResponse | undefined {
+  const directQuery = resolveDirectScheduleQuery(request);
+  if (!directQuery) {
+    return undefined;
+  }
+
+  const toolResult = executeTool(
+    directQuery.toolName,
+    directQuery.input,
+    request.userContext.shiftCycle
+  );
+
+  return {
+    text:
+      directQuery.toolName === 'get_shifts_in_range'
+        ? 'Here is your shift schedule for that date range.'
+        : 'Here is your shift for that date.',
+    shiftData: {
+      toolName: directQuery.toolName,
+      data: toolResult,
+    },
+    requestId,
+  };
 }
 
 function mapProviderError(error: unknown): RyvroBrainProcessingError {
@@ -146,7 +403,7 @@ const TOOLS: ChatCompletionTool[] = [
     function: {
       name: 'get_shift_for_date',
       description:
-        'Get the shift type for a specific date. Use when the user asks about a particular date.',
+        'Get the shift type for a specific date. Use when the user asks about one exact date, including natural phrases such as today, tomorrow, Friday, Saturday two weeks from now, or next two weeks Saturday after you resolve them to YYYY-MM-DD.',
       parameters: {
         type: 'object',
         properties: {
@@ -165,7 +422,7 @@ const TOOLS: ChatCompletionTool[] = [
     function: {
       name: 'get_shifts_in_range',
       description:
-        'Get all shifts in a date range. Use for queries about a week, month, or period.',
+        'Get all shifts in a date range. Use for queries about a week, weekend, month, next 7 days, next 14 days, last week, end of the month, or a spoken date range such as from June 12 to June 27 after resolving the natural range to YYYY-MM-DD startDate and endDate.',
       parameters: {
         type: 'object',
         properties: {
@@ -381,7 +638,17 @@ CONTEXT:
 RULES:
 - Always use the provided tools to look up shift data. Never guess or make up schedules.
 - If the user asks about a specific date, use get_shift_for_date.
-- If they ask about a range (week, month), use get_shifts_in_range.
+- If they ask about a range (week, month, next 7 days, next 14 days, last week, end of the month, from June 12 to June 27), use get_shifts_in_range.
+- Treat natural date phrases as dates before answering. Examples: "Saturday two weeks from now" and "next two weeks Saturday" mean the Saturday in the week that starts two weeks from the current date. "Next two Saturdays" means answer both upcoming Saturdays.
+- For week ranges, "this week" means the current Sunday through Saturday calendar week, and "next week" means the following Sunday through Saturday calendar week. If the user adds a weekday, for example "next week Saturday" or "Saturday next week", answer that weekday inside the following Sunday-through-Saturday week, not the immediate upcoming weekday.
+- For month ranges, "this month" means the current calendar month, and "next month" means the following calendar month.
+- "Next 7 days" means the current date through six days after the current date. "Next 14 days" means the current date through thirteen days after the current date.
+- "Last week" means the previous Sunday through Saturday calendar week.
+- "End of the month" means the final seven calendar days of the current month. "From today to the end of the month" means the current date through the final calendar day of the current month.
+- Date ranges such as "from June 12 to June 27" and "from the 12th to the 27th of June" are inclusive and should use get_shifts_in_range.
+- Ordinal weekday phrases such as "first Saturday in August" are exact dates and should use get_shift_for_date.
+- For all range questions, call get_shifts_in_range instead of answering from memory so the app can display and speak a grouped schedule.
+- If a date phrase can reasonably mean two different things, ask one short clarification question before using a tool. Do not guess.
 - If they ask "am I working now/today", use get_current_status.
 - If they ask about counts or statistics, use get_statistics.
 - For "next day off", "next night shift", or a named universal shift such as on-call, training, travel, leave, or custom work, use get_next_occurrence.
@@ -413,6 +680,11 @@ export async function processQuery(
   openaiApiKey: string,
   options: QueryProcessingOptions
 ): Promise<RyvroBrainResponse> {
+  const directAnswer = tryDirectScheduleAnswer(request, options.requestId);
+  if (directAnswer) {
+    return directAnswer;
+  }
+
   const client = new OpenAI({ apiKey: openaiApiKey });
   const providerTimeoutMs = options.timeoutMs || DEFAULT_PROVIDER_TIMEOUT_MS;
 

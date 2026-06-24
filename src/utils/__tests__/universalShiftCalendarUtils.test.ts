@@ -46,7 +46,7 @@ const offDef: UniversalShiftDefinition = {
   countsAsWork: false,
   countsAsNight: false,
   countsForStats: true,
-  color: '#78716c',
+  color: '#5f7484',
   icon: 'home',
 };
 
@@ -78,7 +78,7 @@ describe('universalShiftCalendarUtils', () => {
     expect(ics).toContain('LOCATION:Ward 7');
     expect(ics).toContain('Location: Ward 7');
     expect(ics).toContain('X-RYVRO-SHIFT-ID:day');
-    expect(ics).toContain('X-RYVRO-SHIFT-COLOR:#2196F3');
+    expect(ics).not.toContain('X-RYVRO-SHIFT-COLOR');
     expect(ics).toContain('X-RYVRO-SHIFT-ICON:sunny');
     expect(ics).not.toContain('X-ELLIE-SHIFT-ID');
     expect(ics).toContain('DTSTART;TZID=UTC:20260101T060000');

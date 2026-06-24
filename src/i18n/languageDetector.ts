@@ -1,84 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Localization from 'expo-localization';
 import type { LanguageDetectorAsyncModule } from 'i18next';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
 
 export const LANGUAGE_KEY = STORAGE_KEYS.i18n.language;
 export const RETIRED_LANGUAGE_PREFERENCE_KEY = STORAGE_KEYS.i18n.retiredLanguagePreference;
-export const SUPPORTED_LANGUAGES = [
-  'en',
-  'es',
-  'pt-BR',
-  'fr',
-  'ar',
-  'zh-CN',
-  'ru',
-  'hi',
-  'af',
-  'zu',
-  'id',
-] as const;
+export const SUPPORTED_LANGUAGES = ['en'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
-const SUPPORTED_LANGUAGE_SET = new Set<SupportedLanguage>(SUPPORTED_LANGUAGES);
-
 export function normalizeLanguage(rawLanguage?: string | null): SupportedLanguage {
-  if (!rawLanguage) {
-    return 'en';
-  }
-
-  if (SUPPORTED_LANGUAGE_SET.has(rawLanguage as SupportedLanguage)) {
-    return rawLanguage as SupportedLanguage;
-  }
-
-  const lower = rawLanguage.toLowerCase();
-
-  if (lower.startsWith('es')) {
-    return 'es';
-  }
-
-  if (lower.startsWith('pt')) {
-    return 'pt-BR';
-  }
-
-  if (lower.startsWith('fr')) {
-    return 'fr';
-  }
-
-  if (lower.startsWith('ar')) {
-    return 'ar';
-  }
-
-  if (lower.startsWith('zh')) {
-    return 'zh-CN';
-  }
-
-  if (lower.startsWith('ru')) {
-    return 'ru';
-  }
-
-  if (lower.startsWith('hi')) {
-    return 'hi';
-  }
-
-  if (lower.startsWith('af')) {
-    return 'af';
-  }
-
-  if (lower.startsWith('zu')) {
-    return 'zu';
-  }
-
-  if (lower.startsWith('id')) {
-    return 'id';
-  }
-
+  void rawLanguage;
   return 'en';
-}
-
-function getDeviceLanguage(): string {
-  const locales = Localization.getLocales();
-  return locales[0]?.languageTag ?? locales[0]?.languageCode ?? 'en';
 }
 
 export const languageDetector: LanguageDetectorAsyncModule = {
@@ -91,7 +22,7 @@ export const languageDetector: LanguageDetectorAsyncModule = {
     AsyncStorage.getItem(LANGUAGE_KEY)
       .then(async (savedLanguage) => {
         if (savedLanguage) {
-          callback(normalizeLanguage(savedLanguage));
+          callback('en');
           return;
         }
 
@@ -99,14 +30,13 @@ export const languageDetector: LanguageDetectorAsyncModule = {
           RETIRED_LANGUAGE_PREFERENCE_KEY
         );
         if (retiredLanguagePreference) {
-          const normalized = normalizeLanguage(retiredLanguagePreference);
-          await AsyncStorage.setItem(LANGUAGE_KEY, normalized);
+          await AsyncStorage.setItem(LANGUAGE_KEY, 'en');
           await AsyncStorage.removeItem(RETIRED_LANGUAGE_PREFERENCE_KEY);
-          callback(normalized);
+          callback('en');
           return;
         }
 
-        callback(normalizeLanguage(getDeviceLanguage()));
+        callback('en');
       })
       .catch(() => {
         callback('en');

@@ -13,14 +13,15 @@ import { ryvroBrainService, RyvroBrainServiceError } from './RyvroBrainService';
 import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import {
-  buildOfflineUnsupportedResponse,
-  classifyOfflineIntent,
-  tryOfflineFallback,
-} from '@/utils/offlineFallback';
+  buildLocalShiftBrainUnsupportedResponse,
+  classifyLocalShiftBrainIntent,
+  answerWithLocalShiftBrain,
+} from '@/utils/localShiftBrain';
 import i18n from '@/i18n';
 import { normalizeLanguage } from '@/i18n/languageDetector';
 import { networkService } from '@/services/NetworkService';
 import { Analytics } from '@/utils/analytics';
+import { formatTimeForDisplay, formatTimesInTextForDisplay } from '@/utils/shiftTimeUtils';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -28,6 +29,7 @@ import type {
   VoiceAssistantError,
   VoiceAssistantErrorType,
   VoiceAssistantNotice,
+  ShiftQueryResult,
 } from '@/types/voiceAssistant';
 
 /** Max messages to keep in memory (prevents unbounded growth) */
@@ -48,6 +50,7 @@ const VOICE_LOCALE_BY_APP_LANGUAGE: Record<string, string> = {
   zu: 'zu-ZA',
   id: 'id-ID',
 };
+const OFF_SHIFT_CLOSING_REGEX = /\s*Enjoy the rest\.?$/i;
 
 export interface VoiceAssistantCallbacks {
   onStateChange: (state: VoiceAssistantState) => void;
@@ -62,6 +65,259 @@ let messageIdCounter = 0;
 function generateMessageId(): string {
   messageIdCounter += 1;
   return `msg_${Date.now()}_${messageIdCounter}`;
+}
+
+export function sanitizeVoiceAssistantResponseText(text: string): string {
+  return text
+    .trim()
+    .replace(/^(?:hi|hello|hey)(?:\s+there)?[,.!]\s+/i, '')
+    .replace(/^there[,.!]\s+/i, '')
+    .trim();
+}
+
+function getPersonalizationName(userContext: VoiceAssistantUserContext | null): string | null {
+  const firstName = userContext?.name?.trim().split(/\s+/)[0];
+  if (!firstName || /^ryvro$/i.test(firstName) || /^user$/i.test(firstName)) {
+    return null;
+  }
+
+  return firstName;
+}
+
+function makeShiftNamePleasant(shiftName: string): string {
+  const normalized = shiftName
+    .trim()
+    .replace(/\.$/, '')
+    .replace(/^a\s+/i, '')
+    .replace(/^an\s+/i, '');
+  if (/^off$/i.test(normalized)) {
+    return 'off';
+  }
+
+  return `on ${normalized}`;
+}
+
+function buildPleasantShiftSentence(
+  firstName: string | null,
+  shiftName: string,
+  dateText: string,
+  timeText?: string
+): string {
+  const prefix = firstName ? `${firstName}, ` : '';
+  const pleasantShift = makeShiftNamePleasant(shiftName);
+  const cleanDate = dateText.trim().replace(/\.$/, '');
+  const cleanTime = timeText?.trim().replace(/\.$/, '');
+
+  if (/^off$/i.test(shiftName.trim())) {
+    return `${prefix}you’re off on ${cleanDate}. Enjoy the rest.`;
+  }
+
+  return `${prefix}you’re ${pleasantShift} on ${cleanDate}${cleanTime ? `, ${cleanTime}` : ''}.`;
+}
+
+interface RangeShiftDay {
+  date: string;
+  isWorkDay: boolean;
+  isNightShift?: boolean;
+  shiftType?: string;
+  universal?: {
+    definitionName?: string;
+    startTime?: string;
+    endTime?: string;
+  };
+}
+
+interface RangeGroup {
+  label: string;
+  timeText: string;
+  dates: Date[];
+}
+
+function isRangeShiftDay(value: unknown): value is RangeShiftDay {
+  if (!value || typeof value !== 'object') return false;
+  const day = value as RangeShiftDay;
+  return typeof day.date === 'string' && typeof day.isWorkDay === 'boolean';
+}
+
+function parseRangeShiftDate(value: string): Date | null {
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  const parsed = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  if (
+    parsed.getFullYear() !== Number(match[1]) ||
+    parsed.getMonth() !== Number(match[2]) - 1 ||
+    parsed.getDate() !== Number(match[3])
+  ) {
+    return null;
+  }
+  return parsed;
+}
+
+function formatRangeHeaderDate(date: Date): string {
+  return date.toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+function formatRangeListDate(date: Date): string {
+  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+function addDaysForRange(date: Date, days: number): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+}
+
+function areSameCalendarDay(left: Date, right: Date): boolean {
+  return (
+    left.getFullYear() === right.getFullYear() &&
+    left.getMonth() === right.getMonth() &&
+    left.getDate() === right.getDate()
+  );
+}
+
+function formatDateRuns(dates: Date[]): string {
+  const sorted = [...dates].sort((left, right) => left.getTime() - right.getTime());
+  const runs: Array<{ start: Date; end: Date }> = [];
+
+  for (const date of sorted) {
+    const last = runs[runs.length - 1];
+    if (last && areSameCalendarDay(addDaysForRange(last.end, 1), date)) {
+      last.end = date;
+    } else {
+      runs.push({ start: date, end: date });
+    }
+  }
+
+  return runs
+    .map((run) =>
+      areSameCalendarDay(run.start, run.end)
+        ? formatRangeListDate(run.start)
+        : `${formatRangeListDate(run.start)} to ${formatRangeListDate(run.end)}`
+    )
+    .join(', ');
+}
+
+function normalizeRangeShiftLabel(day: RangeShiftDay): string {
+  if (!day.isWorkDay) return 'Off';
+  return day.universal?.definitionName?.trim() || `${day.shiftType ?? 'Work'} shift`;
+}
+
+function normalizeRangeTimeText(day: RangeShiftDay): string {
+  const startTime = day.universal?.startTime;
+  const endTime = day.universal?.endTime;
+  if (!day.isWorkDay || !startTime || !endTime) return '';
+  return `${formatTimeForDisplay(startTime)} to ${formatTimeForDisplay(endTime)}`;
+}
+
+function formatRangeGroupLabel(group: RangeGroup): string {
+  return group.timeText ? `${group.label}, ${group.timeText}` : group.label;
+}
+
+function formatStructuredRangeAnswer(
+  shiftData: ShiftQueryResult | undefined,
+  firstName: string | null
+): string | null {
+  if (shiftData?.toolName !== 'get_shifts_in_range' || !Array.isArray(shiftData.data)) {
+    return null;
+  }
+
+  const days = shiftData.data
+    .filter(isRangeShiftDay)
+    .map((day) => ({ ...day, parsedDate: parseRangeShiftDate(day.date) }))
+    .filter((day): day is RangeShiftDay & { parsedDate: Date } => Boolean(day.parsedDate))
+    .sort((left, right) => left.parsedDate.getTime() - right.parsedDate.getTime());
+
+  if (days.length === 0) return null;
+
+  const firstDate = days[0].parsedDate;
+  const lastDate = days[days.length - 1].parsedDate;
+  const workDays = days.filter((day) => day.isWorkDay).length;
+  const offDays = days.length - workDays;
+  const prefix = firstName ? `${firstName}, ` : '';
+  const summary = `${prefix}from ${formatRangeHeaderDate(firstDate)} to ${formatRangeHeaderDate(
+    lastDate
+  )}, you work ${workDays} day${workDays === 1 ? '' : 's'} and have ${offDays} day${
+    offDays === 1 ? '' : 's'
+  } off.`;
+
+  const groups = new Map<string, RangeGroup>();
+  for (const day of days) {
+    const label = normalizeRangeShiftLabel(day);
+    const timeText = normalizeRangeTimeText(day);
+    const key = `${label}|${timeText}`;
+    const existing = groups.get(key);
+    if (existing) {
+      existing.dates.push(day.parsedDate);
+    } else {
+      groups.set(key, { label, timeText, dates: [day.parsedDate] });
+    }
+  }
+
+  const detailLines = Array.from(groups.values()).map(
+    (group) => `${formatRangeGroupLabel(group)}: ${formatDateRuns(group.dates)}.`
+  );
+
+  return [summary, ...detailLines].join('\n\n');
+}
+
+function makeResponsePleasant(text: string, firstName: string | null): string {
+  let trimmedText = text.trim();
+  if (firstName) {
+    const escapedName = firstName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    trimmedText = trimmedText.replace(new RegExp(`^${escapedName}[,.!]?\\s+`, 'i'), '').trim();
+  }
+
+  trimmedText = trimmedText
+    .replace(OFF_SHIFT_CLOSING_REGEX, '')
+    .replace(/^you\s+are\b/i, 'you’re')
+    .replace(/^you\s+have\b/i, 'you’re on')
+    .replace(/^your\s+shift\s+is\b/i, 'you’re on')
+    .trim();
+
+  const exactShiftMatch = /^(.+?)\s+is\s+(.+?)\.?$/i.exec(trimmedText);
+  if (exactShiftMatch?.[1] && exactShiftMatch?.[2]) {
+    return buildPleasantShiftSentence(firstName, exactShiftMatch[2], exactShiftMatch[1]);
+  }
+
+  const namedShiftMatch =
+    /^you’re\s+(?:on\s+)?(.+?)\s+on\s+(.+?)(?:,\s+((?:from\s+)?\d{1,2}:\d{2}\s*(?:AM|PM)\s+to\s+\d{1,2}:\d{2}\s*(?:AM|PM)))?\.?$/i.exec(
+      trimmedText
+    );
+  if (namedShiftMatch?.[1] && namedShiftMatch?.[2]) {
+    return buildPleasantShiftSentence(
+      firstName,
+      namedShiftMatch[1],
+      namedShiftMatch[2],
+      namedShiftMatch[3]?.replace(/^from\s+/i, '')
+    );
+  }
+
+  const offMatch = /^you’re\s+off\s+(?:on\s+)?(.+?)\.?$/i.exec(trimmedText);
+  if (offMatch?.[1]) {
+    return buildPleasantShiftSentence(firstName, 'off', offMatch[1]);
+  }
+
+  if (!firstName) {
+    return trimmedText;
+  }
+
+  return `${firstName}, ${trimmedText}`;
+}
+
+export function formatVoiceAssistantResponseText(
+  text: string,
+  userContext: VoiceAssistantUserContext | null,
+  shiftData?: ShiftQueryResult
+): string {
+  const sanitizedText = sanitizeVoiceAssistantResponseText(text);
+  const firstName = getPersonalizationName(userContext);
+  const structuredRangeAnswer = formatStructuredRangeAnswer(shiftData, firstName);
+  if (structuredRangeAnswer) {
+    return structuredRangeAnswer;
+  }
+  return makeResponsePleasant(sanitizedText, firstName);
 }
 
 /**
@@ -93,11 +349,11 @@ class VoiceAssistantService {
     );
   }
 
-  private buildOfflineAnalyticsContext(query: string) {
-    const offlineIntent = classifyOfflineIntent(query);
+  private buildLocalShiftBrainAnalyticsContext(query: string) {
+    const localShiftBrainIntent = classifyLocalShiftBrainIntent(query);
     return {
-      intent_guess: offlineIntent.intent,
-      locale: offlineIntent.language,
+      intent_guess: localShiftBrainIntent.intent,
+      locale: localShiftBrainIntent.language,
       schedule_name: this.userContext?.scheduleName ?? this.userContext?.shiftCycle.name ?? null,
       query_length: query.trim().length,
     };
@@ -433,33 +689,42 @@ class VoiceAssistantService {
     }
 
     this.setState('processing');
-    const offlineAnalyticsContext = this.buildOfflineAnalyticsContext(query);
+    const localShiftBrainAnalyticsContext = this.buildLocalShiftBrainAnalyticsContext(query);
 
-    // Phase 3: Try offline fallback for simple queries first
-    const offlineResult = tryOfflineFallback(
+    // Local-first: answer deterministic schedule questions on-device before using the backend
+    const localShiftBrainResult = answerWithLocalShiftBrain(
       query,
       this.userContext.shiftCycle,
       this.userContext.name ?? ''
     );
 
-    if (offlineResult.handled && offlineResult.text) {
-      logger.info('Query handled offline', { toolName: offlineResult.toolName });
-      Analytics.track('voice_assistant_offline_handled', {
-        ...offlineAnalyticsContext,
-        tool_name: offlineResult.toolName ?? 'unknown',
+    if (localShiftBrainResult.handled && localShiftBrainResult.text) {
+      logger.info('Query handled by local shift brain', {
+        toolName: localShiftBrainResult.toolName,
+      });
+      Analytics.track('voice_assistant_local_shift_brain_handled', {
+        ...localShiftBrainAnalyticsContext,
+        tool_name: localShiftBrainResult.toolName ?? 'unknown',
       });
 
       if (this.currentProcessingToken !== requestToken) {
         return;
       }
 
+      const displayText = formatVoiceAssistantResponseText(
+        formatTimesInTextForDisplay(localShiftBrainResult.text),
+        this.userContext,
+        localShiftBrainResult.toolName
+          ? { toolName: localShiftBrainResult.toolName, data: localShiftBrainResult.data ?? null }
+          : undefined
+      );
       const assistantMessage: VoiceMessage = {
         id: generateMessageId(),
         role: 'assistant',
-        text: offlineResult.text,
+        text: displayText,
         timestamp: Date.now(),
-        shiftData: offlineResult.toolName
-          ? { toolName: offlineResult.toolName, data: null }
+        shiftData: localShiftBrainResult.toolName
+          ? { toolName: localShiftBrainResult.toolName, data: localShiftBrainResult.data ?? null }
           : undefined,
       };
 
@@ -467,24 +732,28 @@ class VoiceAssistantService {
       this.trimHistory();
       this.callbacks?.onAssistantMessage(assistantMessage);
 
-      await this.speakResponse(offlineResult.text, requestToken);
+      await this.speakResponse(displayText, requestToken);
       return;
     }
 
     if (networkService.getSnapshot().status === 'offline') {
-      Analytics.track('voice_assistant_offline_unhandled', {
-        ...offlineAnalyticsContext,
+      Analytics.track('voice_assistant_local_shift_brain_unhandled', {
+        ...localShiftBrainAnalyticsContext,
         needs_connection: true,
       });
-      const offlineOnlyText = buildOfflineUnsupportedResponse(
+      const localOnlyText = buildLocalShiftBrainUnsupportedResponse(
         this.userContext.shiftCycle,
         this.userContext.name ?? ''
       );
 
+      const displayText = formatVoiceAssistantResponseText(
+        formatTimesInTextForDisplay(localOnlyText),
+        this.userContext
+      );
       const assistantMessage: VoiceMessage = {
         id: generateMessageId(),
         role: 'assistant',
-        text: offlineOnlyText,
+        text: displayText,
         timestamp: Date.now(),
       };
 
@@ -492,11 +761,11 @@ class VoiceAssistantService {
       this.trimHistory();
       this.callbacks?.onAssistantMessage(assistantMessage);
 
-      await this.speakResponse(offlineOnlyText, requestToken);
+      await this.speakResponse(displayText, requestToken);
       return;
     }
 
-    // Fall through to backend for complex queries
+    // Use the backend for questions the local shift brain cannot confidently answer
     try {
       const response = await ryvroBrainService.query(
         query,
@@ -508,10 +777,15 @@ class VoiceAssistantService {
         return;
       }
 
+      const displayText = formatVoiceAssistantResponseText(
+        formatTimesInTextForDisplay(response.text),
+        this.userContext,
+        response.shiftData
+      );
       const assistantMessage: VoiceMessage = {
         id: generateMessageId(),
         role: 'assistant',
-        text: response.text,
+        text: displayText,
         timestamp: Date.now(),
         shiftData: response.shiftData,
       };
@@ -521,7 +795,7 @@ class VoiceAssistantService {
       this.callbacks?.onAssistantMessage(assistantMessage);
 
       // Speak the response
-      await this.speakResponse(response.text, requestToken);
+      await this.speakResponse(displayText, requestToken);
     } catch (error) {
       if (this.currentProcessingToken !== requestToken) {
         return;

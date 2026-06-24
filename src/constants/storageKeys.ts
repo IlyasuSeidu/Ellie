@@ -10,6 +10,8 @@ export const STORAGE_KEYS = {
   appState: {
     installStartedAt: 'install:startedAt',
     paywallDeclinedAt: 'paywall:declinedAt',
+    voiceTrialUsedAt: 'voiceTrial:usedAt',
+    profilePromptCompletedAt: 'profile:promptCompletedAt',
     notificationSoftDeclined: 'notifications:softDeclined',
     legacyInstallStartedAt: 'app:install_time',
     legacyPaywallDeclinedAt: 'paywall:declined_at',

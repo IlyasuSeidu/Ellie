@@ -1,6 +1,7 @@
 {
   "name": "ryvro",
   "version": "1.0.0",
+  "description": "Voice-first shift assistant for asking Ryvro about your shift schedule.",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",

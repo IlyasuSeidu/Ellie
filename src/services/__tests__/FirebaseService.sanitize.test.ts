@@ -3,11 +3,13 @@ jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   doc: jest.fn(),
   getDoc: jest.fn(),
+  getDocFromCache: jest.fn(),
   setDoc: jest.fn(),
   updateDoc: jest.fn(),
   deleteDoc: jest.fn(),
   query: jest.fn(),
   getDocs: jest.fn(),
+  getDocsFromCache: jest.fn(),
   onSnapshot: jest.fn(),
 }));
 jest.mock('firebase/auth', () => ({
@@ -33,10 +35,11 @@ jest.mock('@/utils/reliableRetry', () => ({
   criticalRetryOptions: {},
 }));
 
-import { getFirestore, collection, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { FirebaseService } from '@/services/firebase/FirebaseService';
+import { logger } from '@/utils/logger';
 
 describe('FirebaseService payload sanitization', () => {
   let service: FirebaseService;
@@ -47,6 +50,11 @@ describe('FirebaseService payload sanitization', () => {
     (getAuth as jest.Mock).mockReturnValue({});
     (collection as jest.Mock).mockReturnValue('collection-ref');
     (doc as jest.Mock).mockReturnValue({ id: 'doc-1' });
+    (getDoc as jest.Mock).mockResolvedValue({
+      exists: () => true,
+      id: 'doc-1',
+      data: () => ({ name: 'Shift' }),
+    });
     (setDoc as jest.Mock).mockResolvedValue(undefined);
     (updateDoc as jest.Mock).mockResolvedValue(undefined);
     jest.mocked(asyncStorageService.get).mockResolvedValue(null);
@@ -93,5 +101,56 @@ describe('FirebaseService payload sanitization', () => {
       })
     );
     expect(payload).not.toHaveProperty('notes');
+  });
+
+  it('treats native firestore unavailable reads as transient network warnings', async () => {
+    (getDoc as jest.Mock).mockRejectedValueOnce({
+      name: 'NativeFirebaseError',
+      code: 'firestore/unavailable',
+      message:
+        '[firestore/unavailable] The service is currently unavailable. This is most likely transient.',
+      stack: 'stack',
+    });
+
+    await expect(service['read']('users', 'user-1')).rejects.toMatchObject({
+      code: 'FIRESTORE_UNAVAILABLE',
+    });
+
+    expect(logger.error).not.toHaveBeenCalledWith(
+      'Firestore read error',
+      expect.anything(),
+      expect.anything()
+    );
+  });
+
+  it('serves cached data when a transient Firestore read fails', async () => {
+    (getDoc as jest.Mock).mockRejectedValueOnce({
+      name: 'NativeFirebaseError',
+      code: 'firestore/unavailable',
+      message: '[firestore/unavailable] The service is currently unavailable.',
+    });
+    jest.mocked(asyncStorageService.get).mockResolvedValueOnce({
+      id: 'user-1',
+      name: 'Cached User',
+    });
+
+    const result = await service['read']('users', 'user-1');
+
+    expect(result).toEqual({
+      id: 'user-1',
+      name: 'Cached User',
+    });
+    expect(logger.warn).toHaveBeenCalledWith(
+      'Falling back to cached document after transient Firestore read failure',
+      expect.objectContaining({
+        collection: 'users',
+        docId: 'user-1',
+      })
+    );
+    expect(logger.error).not.toHaveBeenCalledWith(
+      'Firestore read error',
+      expect.anything(),
+      expect.anything()
+    );
   });
 });
