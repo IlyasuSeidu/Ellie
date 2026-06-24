@@ -1,5 +1,5 @@
 /**
- * Universal shift query tools for Ellie voice assistant.
+ * Universal shift query tools for the Ryvro voice assistant.
  */
 
 import { type ShiftCycle, type ShiftDay } from '@/types';

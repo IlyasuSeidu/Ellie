@@ -3,7 +3,8 @@
     "personalInfo": "个人信息",
     "workOverview": "工作概况",
     "shiftSettings": "班次设置",
-    "smartReminders": "智能提醒"
+    "smartReminders": "智能提醒",
+    "legalSupport": "帮助与法律"
   },
   "fields": {
     "name": "姓名",
@@ -52,7 +53,7 @@
     "nightShift": "夜班",
     "flyIn": "飞入",
     "flyOut": "飞出",
-    "site": "地点",
+    "site": "工作地点",
     "dayStart": "日开始",
     "dayEnd": "一天结束",
     "nightStart": "夜间开始",
@@ -61,7 +62,7 @@
     "afternoonStart": "下午开始",
     "workBlock": "工作块",
     "restBlock": "休息区",
-    "siteName": "站点名称（可选）",
+    "siteName": "工作地点（可选）",
     "flyInDay": "飞入日",
     "flyOutDay": "飞行日",
     "cycleReferenceDate": "周期参考日期",
@@ -108,7 +109,7 @@
       "fifoBlock": "先进先出块",
       "workPattern": "工作模式",
       "customSequence": "自定义序列",
-      "siteDetails": "站点详情",
+      "siteDetails": "工作地点",
       "travelDays": "旅行天数（可选）",
       "scheduleAnchor": "排班起点与当前位置",
       "customPattern": "定制图案"
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "时代",
-      "workDaysOnSite": "{{count}} 现场天数",
-      "restDaysAtHome": "{{count}} 在家的日子",
+      "workDaysOnSite": "{{count}} 个工作块天数",
+      "restDaysAtHome": "{{count}} 个休息日",
       "empty": "无班次配置集",
       "footer": "轮班设置可以在“设置”中更新"
     },
@@ -273,10 +274,10 @@
       "timing": "时间",
       "doNotDisturb": "免打扰",
       "adaptive": "自适应",
-      "travel": "Travel blocks"
+      "travel": "出行区块"
     },
     "units": {
-      "hoursShort": "{{value}}小时",
+      "hoursShort": "{{value}} 小时",
       "minutesShort": "{{value}}分钟",
       "none": "无"
     },
@@ -291,7 +292,7 @@
       },
       "commute": {
         "label": "通勤时间",
-        "sublabel": "到矿区需要多久"
+        "sublabel": "到工作地点需要多久"
       },
       "imminent": {
         "label": "15分钟提醒",
@@ -350,6 +351,28 @@
     "test": {
       "title": "智能提醒已开启",
       "body": "如果你收到了这条提醒，说明智能提醒正在正常工作。"
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "支持",
+      "hint": "获取账号或排班方面的帮助",
+      "a11y": "打开 Ryvro 支持"
+    },
+    "deleteAccount": {
+      "title": "删除账号",
+      "hint": "请求删除账号和应用数据",
+      "a11y": "打开 Ryvro 账号删除"
+    },
+    "privacy": {
+      "title": "隐私政策",
+      "hint": "Ryvro 如何处理你的数据",
+      "a11y": "打开 Ryvro 隐私政策"
+    },
+    "terms": {
+      "title": "服务条款",
+      "hint": "订阅和应用使用条款",
+      "a11y": "打开 Ryvro 服务条款"
     }
   }
 }

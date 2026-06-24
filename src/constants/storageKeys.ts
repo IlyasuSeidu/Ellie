@@ -5,16 +5,18 @@ export const STORAGE_KEYS = {
   },
   i18n: {
     language: 'i18n:language',
-    legacyLanguage: '@ellie_language',
+    retiredLanguagePreference: '@ellie_language',
   },
   appState: {
     installStartedAt: 'install:startedAt',
     paywallDeclinedAt: 'paywall:declinedAt',
+    voiceTrialUsedAt: 'voiceTrial:usedAt',
+    profilePromptCompletedAt: 'profile:promptCompletedAt',
     notificationSoftDeclined: 'notifications:softDeclined',
     legacyInstallStartedAt: 'app:install_time',
     legacyPaywallDeclinedAt: 'paywall:declined_at',
     legacyNotificationSoftDeclined: 'notifications:soft_declined',
-    legacyAskEllieDone: 'checklist:ask_ellie_done',
+    retiredAssistantChecklistDone: 'checklist:ask_ellie_done',
   },
   analytics: {
     installId: 'analytics:installId',

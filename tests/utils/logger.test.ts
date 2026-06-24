@@ -97,13 +97,28 @@ describe('Logger', () => {
 
   describe('logger.debug', () => {
     it('should call console.debug with formatted message', () => {
+      const originalMinLevel = config.minLevel;
+      config.minLevel = 'debug';
+
       logger.debug('Debug message');
       expect(console.debug).toHaveBeenCalledWith(expect.stringContaining('[DEBUG] Debug message'));
+
+      config.minLevel = originalMinLevel;
     });
 
     it('should include context', () => {
+      const originalMinLevel = config.minLevel;
+      config.minLevel = 'debug';
+
       logger.debug('Debug message', { key: 'value' });
       expect(console.debug).toHaveBeenCalledWith(expect.stringContaining('"key": "value"'));
+
+      config.minLevel = originalMinLevel;
+    });
+
+    it('should be disabled by default when debug logging is not enabled', () => {
+      logger.debug('Debug message');
+      expect(console.debug).not.toHaveBeenCalled();
     });
   });
 

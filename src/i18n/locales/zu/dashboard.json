@@ -38,7 +38,7 @@
     "off": "Phumula futhi ushaje!"
   },
   "fifo": {
-    "onSite": "Uhlu lwasendaweni luyasebenza",
+    "onSite": "Ibhulokhi yomsebenzi iyasebenza",
     "homeBlock": "Ibhulokhi yasekhaya iyasebenza",
     "workBlock": "Sebenza",
     "restBlock": "Phumula",
@@ -104,10 +104,10 @@
       "example2": "Lunini usuku lwami olulandelayo lokuphumula?",
       "example3": "Mangaki amashifu ebusuku kule nyanga?",
       "tryAsking": "Zama ukubuza lokhu:",
-      "suggestionA11y": "Buza u-Ellie: {{query}}"
+      "suggestionA11y": "Buza u- Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "U-Ellie udinga ukufinyelela kwemakrofoni ukuze ezwe imibuzo yakho.",
+      "notice": "U- Ryvro udinga ukufinyelela kwemakrofoni ukuze ezwe imibuzo yakho.",
       "grant": "Nikeza Imvume",
       "grantA11y": "Nikeza imvume yemakrofoni",
       "requestA11y": "Cela imvume yemakrofoni"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume",
       "sayWakeWordOrTap": "Ithi \"{{wakeWordPhrase}}\" noma thepha imakrofoni",
       "askAnother": "Thepha imakrofoni ukuze ubuze omunye umbuzo",
-      "askEllie": "Thepha imakrofoni ukuze ubuze u-Ellie",
-      "typeOrGrantMic": "Thayipha ngezansi noma unike imvume yemakrofoni ukuze ukhulume"
+      "typeOrGrantMic": "Thayipha ngezansi noma unike imvume yemakrofoni ukuze ukhulume",
+      "askRyvro": "Thepha imakrofoni ukuze ubuze u- Ryvro"
     },
     "errors": {
       "default": "Kukhona into engahambanga kahle",
-      "permissionDeniedIos": "Ukufinyelela kwemakrofoni kunqatshiwe. Nika amandla kokuthi Izilungiselelo > Ellie.",
+      "permissionDeniedIos": "Ukufinyelela kwemakrofoni kunqatshiwe. Nika amandla kokuthi Izilungiselelo > Ryvro.",
       "permissionDenied": "Ukufinyelela kwemakrofoni kunqatshiwe. Sicela unikeze imvume.",
       "network": "Hlola ukuxhumeka kwakho uphinde uzame.",
       "recognition": "Angizange ngikubambe lokho. Sicela uzame futhi.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "Yeka ukulalela. Thepha kabili ukuze uqedele ukukhuluma.",
       "processing": "Icubungula umbuzo wakho. Ngicela ulinde.",
-      "speaking": "U-Ellie uyakhuluma. Thepha kabili ukuze umise.",
+      "speaking": "U- Ryvro uyakhuluma. Thepha kabili ukuze umise.",
       "error": "Iphutha: {{message}}. Thepha kabili ukuze uzame futhi.",
-      "idle": "Buza u-Ellie umbuzo. Thepha kabili ukuze uqale ukukhuluma."
+      "idle": "Buza u- Ryvro umbuzo. Thepha kabili ukuze uqale ukukhuluma."
     },
     "partialTranscriptA11y": "Uthi: {{text}}",
-    "processingInline": "U-Ellie uyacabanga...",
+    "processingInline": "U- Ryvro uyacabanga...",
     "retryHint": "Thepha imakrofoni ukuze uzame futhi",
     "requestRef": "Inkomba: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Uthe: {{text}}",
-      "assistantSaidA11y": "U-Ellie uthe: {{text}}"
+      "assistantSaidA11y": "U- Ryvro uthe: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Imvume yemakrofoni iyadingeka ku-Hey Ellie. Thepha imakrofoni ukuze ukhulume.",
+      "microphonePermissionRequired": "Imvume yemakrofoni iyadingeka ku-Hey Ryvro. Thepha imakrofoni ukuze ukhulume.",
       "wakeWordUnavailableTapToTalk": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume."
     },
     "offlineFallback": {
@@ -170,18 +170,18 @@
       "startBack": "Uqala umsebenzi futhi ngo-{{date}}.",
       "patternSummaryRotating": "Iphethini yakho ingamashifu emini angu-{{dayCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
       "patternSummaryThreeShift": "Iphethini yakho ingamashifu asekuseni angu-{{morningCount}}, amashifu antambama angu-{{afternoonCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
-      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku esizeni bese kuba ngu-{{restDays}} izinsuku zokuphumula.",
+      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku zomsebenzi bese kuba ngu-{{restDays}} izinsuku zokuphumula.",
       "unsupportedWithNextShift": "Angikakwazi ukuphendula lokho ngokuphelele ngaphandle kwe-inthanethi okwamanje, kodwa ngisazi irosta yakho egciniwe. Ishifu yakho elandelayo yomsebenzi yi-{{shiftType}} ngo-{{date}}. Zama ukubuza ngomuso, usuku lwakho olulandelayo lokuphumula, amashifu asebusuku ale nyanga, noma iphethini yakho.",
       "unsupportedGeneric": "Angikakwazi ukuphendula lokho ngokuphelele ngaphandle kwe-inthanethi okwamanje, kodwa ngisengakusiza ngerosta yakho egciniwe. Zama ukubuza ngomuso, usuku lwakho olulandelayo lokuphumula, amashifu asebusuku ale nyanga, noma iphethini yakho."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Ukufaka ngezwi ungaxhunyiwe ku-inthanethi akutholakali kule divayisi manje.",
-      "audioUnavailable": "Izimpendulo zomsindo azitholakali manje. Usengafunda impendulo ka-Ellie."
+      "audioUnavailable": "Izimpendulo zomsindo azitholakali manje. Usengafunda impendulo ka- Ryvro."
     },
     "offlineHint": "Izimpendulo ezingena ngaphandle kwe-inthanethi zilinganiselwe emibuzweni elula yerosta egcinwe kule divayisi.",
     "composer": {
-      "placeholder": "Thayipha umbuzo ka-Ellie",
-      "a11y": "Thayipha umbuzo ka-Ellie",
+      "placeholder": "Thayipha umbuzo ka- Ryvro",
+      "a11y": "Thayipha umbuzo ka- Ryvro",
       "sendA11y": "Thumela umbuzo obhaliwe"
     }
   },
@@ -190,10 +190,10 @@
     "schedule": "Isheduli",
     "stats": "Izibalo",
     "profile": "Iphrofayela",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Vula umsizi wezwi u-Ellie",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openVoiceAssistantA11y": "Vula umsizi wezwi u- Ryvro",
+    "openProPlansA11y": "Buka amapulani e-Pro",
+    "voiceAssistantLoadingA11y": "Ihlola ukufinyelela kumsizi wezwi",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Izilungiselelo",
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "Kuhambe kanjani?",
-        "body": "Ihambe kanjani i-{{shiftType}} yakho? Bhala izinga lamandla akho ku-Ellie."
+        "body": "Ihambe kanjani i-{{shiftType}} yakho? Bhala izinga lamandla akho ku- Ryvro."
       },
       "fatigue": {
         "title": "Isexwayiso sokukhathala esibucayi",
@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Usuku lokuhamba",
           "body": "Namuhla ubuyela ekhaya. Qedela ukudlulisa umsebenzi, pakisha izinto zakho, uhambe ngokuphepha."
         },
         "tomorrow": {
           "title": "Usuku lokuhamba kusasa",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Uhamba kusasa uye ku-{{shiftType}} yakho. Pakisha izinto zakho futhi uhlole amadokhumenti akho namhlanje kusihlwa."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} esele ku-{{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "Kusele {{time}} kuleli shifu",
     "untilStarts": "{{time}} kuze kuqale {{shiftName}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} kuze kuqale leli shifu",
     "until": "{{time}} kuze kube {{shiftName}}",
     "tomorrow": "{{shiftName}} kusasa",
     "daysUntil": "{{days}} izinsuku kuze kube {{shiftName}}",
@@ -319,12 +319,12 @@
     "submit": "Londoloza ukungena"
   },
   "onboardingChecklist": {
-    "title": "Thola okuningi ku-Ellie",
+    "title": "Thola okuningi ku- Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Setha ishejuli yakho",
       "shiftTimes": "Engeza izikhathi zakho zeshifu",
       "profile": "Qedela iphrofayela yakho",
-      "askEllie": "Buza u-Ellie umbuzo"
+      "askRyvro": "Buza u- Ryvro umbuzo"
     },
     "actions": {
       "doIt": "Yenza",

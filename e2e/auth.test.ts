@@ -6,16 +6,36 @@
  * and navigation between auth screens (all testable without a real account).
  */
 
-import { device, element, by, expect as detoxExpect } from 'detox';
+import { device, element, by, expect as detoxExpect, waitFor } from 'detox';
+import { clearE2ESeedKeys } from './helpers/storage';
+
+const TIMEOUT = 10000;
+const IS_IOS = device.getPlatform() === 'ios';
+
+async function launchAuthScreen(): Promise<void> {
+  try {
+    await device.terminateApp();
+  } catch {
+    // Some platforms report an error if the app was not already running.
+  }
+  clearE2ESeedKeys();
+  await device.launchApp({ newInstance: true });
+  await waitFor(element(by.id('sign-in-button')))
+    .toBeVisible()
+    .withTimeout(TIMEOUT);
+}
 
 describe('Auth Flow', () => {
   beforeAll(async () => {
-    // Launch the app fresh with no seeded auth state → auth screens
-    await device.launchApp({ newInstance: true, delete: true });
+    await launchAuthScreen();
   });
 
   beforeEach(async () => {
-    await device.reloadReactNative();
+    await launchAuthScreen();
+  });
+
+  afterAll(async () => {
+    clearE2ESeedKeys();
   });
 
   // ── Sign-in screen ────────────────────────────────────────────────────────
@@ -24,7 +44,9 @@ describe('Auth Flow', () => {
     it('shows sign-in and social sign-in buttons', async () => {
       await detoxExpect(element(by.id('sign-in-button'))).toBeVisible();
       await detoxExpect(element(by.id('google-sign-in-button'))).toBeVisible();
-      await detoxExpect(element(by.id('apple-sign-in-button'))).toBeVisible();
+      if (IS_IOS) {
+        await detoxExpect(element(by.id('apple-sign-in-button'))).toBeVisible();
+      }
     });
 
     it('shows links to create account and forgot password', async () => {
@@ -76,7 +98,9 @@ describe('Auth Flow', () => {
 
     it('shows social sign-up buttons', async () => {
       await detoxExpect(element(by.id('google-sign-up-button'))).toBeVisible();
-      await detoxExpect(element(by.id('apple-sign-up-button'))).toBeVisible();
+      if (IS_IOS) {
+        await detoxExpect(element(by.id('apple-sign-up-button'))).toBeVisible();
+      }
     });
 
     it('validates empty fields on create-account tap', async () => {
@@ -94,7 +118,11 @@ describe('Auth Flow', () => {
       await element(by.id('email-input')).typeText('test@example.com');
       await element(by.id('password-input')).typeText('Password123');
       await element(by.id('confirm-password-input')).typeText('Password321');
-      await element(by.id('confirm-password-input')).tapReturnKey();
+      if (IS_IOS) {
+        await element(by.id('confirm-password-input')).tapReturnKey();
+      } else {
+        await device.pressBack();
+      }
       await element(by.id('create-account-button')).tap();
       await detoxExpect(element(by.text('Passwords do not match'))).toExist();
     });
@@ -112,12 +140,12 @@ describe('Auth Flow', () => {
       await detoxExpect(element(by.id('email-input'))).toBeVisible();
     });
 
-    it('shows back-to-sign-in link', async () => {
-      await detoxExpect(element(by.id('back-to-sign-in-button'))).toBeVisible();
+    it('shows back-to-sign-in control', async () => {
+      await detoxExpect(element(by.id('forgot-password-back-button'))).toBeVisible();
     });
 
     it('navigates back to sign-in via back button', async () => {
-      await element(by.id('back-to-sign-in-button')).tap();
+      await element(by.id('forgot-password-back-button')).tap();
       await detoxExpect(element(by.id('sign-in-button'))).toBeVisible();
     });
 

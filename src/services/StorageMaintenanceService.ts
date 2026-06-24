@@ -1,9 +1,8 @@
 import { AppState, type AppStateStatus } from 'react-native';
 import { asyncStorageService, type AsyncStorageService } from '@/services/AsyncStorageService';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
+import { CACHE_TTL_MS } from '@/config/cacheConfig';
 import { logger } from '@/utils/logger';
-
-const CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 class StorageMaintenanceService {
   private appStateSubscription: { remove: () => void } | null = null;
@@ -13,7 +12,7 @@ class StorageMaintenanceService {
   async runIfDue(now = Date.now()): Promise<void> {
     try {
       const lastRun = await this.storage.get<number>(STORAGE_KEYS.maintenance.lastStorageCleanupAt);
-      if (typeof lastRun === 'number' && now - lastRun < CLEANUP_INTERVAL_MS) {
+      if (typeof lastRun === 'number' && now - lastRun < CACHE_TTL_MS.storageMaintenanceInterval) {
         return;
       }
 

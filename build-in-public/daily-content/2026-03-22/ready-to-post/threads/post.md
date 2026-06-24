@@ -10,7 +10,7 @@
 
 Today I changed words, not features, and onboarding felt lighter.
 
-In Ellie, roster setup, the Aha preview, and paywall were each saying the value a bit differently.
+In Ryvro, roster setup, the Aha preview, and paywall were each saying the value a bit differently.
 
 Now they all point to one simple outcome: set your pattern once, see upcoming shifts clearly.
 

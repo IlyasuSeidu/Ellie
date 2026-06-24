@@ -18,18 +18,27 @@ type AnyNavigation = {
 /**
  * Navigation flow map
  * Defines the next screen for each onboarding step
- * Universal onboarding uses one schedule-builder step instead of separate
- * category, pattern, phase, date, and time screens.
+ * Universal onboarding starts with a short setup bridge, guided chat, simple
+ * shift times, known-date, known-shift, and exact-position anchors, then a
+ * preview, final check, and optional reminders.
  */
 const NAVIGATION_FLOW: Record<
   keyof OnboardingStackParamList,
   (data?: OnboardingData) => keyof OnboardingStackParamList | null
 > = {
-  Welcome: () => 'PainHook',
-  PainHook: () => 'Introduction',
-  Introduction: () => 'UniversalShiftBuilder',
-  UniversalShiftBuilder: () => 'AhaMoment',
+  Welcome: () => 'SetupIntro',
+  SetupIntro: () => 'GuidedShiftChatSetup',
+  GuidedShiftChatSetup: () => 'ShiftTimesSetup',
+  ShiftTimesSetup: () => 'KnownShiftDateSetup',
+  KnownShiftDateSetup: () => 'KnownShiftTypeSetup',
+  KnownShiftTypeSetup: () => 'KnownShiftPhaseSetup',
+  KnownShiftPhaseSetup: () => 'SchedulePreviewSetup',
+  SchedulePreviewSetup: () => 'SetupSummary',
+  FixMenuSetup: () => 'SchedulePreviewSetup',
+  SetupSummary: () => 'ReminderSetup',
+  ReminderSetup: () => 'AhaMoment',
   AhaMoment: () => 'Completion',
+  VoiceAssistantTaste: () => 'AhaMoment',
   Completion: () => null, // Final screen
 };
 
@@ -51,7 +60,7 @@ const NAVIGATION_FLOW: Record<
  * goToNextScreen(navigation, 'Welcome');
  *
  * // Schedule setup navigation
- * goToNextScreen(navigation, 'Introduction', data);
+ * goToNextScreen(navigation, 'GuidedShiftChatSetup', data);
  * ```
  */
 export function goToNextScreen(
@@ -123,7 +132,7 @@ export function canGoNext(currentScreen: keyof OnboardingStackParamList): boolea
  * ```typescript
  * import { getNextScreenName } from '@/utils/onboardingNavigation';
  *
- * const nextScreen = getNextScreenName('Introduction', data);
+ * const nextScreen = getNextScreenName('GuidedShiftChatSetup', data);
  * console.log(`Next screen will be: ${nextScreen}`);
  * ```
  */

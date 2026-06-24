@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Google Play Dienste is nie op hierdie toestel beskikbaar nie.",
       "googleMissingIdToken": "Google-aanmelding kon nie voltooi word nie. Probeer asseblief weer.",
       "appleMissingIdentityToken": "Apple-aanmelding kon nie voltooi word nie. Probeer asseblief weer.",
+      "appleUnavailable": "Apple-aanmelding is nie op hierdie toestel beskikbaar nie. Gebruik Google of e-pos.",
       "actionSignInFailed": "Kan nie nou aanmeld nie. Probeer asseblief weer.",
       "actionSignUpFailed": "Kan nie jou rekening op die oomblik skep nie. Probeer asseblief weer.",
       "actionSocialSignInFailed": "Sosiale aanmelding is tans nie beskikbaar nie. Probeer asseblief e-posaanmelding.",
@@ -87,7 +88,7 @@
     "label": "Taal",
     "selector": "Kies Taal",
     "restartRequiredTitle": "Herbegin vereis",
-    "restartRequiredMessage": "Herbegin asseblief Ellie om taalrigtingveranderinge toe te pas.",
+    "restartRequiredMessage": "Herbegin asseblief Ryvro om taalrigtingveranderinge toe te pas.",
     "names": {
       "en": "Engels (Engels)",
       "es": "Spaans (Español)",
@@ -131,7 +132,8 @@
       "apple": "Gaan voort met Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Meld by jou rekening aan",
       "forgotPassword": "Wagwoord vergeet?",
       "primaryButton": "Meld aan",
@@ -141,7 +143,7 @@
     },
     "signUp": {
       "title": "Skep rekening",
-      "subtitle": "Begin jou skofte met Ellie naspoor",
+      "subtitle": "Begin jou skofte met Ryvro naspoor",
       "passwordHint": "Min. 8 karakters, hoofletter en syfer",
       "confirmPasswordLabel": "Bevestig wagwoord",
       "confirmPasswordPlaceholder": "Herhaal wagwoord",
@@ -174,9 +176,9 @@
       "title": "Jou schedule is gereed.",
       "subtitle": "Ontsluit dit vir minder as 'n koppie koffie.",
       "features": {
-        "askSchedule": "Vra \"Hey __TK1__\" enigiets oor jou schedule",
+        "askSchedule": "Vra \"Hey Ryvro\" enigiets oor jou schedule",
         "fullYear": "Sien jou volle jaar — elke skof, maand vir maand",
-        "offline": "Werk ondergronds, geen sein nodig nie",
+        "offline": "Werk deur swak sein, geen probleem nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
         "aiPowered": "Aangedryf deur AI en word altyd verbeter",
         "leavePlanning": "Beplan verlof sonder om HR te bel",
@@ -194,7 +196,7 @@
         "savePercent": "BESPAAR {{percent}}%",
         "monthlyNoSavings": "Geen jaarlikse besparing",
         "weekly": "Weekliks",
-        "weeklySuffix": "/wk",
+        "weeklySuffix": "/week",
         "weeklyBilled": "Weekliks gefaktureer"
       },
       "cta": "Begin gratis proef",
@@ -203,19 +205,19 @@
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
       "restorePurchases": "Herstel aankope",
       "privacyPolicy": "Privaatheidsbeleid",
-      "socialProof": "Vertrou deur ondergrondse mynwerkers, FIFO-operateurs en roterende schedulewerkers.",
+      "socialProof": "Vertrou deur FIFO-spanne, gesondheidsorgwerkers, sekuriteitspanne en roterende skofwerkers.",
       "testimonials": [
         {
-          "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
-          "author": "Sarah K., ondergrondse mynwerker — 12h roterende skofte"
+          "quote": "Ek kan elke swing, reisweek en R&R-blok sien sonder om vanaf ’n foto-rooster te tel.",
+          "author": "FIFO-operateur — 14/14-rooster"
         },
         {
-          "quote": "Ek het my hele terreinschedule binne ’n minuut vir my vrou gewys.",
-          "author": "Dave L., booroperateur — FIFO-schedule"
+          "quote": "My gesin kan rondom my nagte en dae beplan sonder om te wag dat ek ’n spreadsheet nagaan.",
+          "author": "Roterende skofwerker — 4/4-patroon"
         },
         {
-          "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
-          "author": "Jason M., vragmotoroperateur — 7/7 FIFO"
+          "quote": "Dieselfde bouer hanteer ons vreemde terreinrooster en eenmalige ruilskofte.",
+          "author": "Operasiewerker — pasgemaakte rotasie"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
@@ -228,7 +230,7 @@
         "chargedToday": "Vandag gehef"
       },
       "valueFrame": "Minder as ’n koffie per week om jou volle jaar te ken.",
-      "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
+      "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ryvro nie",
       "termsOfService": "Voorwaardes",
       "trialBadge": "GRATIS PROEF · GEEN HEFFING VANDAG",
       "trialBadgePaid": "TEKEN VANDAG IN · KANSEL ENIGE TYD",
@@ -247,27 +249,27 @@
       "billingDisclosureWeekly": "Gefaktureer teen {{price}}/week, elke week. Kanselleer enige tyd in Instellings.",
       "billingDisclosureAnnualDirect": "Jy sal vandag {{price}} betaal. Hernu jaarliks. Kanselleer enige tyd in Instellings.",
       "billingDisclosureMonthlyDirect": "Jy sal vandag {{price}} betaal. Hernu maandeliks. Kanselleer enige tyd in Instellings.",
-      "purchaseSuccessContinue": "Gaan voort na Ellie",
+      "purchaseSuccessContinue": "Gaan voort na Ryvro",
       "restorePurchasesSuccess": "Aankoop herstel — welkom by Pro!",
       "restorePurchasesNotFound": "Geen vorige aankope is op hierdie rekening gevind nie.",
       "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer.",
       "ctaOffline": "Koppel om in te teken",
       "purchaseSuccessPaid": "Jou intekening is aktief",
       "billingDisclosureTrialGeneric": "Jou gratis proeflopie begin vandag. Kanselleer enige tyd in Instellings voordat fakturering begin. Intekeninge hernu outomaties.",
-      "unavailable": "Intekeninge is nie in hierdie toepassingbou beskikbaar nie. Installeer die nuutste EAS-ontwikkelings- of produksiebou.",
-      "unconfigured": "Intekeninge is nie in hierdie bou opgestel nie. Voeg die RevenueCat SDK-sleutel by die bou-omgewing en bou weer."
+      "unavailable": "Ryvro Pro is nou nie beskikbaar nie. Dateer Ryvro op of kontak ondersteuning as dit aanhou gebeur.",
+      "unconfigured": "Ryvro Pro is nog nie beskikbaar nie. Dateer Ryvro op of kontak ondersteuning as dit aanhou gebeur."
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
-      "rowUpgradeA11y": "Gradeer op na __TK1__ Pro",
-      "activeLabel": "__TK1__ Pro — Aktief ✓",
-      "upgradeLabel": "Gradeer op na __TK1__ Pro",
-      "activeHint": "Volledige kalender · Hey __TK1__ stemassistent",
+      "rowActiveA11y": "Ryvro Pro aktiewe intekening",
+      "rowUpgradeA11y": "Gradeer op na Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Aktief ✓",
+      "upgradeLabel": "Gradeer op na Ryvro Pro",
+      "activeHint": "Volledige kalender · Hey Ryvro stemassistent",
       "upgradeHint": "Planne vanaf $6,99/maand of $49,99/jaar",
       "customerCenterError": "Intekeningbestuur is tans nie beskikbaar nie. Probeer asseblief weer."
     },
     "padlock": {
-      "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"
+      "a11yLabel": "Gradeer op na Ryvro Pro om volledige kalender te sien"
     },
     "recoveryNudge": {
       "title": "Jy is op beperkte toegang",
@@ -289,5 +291,10 @@
   },
   "offlineBanner": {
     "message": "Vanlyn. Jou skofdata is steeds beskikbaar."
+  },
+  "syncStatus": {
+    "pending": "{{count}} opdatering plaaslik gestoor. Dit sal sinkroniseer wanneer jy aanlyn is.",
+    "syncing": "Sinkroniseer {{count}} gestoorde opdatering.",
+    "failed": "{{count}} opdatering moet nagegaan word voordat dit kan sinkroniseer."
   }
 }

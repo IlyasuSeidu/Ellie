@@ -8,6 +8,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { logger } from '@/utils/logger';
+import { IS_E2E_TEST_MODE } from '@/utils/e2e';
 
 /**
  * Storage metadata for TTL tracking
@@ -131,7 +132,7 @@ class MMKVBackend implements StorageBackend {
 }
 
 function resolveStorageBackend(): StorageBackend {
-  if (Platform.OS === 'web' || process.env.NODE_ENV === 'test') {
+  if (Platform.OS === 'web' || process.env.NODE_ENV === 'test' || IS_E2E_TEST_MODE) {
     return new AsyncStorageBackend();
   }
 
@@ -142,7 +143,7 @@ function resolveStorageBackend(): StorageBackend {
     const createMMKV = module?.createMMKV;
 
     if (typeof createMMKV === 'function') {
-      const instance = createMMKV({ id: 'ellie-main' });
+      const instance = createMMKV({ id: 'ryvro-main' });
       return new MMKVBackend(instance);
     }
   } catch (error) {

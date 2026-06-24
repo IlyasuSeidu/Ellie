@@ -3,7 +3,8 @@
     "personalInfo": "Ulwazi lomuntu siqu",
     "workOverview": "Ukubuka konke komsebenzi",
     "shiftSettings": "Shift Izilungiselelo",
-    "smartReminders": "Izikhumbuzi ezihlakaniphile"
+    "smartReminders": "Izikhumbuzi ezihlakaniphile",
+    "legalSupport": "Usizo nezomthetho"
   },
   "fields": {
     "name": "Igama",
@@ -16,7 +17,7 @@
   },
   "stats": {
     "dayCycle": "Umjikelezo wezinsuku",
-    "workRest": "Umsebenzi : Phumula",
+    "workRest": "Umsebenzi: Phumula",
     "perShift": "Ngokuhamba ngakunye"
   },
   "language": {
@@ -52,7 +53,7 @@
     "nightShift": "Ishifu yasebusuku",
     "flyIn": "Usuku lokundiza uya esizeni",
     "flyOut": "Usuku lokubuya ngendiza",
-    "site": "Isayithi",
+    "site": "Indawo yokusebenza",
     "dayStart": "Usuku Lokuqala",
     "dayEnd": "Usuku Lokuphela",
     "nightStart": "Ukuqala Kwasebusuku",
@@ -61,7 +62,7 @@
     "afternoonStart": "Ukuqala Kwantambama",
     "workBlock": "Umsebenzi Block",
     "restBlock": "Phumula Block",
-    "siteName": "Igama lesayithi (ongakukhetha)",
+    "siteName": "Indawo yokusebenza (ongakukhetha)",
     "flyInDay": "Usuku Lokundiza",
     "flyOutDay": "Usuku Lwe-Fly-Out",
     "cycleReferenceDate": "Idethi yereferensi yomjikelezo",
@@ -108,7 +109,7 @@
       "fifoBlock": "Ibhulokhi ye-FIFO",
       "workPattern": "UMSEBENZI WOKUSEBENZA",
       "customSequence": "UKULANDELANA NGESIKHATHI",
-      "siteDetails": "IMINININGWANE YESIZA",
+      "siteDetails": "IMINININGWANE YENDAWO YOKUSEBENZA",
       "travelDays": "IZINSUKU ZOKUHAMBA (NGOKUZITHANDELA)",
       "scheduleAnchor": "UKUQALA NENDAWO YEROSTER",
       "customPattern": "IPHETHINSI YESIKO"
@@ -188,27 +189,27 @@
           "subtitle": "Yakha eyakho"
         },
         "FIFO_7_7": {
-          "name": "7/7 __TK1__",
+          "name": "7/7 FIFO",
           "subtitle": "Umjikelezo wezinsuku eziyi-14"
         },
         "FIFO_8_6": {
-          "name": "8/6 __TK1__",
+          "name": "8/6 FIFO",
           "subtitle": "Umjikelezo wezinsuku eziyi-14"
         },
         "FIFO_14_14": {
-          "name": "14/14 __TK1__",
+          "name": "14/14 FIFO",
           "subtitle": "Umjikelezo wezinsuku ezingama-28"
         },
         "FIFO_14_7": {
-          "name": "14/7 __TK1__",
+          "name": "14/7 FIFO",
           "subtitle": "Umjikelezo wezinsuku ezingama-21"
         },
         "FIFO_21_7": {
-          "name": "21/7 __TK1__",
+          "name": "21/7 FIFO",
           "subtitle": "Umjikelezo wezinsuku ezingama-28"
         },
         "FIFO_28_14": {
-          "name": "28/14 __TK1__",
+          "name": "28/14 FIFO",
           "subtitle": "Umjikelezo wezinsuku ezingama-42"
         },
         "FIFO_CUSTOM": {
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Izikhathi",
-      "workDaysOnSite": "{{count}} izinsuku kusayithi",
-      "restDaysAtHome": "{{count}} izinsuku ekhaya",
+      "workDaysOnSite": "{{count}} izinsuku zebhulokhi yomsebenzi",
+      "restDaysAtHome": "{{count}} izinsuku zokuphumula",
       "empty": "Akukho ukucushwa kwe-shift okusethiwe",
       "footer": "Izilungiselelo ze-Shift zingabuyekezwa kokuthi Izilungiselelo"
     },
@@ -273,10 +274,10 @@
       "timing": "ISIKHATHI",
       "doNotDisturb": "UNGAPHAMBIKISI",
       "adaptive": "EZIVUMELANAYO",
-      "travel": "Travel blocks"
+      "travel": "Amabhulokhi ohambo"
     },
     "units": {
-      "hoursShort": "{{value}} h",
+      "hoursShort": "{{value}} ihora",
       "minutesShort": "{{value}} imiz",
       "none": "Akukho"
     },
@@ -350,6 +351,28 @@
     "test": {
       "title": "Izikhumbuzi ezihlakaniphile zivuliwe",
       "body": "Uma lokhu kufika, izikhumbuzi zakho ezihlakaniphile ziyasebenza."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Usekelo",
+      "hint": "Thola usizo nge-akhawunti noma ishejuli yakho",
+      "a11y": "Vula usekelo lwe-Ryvro"
+    },
+    "deleteAccount": {
+      "title": "Susa i-akhawunti",
+      "hint": "Cela ukususwa kwe-akhawunti nedatha ye-app",
+      "a11y": "Vula ukususwa kwe-akhawunti ye-Ryvro"
+    },
+    "privacy": {
+      "title": "Inqubomgomo yobumfihlo",
+      "hint": "Indlela i-Ryvro ephatha ngayo idatha yakho",
+      "a11y": "Vula inqubomgomo yobumfihlo ye-Ryvro"
+    },
+    "terms": {
+      "title": "Imigomo yesevisi",
+      "hint": "Imigomo yokubhalisa nokusebenzisa i-app",
+      "a11y": "Vula imigomo yesevisi ye-Ryvro"
     }
   }
 }

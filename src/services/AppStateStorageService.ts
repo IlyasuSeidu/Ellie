@@ -10,7 +10,7 @@ const NOTIFICATION_SOFT_DECLINED_KEY = STORAGE_KEYS.appState.notificationSoftDec
 const LEGACY_INSTALL_TIME_KEY = STORAGE_KEYS.appState.legacyInstallStartedAt;
 const LEGACY_PAYWALL_DECLINED_KEY = STORAGE_KEYS.appState.legacyPaywallDeclinedAt;
 const LEGACY_NOTIFICATION_SOFT_DECLINED_KEY = STORAGE_KEYS.appState.legacyNotificationSoftDeclined;
-const LEGACY_CHECKLIST_ASK_ELLIE_DONE_KEY = STORAGE_KEYS.appState.legacyAskEllieDone;
+const RETIRED_ASSISTANT_CHECKLIST_DONE_KEY = STORAGE_KEYS.appState.retiredAssistantChecklistDone;
 
 async function migrateRawNumberKey(legacyKey: string, newKey: string): Promise<number | null> {
   const legacyValue = await AsyncStorage.getItem(legacyKey);
@@ -43,7 +43,7 @@ async function migrateRawBooleanKey(legacyKey: string, newKey: string): Promise<
 
 export const appStateStorageService = {
   async cleanupObsoleteKeys(): Promise<void> {
-    await AsyncStorage.removeItem(LEGACY_CHECKLIST_ASK_ELLIE_DONE_KEY);
+    await AsyncStorage.removeItem(RETIRED_ASSISTANT_CHECKLIST_DONE_KEY);
   },
 
   async ensureInstallStartedAt(): Promise<number> {

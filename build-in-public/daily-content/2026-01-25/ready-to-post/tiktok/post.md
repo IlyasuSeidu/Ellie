@@ -17,7 +17,7 @@ So I did not start with the pretty screen. I built the answer layer first — th
 
 The onboarding surface came after. Because a first screen that looks good but answers wrong is worse than nothing.
 
-Now Ellie has something truthful underneath before it asks anyone to trust what they see.
+Now Ryvro has something truthful underneath before it asks anyone to trust what they see.
 
 What do you lock down first when a wrong answer costs someone their sleep?
 
@@ -33,7 +33,7 @@ Built by a miner for shift workers.
 
 What do you lock down first when a wrong answer costs someone their sleep?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech #vibecoding
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech #vibecoding
 
 ## Optional Builder Turn
 

@@ -38,7 +38,7 @@
     "off": "الراحة وإعادة الشحن!"
   },
   "fifo": {
-    "onSite": "القائمة في الموقع نشطة",
+    "onSite": "كتلة العمل نشطة",
     "homeBlock": "كتلة المنزل نشطة",
     "workBlock": "عمل",
     "restBlock": "استراحة",
@@ -104,10 +104,10 @@
       "example2": "متى يكون يوم عطلتي التالي؟",
       "example3": "كم عدد المناوبات الليلية هذا الشهر؟",
       "tryAsking": "جرّب أن تسأل:",
-      "suggestionA11y": "اسأل إيلي: {{query}}"
+      "suggestionA11y": "اسأل Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "تحتاج إيلي إلى الوصول إلى الميكروفون لسماع أسئلتك.",
+      "notice": "تحتاج Ryvro إلى الوصول إلى الميكروفون لسماع أسئلتك.",
       "grant": "إذن المنح",
       "grantA11y": "منح إذن الميكروفون",
       "requestA11y": "طلب إذن الميكروفون"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث",
       "sayWakeWordOrTap": "قل \"{{wakeWordPhrase}}\" أو اضغط على الميكروفون",
       "askAnother": "اضغط على الميكروفون لطرح سؤال آخر",
-      "askEllie": "اضغط على الميكروفون لسؤال إيلي",
-      "typeOrGrantMic": "اكتب سؤالك أدناه أو امنح إذن الميكروفون للتحدث"
+      "typeOrGrantMic": "اكتب سؤالك أدناه أو امنح إذن الميكروفون للتحدث",
+      "askRyvro": "اضغط على الميكروفون لسؤال Ryvro"
     },
     "errors": {
       "default": "حدث خطأ ما",
-      "permissionDeniedIos": "تم رفض الوصول إلى الميكروفون. قم بالتمكين في الإعدادات> Ellie.",
+      "permissionDeniedIos": "تم رفض الوصول إلى الميكروفون. قم بالتمكين في الإعدادات > Ryvro.",
       "permissionDenied": "تم رفض الوصول إلى الميكروفون. يرجى منح الإذن.",
       "network": "تحقق من اتصالك وأعد المحاولة.",
       "recognition": "لم أفهم ذلك. يرجى المحاولة مرة أخرى.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "توقف عن الاستماع. انقر نقرًا مزدوجًا لإنهاء التحدث.",
       "processing": "جارٍ معالجة سؤالك. انتظر من فضلك.",
-      "speaking": "ايلي يتكلم. انقر نقرًا مزدوجًا للإيقاف.",
+      "speaking": "Ryvro يتحدث. انقر نقرًا مزدوجًا للإيقاف.",
       "error": "خطأ: {{message}}. انقر نقرًا مزدوجًا للمحاولة مرة أخرى.",
-      "idle": "اسأل إيلي سؤالاً. انقر نقرًا مزدوجًا لبدء التحدث."
+      "idle": "اسأل Ryvro سؤالاً. انقر نقرًا مزدوجًا لبدء التحدث."
     },
     "partialTranscriptA11y": "أنت تقول: {{text}}",
-    "processingInline": "إيلي يفكر..",
+    "processingInline": "Ryvro يفكر..",
     "retryHint": "اضغط على الميكروفون للمحاولة مرة أخرى",
     "requestRef": "المرجع: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "قلت: {{text}}",
-      "assistantSaidA11y": "قال إيلي: {{text}}"
+      "assistantSaidA11y": "قال Ryvro: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "يلزم إذن الميكروفون لعبارة «Hey Ellie». اضغط على الميكروفون للتحدث.",
+      "microphonePermissionRequired": "يلزم إذن الميكروفون لعبارة \"Hey Ryvro\". اضغط على الميكروفون للتحدث.",
       "wakeWordUnavailableTapToTalk": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث."
     },
     "offlineFallback": {
@@ -170,18 +170,18 @@
       "startBack": "تعود إلى العمل في {{date}}.",
       "patternSummaryRotating": "نمطك هو {{dayCount}} ورديات نهارية و{{nightCount}} ورديات ليلية ثم {{offCount}} أيام راحة.",
       "patternSummaryThreeShift": "نمطك هو {{morningCount}} ورديات صباحية و{{afternoonCount}} ورديات مسائية و{{nightCount}} ورديات ليلية ثم {{offCount}} أيام راحة.",
-      "patternSummaryFifo": "نمطك هو {{workDays}} أيام في الموقع ثم {{restDays}} أيام راحة.",
+      "patternSummaryFifo": "نمطك هو {{workDays}} أيام عمل ثم {{restDays}} أيام راحة.",
       "unsupportedWithNextShift": "لا أستطيع الإجابة على ذلك بالكامل بدون اتصال بعد، لكنني ما زلت أعرف جدولك المحفوظ. نوبتك التالية هي {{shiftType}} في {{date}}. جرّب أن تسأل عن الغد أو يوم راحتك التالي أو النوبات الليلية هذا الشهر أو نمطك.",
       "unsupportedGeneric": "لا أستطيع الإجابة على ذلك بالكامل بدون اتصال بعد، لكنني ما زلت أستطيع مساعدتك بجدولك المحفوظ. جرّب أن تسأل عن الغد أو يوم راحتك التالي أو النوبات الليلية هذا الشهر أو نمطك."
     },
     "notices": {
       "offlineRecognitionUnavailable": "الإدخال الصوتي بدون اتصال غير متاح على هذا الجهاز الآن.",
-      "audioUnavailable": "الردود الصوتية غير متاحة الآن. لا يزال بإمكانك قراءة رد Ellie."
+      "audioUnavailable": "الردود الصوتية غير متاحة الآن. لا يزال بإمكانك قراءة رد Ryvro."
     },
     "offlineHint": "الإجابات بدون اتصال تقتصر على أسئلة بسيطة عن الجدول المحفوظ على هذا الجهاز.",
     "composer": {
-      "placeholder": "اكتب سؤالاً إلى إيلي",
-      "a11y": "اكتب سؤالاً إلى إيلي",
+      "placeholder": "اكتب سؤالاً إلى Ryvro",
+      "a11y": "اكتب سؤالاً إلى Ryvro",
       "sendA11y": "إرسال السؤال المكتوب"
     }
   },
@@ -190,10 +190,10 @@
     "schedule": "جدول",
     "stats": "احصائيات",
     "profile": "حساب تعريفي",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "افتح المساعد الصوتي Ellie",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openVoiceAssistantA11y": "افتح المساعد الصوتي Ryvro",
+    "openProPlansA11y": "عرض خطط Pro",
+    "voiceAssistantLoadingA11y": "جارٍ التحقق من الوصول إلى المساعد الصوتي",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "إعدادات",
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "كيف سار الأمر؟",
-        "body": "كيف كانت {{shiftType}} الخاصة بك؟ سجّل مستوى طاقتك في Ellie."
+        "body": "كيف كانت {{shiftType}} الخاصة بك؟ سجّل مستوى طاقتك في Ryvro."
       },
       "fatigue": {
         "title": "تنبيه إرهاق حرج",
@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "يوم السفر للخارج",
           "body": "اليوم تعود إلى المنزل. أكمل التسليم، وجهّز معداتك، وسافر بأمان."
         },
         "tomorrow": {
           "title": "يوم السفر غدًا",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "تسافر غدا من أجل {{shiftType}}. جهز معداتك وتحقق من مستنداتك الليلة."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "متبقي {{time}} في {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "باقي {{time}} في هذه الوردية",
     "untilStarts": "{{time}} حتى تبدأ {{shiftName}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} حتى تبدأ هذه الوردية",
     "until": "{{time}} حتى {{shiftName}}",
     "tomorrow": "{{shiftName}} غدًا",
     "daysUntil": "{{days}} أيام حتى {{shiftName}}",
@@ -319,12 +319,12 @@
     "submit": "حفظ التسجيل"
   },
   "onboardingChecklist": {
-    "title": "احصل على أقصى استفادة من Ellie",
+    "title": "احصل على أقصى استفادة من Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "قم بإعداد جدولك",
       "shiftTimes": "أضف أوقات نوباتك",
       "profile": "أكمل ملفك الشخصي",
-      "askEllie": "اسأل Ellie سؤالاً"
+      "askRyvro": "اسأل Ryvro سؤالاً"
     },
     "actions": {
       "doIt": "افعل ذلك",

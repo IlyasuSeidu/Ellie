@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import Constants from 'expo-constants';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthService } from '@/services/AuthService';
 import type { User } from '@/services/firebase/authSdk';
@@ -9,9 +8,7 @@ import { networkService } from '@/services/NetworkService';
 import { googleConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import { getAuthErrorMessage } from '@/utils/authErrorMessage';
-
-const IS_E2E_TEST_MODE =
-  (Constants.expoConfig?.extra as Record<string, unknown> | undefined)?.E2E_TEST_MODE === '1';
+import { IS_E2E_TEST_MODE } from '@/utils/e2e';
 
 interface AuthContextValue {
   user: User | null;
@@ -77,16 +74,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const maybeIosClientId = (googleConfig as { iosClientId?: string }).iosClientId;
 
     const googleSignInConfig: {
-      webClientId: string;
+      webClientId?: string;
       offlineAccess: boolean;
       iosClientId?: string;
     } = {
-      webClientId: googleConfig.webClientId,
       offlineAccess: false,
     };
 
+    if (googleConfig.webClientId) {
+      googleSignInConfig.webClientId = googleConfig.webClientId;
+    }
+
     if (maybeIosClientId) {
       googleSignInConfig.iosClientId = maybeIosClientId;
+    }
+
+    if (!googleSignInConfig.webClientId && !googleSignInConfig.iosClientId) {
+      logger.warn('Google Sign-In is not configured in this build');
+      return;
     }
 
     GoogleSignin.configure({

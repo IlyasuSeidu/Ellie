@@ -9,8 +9,8 @@ describe('Example Test Suite', () => {
   });
 
   it('should work with strings', () => {
-    const greeting = 'Hello, Ellie!';
-    expect(greeting).toContain('Ellie');
+    const greeting = 'Hello, Ryvro!';
+    expect(greeting).toContain('Ryvro');
   });
 
   it('should work with arrays', () => {

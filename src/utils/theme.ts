@@ -2,8 +2,7 @@
  * Theme Configuration
  *
  * Comprehensive theme system with colors, typography, spacing, and design tokens.
- * Inspired by the Sacred design system - earth tones with gold accents for
- * a sophisticated, low-dopamine interface.
+ * Ryvro brand system: dark base, cyan, blue, silver, and muted text.
  */
 
 import { ViewStyle, TextStyle } from 'react-native';
@@ -11,35 +10,50 @@ import { ViewStyle, TextStyle } from 'react-native';
 /**
  * Color Palette
  */
-export const colors = {
-  // Deep backgrounds (Stone scale)
-  deepVoid: '#0c0a09', // Stone 950 - Main app background
-  darkStone: '#1c1917', // Stone 900 - Cards and containers
-  softStone: '#292524', // Stone 800 - Borders, dividers, inactive elements
+const ryvro = {
+  void: '#02070b',
+  ink: '#07121a',
+  panel: '#08161f',
+  panelStrong: '#0d2230',
+  cyan: '#20f4dc',
+  teal: '#19bdb5',
+  blue: '#147cff',
+  silver: '#d6e7f2',
+  muted: '#9db2c2',
+  quiet: '#5f7484',
+  line: '#244255',
+  white: '#f7fbff',
+} as const;
 
-  // Primary accent (Gold/Amber scale)
-  sacredGold: '#b45309', // Primary accent for actions and progress
-  brightGold: '#d97706', // Lighter gold for hover states
-  paleGold: '#f59e0b', // Even lighter for subtle highlights
+export const colors = {
+  // Deep backgrounds
+  deepVoid: ryvro.void, // Main app background
+  darkStone: ryvro.panel, // Cards and containers
+  softStone: ryvro.line, // Borders, dividers, inactive elements
+
+  // Primary accent aliases. Names are kept for compatibility with older components.
+  sacredGold: ryvro.cyan, // Primary action and progress color
+  brightGold: ryvro.cyan, // Secondary action and hover color
+  paleGold: ryvro.silver, // Light highlight color
 
   // Text colors
-  paper: '#e7e5e4', // Stone 200 - Primary text
-  dust: '#a8a29e', // Stone 400 - Secondary text, icons, timestamps
-  shadow: '#78716c', // Stone 500 - Tertiary text, disabled states
+  paper: ryvro.silver, // Primary text
+  dust: ryvro.muted, // Secondary text, icons, timestamps
+  shadow: ryvro.quiet, // Tertiary text, disabled states
 
-  // Shift-specific colors (aligned with dashboard calendar)
-  workDay: '#2196F3', // Blue for day shifts
-  offDay: '#78716c', // Stone 500 for off days
-  nightShift: '#651FFF', // Purple for night shifts
-  holiday: '#ea580c', // Orange 600 for holidays
+  // Compatibility aliases kept for older helpers. Values stay inside the Ryvro palette.
+  workDay: ryvro.cyan,
+  offDay: ryvro.quiet,
+  nightShift: ryvro.blue,
+  holiday: ryvro.teal,
 
-  // Shift visualization colors (calendar/timeline UI)
+  // Compatibility aliases for simple schedule previews.
   shiftVisualization: {
-    dayShift: '#2196F3', // Blue - for calendar day shift indicators
-    nightShift: '#651FFF', // Purple - for calendar night shift indicators
-    morningShift: '#F59E0B', // Amber 500 - sunrise gold for morning shifts
-    afternoonShift: '#06B6D4', // Cyan 500 - clear sky for afternoon shifts
-    daysOff: '#78716c', // Stone 500 - for calendar days off indicators
+    dayShift: ryvro.cyan,
+    nightShift: ryvro.blue,
+    morningShift: ryvro.cyan,
+    afternoonShift: ryvro.blue,
+    daysOff: ryvro.quiet,
   },
 
   // Status colors
@@ -51,45 +65,45 @@ export const colors = {
   errorBg: '#450a0a', // Red 900/20 background
 
   // Border and divider
-  border: '#292524', // Stone 800
-  divider: '#1c1917', // Stone 900
+  border: ryvro.line,
+  divider: ryvro.panelStrong,
 
   // Background variants
   background: {
-    primary: '#0c0a09', // Stone 950
-    secondary: '#1c1917', // Stone 900
-    tertiary: '#292524', // Stone 800
+    primary: ryvro.void,
+    secondary: ryvro.panel,
+    tertiary: ryvro.panelStrong,
   },
 
   // Text variants
   text: {
-    primary: '#e7e5e4', // Stone 200
-    secondary: '#a8a29e', // Stone 400
-    tertiary: '#78716c', // Stone 500
-    inverse: '#0c0a09', // Stone 950
+    primary: ryvro.silver,
+    secondary: ryvro.muted,
+    tertiary: ryvro.quiet,
+    inverse: ryvro.void,
   },
 
   // Accent variants
   accent: {
-    primary: '#b45309', // Amber 700
-    light: '#d97706', // Amber 600
-    lighter: '#f59e0b', // Amber 500
-    dark: '#92400e', // Amber 800
+    primary: ryvro.cyan,
+    light: ryvro.cyan,
+    lighter: ryvro.silver,
+    dark: ryvro.teal,
   },
 
   // Opacity helpers (for glow effects)
   opacity: {
-    gold5: 'rgba(180, 83, 9, 0.05)',
-    gold10: 'rgba(180, 83, 9, 0.1)',
-    gold20: 'rgba(180, 83, 9, 0.2)',
-    gold30: 'rgba(180, 83, 9, 0.3)',
-    stone5: 'rgba(28, 25, 23, 0.05)',
-    stone10: 'rgba(28, 25, 23, 0.1)',
-    stone20: 'rgba(28, 25, 23, 0.2)',
-    stone30: 'rgba(28, 25, 23, 0.3)',
-    stone50: 'rgba(41, 37, 36, 0.5)', // softStone with 50% opacity
-    stone95: 'rgba(28, 25, 23, 0.95)',
-    void95: 'rgba(12, 10, 9, 0.95)', // End screen overlays
+    gold5: 'rgba(32, 244, 220, 0.05)',
+    gold10: 'rgba(32, 244, 220, 0.1)',
+    gold20: 'rgba(32, 244, 220, 0.2)',
+    gold30: 'rgba(32, 244, 220, 0.3)',
+    stone5: 'rgba(8, 22, 31, 0.05)',
+    stone10: 'rgba(8, 22, 31, 0.1)',
+    stone20: 'rgba(8, 22, 31, 0.2)',
+    stone30: 'rgba(8, 22, 31, 0.3)',
+    stone50: 'rgba(36, 66, 85, 0.5)',
+    stone95: 'rgba(8, 22, 31, 0.95)',
+    void95: 'rgba(2, 7, 11, 0.95)',
     white10: 'rgba(255, 255, 255, 0.1)', // Button backgrounds
     white20: 'rgba(255, 255, 255, 0.2)', // Highlights
     white30: 'rgba(255, 255, 255, 0.3)', // Stronger highlights
@@ -178,9 +192,9 @@ export const shadows = {
       shadowRadius: 16,
     } as ViewStyle,
 
-    // Gold glow effect
+    // Primary brand glow effect. Name is kept for compatibility.
     goldGlow: {
-      shadowColor: '#b45309',
+      shadowColor: '#20f4dc',
       shadowOffset: { width: 0, height: 0 },
       shadowOpacity: 0.3,
       shadowRadius: 8,

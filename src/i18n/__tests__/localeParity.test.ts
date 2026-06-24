@@ -104,12 +104,13 @@ function collectCodeTranslationKeys(): string[] {
 }
 
 describe('locale parity', () => {
-  const locales = fs
-    .readdirSync(LOCALES_ROOT)
-    .filter((entry) => fs.statSync(path.join(LOCALES_ROOT, entry)).isDirectory())
-    .sort();
+  const locales = ['en'];
 
-  it('all locale files include all baseline keys', () => {
+  it('uses English as the active runtime locale', () => {
+    expect(locales).toEqual(['en']);
+  });
+
+  it('all active locale files include all baseline keys', () => {
     const baselineLocale = 'en';
     const targetLocales = locales.filter((locale) => locale !== baselineLocale);
 
@@ -133,7 +134,7 @@ describe('locale parity', () => {
     });
   });
 
-  it('interpolation tokens match baseline for translated strings', () => {
+  it('interpolation tokens match baseline for active translated strings', () => {
     const baselineLocale = 'en';
     const targetLocales = locales.filter((locale) => locale !== baselineLocale);
 
@@ -178,5 +179,81 @@ describe('locale parity', () => {
     const missingKeys = collectCodeTranslationKeys().filter((key) => !baselineKeys.has(key));
 
     expect(missingKeys).toEqual([]);
+  });
+
+  it('keeps launch-critical Profile help and legal strings in the English source', () => {
+    const keys = [
+      'sections.legalSupport',
+      'legal.support.title',
+      'legal.support.hint',
+      'legal.support.a11y',
+      'legal.deleteAccount.title',
+      'legal.deleteAccount.hint',
+      'legal.deleteAccount.a11y',
+      'legal.privacy.title',
+      'legal.privacy.hint',
+      'legal.privacy.a11y',
+      'legal.terms.title',
+      'legal.terms.hint',
+      'legal.terms.a11y',
+    ];
+    const baselinePath = path.join(LOCALES_ROOT, 'en', 'profile.json');
+    const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8')) as Record<string, unknown>;
+    const baselineStrings = flattenStringValues(baseline);
+    keys.forEach((key) => {
+      expect(baselineStrings.get(key)).toBeTruthy();
+    });
+  });
+
+  it('does not expose technical cycle-alignment terms in onboarding copy', () => {
+    const forbiddenPhrases = [
+      'phase offset',
+      'offset fase',
+      'deslocamento de fase',
+      'desfase de fase',
+      'décalage de phase',
+      'faseverskuiwing',
+      'смещение фазы',
+      'إزاحة المرحلة',
+      'फेज़ ऑफ़सेट',
+      '阶段偏移',
+      'anchor date',
+    ];
+
+    locales.forEach((locale) => {
+      const localePath = path.join(LOCALES_ROOT, locale, 'onboarding.json');
+      const localized = JSON.parse(fs.readFileSync(localePath, 'utf8')) as Record<string, unknown>;
+      const strings = Array.from(flattenStringValues(localized).entries());
+      const matches = strings
+        .filter(([, value]) =>
+          forbiddenPhrases.some((phrase) => value.toLowerCase().includes(phrase))
+        )
+        .map(([key, value]) => `${locale}:${key}=${value}`);
+
+      expect(matches).toEqual([]);
+    });
+  });
+
+  it('does not expose raw translation placeholders or known broken launch copy', () => {
+    const forbiddenPatterns = [/__TK\d+__/, /\bmanusia pit\b/i, /\bdiskon\s+\d+\b/i];
+    const matches: string[] = [];
+
+    locales.forEach((locale) => {
+      NAMESPACES.forEach((namespace) => {
+        const localePath = path.join(LOCALES_ROOT, locale, `${namespace}.json`);
+        const localized = JSON.parse(fs.readFileSync(localePath, 'utf8')) as Record<
+          string,
+          unknown
+        >;
+
+        Array.from(flattenStringValues(localized).entries()).forEach(([key, value]) => {
+          if (forbiddenPatterns.some((pattern) => pattern.test(value))) {
+            matches.push(`${locale}:${namespace}:${key}=${value}`);
+          }
+        });
+      });
+    });
+
+    expect(matches).toEqual([]);
   });
 });

@@ -1,4 +1,5 @@
 import type {
+  ShiftDay,
   UniversalShiftDefinition,
   UniversalShiftSchedule,
   UniversalShiftSequenceItem,
@@ -125,10 +126,31 @@ function minutes(time?: string): number | null {
   return (hours ?? 0) * 60 + (mins ?? 0);
 }
 
-function buildEventDescription(schedule: UniversalShiftSchedule, dayDate: string): string {
-  return escapeIcsText(
-    `Exported from Ellie Universal Shift Builder\nSchedule: ${schedule.name}\nDate: ${dayDate}`
-  );
+function buildEventDescription(schedule: UniversalShiftSchedule, day: ShiftDay): string {
+  const universal = day.universal;
+  const lines = [
+    'Exported from Ryvro Universal Shift Builder',
+    `Schedule: ${schedule.name}`,
+    `Date: ${day.date}`,
+  ];
+
+  if (universal?.locationName) {
+    lines.push(`Location: ${universal.locationName}`);
+  }
+  if (universal?.holidayException) {
+    lines.push(
+      `Holiday exception: ${universal.holidayException.holidayName}; original shift was ${universal.holidayException.originalDefinitionName}.`
+    );
+  }
+  if (universal?.oneOffException) {
+    const oneOff = universal.oneOffException;
+    lines.push(`Changed just this day; original shift was ${oneOff.originalDefinitionName}.`);
+    if (oneOff.reason) {
+      lines.push(`Reason: ${oneOff.reason}`);
+    }
+  }
+
+  return escapeIcsText(lines.join('\n'));
 }
 
 export function buildUniversalScheduleIcs(
@@ -153,7 +175,7 @@ export function buildUniversalScheduleIcs(
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    `PRODID:${options.productId ?? '-//Ellie//Universal Shift Builder//EN'}`,
+    `PRODID:${options.productId ?? '-//Ryvro//Universal Shift Builder//EN'}`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     `X-WR-CALNAME:${escapeIcsText(schedule.name)}`,
@@ -164,18 +186,20 @@ export function buildUniversalScheduleIcs(
     const universal = day.universal;
     if (!universal) continue;
 
-    const uid = `ellie-${schedule.name}-${day.date}-${universal.definitionId}@ellie.app`
+    const uid = `ryvro-${schedule.name}-${day.date}-${universal.definitionId}@ryvro.app`
       .toLowerCase()
       .replace(/[^a-z0-9@.-]/g, '-');
     lines.push('BEGIN:VEVENT');
     lines.push(`UID:${uid}`);
     lines.push(`DTSTAMP:${EXPORT_DTSTAMP}`);
     lines.push(`SUMMARY:${escapeIcsText(universal.definitionName)}`);
-    lines.push(`DESCRIPTION:${buildEventDescription(schedule, day.date)}`);
+    lines.push(`DESCRIPTION:${buildEventDescription(schedule, day)}`);
     lines.push(`CATEGORIES:${escapeIcsText(universal.kind)}`);
-    lines.push(`X-ELLIE-SHIFT-ID:${escapeIcsText(universal.definitionId)}`);
-    lines.push(`X-ELLIE-SHIFT-COLOR:${escapeIcsText(universal.color)}`);
-    lines.push(`X-ELLIE-SHIFT-ICON:${escapeIcsText(universal.icon)}`);
+    if (universal.locationName) {
+      lines.push(`LOCATION:${escapeIcsText(universal.locationName)}`);
+    }
+    lines.push(`X-RYVRO-SHIFT-ID:${escapeIcsText(universal.definitionId)}`);
+    lines.push(`X-RYVRO-SHIFT-ICON:${escapeIcsText(universal.icon)}`);
 
     const parsedDayDate = parseDate(day.date);
     if (!parsedDayDate) continue;
@@ -341,7 +365,7 @@ function buildDefinitionFromEvent(
       : IMPORT_COLORS[existingCount % IMPORT_COLORS.length]
     : kind === 'leave'
       ? '#16a34a'
-      : '#78716c';
+      : '#5f7484';
 
   return {
     id: `imported_${slug(event.summary)}_${existingCount}`,

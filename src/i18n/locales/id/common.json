@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Layanan Google Play tidak tersedia di perangkat ini.",
       "googleMissingIdToken": "Proses masuk dengan Google tidak dapat diselesaikan. Silakan coba lagi.",
       "appleMissingIdentityToken": "Proses masuk Apple tidak dapat diselesaikan. Silakan coba lagi.",
+      "appleUnavailable": "Masuk dengan Apple tidak tersedia di perangkat ini. Gunakan Google atau email.",
       "actionSignInFailed": "Tidak dapat masuk sekarang. Silakan coba lagi.",
       "actionSignUpFailed": "Tidak dapat membuat akun Anda sekarang. Silakan coba lagi.",
       "actionSocialSignInFailed": "Login sosial tidak tersedia saat ini. Silakan coba masuk email.",
@@ -87,7 +88,7 @@
     "label": "Bahasa",
     "selector": "Pilih Bahasa",
     "restartRequiredTitle": "Diperlukan Mulai Ulang",
-    "restartRequiredMessage": "Silakan mulai ulang Ellie untuk menerapkan perubahan arah bahasa.",
+    "restartRequiredMessage": "Silakan mulai ulang Ryvro untuk menerapkan perubahan arah bahasa.",
     "names": {
       "en": "Bahasa inggris (Bahasa inggris)",
       "es": "Spanyol (Spanyol)",
@@ -131,7 +132,8 @@
       "apple": "Lanjutkan dengan Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Masuk ke akun Anda",
       "forgotPassword": "Lupa kata sandi?",
       "primaryButton": "Masuk",
@@ -141,7 +143,7 @@
     },
     "signUp": {
       "title": "Buat akun",
-      "subtitle": "Mulai lacak shift Anda dengan Ellie",
+      "subtitle": "Mulai lacak shift Anda dengan Ryvro",
       "passwordHint": "Min. 8 karakter, huruf kapital, dan angka",
       "confirmPasswordLabel": "Konfirmasi kata sandi",
       "confirmPasswordPlaceholder": "Ulangi kata sandi",
@@ -174,9 +176,9 @@
       "title": "Schedule Anda sudah siap.",
       "subtitle": "Buka dengan biaya kurang dari secangkir kopi.",
       "features": {
-        "askSchedule": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
+        "askSchedule": "Tanyakan \"Hai Ryvro\" apa pun tentang daftar pemain Anda",
         "fullYear": "Lihat setahun penuh Anda — setiap shift, bulan demi bulan",
-        "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
+        "offline": "Tetap bekerja saat sinyal lemah",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
         "aiPowered": "Didukung oleh AI dan selalu berkembang",
         "leavePlanning": "Rencanakan libur tanpa menelepon HR",
@@ -203,19 +205,19 @@
       "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
       "restorePurchases": "Pulihkan Pembelian",
       "privacyPolicy": "Kebijakan Privasi",
-      "socialProof": "Dipercaya oleh penambang bawah tanah, operator FIFO, dan pekerja schedule bergilir.",
+      "socialProof": "Dibuat untuk tim FIFO, layanan kesehatan, keamanan, transportasi, manufaktur, hospitality, dan semua tim shift.",
       "testimonials": [
         {
-          "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
-          "author": "Sarah K., penambang bawah tanah — shift rotasi 12 jam"
+          "quote": "Saya bisa melihat setiap swing, minggu perjalanan, dan blok R&R tanpa menghitung dari foto roster.",
+          "author": "Operator FIFO — jadwal 14/14"
         },
         {
-          "quote": "Saya menunjukkan seluruh schedule site ke istri saya dalam kurang dari semenit.",
-          "author": "Dave L., operator bor — schedule FIFO"
+          "quote": "Keluarga saya bisa merencanakan hari dan malam saya tanpa menunggu saya mengecek spreadsheet.",
+          "author": "Pekerja shift rotasi — pola 4/4"
         },
         {
-          "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
-          "author": "Jason M., operator haul truck — FIFO 7/7"
+          "quote": "Builder yang sama menangani jadwal kerja kami yang unik dan pertukaran satu kali.",
+          "author": "Pekerja operasional — rotasi khusus"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
@@ -228,7 +230,7 @@
         "chargedToday": "Ditagih hari ini"
       },
       "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui setahun penuh Anda.",
-      "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
+      "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ryvro",
       "termsOfService": "Syarat",
       "trialBadge": "UJI COBA GRATIS · TANPA BIAYA HARI INI",
       "trialBadgePaid": "BERLANGGANAN HARI INI · BATAL KAPAN SAJA",
@@ -247,27 +249,27 @@
       "billingDisclosureWeekly": "Ditagih {{price}}/minggu, setiap minggu. Batalkan kapan saja di Pengaturan.",
       "billingDisclosureAnnualDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang tahunan. Batalkan kapan saja di Pengaturan.",
       "billingDisclosureMonthlyDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang bulanan. Batalkan kapan saja di Pengaturan.",
-      "purchaseSuccessContinue": "Lanjut ke Ellie",
+      "purchaseSuccessContinue": "Lanjut ke Ryvro",
       "restorePurchasesSuccess": "Pembelian dipulihkan — selamat datang di Pro!",
       "restorePurchasesNotFound": "Tidak ada pembelian sebelumnya yang ditemukan di akun ini.",
       "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi.",
       "ctaOffline": "Hubungkan untuk berlangganan",
       "purchaseSuccessPaid": "Langganan Anda aktif",
       "billingDisclosureTrialGeneric": "Uji coba gratis Anda dimulai hari ini. Batalkan kapan saja di Pengaturan sebelum penagihan dimulai. Langganan diperpanjang otomatis.",
-      "unavailable": "Langganan tidak tersedia pada build aplikasi ini. Instal build EAS development atau production terbaru.",
-      "unconfigured": "Langganan belum dikonfigurasi pada build ini. Tambahkan kunci RevenueCat SDK ke lingkungan build lalu build ulang."
+      "unavailable": "Ryvro Pro belum tersedia sekarang. Perbarui Ryvro atau hubungi dukungan jika ini terus terjadi.",
+      "unconfigured": "Ryvro Pro belum tersedia. Perbarui Ryvro atau hubungi dukungan jika ini terus terjadi."
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Pro langganan aktif",
-      "rowUpgradeA11y": "Tingkatkan ke __TK1__ Pro",
-      "activeLabel": "__TK1__ Pro — Aktif ✓",
-      "upgradeLabel": "Tingkatkan ke __TK1__ Pro",
-      "activeHint": "Kalender lengkap · Hai __TK1__ asisten suara",
+      "rowActiveA11y": "Ryvro Pro langganan aktif",
+      "rowUpgradeA11y": "Tingkatkan ke Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Aktif ✓",
+      "upgradeLabel": "Tingkatkan ke Ryvro Pro",
+      "activeHint": "Kalender lengkap · Hai Ryvro asisten suara",
       "upgradeHint": "Paket mulai dari $6,99/bln atau $49,99/tahun",
       "customerCenterError": "Pengelolaan langganan tidak tersedia saat ini. Silakan coba lagi."
     },
     "padlock": {
-      "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"
+      "a11yLabel": "Tingkatkan ke Ryvro Pro untuk melihat kalender lengkap"
     },
     "recoveryNudge": {
       "title": "Anda menggunakan akses terbatas",
@@ -289,5 +291,10 @@
   },
   "offlineBanner": {
     "message": "Offline. Data shift Anda masih tersedia."
+  },
+  "syncStatus": {
+    "pending": "{{count}} pembaruan disimpan lokal. Akan disinkronkan saat Anda online.",
+    "syncing": "Menyinkronkan {{count}} pembaruan tersimpan.",
+    "failed": "{{count}} pembaruan perlu ditinjau sebelum dapat disinkronkan."
   }
 }

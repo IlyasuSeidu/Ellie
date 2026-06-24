@@ -5,7 +5,7 @@ If "Tomorrow: Night Shift" is wrong once, the animation does not matter.
 Trust is structural. It is not cosmetic.
 
 2/6
-Building Ellie, I had two jobs on day one.
+Building Ryvro, I had two jobs on day one.
 First: make the schedule answer reliable.
 Second: make the first screen feel premium.
 The order was not negotiable.

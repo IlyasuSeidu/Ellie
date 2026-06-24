@@ -33,4 +33,13 @@ describe('authErrorMessage', () => {
       'Unable to send a reset link right now. Please try again.'
     );
   });
+
+  it('maps unavailable Apple sign-in to a clear alternative', () => {
+    const err = Object.assign(new Error('Apple sign-in is unavailable on this device'), {
+      code: 'apple/not-available',
+    });
+    expect(getAuthErrorMessage(err, 'appleSignIn')).toBe(
+      'Apple sign-in is unavailable on this device. Please use Google or email sign-in.'
+    );
+  });
 });

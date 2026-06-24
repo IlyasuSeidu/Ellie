@@ -278,69 +278,19 @@ function formatInterpolationValue(value: unknown, language?: string, format?: st
 }
 
 function syncDayjsLocale(language: string): void {
-  const normalized = normalizeLanguage(language);
-
-  if (normalized === 'pt-BR') {
-    dayjs.locale('pt-br');
-    return;
-  }
-
-  if (normalized === 'es') {
-    dayjs.locale('es');
-    return;
-  }
-
-  if (normalized === 'fr') {
-    dayjs.locale('fr');
-    return;
-  }
-
-  if (normalized === 'ar') {
-    dayjs.locale('ar');
-    return;
-  }
-
-  if (normalized === 'zh-CN') {
-    dayjs.locale('zh-cn');
-    return;
-  }
-
-  if (normalized === 'ru') {
-    dayjs.locale('ru');
-    return;
-  }
-
-  if (normalized === 'hi') {
-    dayjs.locale('hi');
-    return;
-  }
-
-  if (normalized === 'id') {
-    dayjs.locale('id');
-    return;
-  }
-
-  if (normalized === 'af') {
-    dayjs.locale('af');
-    return;
-  }
-
-  if (normalized === 'zu') {
-    dayjs.locale('zu');
-    return;
-  }
-
+  void language;
   dayjs.locale('en');
 }
 
-if (!isTestEnv) {
-  void i18n.use(languageDetector);
-}
+void isTestEnv;
+void languageDetector;
 
 void i18n.use(initReactI18next).init({
   resources,
-  lng: isTestEnv ? 'en' : undefined,
+  lng: 'en',
   fallbackLng: 'en',
+  supportedLngs: ['en'],
+  nonExplicitSupportedLngs: false,
   defaultNS: 'common',
   ns: ['common', 'onboarding', 'dashboard', 'profile', 'schedule'],
   initImmediate: false,

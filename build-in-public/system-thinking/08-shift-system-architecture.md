@@ -17,7 +17,7 @@ A new shift system selection screen that lets miners choose between 2-shift (12-
 
 Before, the app assumed everyone works 12-hour shifts. But many miners—especially in manufacturing plants, processing facilities, and 24/7 operations—work 8-hour shifts across three daily rotations (morning/afternoon/night).
 
-Now when a miner opens Ellie:
+Now when a shift worker opens Ryvro:
 
 1. **Step 1**: They say "I work 8-hour shifts" or "I work 12-hour shifts"
 2. **Step 2**: They only see relevant patterns (no more confusion about 4-4-4 vs 4-4-4-4)
@@ -236,7 +236,7 @@ Had to update 15 files. 57 tests. All navigation logic.
 
 **[10-30s - What I Built]**
 
-"I'm building Ellie, an app for mining shift workers. These workers rotate through complex cycles—4 days on, 4 nights, 4 off—and they always lose track of which shift they're on.
+"I'm building Ryvro, an app for mining shift workers. These workers rotate through complex cycles—4 days on, 4 nights, 4 off—and they always lose track of which shift they're on.
 
 The onboarding asks about their rotation pattern. But I made a mistake: I asked WHICH pattern before asking what KIND of shifts they work.
 

@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "O Google Play Services não está disponível neste dispositivo.",
       "googleMissingIdToken": "Não foi possível concluir o login do Google. Por favor, tente novamente.",
       "appleMissingIdentityToken": "Não foi possível concluir o login da Apple. Por favor, tente novamente.",
+      "appleUnavailable": "O login com Apple não está disponível neste dispositivo. Use Google ou e-mail.",
       "actionSignInFailed": "Não é possível fazer login no momento. Por favor, tente novamente.",
       "actionSignUpFailed": "Não é possível criar sua conta no momento. Por favor, tente novamente.",
       "actionSocialSignInFailed": "O login social não está disponível no momento. Tente fazer login por e-mail.",
@@ -87,7 +88,7 @@
     "label": "Idioma",
     "selector": "Selecionar idioma",
     "restartRequiredTitle": "Reinicialização necessária",
-    "restartRequiredMessage": "Reinicie o Ellie para aplicar as mudanças de direção do idioma.",
+    "restartRequiredMessage": "Reinicie o Ryvro para aplicar as mudanças de direção do idioma.",
     "names": {
       "en": "Inglês (Inglês)",
       "es": "Espanhol (Espanhol)",
@@ -131,7 +132,8 @@
       "apple": "Continuar com Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Entre na sua conta",
       "forgotPassword": "Esqueceu a senha?",
       "primaryButton": "Entrar",
@@ -141,7 +143,7 @@
     },
     "signUp": {
       "title": "Criar conta",
-      "subtitle": "Comece a acompanhar seus turnos com a Ellie",
+      "subtitle": "Comece a acompanhar seus turnos com a Ryvro",
       "passwordHint": "Mín. 8 caracteres, maiúscula e número",
       "confirmPasswordLabel": "Confirmar senha",
       "confirmPasswordPlaceholder": "Repita a senha",
@@ -174,7 +176,7 @@
       "title": "Seu schedule está pronto.",
       "subtitle": "Desbloqueie por menos que um café.",
       "features": {
-        "askSchedule": "Pergunte \"Ei, Ellie\" qualquer coisa sobre sua schedule",
+        "askSchedule": "Pergunte \"Ei,Ryvro\" qualquer coisa sobre sua schedule",
         "fullYear": "Veja seu ano inteiro — cada turno, mês a mês",
         "offline": "Funciona no subsolo, sem necessidade de sinal",
         "instantAnswers": "Respostas instantâneas sobre licenças e padrões",
@@ -203,19 +205,19 @@
       "noCard": "Não é necessário cartão de crédito · Cancele a qualquer momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de Privacidade",
-      "socialProof": "Confiado por mineradores subterrâneos, operadores FIFO e trabalhadores de escala rotativa.",
+      "socialProof": "Criado para equipes FIFO, saúde, segurança, transporte, manufatura, hotelaria e qualquer equipe em turnos.",
       "testimonials": [
         {
-          "quote": "Reservei voos no meu swing com meses de antecedência sem ligar para o RH.",
-          "author": "Sarah K., mineira subterrânea — turnos rotativos de 12h"
+          "quote": "Consigo ver cada ciclo, semana de viagem e bloco de descanso sem contar a partir de uma foto da escala.",
+          "author": "Operador FIFO — escala 14/14"
         },
         {
-          "quote": "Mostrei para minha esposa todo o schedule do site em menos de um minuto.",
-          "author": "Dave L., operador de perfuratriz — schedule FIFO"
+          "quote": "Minha família consegue planejar meus dias e noites sem esperar eu conferir uma planilha.",
+          "author": "Trabalhadora de turno rotativo — padrão 4/4"
         },
         {
-          "quote": "Reservei voos no meu swing com meses de antecedência sem ligar para o RH.",
-          "author": "Jason M., operador de caminhão fora de estrada — FIFO 7/7"
+          "quote": "O mesmo construtor lida com nossa escala incomum e trocas pontuais.",
+          "author": "Trabalhador de operações — rotação personalizada"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
@@ -228,7 +230,7 @@
         "chargedToday": "Cobrado hoje"
       },
       "valueFrame": "Menos que um café por semana para saber seu ano inteiro.",
-      "security": "Pagamento seguro via {{platform}} · Processado por {{platform}}, não pela Ellie",
+      "security": "Pagamento seguro via {{platform}} · Processado por {{platform}}, não pela Ryvro",
       "termsOfService": "Termos",
       "trialBadge": "TESTE GRÁTIS · SEM COBRANÇA HOJE",
       "trialBadgePaid": "ASSINE HOJE · CANCELE QUANDO QUISER",
@@ -247,27 +249,27 @@
       "billingDisclosureWeekly": "Cobrado {{price}}/semana, toda semana. Cancele a qualquer momento em Ajustes.",
       "billingDisclosureAnnualDirect": "Você será cobrado em {{price}} hoje. Renovação anual. Cancele a qualquer momento em Ajustes.",
       "billingDisclosureMonthlyDirect": "Você será cobrado em {{price}} hoje. Renovação mensal. Cancele a qualquer momento em Ajustes.",
-      "purchaseSuccessContinue": "Continuar para Ellie",
+      "purchaseSuccessContinue": "Continuar para Ryvro",
       "restorePurchasesSuccess": "Compra restaurada — bem-vindo ao Pro!",
       "restorePurchasesNotFound": "Nenhuma compra anterior foi encontrada nesta conta.",
       "restorePurchasesError": "A restauração falhou. Tente novamente.",
       "ctaOffline": "Conecte-se para assinar",
       "purchaseSuccessPaid": "Sua assinatura está ativa",
       "billingDisclosureTrialGeneric": "Sua avaliação gratuita começa hoje. Cancele a qualquer momento em Ajustes antes do início da cobrança. As assinaturas são renovadas automaticamente.",
-      "unavailable": "As assinaturas não estão disponíveis nesta compilação do app. Instale a build EAS mais recente de desenvolvimento ou produção.",
-      "unconfigured": "As assinaturas não estão configuradas nesta compilação. Adicione a chave do SDK da RevenueCat ao ambiente de build e gere uma nova compilação."
+      "unavailable": "O Ryvro Pro está indisponível no momento. Atualize o Ryvro ou fale com o suporte se isso continuar acontecendo.",
+      "unconfigured": "O Ryvro Pro ainda não está disponível. Atualize o Ryvro ou fale com o suporte se isso continuar acontecendo."
     },
     "profile": {
-      "rowActiveA11y": "Ellie Assinatura Pro ativa",
-      "rowUpgradeA11y": "Atualize para Ellie Pro",
-      "activeLabel": "Ellie Pró — Ativo ✓",
-      "upgradeLabel": "Atualize para Ellie Pro",
-      "activeHint": "Calendário completo · Olá, assistente de voz Ellie",
+      "rowActiveA11y": "Ryvro Assinatura Pro ativa",
+      "rowUpgradeA11y": "Atualize para Ryvro Pro",
+      "activeLabel": "Ryvro Pró — Ativo ✓",
+      "upgradeLabel": "Atualize para Ryvro Pro",
+      "activeHint": "Calendário completo · Olá, assistente de voz Ryvro",
       "upgradeHint": "Planos a partir de US$ 6,99/mês ou US$ 49,99/ano",
       "customerCenterError": "O gerenciamento da assinatura não está disponível agora. Tente novamente."
     },
     "padlock": {
-      "a11yLabel": "Atualize para Ellie Pro para ver o calendário completo"
+      "a11yLabel": "Atualize para Ryvro Pro para ver o calendário completo"
     },
     "recoveryNudge": {
       "title": "Você está no acesso limitado",
@@ -289,5 +291,10 @@
   },
   "offlineBanner": {
     "message": "Offline. Seus dados de turnos ainda estão disponíveis."
+  },
+  "syncStatus": {
+    "pending": "{{count}} atualização salva localmente. Ela será sincronizada quando você estiver online.",
+    "syncing": "Sincronizando {{count}} atualização salva.",
+    "failed": "{{count}} atualização precisa de revisão antes de sincronizar."
   }
 }

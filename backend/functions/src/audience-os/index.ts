@@ -7,7 +7,7 @@ export {
 } from './audience-intelligence';
 export { AUDIENCE_AGENT_CATALOG, AUDIENCE_SKILLS, getAudienceAgentProfile } from './agent-catalog';
 export { buildDailyAudienceRun } from './daily-run';
-export { ellieAudienceAdapter } from './ellie-adapter';
+export { ryvroAudienceAdapter } from './ryvro-adapter';
 export { normalizeRawLead, ingestRawLeads, dedupeLeads } from './lead-gen';
 export { normalizeProductManifest } from './manifest';
 export { buildOpenClawAudienceConfig } from './openclaw-config';

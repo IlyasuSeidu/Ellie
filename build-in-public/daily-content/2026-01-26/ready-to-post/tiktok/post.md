@@ -27,7 +27,7 @@ What onboarding step still feels like paperwork to you?
 
 If the first screen feels like admin work, people start doubting the whole product before they even see it.
 
-I reworked Ellie's setup flow. One question at a time. Swipeable roster cards so you recognize your schedule instead of decoding it. A welcome moment that actually feels like one.
+I reworked Ryvro's setup flow. One question at a time. Swipeable roster cards so you recognize your schedule instead of decoding it. A welcome moment that actually feels like one.
 
 The information was never the problem. The weight of it was.
 
@@ -35,8 +35,8 @@ Built by a miner for shift workers.
 
 What onboarding step still feels like paperwork in most apps?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech #vibecoding
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech #vibecoding
 
 ## Optional Builder Turn
 
-I build Ellie as a miner using AI-native workflows. The tooling is not the story. The story is that it lets me close the gap between real shift-work friction and working product decisions without losing weeks in the middle.
+I build Ryvro as a miner using AI-native workflows. The tooling is not the story. The story is that it lets me close the gap between real shift-work friction and working product decisions without losing weeks in the middle.

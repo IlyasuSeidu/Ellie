@@ -19,7 +19,7 @@ Wrong assumption.
 
 The real problem was decision weight: users were being asked to reason through shift patterns before the flow earned confidence.
 
-So Ellie changed the sequence to one question at a time and rebuilt pattern selection into swipeable options.
+So Ryvro changed the sequence to one question at a time and rebuilt pattern selection into swipeable options.
 
 Proof from today: onboarding flow tightened, 11 locales updated, 32 tests touched.
 
@@ -29,7 +29,7 @@ Where does your onboarding ask users to think too hard too early?
 
 ### Description
 
-Today’s Ellie lesson: friction is often interaction design, not text clarity.
+Today’s Ryvro lesson: friction is often interaction design, not text clarity.
 
 We reduced cognitive load in onboarding by breaking setup into smaller questions and making roster pattern choices easier to compare.
 
@@ -37,4 +37,4 @@ Proof from this pass: 11 locales updated and 32 tests touched.
 
 Built by a miner for shift workers.
 
-#ellieapp #youtubeshorts #shiftwork #productengineering #buildinpublic
+#ryvro #youtubeshorts #shiftwork #productengineering #buildinpublic

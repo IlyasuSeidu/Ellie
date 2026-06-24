@@ -96,7 +96,7 @@ const ENERGY_OPTIONS: Array<{
   color: string;
 }> = [
   { value: EnergyLevel.HIGH, icon: 'sunny', color: '#10B981' },
-  { value: EnergyLevel.MEDIUM, icon: 'partly-sunny', color: '#F59E0B' },
+  { value: EnergyLevel.MEDIUM, icon: 'partly-sunny', color: '#20f4dc' },
   { value: EnergyLevel.LOW, icon: 'moon', color: '#EF4444' },
 ];
 

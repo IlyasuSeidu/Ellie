@@ -23,6 +23,7 @@
     },
     "production": {
       "node": "20.19.4",
+      "autoIncrement": true,
       "env": {
         "RCT_USE_RN_DEP": "0",
         "RCT_USE_PREBUILT_RNCORE": "0"
@@ -38,8 +39,8 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "YOUR_APPLE_ID_EMAIL",
-        "ascAppId": "FILL_AFTER_STEP_6",
+        "appleId": "seiduilyasu94@gmail.com",
+        "ascAppId": "6776994726",
         "appleTeamId": "BZ798WZJCB"
       },
       "android": {

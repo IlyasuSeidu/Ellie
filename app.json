@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Ellie: Miner Shift Assistant",
-    "slug": "ellie",
-    "scheme": "ellie",
+    "name": "Ryvro Shift Planner",
+    "slug": "ryvro",
+    "scheme": "ryvro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,27 +11,26 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#05080c"
     },
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1",
-      "googleServicesFile": "./ios/Ellie/GoogleService-Info.plist",
       "usesAppleSignIn": true,
       "infoPlist": {
-        "NSSpeechRecognitionUsageDescription": "Ellie needs speech recognition to understand your questions.",
-        "NSMicrophoneUsageDescription": "Ellie needs microphone access for voice commands.",
+        "CFBundleDisplayName": "Ryvro",
+        "NSSpeechRecognitionUsageDescription": "Ryvro needs speech recognition to understand your questions.",
+        "NSMicrophoneUsageDescription": "Ryvro needs microphone access for voice commands.",
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.ellie.minershiftassistant"
+      "bundleIdentifier": "com.ryvro.shiftplanner"
     },
     "android": {
-      "googleServicesFile": "./android/app/google-services.json",
-      "package": "com.ellie.minershiftassistant",
+      "package": "com.ryvro.shiftplanner",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#05080c"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -44,6 +43,7 @@
       "expo-localization",
       "expo-font",
       "expo-asset",
+      "expo-apple-authentication",
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       [
@@ -58,23 +58,29 @@
       [
         "@react-native-google-signin/google-signin",
         {
-          "iosUrlScheme": "com.googleusercontent.apps.197162533368-5mhtc7pnngbq2n50rll6857n90n3t97r"
+          "iosUrlScheme": "com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io"
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Ellie needs access to your photos to set a profile picture.",
-          "cameraPermission": "Ellie needs access to your camera to take a profile picture."
+          "photosPermission": "Ryvro needs access to your photos to set a profile picture.",
+          "cameraPermission": "Ryvro needs access to your camera to take a profile picture."
         }
       ],
       [
         "expo-speech-recognition",
         {
-          "microphonePermission": "Ellie needs microphone access for voice commands.",
-          "speechRecognitionPermission": "Ellie needs speech recognition to understand your questions."
+          "microphonePermission": "Ryvro needs microphone access for voice commands.",
+          "speechRecognitionPermission": "Ryvro needs speech recognition to understand your questions."
         }
       ]
-    ]
+    ],
+    "owner": "ilyasu",
+    "extra": {
+      "eas": {
+        "projectId": "b306643e-1688-448e-8acd-f72bf74312c3"
+      }
+    }
   }
 }

@@ -1,9 +1,9 @@
-# AI Intelligence - Ellie Web Admin
+# AI Intelligence - Ryvro Web Admin
 
-Static web dashboard for the Ellie analytics intelligence backend.
-It is intentionally separate from the iOS/Android miner app.
+Static web dashboard for the Ryvro analytics intelligence backend.
+It is intentionally separate from the iOS/Android Ryvro shift-worker app.
 
-The dashboard follows `ELLIE_ANALYTICS_AI_INTELLIGENCE_STRATEGY.md` by focusing on:
+The dashboard follows the archived analytics intelligence strategy by focusing on:
 
 - Mission Control daily health metrics
 - AI Decision Feed for human-reviewed recommendations
@@ -19,9 +19,11 @@ cp web-admin/analytics-intelligence/firebase-config.example.js \
   web-admin/analytics-intelligence/firebase-config.local.js
 ```
 
-Edit `web-admin/analytics-intelligence/firebase-config.local.js` and fill in the Firebase web config values from Firebase Console -> Project settings -> Your apps -> Web app -> SDK setup.
+Edit `web-admin/analytics-intelligence/firebase-config.local.js` and fill in the Ryvro Firebase web config values from Firebase Console -> Project settings -> Your apps -> Web app -> SDK setup.
 
 `firebase-config.local.js` is gitignored. Firebase web config values are public identifiers, not private secrets, but local project config should not be committed.
+
+Do not point the local admin console at the retired Ellie Firebase project. Local preview should use the Ryvro Firebase project that owns `com.ryvro.shiftplanner` and the deployed Ryvro analytics callable functions.
 
 ### 2. Run locally
 

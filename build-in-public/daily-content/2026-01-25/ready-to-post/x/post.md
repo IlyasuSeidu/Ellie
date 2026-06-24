@@ -10,11 +10,11 @@
 
 1. If "Tomorrow: Night Shift" is wrong, the animation does not matter.
 
-2. A shift worker checking Ellie before bed is not browsing. They are making a decision. Get the answer wrong once and they stop trusting the whole product.
+2. A shift worker checking Ryvro before bed is not browsing. They are making a decision. Get the answer wrong once and they stop trusting the whole product.
 
 3. So the answer layer had to be solid before the first visible surface made a single promise. Shift math, state, and safeguards first. Then let onboarding land on top of something that actually deserves trust.
 
-4. The onboarding in Ellie now has a foundation underneath it. Stone and gold, physics-based motion, a chat-style flow that asks one thing at a time. None of that would mean anything if the schedule answer behind it was shaky.
+4. The onboarding in Ryvro now has a foundation underneath it. Stone and gold, physics-based motion, a chat-style flow that asks one thing at a time. None of that would mean anything if the schedule answer behind it was shaky.
 
 5. Trust is not a feature you add after the interface looks good. It is a structural decision you make before you design a single screen.
 
@@ -22,7 +22,7 @@
 
 ## Short Version
 
-If "Tomorrow: Night Shift" is wrong, the animation does not matter. A shift worker checking Ellie before bed is making a decision, not browsing. The answer layer had to be solid before the first visible surface made any promise. Trust is not a feature you add after the interface looks good. It is a structural decision.
+If "Tomorrow: Night Shift" is wrong, the animation does not matter. A shift worker checking Ryvro before bed is making a decision, not browsing. The answer layer had to be solid before the first visible surface made any promise. Trust is not a feature you add after the interface looks good. It is a structural decision.
 
 ## Builder Variation
 
@@ -30,7 +30,7 @@ If "Tomorrow: Night Shift" is wrong, the animation does not matter. A shift work
 
 2. A shift worker checking their schedule before bed is not browsing. They are making a real decision. One wrong answer and the whole product loses credibility.
 
-3. I am a miner building Ellie with AI-native workflows, but this lesson is older than the tooling. If the answer underneath is shaky, the surface is a liability, not a product.
+3. I am a miner building Ryvro with AI-native workflows, but this lesson is older than the tooling. If the answer underneath is shaky, the surface is a liability, not a product.
 
 4. So I built the answer layer first. Then I let the onboarding surface, the physics, the haptics, the gold shimmer on the button, land on top of something that actually deserved to be seen.
 

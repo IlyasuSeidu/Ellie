@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "此设备上无法使用 Google Play 服务。",
       "googleMissingIdToken": "无法完成 Google 登录。请再试一次。",
       "appleMissingIdentityToken": "Apple 登录无法完成。请再试一次。",
+      "appleUnavailable": "此设备无法使用 Apple 登录。请使用 Google 或电子邮件登录。",
       "actionSignInFailed": "现在无法登录。请再试一次。",
       "actionSignUpFailed": "现在无法创建您的帐户。请再试一次。",
       "actionSocialSignInFailed": "目前无法使用社交登录。请尝试使用电子邮件登录。",
@@ -87,7 +88,7 @@
     "label": "语言",
     "selector": "选择语言",
     "restartRequiredTitle": "需要重新启动",
-    "restartRequiredMessage": "请重新启动 Ellie 以应用语言方向更改。",
+    "restartRequiredMessage": "请重新启动 Ryvro 以应用语言方向更改。",
     "names": {
       "en": "英语 (英语)",
       "es": "西班牙语 (西班牙语)",
@@ -131,7 +132,8 @@
       "apple": "使用 Apple 继续"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "登录你的账户",
       "forgotPassword": "忘记密码？",
       "primaryButton": "登录",
@@ -141,7 +143,7 @@
     },
     "signUp": {
       "title": "创建账户",
-      "subtitle": "开始使用 Ellie 追踪你的班次",
+      "subtitle": "开始使用 Ryvro 追踪你的班次",
       "passwordHint": "至少 8 位，含大写字母和数字",
       "confirmPasswordLabel": "确认密码",
       "confirmPasswordPlaceholder": "再次输入密码",
@@ -174,9 +176,9 @@
       "title": "你的班表已经准备好了。",
       "subtitle": "花不到一杯咖啡的钱就能解锁。",
       "features": {
-        "askSchedule": "询问“嘿__TK1__”有关您的名单的任何信息",
+        "askSchedule": "询问“嘿Ryvro”有关您的名单的任何信息",
         "fullYear": "查看你整整一年的安排——每一次班次，逐月清晰可见",
-        "offline": "地下工作，无需信号",
+        "offline": "信号较弱时也能使用",
         "instantAnswers": "有关休假和模式的即时答案",
         "aiPowered": "由人工智能提供支持并不断改进",
         "leavePlanning": "无需联系人事即可规划休假",
@@ -203,19 +205,19 @@
       "noCard": "无需信用卡 · 随时取消",
       "restorePurchases": "恢复购买",
       "privacyPolicy": "隐私政策",
-      "socialProof": "受到地下矿工、FIFO 操作员和轮换排班工人的信赖。",
+      "socialProof": "专为 FIFO 团队、医疗、安保、交通、制造、酒店服务以及所有轮班团队打造。",
       "testimonials": [
         {
-          "quote": "我按自己的轮班周期提前好几个月订好了航班，连人事都不用找。",
-          "author": "Sarah K.，地下矿工 — 12小时轮班"
+          "quote": "不用对着照片班表数，我就能看到每个轮班段、出行周和休息周期。",
+          "author": "FIFO 操作员 — 14/14 班表"
         },
         {
-          "quote": "我不到一分钟就把整个矿区班表展示给我妻子看。",
-          "author": "Dave L.，钻机操作员 — FIFO 班表"
+          "quote": "我的家人可以围绕我的白班和夜班安排计划，不用等我去查电子表格。",
+          "author": "轮班工作者 — 4/4 模式"
         },
         {
-          "quote": "我按自己的轮班周期提前好几个月订好了航班，连人事都不用找。",
-          "author": "Jason M.，矿卡司机 — FIFO 7/7"
+          "quote": "同一个构建器能处理我们不规则的现场班表和临时调班。",
+          "author": "运营人员 — 自定义轮换"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
@@ -228,7 +230,7 @@
         "chargedToday": "今天收费"
       },
       "valueFrame": "每周不到一杯咖啡的钱，就能掌握你一整年的安排。",
-      "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
+      "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ryvro",
       "termsOfService": "条款",
       "trialBadge": "免费试用 · 今天不收费",
       "trialBadgePaid": "今日订阅 · 随时取消",
@@ -247,27 +249,27 @@
       "billingDisclosureWeekly": "按周收费 {{price}}，每周扣费。可随时在设置中取消。",
       "billingDisclosureAnnualDirect": "今天将向你收取 {{price}}。按年续订。可随时在设置中取消。",
       "billingDisclosureMonthlyDirect": "今天将向你收取 {{price}}。按月续订。可随时在设置中取消。",
-      "purchaseSuccessContinue": "继续前往 Ellie",
+      "purchaseSuccessContinue": "继续前往 Ryvro",
       "restorePurchasesSuccess": "购买已恢复，欢迎使用 Pro！",
       "restorePurchasesNotFound": "此账户未找到过往购买记录。",
       "restorePurchasesError": "恢复失败。请重试。",
       "ctaOffline": "联网后订阅",
       "purchaseSuccessPaid": "你的订阅已生效",
       "billingDisclosureTrialGeneric": "您的免费试用今天开始。请在开始扣费前随时前往设置取消。订阅会自动续订。",
-      "unavailable": "此应用构建版本不支持订阅。请安装最新的 EAS 开发版或生产版构建。",
-      "unconfigured": "此构建尚未配置订阅。请将 RevenueCat SDK 密钥加入构建环境后重新构建。"
+      "unavailable": "Ryvro Pro 目前不可用。请更新 Ryvro；如果问题持续，请联系支持团队。",
+      "unconfigured": "Ryvro Pro 暂不可用。请更新 Ryvro；如果问题持续，请联系支持团队。"
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Pro 主动订阅",
-      "rowUpgradeA11y": "升级到 __TK1__ 专业版",
-      "activeLabel": "__TK1__ Pro — 主动 ✓",
-      "upgradeLabel": "升级到 __TK1__ 专业版",
-      "activeHint": "全日历·嘿__TK1__语音助手",
+      "rowActiveA11y": "Ryvro Pro 主动订阅",
+      "rowUpgradeA11y": "升级到 Ryvro 专业版",
+      "activeLabel": "Ryvro Pro — 主动 ✓",
+      "upgradeLabel": "升级到 Ryvro 专业版",
+      "activeHint": "全日历·嘿Ryvro语音助手",
       "upgradeHint": "套餐低至每月 6.99 美元或每年 49.99 美元",
       "customerCenterError": "目前无法打开订阅管理。请稍后再试。"
     },
     "padlock": {
-      "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"
+      "a11yLabel": "升级到 Ryvro Pro 以查看完整日历"
     },
     "recoveryNudge": {
       "title": "你当前处于有限访问模式",
@@ -289,5 +291,10 @@
   },
   "offlineBanner": {
     "message": "当前离线。你的班次数据仍可用。"
+  },
+  "syncStatus": {
+    "pending": "{{count}} 个更新已保存在本地。联网后会同步。",
+    "syncing": "正在同步 {{count}} 个已保存更新。",
+    "failed": "{{count}} 个更新需要检查后才能同步。"
   }
 }

@@ -13,7 +13,7 @@
 
 Wrong assumption: if every sentence is technically correct, onboarding is clear.
 
-In Ellie, the shift logic was already solid. The issue was how that logic was explained across key moments.
+In Ryvro, the shift logic was already solid. The issue was how that logic was explained across key moments.
 
 So I audited three screens together: roster setup, the Aha moment preview, and the paywall transition.
 
@@ -29,8 +29,8 @@ Which screen in your product needs a language audit first?
 
 Today’s update focused on product language alignment, not new features.
 
-I reviewed Ellie’s roster setup, Aha preview, and paywall handoff so the same promise appears clearly at each step.
+I reviewed Ryvro’s roster setup, Aha preview, and paywall handoff so the same promise appears clearly at each step.
 
 For shift workers, wording quality is product quality.
 
-#ellieapp #shiftwork #productdesign #youtubeshorts
+#ryvro #shiftwork #productdesign #youtubeshorts

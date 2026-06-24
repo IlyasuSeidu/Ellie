@@ -3,10 +3,10 @@ import type { PurchasesPackage } from 'react-native-purchases';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { getRevenueCatApiKey } from '@/services/RevenueCatRuntime';
 import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
+import { CACHE_TTL_MS } from '@/config/cacheConfig';
 import { logger } from '@/utils/logger';
 
 const OFFERINGS_CACHE_KEY_PREFIX = `subscription:offeringsSnapshot:${Platform.OS}`;
-const OFFERINGS_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 export interface CachedPaywallPlan {
   identifier: string;
@@ -141,7 +141,7 @@ class RevenueCatOfferingsCacheService {
   }
 
   private isExpiredSnapshot(snapshot: CachedOfferingsSnapshot): boolean {
-    return Date.now() - snapshot.updatedAt > OFFERINGS_CACHE_TTL_MS;
+    return Date.now() - snapshot.updatedAt > CACHE_TTL_MS.revenueCatOfferings;
   }
 
   private async getCacheKey(scope?: string | null): Promise<string> {

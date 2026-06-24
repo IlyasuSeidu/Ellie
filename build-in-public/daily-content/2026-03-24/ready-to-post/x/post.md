@@ -10,7 +10,7 @@
 
 1. Localization is a trust surface, not a translation checklist.
 
-2. In Ellie, long-locale CTA wrapping made onboarding/paywall moments feel unreliable even when the words were correct.
+2. In Ryvro, long-locale CTA wrapping made onboarding/paywall moments feel unreliable even when the words were correct.
 
 3. So we treated copy length + layout behavior + motion as one product decision.
 
@@ -22,8 +22,8 @@
 
 ## Short Version
 
-Localization is a trust surface, not a translation checklist. We fixed long-locale CTA/layout failures in Ellie (11 locales + onboarding/paywall hardening + tests) because tiny breaks at decision moments quietly kill conversion.
+Localization is a trust surface, not a translation checklist. We fixed long-locale CTA/layout failures in Ryvro (11 locales + onboarding/paywall hardening + tests) because tiny breaks at decision moments quietly kill conversion.
 
 ## Builder Variation
 
-I build Ellie for shift workers, and this pass reinforced one rule: product trust breaks in seams between copy, layout, and motion. Own them together.
+I build Ryvro for shift workers, and this pass reinforced one rule: product trust breaks in seams between copy, layout, and motion. Own them together.

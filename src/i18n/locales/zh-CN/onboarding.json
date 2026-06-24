@@ -7,7 +7,8 @@
       "freeTrial": "免费试用",
       "noCard": "无需信用卡",
       "cancelAnytime": "可随时取消"
-    }
+    },
+    "getStartedHint": "开始设置您的日程"
   },
   "common": {
     "swipeHint": "向右滑动进行选择，向左滑动查看下一个，向上滑动查看更多信息",
@@ -30,16 +31,29 @@
     },
     "cancel": "取消"
   },
+  "e2eSwipeControls": {
+    "status": "模拟器",
+    "statusWithAction": "模拟器 • {{action}}",
+    "select": "选择",
+    "nextA11y": "移至下一个选项",
+    "selectA11y": "选择当前选项",
+    "infoA11y": "打开选项信息",
+    "actions": {
+      "select": "选择",
+      "next": "下一个",
+      "info": "信息"
+    }
+  },
   "intro": {
-    "welcome": "欢迎来到艾莉！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
+    "welcome": "欢迎来到 Ryvro！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
     "askName": "你叫什么名字？",
-    "askOccupation": "很高兴认识你，{{name}}！你在现场的职责是什么？",
+    "askOccupation": "很高兴认识你，{{name}}！你从事哪种轮班工作？",
     "askCompany": "知道了！你在哪家公司工作？（可选）",
     "askCountry": "快完成了！您位于哪个国家/地区？",
     "allSet": "完美的！一切就绪，{{name}}。让我们配置您的轮班日历。",
     "placeholders": {
       "name": "输入你的名字",
-      "occupation": "例如：矿卡驾驶员、锅炉工、电工",
+      "occupation": "例如：护士、安保人员、工厂操作员",
       "company": "输入公司名称",
       "country": "输入您的国家/地区"
     },
@@ -58,16 +72,18 @@
       "countryTooShort": "国家/地区必须至少为 2 个字符",
       "countryTooLong": "国家/地区不得超过 100 个字符"
     },
-    "skipCompany": "跳过"
+    "skipCompany": "跳过",
+    "continue": "继续",
+    "continueHint": "进入下一个入门步骤"
   },
   "shiftSystem": {
-    "title": "您的网站有多少班次？",
-    "title_named": "{{name}}，你好，您的站点有多少个班次？",
+    "title": "你的工作地点运行多少个班次？",
+    "title_named": "{{name}}，你好，你的工作地点运行多少个班次？",
     "reviewAgain": "请再次查看系统以做出选择",
     "reviewButton": "审查系统",
     "continueButton": "继续",
     "closeButton": "关闭",
-    "instruction": "选择您网站的运营方式——我们将据此构建您的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
+    "instruction": "选择你的团队如何运行——我们将据此构建你的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
     "endState": {
       "selectedTitle": "知道了！我们将为此设置您的日历。",
       "reviewedTitle": "您已查看所有 {{count}} 轮班系统！",
@@ -77,10 +93,10 @@
       "2-shift": {
         "title": "2班制（12小时）",
         "schedule": "白天和黑夜",
-        "description": "您的矿山实行两班制，每班 12 小时——一个白天，一个晚上",
+        "description": "您的团队实行两班制，每班 12 小时——一个白天，一个晚上",
         "details": {
           "workRestRatio": "开12小时，关12小时",
-          "useCases": ["采矿场", "石油和天然气", "24/7 运营", "远程工作"],
+          "useCases": ["24/7 运营团队", "石油和天然气", "24/7 运营", "远程工作"],
           "pros": ["延长休息时间", "可预测的时间表", "良好的工作与生活平衡"],
           "cons": ["轮班时间长", "可能对体力要求较高", "冬季日照有限"]
         }
@@ -88,10 +104,10 @@
       "3-shift": {
         "title": "3班制（8小时）",
         "schedule": "早上、下午、晚上",
-        "description": "您的选矿厂实行三个 8 小时轮班制：上午、下午和晚上",
+        "description": "您的工作场所实行三个 8 小时轮班制：上午、下午和晚上",
         "details": {
           "workRestRatio": "工作8小时，休息16小时",
-          "useCases": ["地下矿山", "选矿厂", "矿山基础设施", "24/7 运营"],
+          "useCases": ["生产团队", "处理工厂", "运营基础设施", "24/7 运营"],
           "pros": ["轮班时间较短", "有更多时间陪伴家人", "更容易保持警觉"],
           "cons": ["更频繁的换班", "会扰乱睡眠模式", "周期之间休息较少"]
         }
@@ -109,13 +125,13 @@
       "reviewedSubtitle": "没看到你的吗？您可以构建一个自定义的，或者再看看",
       "reviewedTitle": "这就是我们所有的 {{count}} 轮换！"
     },
-    "instruction": "选择您的矿山使用的轮换方式——我们将据此构建您的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
+    "instruction": "选择你的工作地点使用的轮换方式——我们将据此构建你的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
     "title": "你的轮换名单是怎样的？",
     "cards": {
       "4-4-4": {
         "name": "4-4-4 轮换",
         "schedule": "4 天 • 4 晚 • 4 折",
-        "description": "轮班 4 个白班，然后轮班 4 个夜班，然后在飞进飞出地点休息 4 天"
+        "description": "先上 4 个白班，再上 4 个夜班，然后休息 4 天 — 适合 24/7 和 FIFO 团队"
       },
       "7-7-7": {
         "name": "7-7-7轮换",
@@ -160,37 +176,37 @@
       "fifo-8-6": {
         "name": "先进先出8/6",
         "schedule": "工作 8 天 • 在家 6 天",
-        "description": "连续 8 天在现场工作，然后在家工作 6 天——这在西澳采矿业很受欢迎"
+        "description": "连续工作 8 天，然后休息 6 天 — 适合远程和 FIFO 团队"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7（偶数时间）",
         "schedule": "工作 1 周 • 回家 1 周",
-        "description": "现场一周，在家一周 - 完美的 50/50 平衡"
+        "description": "一周工作，一周休息 — 良好的 50/50 平衡"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14（偶数时间）",
         "schedule": "工作 2 周 • 回家 2 周",
-        "description": "两周现场，两周在家——工作与生活的完美平衡"
+        "description": "两周工作，两周休息 — 平衡的工作/休息节奏"
       },
       "fifo-14-7": {
         "name": "先进先出 14/7 (2:1)",
         "schedule": "工作 2 周 • 回家 1 周",
-        "description": "现场两周，在家一周——高收入潜力"
+        "description": "两周工作，一周休息 — 适合较长工作块"
       },
       "fifo-21-7": {
         "name": "先进先出 21/7 (3:1)",
         "schedule": "工作 3 周 • 回家 1 周",
-        "description": "三周现场，一周在家 - 适用于非常远程的操作"
+        "description": "三周工作，一周休息 — 适合非常远程的运营"
       },
       "fifo-28-14": {
         "name": "先进先出 28/14 (2:1)",
         "schedule": "工作 4 周 • 回家 2 周",
-        "description": "对于长途远程站点，现场四个星期，家里两周"
+        "description": "四周工作，两周休息 — 适合长周期远程运营"
       },
       "fifo-custom": {
         "name": "定制先进先出",
         "schedule": "建立你自己的",
-        "description": "您的 FIFO 站点使用独特的名册？配置您自己的工作/休息区"
+        "description": "你的 FIFO 团队使用独特排班？配置自己的工作/休息块"
       }
     },
     "title_named": "{{name}}，你的排班模式是什么？",
@@ -198,7 +214,7 @@
   },
   "rosterType": {
     "title": "你的名册如何运作？",
-    "instruction": "选择您矿山使用的排班方式——这会影响您的整个日程安排\n向右滑动选择，向左滑动查看更多，向上滑动查看详情",
+    "instruction": "选择您的工作地点使用的排班方式——这会影响您的整个日程安排\n向右滑动选择，向左滑动查看更多，向上滑动查看详情",
     "preparingNextStep": "准备下一步...",
     "learnMore": {
       "examples": "示例",
@@ -222,28 +238,23 @@
       "fifo": {
         "title": "先进先出/摇摆名册",
         "subtitle": "工作块 • 家庭块",
-        "description": "您在现场连续工作几天，然后延长在家工作的时间",
+        "description": "连续工作若干工作块天数，然后在家获得更长休息时间",
         "details": {
-          "howItWorks": "工人飞往偏远地点，连续工作几天（工作区），然后飞回家延长休息时间（休息区）",
-          "examples": [
-            "8/6（常见西澳）",
-            "14/14（偶数时间）",
-            "21/7（远程站点）",
-            "28/14（长周期）"
-          ],
-          "regions": ["澳大利亚", "加拿大", "远程全球挖矿"],
-          "pros": ["延长在家时间", "更高的工资率", "适合远程站点", "可预测的区块"],
+          "howItWorks": "工作人员前往远程运营点，连续工作若干天（工作块），然后回家进行延长休息（休息块）",
+          "examples": ["8/6（常见）", "14/14（等时）", "21/7（远程运营）", "28/14（长周期）"],
+          "regions": ["澳大利亚", "加拿大", "远程全球运营"],
+          "pros": ["在家时间更长", "更高的薪酬率", "适合远程运营", "可预测的区块"],
           "cons": ["长时间远离家人", "旅途疲劳", "营地隔离", "块间​​调整"]
         }
       }
     },
     "title_named": "{{name}}，你的排班是怎么运作的？",
     "instruction_pain": {
-      "cycle_lost": "这会让 Ellie 准确知道你当前处于轮班周期的哪一步，不用再猜",
-      "wrong_alarm": "把这一步设对后，Ellie 会把每个闹钟都设到正确班次",
-      "days_off": "这会告诉 Ellie 你的休息日落在哪些天，方便你提前安排",
-      "family": "一旦 Ellie 知道你的排班，就会提醒你那些原本可能错过的活动",
-      "mental_math": "完成这一步后，所有计算都交给 Ellie"
+      "cycle_lost": "这会让 Ryvro 准确知道你当前处于轮班周期的哪一步，不用再猜",
+      "wrong_alarm": "把这一步设对后， Ryvro 会把每个闹钟都设到正确班次",
+      "days_off": "这会告诉 Ryvro 你的休息日落在哪些天，方便你提前安排",
+      "family": "一旦 Ryvro 知道你的排班，就会提醒你那些原本可能错过的活动",
+      "mental_math": "完成这一步后，所有计算都交给 Ryvro"
     },
     "countryHint": "{{country}} 常见"
   },
@@ -255,24 +266,24 @@
       "sleep": "睡眠追踪和见解",
       "sleepDesc": "通过个性化睡眠分析优化轮班之间的休息",
       "fatigue": "疲劳监测",
-      "fatigueDesc": "监测长班疲劳风险——对地下安全至关重要",
+      "fatigueDesc": "监测长班疲劳风险——对高强度工作很重要",
       "team": "团队协调",
       "teamDesc": "查看您的船员日程安排并无缝协调交接",
       "balance": "工作与生活的平衡",
-      "balanceDesc": "在FIFO轮班间保持健康的作息和身心状态",
+      "balanceDesc": "在轮班区块之间保持健康的作息和身心状态",
       "earnings": "收益计算器",
-      "earningsDesc": "自动计算现场津贴、FIFO费用和加班费",
+      "earningsDesc": "估算轮班工时、津贴和轮换排班中的加班费",
       "meals": "膳食和水分",
-      "mealsDesc": "在12小时地下班中保持水分补充和体力充沛"
+      "mealsDesc": "在长白班、夜班、出行日和临时召集期间保持水分和体力"
     },
     "featureHint": "点击功能芯片可查看更多详细信息。",
-    "featuresTitle": "你可以和艾莉一起做什么",
+    "featuresTitle": "你可以和 Ryvro 一起做什么",
     "getStartedA11yHint": "点击即可开始使用该应用程序",
-    "getStartedA11yLabel": "开始与艾莉一起",
+    "getStartedA11yLabel": "开始与 Ryvro 一起",
     "loading": "正在构建您的排班日历...",
     "retryA11yHint": "点击以尝试再次保存您的数据",
     "retryA11yLabel": "重试保存您的数据",
-    "subtitle": "欢迎来到艾莉",
+    "subtitle": "欢迎来到 Ryvro",
     "summary": {
       "company": "公司",
       "cycle": "循环",
@@ -289,12 +300,12 @@
       "startDate": "开始日期",
       "title": "您的个人资料",
       "workPattern": "工作模式",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "全天",
+      "notTimed": "未设置时间",
+      "rosterTypeUniversal": "通用排班",
+      "universalShiftSystem": "通用自定义班次",
+      "scheduleEngine": "排班引擎",
+      "scheduleType": "排班类型"
     },
     "title": "一切就绪。",
     "tryAgain": "再试一次",
@@ -317,7 +328,7 @@
         "shiftPattern": "班次模式",
         "fifoConfiguration": "FIFO 配置",
         "customPatternConfiguration": "自定义模式配置",
-        "phaseOffset": "阶段偏移",
+        "phaseOffset": "当前位置",
         "startDate": "开始日期",
         "shiftTimes": "班次时间"
       }
@@ -338,8 +349,8 @@
       "decline": "暂时不要"
     },
     "title_named": "{{name}}，一切就绪。",
-    "setupReady": "你的{{setup}}班表已经准备好了。",
-    "reminderPromise": "Ellie 会在每次班前提醒你。"
+    "setupReady": "你的 {{setup}} 排班已准备好。",
+    "reminderPromise": "Ryvro 会在每次班前提醒你。"
   },
   "phaseSelector": {
     "hints": {
@@ -411,7 +422,7 @@
       "swingConfig": "配置你的挥杆分割",
       "block": "您处于 FIFO 周期的哪个阶段？",
       "dayWithinBlock": "您在 {{blockTitle}} 的哪一天？",
-      "block_named": "{{name}}，你现在是在矿区还是在家？"
+      "block_named": "{{name}}，你现在处于工作块还是休息块？"
     },
     "subtitle": {
       "workPattern": "向右滑动以选择您的工作块模式，向左滑动以选择下一个选项，或向上滑动以获取信息",
@@ -432,7 +443,7 @@
       "straightNights": {
         "title": "直夜",
         "description": "您的工作区只上夜班。",
-        "quickInfo": "当现场工作人员在整个工作区都上夜班时使用此功能。"
+        "quickInfo": "当团队在整个工作块期间都保持夜班时使用。"
       },
       "swing": {
         "title": "摇摆",
@@ -442,16 +453,16 @@
     },
     "blocks": {
       "work": {
-        "title": "现场（工作中）",
-        "descriptionDay": "您目前在矿场的白班工作区",
-        "descriptionNight": "您目前在矿场的夜班工作区",
-        "descriptionNeutral": "您目前位于工作区的矿场",
+        "title": "工作块",
+        "descriptionDay": "您目前在工作地点的白班工作区",
+        "descriptionNight": "您目前在工作地点的夜班工作区",
+        "descriptionNeutral": "您目前位于工作地点的工作区",
         "quickInfoDay": "这意味着您的周期从白班工作区开始计算。",
         "quickInfoNight": "这意味着您的周期从夜班工作区开始计算。",
         "quickInfoNeutral": "这意味着您的周期从当前的工作块开始计数。"
       },
       "rest": {
-        "title": "在家（休息）",
+        "title": "休息块",
         "description": "您目前在家中的休息区",
         "quickInfo": "这首先会根据工作块长度来抵消您的周期。"
       }
@@ -473,9 +484,9 @@
       },
       "defaultDayTitle": "第 {{dayNumber}} 天",
       "work": {
-        "firstDayAtSite": "回到现场第一天",
-        "firstNightAtSite": "第一个夜班回到现场",
-        "firstShiftAtSite": "第一班返回现场",
+        "firstDayAtSite": "工作块的第一天",
+        "firstNightAtSite": "工作块的第一个夜班",
+        "firstShiftAtSite": "工作块的第一班",
         "lastDayBeforeHome": "飞回家前的最后一天",
         "lastNightBeforeHome": "飞回家前的最后一个夜班",
         "lastShiftBeforeHome": "飞回家前的最后一次轮班",
@@ -485,12 +496,12 @@
       },
       "rest": {
         "firstDayAtHome": "回国第一天",
-        "lastDayBeforeSite": "返回站点前的最后一天",
+        "lastDayBeforeSite": "下一个工作块前的最后一天",
         "dayOfRestBlock": "您的休息时间段的 {{dayNumber}} 天"
       },
       "swing": {
         "dayShiftTitle": "白班日 {{dayNumber}}",
-        "firstDayShiftAtSite": "第一天返回现场",
+        "firstDayShiftAtSite": "工作块的第一个白班",
         "finalDayShiftBeforeNights": "切换到夜班之前的最后一个白班",
         "dayShiftDayDescription": "您工作区的白班日 {{dayNumber}}",
         "nightShiftTitle": "夜班日 {{dayNumber}}",
@@ -506,7 +517,7 @@
           "afternoon": "午班",
           "off": "休息"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} 第 {{dayNumber}} 天",
         "description": "自定义工作序列中的{{shiftType}}第 {{dayNumber}} 班"
       }
     },
@@ -642,7 +653,7 @@
     },
     "guidance": {
       "aboutTitle": "关于轮班时间",
-      "aboutBody": "您的 {{patternName}} 轮班保持不变，但我们需要您的轮班开始时间，以便 Ellie 可以跟踪工作时间并在每次轮班前提醒您。",
+      "aboutBody": "您的 {{patternName}} 轮班保持不变，但我们需要您的轮班开始时间，以便 Ryvro 可以跟踪工作时间并在每次轮班前提醒您。",
       "hint": "现在使用最接近的开始时间。您可以稍后在设置中对其进行微调。",
       "definitions": {
         "twoShiftTitle": "白天与夜晚：",
@@ -881,10 +892,10 @@
         "swingWorkBlock": "混合工作区段",
         "customWorkBlock": "自定义工作区段"
       },
-      "ratioLabel": "从现场到家的节奏",
+      "ratioLabel": "工作到休息节奏",
       "restLabel": "休息：{{restBlockDays}} 天",
-      "siteDays": "现场日",
-      "subtitle": "在现场 {{workBlockDays}} 天，然后在家里 {{restBlockDays}} 天",
+      "siteDays": "工作块天数",
+      "subtitle": "{{workBlockDays}} 个工作块天数，然后 {{restBlockDays}} 个休息日",
       "swingSplit": "轮班分班：{{daysOnDayShift}} 白班天数 + {{daysOnNightShift}} 夜班天数",
       "title": "您的 FIFO 循环预览",
       "workLabel": "工作时间：{{workBlockDays}} 天",
@@ -909,38 +920,38 @@
     "saveHintValid": "工作 {{workBlockDays}} 天，休息 {{restBlockDays}} 天",
     "sliders": {
       "daysAtHome": "在家的日子（休息区）",
-      "daysAtSite": "现场天数（工作区）",
+      "daysAtSite": "工作块天数",
       "daysOnDayShift": "白班天数",
       "daysOnNightShift": "夜班天数"
     },
     "slidersTitle": "设置您的 FIFO 模式",
-    "subtitle": "设置现场区块、家庭区块和工作区块轮班方式，以制定适合您现场周期的时间表。",
+    "subtitle": "第 1 步：设置工作块天数和休息日。第 2 步：选择工作块期间的轮班方式。",
     "subtitleSecondary": "工作块、休息块和模式分割",
-    "success": "可靠的 FIFO 设置。在现场 {{workBlockDays}} 天，然后在家 {{restBlockDays}} 天。",
+    "success": "可靠的 FIFO 设置。{{workBlockDays}} 个工作块天数，然后 {{restBlockDays}} 个休息日。",
     "swingSubtitle": "将您的工作区域划分为白班和夜班。",
     "swingTitle": "摆动配置",
     "swingTotal": "分期总计：{{swingTotal}}/{{workBlockDays}} 天",
-    "tip": "提示：将您的家庭街区与恢复和旅行需求相匹配。当剩余块足够长以在下一个站点运行之前重置时，FIFO 模式效果最佳。",
+    "tip": "提示：让居家休息块匹配恢复和出行需求。当休息块足够长、能在下一个工作块前恢复时，FIFO 模式效果最佳。",
     "title": "构建您的 FIFO 循环",
     "validation": {
       "blocksMinimum": "工作和休息时间必须至少为 1 天。",
       "swingMismatch": "保存前的周转分割必须等于 {{workBlockDays}} 天。"
     },
     "warning": "这个名册很繁重（{{workPercentage}}% 工作）。如果疲劳成为问题，请考虑增加在家休息的时间。",
-    "workPatternSubtitle": "您在现场时如何安排轮班？",
+    "workPatternSubtitle": "选择工作块期间的轮班方式。",
     "workPatternTitle": "工作块期间的工作模式",
     "workPatterns": {
       "straight-days": {
         "title": "直日",
-        "description": "仅整个工作区的工作日轮班（例如上午 7 点至下午 7 点）"
+        "description": "所有工作块天数都是白班。"
       },
       "straight-nights": {
         "title": "直夜",
-        "description": "仅在整个工作区进行夜班工作（例如晚上 7 点至上午 7 点）"
+        "description": "所有工作块天数都是夜班。"
       },
       "swing": {
         "title": "摇摆花名册",
-        "description": "在工作时段轮换白班和夜班"
+        "description": "工作块包含白班和夜班。"
       },
       "custom": {
         "title": "自定义序列",
@@ -983,7 +994,7 @@
     "a11y": "机器人正在打字"
   },
   "chatAvatar": {
-    "a11y": "矿工助手头像"
+    "a11y": "Ryvro 班次助手头像"
   },
   "premiumCalendar": {
     "previousMonthA11y": "上个月",
@@ -1008,7 +1019,7 @@
   "chatMessage": {
     "skipped": "已跳过",
     "a11y": {
-      "botMessage": "Ellie 消息：{{content}}",
+      "botMessage": "Ryvro 消息：{{content}}",
       "userMessage": "你的消息：{{content}}",
       "longPressToEdit": "长按以编辑"
     }
@@ -1045,7 +1056,6 @@
   "ahaMoment": {
     "headline": "你接下来的3个月，已经排好。",
     "subheadline": "这就是你接下来3个月的预览。再也不用在脑子里反复猜了。",
-    "heyEllieTitle": "向 Ellie 询问你的班表",
     "ctaPrimary": "开始免费试用",
     "ctaSecondary": "或跳过——仅限当前这一周，没有全年视图",
     "stats": {
@@ -1072,7 +1082,7 @@
       "nightShiftsThisMonth": "我这个月有多少个夜班？",
       "startBack": "我什么时候回去上班？"
     },
-    "buttonLabel": "你好 Ellie",
+    "buttonLabel": "你好 Ryvro",
     "headline_named": "{{name}}的班表，已经排好。",
     "ctaSecondaryA11y": "跳过试用——仅限当前这一周，没有全年视图",
     "painCallback": {
@@ -1083,11 +1093,12 @@
       "mental_math": "不用再掰着手指数了。"
     },
     "previewLabel": "接下来3个月的预览",
-    "checkingAccess": "正在检查访问权限…"
+    "checkingAccess": "正在检查访问权限…",
+    "ryvroTitle": "向 Ryvro 询问你的班表"
   },
   "painHook": {
     "title": "你现在觉得排班里最难的是什么？",
-    "subtitle": "我们会围绕你最在意的事情来个性化 Ellie。",
+    "subtitle": "我们会围绕你最在意的事情来个性化 Ryvro。",
     "options": {
       "cycle_lost": "我会搞不清自己现在处于哪个轮班阶段",
       "wrong_alarm": "我曾把闹钟设成错误的班次",
@@ -1135,12 +1146,12 @@
       "placeholder": "我的排班"
     },
     "anchorDate": {
-      "label": "锚定日期",
-      "hint": "序列从此日期开始重复"
+      "label": "排班匹配日期",
+      "hint": "选择 Ryvro 应与您的轮班周期对齐的真实日期"
     },
     "phaseOffset": {
-      "label": "当前周期日",
-      "hint": "0 = 周期开始"
+      "label": "你现在在轮班周期的哪一步？",
+      "hint": "序列中的第一项填 1，第二项填 2，依此类推"
     },
     "ai": {
       "sectionTitle": "AI 助手",
@@ -1183,7 +1194,24 @@
       "discardDraft": "放弃草稿",
       "followUp": "跟进...",
       "send": "发送",
-      "invalid": "AI 返回结果无效，请重试。"
+      "invalid": "AI 返回结果无效，请重试。",
+      "aiDraft": "AI 草稿",
+      "clarificationBanner": "我需要更多信息，才能准确生成这个排班",
+      "summary": "我的理解",
+      "questionsForYou": "需要你回答的问题",
+      "headsUp": "提醒",
+      "sequencePreview": "顺序预览",
+      "dayA11y": "第 {{day}} 天：{{name}}",
+      "cycleLength_one": "{{count}} 天周期",
+      "cycleLength_other": "{{count}} 天周期",
+      "followUpLabel": "继续追问",
+      "followUpPlaceholder": "例如：改成 8 小时轮班",
+      "followUpA11y": "给 AI 的追问",
+      "sendFollowUpA11y": "发送追问",
+      "useDraftA11y": "使用这个 AI 草稿",
+      "editManuallyA11y": "改为手动编辑排班",
+      "discardDraftA11y": "放弃 AI 草稿",
+      "cycleLength": "{{count}} 天周期"
     },
     "palette": {
       "title": "班次类型",
@@ -1191,7 +1219,24 @@
       "usageCount_one": "{{count}} 次使用",
       "usageCount_other": "{{count}} 次使用",
       "deleteBlocked": "使用中",
-      "deleteBlockedMessage": "此班次类型在序列中使用了 {{count}} 次。请先删除或替换这些条目。"
+      "deleteBlockedMessage": "此班次类型在序列中使用了 {{count}} 次。请先删除或替换这些条目。",
+      "createNewA11y": "创建新的班次类型",
+      "newType": "新类型",
+      "emptyTitle": "还没有班次类型。",
+      "emptyMessage": "点按新类型创建你的第一个班次。",
+      "cannotDeleteTitle": "无法删除",
+      "cannotDeleteMessage": "“{{name}}”已在你的序列中使用 {{count}} 次。请先从序列中移除。",
+      "cannotDeleteMessage_one": "“{{name}}”已在你的序列中使用 {{count}} 次。请先从序列中移除。",
+      "cannotDeleteMessage_other": "“{{name}}”已在你的序列中使用 {{count}} 次。请先从序列中移除。",
+      "ok": "好",
+      "deleteTitle": "删除“{{name}}”？",
+      "deleteMessage": "此班次类型将被永久删除。",
+      "cancelDelete": "取消",
+      "confirmDelete": "删除",
+      "addToSequenceA11y": "将 {{name}} 添加到序列",
+      "editA11y": "编辑 {{name}}",
+      "deleteA11y": "删除 {{name}}",
+      "deleteBlockedHint": "无法删除，因为它已在序列中使用"
     },
     "canvas": {
       "title": "序列",
@@ -1205,7 +1250,21 @@
       "duplicate": "复制",
       "insertBefore": "在前插入",
       "insertAfter": "在后插入",
-      "delete": "删除"
+      "delete": "删除",
+      "emptyTitle": "序列中没有班次",
+      "emptySubtitle": "在下方添加班次类型，然后点按添加班次来构建周期。",
+      "noShiftTypesTitle": "没有班次类型",
+      "noShiftTypesMessage": "请先使用下方调色板创建一个班次类型。",
+      "addShiftA11y": "将班次添加到序列",
+      "addBlockA11y": "将重复区块添加到序列",
+      "modalAddRepeated": "添加重复区块",
+      "modalChooseShift": "选择班次类型",
+      "modalInsertBefore": "插入到第 {{day}} 天之前",
+      "modalInsertAfter": "插入到第 {{day}} 天之后",
+      "repeatCountLabel": "重复次数：",
+      "repeatInputA11y": "重复次数",
+      "repeatTimes": "次",
+      "definitionUsedTimes": "已使用 {{count}} 次"
     },
     "inspector": {
       "titleCreate": "新建班次类型",
@@ -1236,7 +1295,7 @@
       "countsAsNight": "计为夜班",
       "color": "颜色",
       "icon": "图标",
-      "location": "地点",
+      "location": "工作地点（可选）",
       "save": "保存",
       "delete": "删除类型",
       "deleteConfirm": {
@@ -1244,7 +1303,50 @@
         "message": "此操作无法撤销。",
         "confirm": "删除",
         "cancel": "取消"
-      }
+      },
+      "nameRequiredTitle": "需要名称",
+      "nameRequiredMessage": "请为此班次类型输入名称。",
+      "timesRequiredTitle": "需要时间",
+      "timesRequiredMessage": "请为定时班次设置开始和结束时间。",
+      "colorA11y": "颜色 {{color}}",
+      "customColorPlaceholder": "自定义十六进制（如 FF5722）",
+      "customColorA11y": "自定义颜色十六进制代码",
+      "iconA11y": "图标：{{icon}}",
+      "countsAsWorkHint": "计入工作日统计",
+      "countsAsWorkA11y": "计为工作日开关",
+      "countsAsNightHint": "影响夜班统计",
+      "countsAsNightA11y": "计为夜班开关",
+      "locationPlaceholder": "如医院、车库、工厂、车站",
+      "locationA11y": "工作地点名称",
+      "remindersTitle": "此班次的提醒",
+      "remindersDisabled": "休息和请假班次类型不会安排班前提醒。",
+      "reminderRulesTitle": "提醒规则",
+      "reminderRulesHint": "这些规则仅适用于此班次类型。",
+      "reminderProfileA11y": "提醒配置名称",
+      "firstReminder": "首次提醒",
+      "firstReminderA11y": "首次提醒提前的小时数",
+      "hoursBefore": "小时前",
+      "prepTime": "准备时间",
+      "prepTimeA11y": "班次前准备分钟数",
+      "minutes": "分钟",
+      "travelTime": "通勤时间",
+      "travelTimeA11y": "班次前通勤分钟数",
+      "imminentReminderTitle": "15 分钟提醒",
+      "imminentReminderHint": "在开始前发送最后提醒",
+      "imminentReminderA11y": "15 分钟提醒开关",
+      "briefingReminderTitle": "简报提醒",
+      "briefingReminderHint": "将 15 分钟提醒视为关键简报准备",
+      "briefingReminderA11y": "简报提醒开关",
+      "fatigueAwareTitle": "疲劳感知时间",
+      "fatigueAwareHint": "疲劳风险高时提前准备提醒",
+      "fatigueAwareA11y": "疲劳感知提醒开关",
+      "postShiftCheckinTitle": "班后签到",
+      "postShiftCheckinHint": "班次结束一小时后询问情况",
+      "postShiftCheckinA11y": "班后签到开关",
+      "travelRemindersTitle": "通勤提醒",
+      "travelRemindersHint": "在上班和下班通勤提醒中使用此班次",
+      "travelRemindersA11y": "通勤提醒开关",
+      "saveA11y": "保存班次类型"
     },
     "preview": {
       "title": "预览",
@@ -1254,7 +1356,8 @@
       "today": "今天",
       "anchor": "锚定",
       "empty": "暂无预览数据。",
-      "errors": "由于存在错误，无法显示预览。"
+      "errors": "由于存在错误，无法显示预览。",
+      "errorHint": "先修正上方标出的内容，然后日历预览会显示在这里。"
     },
     "validation": {
       "errorTitle_one": "{{count}} 个错误",
@@ -1263,7 +1366,19 @@
       "warningTitle_other": "{{count}} 个警告",
       "fix": "修复",
       "review": "审查",
-      "dismiss": "忽略"
+      "dismiss": "忽略",
+      "fixBeforeSaving": "保存前修复 {{count}} 个问题",
+      "fixBeforeSaving_one": "保存前修复 {{count}} 个问题",
+      "fixBeforeSaving_other": "保存前修复 {{count}} 个问题",
+      "reviewBeforeSaving": "{{count}} 个警告 - 保存前查看",
+      "reviewBeforeSaving_one": "{{count}} 个警告 - 保存前查看",
+      "reviewBeforeSaving_other": "{{count}} 个警告 - 保存前查看",
+      "toggleA11y": "{{headline}}。点按以{{state}}列表。",
+      "expand": "展开",
+      "collapse": "收起",
+      "warningsHeader": "警告：",
+      "dismissWarnings": "忽略警告",
+      "dismissWarningsA11y": "忽略警告"
     },
     "saveResult": {
       "success": "排班已保存",

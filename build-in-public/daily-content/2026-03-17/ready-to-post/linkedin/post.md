@@ -10,7 +10,7 @@
 
 A product can be technically correct and still fail the first minute.
 
-That was the issue in Ellie this week.
+That was the issue in Ryvro this week.
 
 Our shift calculations were reliable, but early onboarding still asked people to carry too much context too quickly. For shift workers opening the app between real-life fatigue and time pressure, that hesitation is costly.
 
@@ -26,13 +26,13 @@ None of this changed the headline capability. It changed whether people trust th
 
 The lesson: minute-one cognitive load is a product metric, not just a UX polish topic.
 
-I build Ellie as a miner solving a problem I live every week. AI-native tooling helped the speed, but judgment came from user reality.
+I build Ryvro as a miner solving a problem I live every week. AI-native tooling helped the speed, but judgment came from user reality.
 
 Where does your product still charge a cognitive tax in minute one?
 
 ## Builder Variation
 
-This week in Ellie, I did less feature work and more comprehension work.
+This week in Ryvro, I did less feature work and more comprehension work.
 
 The shift engine was already correct. The weak point was first-run clarity.
 

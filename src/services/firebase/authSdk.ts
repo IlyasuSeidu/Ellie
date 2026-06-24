@@ -46,6 +46,9 @@ function loadFirebaseJsAuthSdk(): typeof FirebaseAuthWeb {
     GoogleAuthProvider: {
       credential: () => ({}),
     },
+    AppleAuthProvider: {
+      credential: () => ({}),
+    },
     OAuthProvider: class {
       credential() {
         return {};
@@ -75,7 +78,7 @@ function loadFirebaseJsAuthSdk(): typeof FirebaseAuthWeb {
 function loadNativeFirebaseAuthSdk(): typeof FirebaseAuthWeb {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return require('@react-native-firebase/auth/lib/modular') as typeof FirebaseAuthWeb;
+    return require('@react-native-firebase/auth') as typeof FirebaseAuthWeb;
   } catch {
     return loadFirebaseJsAuthSdk();
   }
@@ -233,6 +236,100 @@ export function signInWithCredential(auth: Auth, credential: unknown): Promise<U
   return sdk.signInWithCredential(auth, credential);
 }
 
-export const GoogleAuthProvider = loadFirebaseJsAuthSdk().GoogleAuthProvider;
-export const OAuthProvider = loadFirebaseJsAuthSdk().OAuthProvider;
-export const EmailAuthProvider = loadFirebaseJsAuthSdk().EmailAuthProvider;
+export const GoogleAuthProvider = {
+  credential(idToken?: string | null, accessToken?: string | null): unknown {
+    const sdk = resolveSdk() as unknown as {
+      GoogleAuthProvider: {
+        credential: (idTokenArg?: string | null, accessTokenArg?: string | null) => unknown;
+      };
+    };
+    return sdk.GoogleAuthProvider.credential(idToken, accessToken);
+  },
+};
+
+export const AppleAuthProvider = {
+  credential(idToken?: string | null, rawNonce?: string | null): unknown {
+    const sdk = resolveSdk() as unknown as {
+      AppleAuthProvider?: {
+        credential: (idTokenArg?: string | null, rawNonceArg?: string | null) => unknown;
+      };
+      OAuthProvider: new (providerIdArg: string) => {
+        credential: (options: { idToken?: string; rawNonce?: string }) => unknown;
+      };
+    };
+
+    if (sdk.AppleAuthProvider?.credential) {
+      return sdk.AppleAuthProvider.credential(idToken, rawNonce);
+    }
+
+    return new sdk.OAuthProvider('apple.com').credential({
+      idToken: idToken ?? undefined,
+      rawNonce: rawNonce ?? undefined,
+    });
+  },
+};
+
+export class OAuthProvider {
+  private readonly providerId: string;
+  private readonly provider: {
+    credential?: (options: {
+      idToken?: string;
+      accessToken?: string;
+      rawNonce?: string;
+    }) => unknown;
+  } | null;
+
+  constructor(providerId: string) {
+    this.providerId = providerId;
+    const sdk = resolveSdk() as unknown as {
+      OAuthProvider: new (providerIdArg: string) => {
+        credential?: (options: {
+          idToken?: string;
+          accessToken?: string;
+          rawNonce?: string;
+        }) => unknown;
+      };
+    };
+    this.provider = new sdk.OAuthProvider(providerId);
+  }
+
+  credential(options: { idToken?: string; accessToken?: string; rawNonce?: string }): unknown {
+    if (this.provider?.credential) {
+      return this.provider.credential(options);
+    }
+
+    const sdk = resolveSdk() as unknown as {
+      OAuthProvider?: {
+        credential: (idTokenArg?: string | null, accessTokenArg?: string | null) => unknown;
+      };
+      OIDCAuthProvider?: {
+        credential: (providerIdArg: string, idTokenArg: string) => unknown;
+      };
+    };
+
+    if (this.providerId === 'apple.com' && options.idToken) {
+      return AppleAuthProvider.credential(options.idToken, options.rawNonce);
+    }
+
+    if (sdk.OAuthProvider?.credential) {
+      return sdk.OAuthProvider.credential(options.idToken ?? null, options.accessToken ?? null);
+    }
+
+    if (sdk.OIDCAuthProvider?.credential && options.idToken) {
+      return sdk.OIDCAuthProvider.credential(this.providerId, options.idToken);
+    }
+
+    throw new Error(`OAuth provider ${this.providerId} does not support credential creation.`);
+  }
+}
+
+export const EmailAuthProvider = {
+  credential(email: string, password: string): unknown {
+    const sdk = resolveSdk() as unknown as {
+      EmailAuthProvider: {
+        credential: (emailArg: string, passwordArg: string) => unknown;
+      };
+    };
+    return sdk.EmailAuthProvider.credential(email, password);
+  },
+};

@@ -57,23 +57,75 @@ describe('PremiumWelcomeScreen', () => {
 
     it('should render app name', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
 
     it('should render tagline', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Know your next shift\nbefore you even think to check.')).toBeTruthy();
+      expect(getByText('Set your shifts once. Then ask by voice anytime.')).toBeTruthy();
+    });
+
+    it('should render the voice-first headline and demo', () => {
+      const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
+      expect(getByText('Ask Ryvro what shift you have.')).toBeTruthy();
+      expect(getByText('What shift am I on Friday?')).toBeTruthy();
+      expect(getByText('On Friday, you are on Night shift.')).toBeTruthy();
+    });
+
+    it('should keep the demo card full width inside its animation wrapper', () => {
+      const { getByTestId } = render(
+        <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
+      );
+
+      expect(getByTestId('welcome-demo-card').props.style).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            alignSelf: 'stretch',
+            maxWidth: 360,
+          }),
+        ])
+      );
     });
 
     it('should render Get Started button', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Set Up My Schedule')).toBeTruthy();
+      expect(getByText('Set up my shifts')).toBeTruthy();
     });
 
-    it('should render logo image', () => {
+    it('should render the welcome CTA with large text and a right arrow icon', () => {
+      const { getByTestId, getByText, UNSAFE_getAllByProps } = render(
+        <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
+      );
+
+      expect(getByTestId('welcome-button').props.style).toEqual(
+        expect.objectContaining({
+          height: 76,
+          width: '100%',
+        })
+      );
+      expect(getByText('Set up my shifts').props.style).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            fontSize: 22,
+            lineHeight: 30,
+          }),
+        ])
+      );
+      expect(UNSAFE_getAllByProps({ name: 'arrow-forward-circle' }).length).toBeGreaterThan(0);
+      expect(UNSAFE_getAllByProps({ size: 28 }).length).toBeGreaterThan(0);
+    });
+
+    it('should render the app icon as the welcome logo image', () => {
       const { UNSAFE_root } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
       const image = UNSAFE_root.findByType('Image');
       expect(image).toBeTruthy();
+      expect(image.props.source).toBe(require('../../../../../assets/icon.png'));
+      expect(image.props.style).toEqual(
+        expect.objectContaining({
+          width: 64,
+          height: 64,
+        })
+      );
     });
   });
 
@@ -174,9 +226,9 @@ describe('PremiumWelcomeScreen', () => {
       );
 
       expect(UNSAFE_root.findByType('Image')).toBeTruthy(); // Logo
-      expect(getByText('Ellie')).toBeTruthy(); // App name
-      expect(getByText('Know your next shift\nbefore you even think to check.')).toBeTruthy(); // Tagline
-      expect(getByText('Set Up My Schedule')).toBeTruthy(); // Button
+      expect(getByText('Ryvro')).toBeTruthy(); // App name
+      expect(getByText('Set your shifts once. Then ask by voice anytime.')).toBeTruthy(); // Tagline
+      expect(getByText('Set up my shifts')).toBeTruthy(); // Button
     });
   });
 
@@ -235,7 +287,7 @@ describe('PremiumWelcomeScreen', () => {
     it('should render without crashing when all props are undefined', () => {
       const { getByText } = render(<PremiumWelcomeScreen />);
 
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
   });
 
@@ -247,9 +299,9 @@ describe('PremiumWelcomeScreen', () => {
 
       // All elements should be present
       expect(UNSAFE_root.findByType('Image')).toBeTruthy();
-      expect(getByText('Ellie')).toBeTruthy();
-      expect(getByText('Know your next shift\nbefore you even think to check.')).toBeTruthy();
-      expect(getByText('Set Up My Schedule')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
+      expect(getByText('Ask Ryvro what shift you have.')).toBeTruthy();
+      expect(getByText('Set up my shifts')).toBeTruthy();
     });
 
     it('should render gradient overlay', () => {

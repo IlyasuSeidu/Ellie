@@ -2,23 +2,23 @@
 
 ## Overview
 
-This document provides comprehensive information about the APIs, services, and integrations used in the Ellie application.
+This document provides comprehensive information about the APIs, services, and integrations used in the Ryvro application.
 
 ## Table of Contents
 
 - [Environment Variables](#environment-variables)
-- [Ellie Brain Voice API](#ellie-brain-voice-api)
+- [Ryvro Brain Voice API](#ryvro-brain-voice-api)
 - [Firebase Configuration](#firebase-configuration)
 - [Service APIs](#service-apis)
 - [Error Handling](#error-handling)
 - [Rate Limiting](#rate-limiting)
 - [Authentication](#authentication)
 
-## Ellie Brain Voice API
+## Ryvro Brain Voice API
 
 ### Endpoint
 
-- `POST /ellieBrain` (Firebase HTTPS function, CORS enabled)
+- `POST /ryvroBrain` (Firebase HTTPS function, CORS enabled)
 
 ### Request Shape
 
@@ -26,21 +26,23 @@ This document provides comprehensive information about the APIs, services, and i
 {
   "query": "am I working tomorrow?",
   "userContext": {
-    "name": "Alex",
-    "shiftSystem": "2-shift",
-    "rosterType": "fifo",
+    "name": "Amina",
+    "occupation": "Nurse",
+    "workLocation": "Emergency department",
+    "shiftSystem": "3-shift",
+    "rosterType": "rotating",
     "shiftCycle": {
-      "patternType": "FIFO_8_6",
-      "rosterType": "fifo",
-      "daysOn": 8,
-      "nightsOn": 0,
-      "daysOff": 6,
+      "patternType": "CUSTOM",
+      "rosterType": "rotating",
+      "daysOn": 5,
+      "nightsOn": 2,
+      "daysOff": 3,
       "startDate": "2026-01-01",
       "phaseOffset": 0,
-      "fifoConfig": {
-        "workBlockDays": 8,
-        "restBlockDays": 6,
-        "workBlockPattern": "straight-days"
+      "universalSchedule": {
+        "templateId": "healthcare-continental-2-2-3",
+        "industry": "healthcare",
+        "timezone": "Africa/Accra"
       }
     }
   }
@@ -102,21 +104,48 @@ Create a `.env` file in the project root with the following variables:
 
 ```env
 # Firebase Configuration
-FIREBASE_API_KEY=your_firebase_api_key
-FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
-FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-FIREBASE_APP_ID=your_app_id
-FIREBASE_MEASUREMENT_ID=your_measurement_id
+FIREBASE_API_KEY=your-firebase-api-key
+FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
+FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+FIREBASE_APP_ID=your-firebase-app-id
+FIREBASE_MEASUREMENT_ID=
 
 # App Configuration
 APP_ENV=development  # development | staging | production
+API_BASE_URL=https://api.getryvro.com
 API_TIMEOUT=30000    # API request timeout in milliseconds
 
-# Feature Flags (Optional)
-ENABLE_ANALYTICS=true
-ENABLE_CRASH_REPORTING=true
+# Ryvro Brain and AI schedule parser
+RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain
+RYVRO_BRAIN_TIMEOUT=30000
+SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription
+SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000
+
+# Google Sign-In
+GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
+
+# RevenueCat
+REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+REVENUECAT_TEST_STORE_KEY=test_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY=test_xxxxxxxxxxxxx
+REVENUECAT_ENTITLEMENT_ID=pro
+EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
+
+# Legal and support URLs
+LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy
+LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms
+SUPPORT_URL=https://getryvro.com/support
+ACCOUNT_DELETION_URL=https://getryvro.com/delete-account
 ```
 
 ### Environment-Specific Configuration
@@ -125,30 +154,33 @@ ENABLE_CRASH_REPORTING=true
 
 ```env
 APP_ENV=development
-FIREBASE_PROJECT_ID=ellie-dev
+FIREBASE_PROJECT_ID=ryvro-dev
+RYVRO_BRAIN_URL=https://us-central1-ryvro-dev.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=60000
-ENABLE_ANALYTICS=false
-ENABLE_CRASH_REPORTING=false
 ```
 
 #### Staging (`.env.staging`)
 
 ```env
 APP_ENV=staging
-FIREBASE_PROJECT_ID=ellie-staging
+FIREBASE_PROJECT_ID=ryvro-staging
+RYVRO_BRAIN_URL=https://us-central1-ryvro-staging.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=45000
-ENABLE_ANALYTICS=true
-ENABLE_CRASH_REPORTING=true
 ```
 
 #### Production (`.env.production`)
 
 ```env
 APP_ENV=production
-FIREBASE_PROJECT_ID=ellie-prod
+FIREBASE_PROJECT_ID=ryvro-shift-planner
+RYVRO_BRAIN_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=30000
-ENABLE_ANALYTICS=true
-ENABLE_CRASH_REPORTING=true
+```
+
+Before pushing production secrets to EAS, run:
+
+```bash
+npm run release:env:check
 ```
 
 ### Accessing Environment Variables
@@ -157,8 +189,9 @@ ENABLE_CRASH_REPORTING=true
 import Constants from 'expo-constants';
 
 const config = {
-  firebaseApiKey: Constants.expoConfig?.extra?.firebaseApiKey,
-  apiTimeout: Constants.expoConfig?.extra?.apiTimeout,
+  firebaseApiKey: Constants.expoConfig?.extra?.FIREBASE_API_KEY,
+  ryvroBrainUrl: Constants.expoConfig?.extra?.RYVRO_BRAIN_URL,
+  apiTimeout: Constants.expoConfig?.extra?.API_TIMEOUT,
 };
 ```
 
@@ -170,14 +203,18 @@ const config = {
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Create a new project
-3. Add iOS and Android apps
+3. Add iOS and Android apps for `com.ryvro.shiftplanner`
 4. Download configuration files:
-   - iOS: `GoogleService-Info.plist`
-   - Android: `google-services.json`
+   - iOS: `GoogleService-Info.plist` to `<repo-root>/GoogleService-Info.plist`
+   - Android: `google-services.json` to `<repo-root>/google-services.json`
+
+Keep both service files at the repo root and out of Git; the Expo config uses `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` for local preflight so clean native prebuilds can copy them into generated projects. For EAS cloud builds, upload the same files as file-type environment variables named `GOOGLE_SERVICES_PLIST` and `GOOGLE_SERVICES_JSON`; `app.config.js` prefers those secure temporary paths when they are present.
+
+Use `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` as the console setup source of truth. Do not reuse config files from the old app identity.
 
 #### 2. Enable Firebase Services
 
-- **Authentication**: Email/Password, Google Sign-In
+- **Authentication**: Email/Password, Google Sign-In, Apple Sign-In
 - **Cloud Firestore**: NoSQL database
 - **Cloud Storage**: File storage
 - **Cloud Functions**: Serverless functions
@@ -242,6 +279,45 @@ async function signIn(email: string, password: string) {
     return userCredential.user;
   } catch (error) {
     throw new Error(`Sign in failed: ${error.message}`);
+  }
+}
+```
+
+#### Sign In with Google
+
+Ryvro's native app uses the Google ID token from Expo Auth Session and exchanges it for a Firebase credential through `GoogleAuthProvider.credential`.
+
+```typescript
+import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth } from '@/config/firebase';
+
+async function signInWithGoogle(idToken: string) {
+  try {
+    const credential = GoogleAuthProvider.credential(idToken);
+    const userCredential = await signInWithCredential(auth, credential);
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(`Google sign in failed: ${error.message}`);
+  }
+}
+```
+
+#### Sign In with Apple
+
+Ryvro's iOS app uses Expo Apple Authentication and exchanges the Apple identity token for a Firebase credential through `OAuthProvider('apple.com')`.
+
+```typescript
+import { OAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth } from '@/config/firebase';
+
+async function signInWithApple(identityToken: string, nonce?: string) {
+  try {
+    const provider = new OAuthProvider('apple.com');
+    const credential = provider.credential({ idToken: identityToken, rawNonce: nonce });
+    const userCredential = await signInWithCredential(auth, credential);
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(`Apple sign in failed: ${error.message}`);
   }
 }
 ```
@@ -450,6 +526,8 @@ async function deleteProfileImage(userId: string) {
 interface AuthService {
   signUp(email: string, password: string): Promise<User>;
   signIn(email: string, password: string): Promise<User>;
+  signInWithGoogle(): Promise<User>;
+  signInWithApple(): Promise<User>;
   signOut(): Promise<void>;
   resetPassword(email: string): Promise<void>;
   getCurrentUser(): User | null;

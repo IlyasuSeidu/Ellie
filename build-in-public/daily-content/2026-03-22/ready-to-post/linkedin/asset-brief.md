@@ -16,7 +16,7 @@
 - Chapter: language pass across onboarding moments
 - Hook: Localization bugs are often product bugs in disguise.
 - Proof line: Setup, Aha preview, and paywall now tell the same story with less cognitive load.
-- Builder overlay: Ellie is built from real shift-work constraints, so wording quality is treated as product quality.
+- Builder overlay: Ryvro is built from real shift-work constraints, so wording quality is treated as product quality.
 
 ## Asset Needs
 

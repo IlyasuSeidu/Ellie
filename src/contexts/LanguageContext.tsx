@@ -100,7 +100,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }),
         translate('language.restartRequiredMessage', {
           ns: 'common',
-          defaultValue: 'Please restart Ellie to apply language direction changes.',
+          defaultValue: 'Please restart Ryvro to apply language direction changes.',
         })
       );
     } finally {
@@ -159,7 +159,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             <Text style={styles.loadingSubtitle}>
               {translate('language.applyingLanguageSubtitle', {
                 ns: 'common',
-                defaultValue: 'Please wait while Ellie refreshes.',
+                defaultValue: 'Please wait while Ryvro refreshes.',
               })}
             </Text>
           </View>

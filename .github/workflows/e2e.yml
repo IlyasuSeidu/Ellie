@@ -8,17 +8,22 @@ on:
     branches:
       - 'release/**'
   workflow_dispatch:
+    inputs:
+      run_native:
+        description: Run native simulator and emulator Detox builds
+        required: false
+        default: false
+        type: boolean
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  e2e-ios:
-    name: E2E Tests (iOS)
-    runs-on: macos-latest
+  e2e-config-check:
+    name: E2E Configuration Check
+    runs-on: ubuntu-latest
 
     env:
-      # Firebase configuration (dummy values for CI)
       FIREBASE_API_KEY: ci-test-api-key
       FIREBASE_AUTH_DOMAIN: ci-test.firebaseapp.com
       FIREBASE_PROJECT_ID: ci-test-project
@@ -26,8 +31,8 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
-      ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
-      ELLIE_BRAIN_TIMEOUT: '30000'
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
 
     steps:
       - name: Checkout code
@@ -41,6 +46,47 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
+
+      - name: Validate Detox configuration
+        run: node -e "const config = require('./.detoxrc.js'); if (!config.configurations['ios.release'] || !config.configurations['android.release']) process.exit(1);"
+
+      - name: Run E2E workflow guard tests
+        run: npx jest tests/config/ryvroEnvTemplate.test.ts --runInBand --silent
+
+  e2e-ios:
+    name: E2E Tests (iOS)
+    runs-on: macos-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_native == true }}
+
+    env:
+      # Firebase configuration (dummy values for CI)
+      FIREBASE_API_KEY: ci-test-api-key
+      FIREBASE_AUTH_DOMAIN: ci-test.firebaseapp.com
+      FIREBASE_PROJECT_ID: ci-test-project
+      FIREBASE_STORAGE_BUCKET: ci-test.appspot.com
+      FIREBASE_MESSAGING_SENDER_ID: '123456789'
+      FIREBASE_APP_ID: 1:123456789:web:abcdef
+      GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
+      EXPO_IOS_GOOGLE_SERVICES_FILE: ./config/firebase/GoogleService-Info.local.plist
+      EXPO_ANDROID_GOOGLE_SERVICES_FILE: ./config/firebase/google-services.local.json
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Generate iOS native project
+        run: E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 npx expo prebuild --platform ios --clean --non-interactive
 
       - name: Setup iOS Simulator
         run: |
@@ -74,6 +120,7 @@ jobs:
   e2e-android:
     name: E2E Tests (Android)
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_native == true }}
 
     env:
       # Firebase configuration (dummy values for CI)
@@ -84,8 +131,11 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
-      ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
-      ELLIE_BRAIN_TIMEOUT: '30000'
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
+      EXPO_IOS_GOOGLE_SERVICES_FILE: ./config/firebase/GoogleService-Info.local.plist
+      EXPO_ANDROID_GOOGLE_SERVICES_FILE: ./config/firebase/google-services.local.json
+      ANDROID_AVD_HOME: ${{ github.workspace }}/.android/avd
 
     steps:
       - name: Checkout code
@@ -106,22 +156,41 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Generate Android native project
+        run: |
+          E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 npx expo prebuild --platform android --clean --non-interactive
+          git checkout -- android/app/build.gradle android/app/src/androidTest/java/com/ryvro/shiftplanner/DetoxTest.java android/app/src/main/AndroidManifest.xml android/app/src/main/java/com/ryvro/shiftplanner/E2EConfigModule.kt android/app/src/main/java/com/ryvro/shiftplanner/E2EConfigPackage.kt android/app/src/main/java/com/ryvro/shiftplanner/MainApplication.kt android/app/src/main/res/xml/network_security_config.xml android/build.gradle
+          chmod +x android/gradlew
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+
+      - name: Enable Android emulator acceleration
+        run: |
+          if [ -e /dev/kvm ]; then
+            sudo chown "$USER" /dev/kvm
+            sudo chmod 660 /dev/kvm
+          fi
 
       - name: Install Detox CLI
         run: npm install -g detox-cli
 
       - name: Create Android emulator
         run: |
+          mkdir -p "$ANDROID_AVD_HOME"
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-33;google_apis;x86_64"
-          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n TestEmulator -k "system-images;android-33;google_apis;x86_64" --force
-          $ANDROID_HOME/emulator/emulator -list-avds
+          $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n TestEmulator -k "system-images;android-33;google_apis;x86_64" --device pixel_6 --force
+          $ANDROID_HOME/emulator/emulator -list-avds | grep TestEmulator
 
       - name: Start Android emulator
         run: |
-          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
-          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -no-boot-anim -no-metrics -accel on -gpu swiftshader_indirect > "$RUNNER_TEMP/android-emulator.log" 2>&1 &
+          timeout 600 bash -c 'adb wait-for-device && until adb shell getprop sys.boot_completed | tr -d "\r" | grep -q "1"; do sleep 5; done' || {
+            adb devices -l || true
+            cat "$RUNNER_TEMP/android-emulator.log" || true
+            exit 1
+          }
+          adb shell input keyevent 82 || true
 
       - name: Build Android app for testing
         run: detox build --configuration android.release
@@ -137,3 +206,4 @@ jobs:
           path: |
             e2e/artifacts/
             e2e/*.log
+            ${{ runner.temp }}/android-emulator.log

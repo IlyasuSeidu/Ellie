@@ -1,14 +1,18 @@
-import { classifyMinerPersona } from './personas';
+import { classifyShiftWorkerPersona } from './personas';
 import type { BuyingReadiness, LeadScoreBreakdown, PainSeverity, ResearchLead } from './types';
 
 function roleFitScore(lead: ResearchLead): number {
-  const personaId = lead.personaId ?? classifyMinerPersona(lead).personaId;
+  const personaId = lead.personaId ?? classifyShiftWorkerPersona(lead).personaId;
 
   switch (personaId) {
     case 'underground-production-operator':
     case 'fifo-field-worker':
     case 'maintenance-trades-miner':
     case 'process-plant-control-room-operator':
+    case 'healthcare-rotating-clinician':
+    case 'security-operations-officer':
+    case 'transport-logistics-shift-worker':
+    case 'hospitality-manufacturing-shift-worker':
       return 20;
     case 'crew-lead-supervisor':
       return 14;
@@ -100,7 +104,7 @@ function buyingReadinessScore(value: BuyingReadiness): number {
 
 export function scoreResearchLead(lead: ResearchLead): LeadScoreBreakdown {
   const reasons: string[] = [];
-  const resolvedPersona = lead.personaId ?? classifyMinerPersona(lead).personaId;
+  const resolvedPersona = lead.personaId ?? classifyShiftWorkerPersona(lead).personaId;
   const roleFit = roleFitScore({ ...lead, personaId: resolvedPersona });
   const rosterFit = rosterFitScore(lead);
   const problemFit = problemFitScore(lead);
@@ -115,7 +119,7 @@ export function scoreResearchLead(lead: ResearchLead): LeadScoreBreakdown {
   let disqualified = false;
 
   if (resolvedPersona === 'unknown') {
-    reasons.push('No clear mining persona match found.');
+    reasons.push('No clear shift-worker persona match found.');
   } else {
     reasons.push(`Persona matched: ${resolvedPersona}.`);
   }
@@ -146,7 +150,7 @@ export function scoreResearchLead(lead: ResearchLead): LeadScoreBreakdown {
     !lead.signals.wantsPlannedFeaturesOnly;
 
   if (introEligible) {
-    reasons.push('Lead is eligible for Ellie introduction.');
+    reasons.push('Lead is eligible for Ryvro introduction.');
   }
 
   return {

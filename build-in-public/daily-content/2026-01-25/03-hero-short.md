@@ -21,7 +21,7 @@
 
 If the schedule answer is wrong, the animation means nothing.
 
-That was the first decision building Ellie.
+That was the first decision building Ryvro.
 
 Before any onboarding screen, before the gold theme and the haptic feedback, there had to be a foundation that shift workers could actually trust.
 
@@ -55,7 +55,7 @@ The first onboarding screen looked exactly right.
 
 The more important question was what it was standing on.
 
-Before any animation or gold button, Ellie needed a reliability layer that a miner could trust before dawn. Shift math. Date handling. The schedule answer that has to be correct before the interface earns belief.
+Before any animation or gold button, Ryvro needed a reliability layer that a miner could trust before dawn. Shift math. Date handling. The schedule answer that has to be correct before the interface earns belief.
 
 The visible layer came after. Progress header, premium inputs, live pattern preview. All of it built on top of groundwork that had already been tested.
 

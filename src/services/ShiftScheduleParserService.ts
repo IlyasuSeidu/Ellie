@@ -37,6 +37,8 @@ export interface ShiftScheduleParserResult {
   warnings: string[];
   confidence: number;
   requestId?: string;
+  parserSource: 'remote_ai' | 'local_fallback';
+  fallbackReason?: 'not_configured' | 'not_found' | 'server_error' | 'network_error' | 'timeout';
 }
 
 export type ParserErrorCode =
@@ -245,10 +247,20 @@ const LOCAL_SHIFT_SPECS: LocalShiftSpec[] = [
 
 function findCountForAliases(prompt: string, aliases: string[]): number {
   for (const alias of aliases) {
+    const normalizedAlias = alias.toLowerCase();
     const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\ /g, '[\\s-]+');
-    const before = new RegExp(`(\\d+)\\s*(?:x\\s*)?(?:${escaped})\\b`, 'i').exec(prompt);
+    const suffixGuard =
+      normalizedAlias === 'day' || normalizedAlias === 'days'
+        ? '(?!\\s*(?:off|rest|leave|break)\\b)'
+        : '';
+    const before = new RegExp(`(\\d+)\\s*(?:x\\s*)?(?:${escaped})\\b${suffixGuard}`, 'i').exec(
+      prompt
+    );
     if (before) return Number(before[1]);
-    const after = new RegExp(`\\b(?:${escaped})\\s*(?:for\\s*)?(\\d+)\\b`, 'i').exec(prompt);
+    const after = new RegExp(
+      `\\b(?:${escaped})\\b${suffixGuard}\\s*(?:for\\s*)?(\\d+)\\b`,
+      'i'
+    ).exec(prompt);
     if (after) return Number(after[1]);
   }
   return 0;
@@ -373,7 +385,8 @@ function findTimeRangeForSpec(
 }
 
 function buildLocalParserFallback(
-  request: ShiftScheduleParserRequest
+  request: ShiftScheduleParserRequest,
+  fallbackReason: ShiftScheduleParserResult['fallbackReason'] = 'not_configured'
 ): ShiftScheduleParserResult | null {
   const onOffPattern = findOnOffPattern(request.prompt);
   const matched = LOCAL_SHIFT_SPECS.map((spec) => {
@@ -442,13 +455,15 @@ function buildLocalParserFallback(
       originalPrompt: request.prompt,
       confidence: 0.62,
       assumptions: [
-        'Used the local deterministic parser because the AI parser endpoint was unavailable.',
+        "Used Ryvro's built-in pattern builder because online AI was unavailable.",
         'Used common default times where the prompt did not specify exact start and end times.',
         ...(requestedCurrentIndex !== null
           ? ['Lined up the cycle so the requested current shift lands on the match-from date.']
           : []),
       ],
       unresolvedQuestions: [],
+      parserSource: 'local_fallback',
+      fallbackReason,
     },
   };
 
@@ -461,8 +476,12 @@ function buildLocalParserFallback(
     summary: 'I created a draft from the repeating universal shift pattern.',
     assumptions: sanitized.aiDraftMeta?.assumptions ?? [],
     questions: [],
-    warnings: ['AI parser endpoint was unavailable, so Ellie used the built-in pattern parser.'],
+    warnings: [
+      'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.',
+    ],
     confidence: sanitized.aiDraftMeta?.confidence ?? 0.62,
+    parserSource: 'local_fallback',
+    fallbackReason,
   };
 }
 
@@ -491,7 +510,7 @@ export async function parseShiftScheduleDescription(
   }
 
   if (!isConfiguredUrl(parserUrl)) {
-    const fallback = buildLocalParserFallback({ ...request, prompt });
+    const fallback = buildLocalParserFallback({ ...request, prompt }, 'not_configured');
     if (fallback) return fallback;
 
     throw new ShiftScheduleParserError(
@@ -525,7 +544,11 @@ export async function parseShiftScheduleDescription(
 
     if (!response.ok) {
       if (response.status === 404) {
-        const fallback = buildLocalParserFallback({ ...request, prompt });
+        const fallback = buildLocalParserFallback({ ...request, prompt }, 'not_found');
+        if (fallback) return fallback;
+      }
+      if (response.status >= 500) {
+        const fallback = buildLocalParserFallback({ ...request, prompt }, 'server_error');
         if (fallback) return fallback;
       }
       throw new ShiftScheduleParserError(
@@ -575,6 +598,15 @@ export async function parseShiftScheduleDescription(
           false
         );
       }
+      if (scheduleDraft?.aiDraftMeta) {
+        scheduleDraft = {
+          ...scheduleDraft,
+          aiDraftMeta: {
+            ...scheduleDraft.aiDraftMeta,
+            parserSource: 'remote_ai',
+          },
+        };
+      }
     }
 
     return {
@@ -592,6 +624,7 @@ export async function parseShiftScheduleDescription(
         : [],
       confidence: typeof raw['confidence'] === 'number' ? raw['confidence'] : 0,
       requestId: typeof raw['requestId'] === 'string' ? raw['requestId'] : undefined,
+      parserSource: 'remote_ai',
     };
   } catch (err) {
     clearTimeout(timer);
@@ -600,6 +633,9 @@ export async function parseShiftScheduleDescription(
 
     if (err instanceof Error) {
       if (err.name === 'AbortError') {
+        const fallback = buildLocalParserFallback({ ...request, prompt }, 'timeout');
+        if (fallback) return fallback;
+
         throw new ShiftScheduleParserError(
           'TIMEOUT',
           'The request timed out. Please check your connection and try again.',
@@ -614,6 +650,9 @@ export async function parseShiftScheduleDescription(
         message.includes('failed to fetch') ||
         message.includes('load failed')
       ) {
+        const fallback = buildLocalParserFallback({ ...request, prompt }, 'network_error');
+        if (fallback) return fallback;
+
         throw new ShiftScheduleParserError(
           'NETWORK_ERROR',
           'No network connection. You can still build your schedule manually.',

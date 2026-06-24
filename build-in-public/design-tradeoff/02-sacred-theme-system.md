@@ -91,7 +91,7 @@ With tokens:
 - Every screen updates automatically
 - Nothing breaks
 
-**Real Example from Ellie**:
+**Real Example from Ryvro**:
 
 ```typescript
 export const theme = {
@@ -235,7 +235,7 @@ This means:
 - ❌ Can't change theme at runtime (no dark mode toggle)
 - ❌ Theme changes require rebuild
 
-**For Ellie**: Acceptable tradeoff. Miners don't need dark mode—they work in literal darkness. Consistency matters more.
+**For Ryvro**: Acceptable tradeoff. Miners don't need dark mode—they work in literal darkness. Consistency matters more.
 
 **Future Problem**: If we add "Light Mode" later, we'll need:
 
@@ -244,7 +244,7 @@ This means:
 3. Re-render all components on change
 4. Lose autocomplete (since theme is dynamic)
 
-Or: Build two separate apps (Ellie/Ellie Lite).
+Or: Build two separate apps (Ryvro/Ryvro Lite).
 
 ---
 
@@ -254,7 +254,7 @@ Or: Build two separate apps (Ellie/Ellie Lite).
 "I showed a miner my app design. He said: 'This looks like a game.' Here's what I learned."
 
 **[WHAT I BUILT - 0:08-0:30]**
-"I built a complete design system for Ellie—a shift schedule app for mining workers. My first version had bright blues, rounded corners, playful animations. All the 'best practices.'
+"I built a complete design system for Ryvro—a shift schedule app for mining workers. My first version had bright blues, rounded corners, playful animations. All the 'best practices.'
 
 But when I tested it, miners said it didn't feel serious. And they're right. Checking if you're working Christmas isn't cheerful. It's consequential."
 
@@ -271,7 +271,7 @@ Those bright happy colors were saying: 'This is fun! This is easy!' But shift wo
 So I let the work itself guide the aesthetics. Dark, because they work in darkness. Gold, because what they extract is valuable. Stone, because it's solid and reliable."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. Follow to see how design decisions reflect the people you're building for. Next up: animations that feel earned, not frivolous."
+"Building Ryvro in public. Follow to see how design decisions reflect the people you're building for. Next up: animations that feel earned, not frivolous."
 
 ---
 

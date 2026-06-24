@@ -77,10 +77,10 @@ const PROVIDER_FILE_TARGETS = [
 
 function buildSystemPrompt() {
   return [
-    'You are the Ellie Build-in-Public Content Writer.',
+    'You are the Ryvro Build-in-Public Content Writer.',
     'Your job is to rewrite one markdown content file into stronger public-facing copy while keeping every claim defensible.',
-    'Ellie is a shift scheduling product for miners, built by a miner from Ghana.',
-    'Keep Ellie product-first.',
+    'Ryvro is a shift scheduling product for FIFO crews and shift workers, built by a miner from Ghana and launched from real mining roster pain.',
+    'Keep Ryvro product-first.',
     'Use the miner-builder and vibe-coding overlays carefully, mainly on builder-facing platforms.',
     'Do not invent users, traction, revenue, launch results, or external outcomes.',
     'Do not mention GitHub, commit, push, repo, diff, workflow, or pipeline in publishable drafts.',
@@ -188,7 +188,7 @@ function buildPrompt({ target, analysis, brandContext, platformPlaybook, localDr
   };
 
   return [
-    'Rewrite the draft below into stronger publishable markdown for Ellie.',
+    'Rewrite the draft below into stronger publishable markdown for Ryvro.',
     '',
     'Brand context:',
     buildBrandContextBlock(brandContext),

@@ -71,7 +71,7 @@ describe('WakeWordService', () => {
     const initialized = await wakeWordService.initialize(
       {
         ...baseConfig,
-        keywordPaths: ['ellie_ios.ppn'],
+        keywordPaths: ['ryvro_ios.ppn'],
       },
       { onDetection: jest.fn(), onError }
     );
@@ -90,7 +90,7 @@ describe('WakeWordService', () => {
     const initialized = await wakeWordService.initialize(
       {
         ...baseConfig,
-        keywordPaths: ['ellie_android.ppn'],
+        keywordPaths: ['ryvro_android.ppn'],
       },
       { onDetection: jest.fn(), onError }
     );
@@ -114,7 +114,7 @@ describe('WakeWordService', () => {
     const initialized = await wakeWordService.initialize(
       {
         ...baseConfig,
-        keywordPaths: ['ellie_android.ppn'],
+        keywordPaths: ['ryvro_android.ppn'],
       },
       { onDetection: jest.fn(), onError }
     );
@@ -140,7 +140,7 @@ describe('WakeWordService', () => {
     const initialized = await wakeWordService.initialize(
       {
         ...baseConfig,
-        keywordPaths: ['ellie_android.ppn'],
+        keywordPaths: ['ryvro_android.ppn'],
       },
       { onDetection: jest.fn(), onError }
     );
@@ -165,7 +165,7 @@ describe('WakeWordService', () => {
     const initialized = await wakeWordService.initialize(
       {
         ...baseConfig,
-        keywordPaths: ['ellie_ios.ppn'],
+        keywordPaths: ['ryvro_ios.ppn'],
       },
       { onDetection: jest.fn(), onError }
     );
@@ -184,7 +184,7 @@ describe('WakeWordService', () => {
     await wakeWordService.initialize(
       {
         ...baseConfig,
-        keywordPaths: ['ellie_ios.ppn'],
+        keywordPaths: ['ryvro_ios.ppn'],
       },
       { onDetection: jest.fn(), onError: jest.fn() }
     );
@@ -207,8 +207,8 @@ describe('WakeWordService', () => {
       {
         ...baseConfig,
         provider: 'openwakeword',
-        openWakeWordModelPath: 'openwakeword/hey_ellie.onnx',
-        openWakeWordKeywordLabel: 'Hey Ellie',
+        openWakeWordModelPath: 'openwakeword/ryvro.onnx',
+        openWakeWordKeywordLabel: 'Hey Ryvro',
       },
       { onDetection: jest.fn(), onError }
     );
@@ -216,8 +216,8 @@ describe('WakeWordService', () => {
     expect(initialized).toBe(true);
     expect(initializeOpenWakeWord).toHaveBeenCalledWith(
       expect.objectContaining({
-        modelPath: 'openwakeword/hey_ellie.onnx',
-        keywordLabel: 'Hey Ellie',
+        modelPath: 'openwakeword/ryvro.onnx',
+        keywordLabel: 'Hey Ryvro',
       })
     );
     expect(addOpenWakeWordDetectionListener).toHaveBeenCalled();

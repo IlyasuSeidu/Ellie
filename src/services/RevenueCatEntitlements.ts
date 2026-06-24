@@ -39,19 +39,22 @@ export const getPrimaryRevenueCatEntitlementId = (): string => {
   );
 };
 
-const ENTITLEMENT_ALIASES = [
-  'pro',
+const CANONICAL_REVENUECAT_ENTITLEMENT_ID = 'pro';
+const RYVRO_PRO_ENTITLEMENT_ALIASES = [
+  CANONICAL_REVENUECAT_ENTITLEMENT_ID,
+  'ryvro_pro',
+  'ryvro-premium',
+  'ryvro_premium',
   'premium',
-  'ellie_pro',
-  'ellie-premium',
-  'ellie_miner_shift_assistant_pro',
-  'miner_shift_assistant_pro',
-  'Ellie: Miner Shift Assistant Pro',
+  'Ryvro Pro',
+  'Ryvro Premium',
+  'Ryvro Shift Planner Pro',
+  'ryvro_shift_planner_pro',
 ];
 
 export const getRevenueCatEntitlementIds = (): string[] => {
   const primary = getPrimaryRevenueCatEntitlementId();
-  return Array.from(new Set([primary, ...ENTITLEMENT_ALIASES]));
+  return Array.from(new Set([primary, ...RYVRO_PRO_ENTITLEMENT_ALIASES]));
 };
 
 export const getActiveProEntitlement = (info: CustomerInfo): PurchasesEntitlementInfo | null => {

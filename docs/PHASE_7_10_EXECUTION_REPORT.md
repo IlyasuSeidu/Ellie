@@ -2,6 +2,15 @@
 
 Date: 2026-02-28
 
+Status: Historical pre-Ryvro rollout report. This file is preserved as engineering history for the earlier dual-roster/FIFO work, not as the current launch checklist.
+
+For current Ryvro launch readiness, use:
+
+- `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`
+- `docs/RYVRO_RELEASE_READINESS_REPORT.md`
+- `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`
+- `docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md`
+
 This report maps execution against:
 
 - Part 7: Documentation & Deployment
@@ -72,18 +81,20 @@ Status by criterion:
 
 ## Phase 10 (Timeline / Rollout)
 
-Current readiness:
+Historical readiness at the time of this report:
 
 - Engineering implementation for phases 1-7: complete.
 - Validation gate: green (`type-check`, full tests, backend build).
-- Remaining rollout items:
+- Remaining rollout items from this older report:
   - Physical device QA sign-off.
   - Optional visual regression pipeline integration.
   - Coverage uplift if 95% remains a hard release gate.
 
-Recommended immediate rollout order:
+Historical rollout order:
 
 1. Deploy backend function update first.
 2. Ship mobile client update.
 3. Execute `docs/FIFO_QA_CHECKLIST.md` on iOS + Android devices.
 4. Publish release notes and proceed to TestFlight/internal track.
+
+Do not use this historical rollout order as approval to ship Ryvro. The current Ryvro launch remains gated by the owner/account/device evidence tracked in the current Ryvro handoff files above.

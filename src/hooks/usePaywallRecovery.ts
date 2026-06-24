@@ -15,11 +15,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { appStateStorageService } from '@/services/AppStateStorageService';
 import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
 import { useAuth } from '@/contexts/AuthContext';
-
-// Show nudge no sooner than 5 minutes after decline (avoids instant re-prompt)
-const MIN_DELAY_MS = 5 * 60 * 1000;
-// Stop showing nudge after 7 days (user has made their choice for now)
-const RECOVERY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+import { CACHE_TTL_MS } from '@/config/cacheConfig';
 
 export interface PaywallRecoveryState {
   /** True when the nudge should be shown to this user. */
@@ -64,9 +60,12 @@ export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
       if (!Number.isFinite(declinedAt) || declinedAt <= 0) return;
 
       const elapsed = Date.now() - declinedAt;
-      if (elapsed >= MIN_DELAY_MS && elapsed <= RECOVERY_WINDOW_MS) {
+      if (
+        elapsed >= CACHE_TTL_MS.paywallRecoveryMinimumDelay &&
+        elapsed <= CACHE_TTL_MS.paywallRecoveryWindow
+      ) {
         setShouldNudge(true);
-      } else if (elapsed > RECOVERY_WINDOW_MS) {
+      } else if (elapsed > CACHE_TTL_MS.paywallRecoveryWindow) {
         // Expired — clean up so we don't check again
         void appStateStorageService.clearPaywallDeclinedAt(recoveryScope);
       }

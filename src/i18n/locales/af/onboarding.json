@@ -7,7 +7,8 @@
       "freeTrial": "Gratis proef",
       "noCard": "Geen kredietkaart",
       "cancelAnytime": "Kanselleer enige tyd"
-    }
+    },
+    "getStartedHint": "Begin om jou rooster op te stel"
   },
   "common": {
     "swipeHint": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting",
@@ -30,16 +31,29 @@
     },
     "cancel": "Kanselleer"
   },
+  "e2eSwipeControls": {
+    "status": "Simulasie",
+    "statusWithAction": "Simulasie • {{action}}",
+    "select": "Kies",
+    "nextA11y": "Skuif na volgende opsie",
+    "selectA11y": "Kies huidige opsie",
+    "infoA11y": "Maak opsie-inligting oop",
+    "actions": {
+      "select": "kies",
+      "next": "volgende",
+      "info": "inligting"
+    }
+  },
   "intro": {
-    "welcome": "Welkom aan Ellie! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
+    "welcome": "Welkom aan Ryvro! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
     "askName": "Wat is jou naam?",
-    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou rol op die terrein?",
+    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Watter skofwerkrol doen jy?",
     "askCompany": "Het dit! Vir watter maatskappy werk jy? (opsioneel)",
     "askCountry": "Amper klaar! In watter land is jy gebaseer?",
     "allSet": "Perfek! Jy is gereed, {{name}}. Kom ons kry jou skofkalender opgestel.",
     "placeholders": {
       "name": "Voer jou naam in",
-      "occupation": "bv. Kliprydertjie-operateur, Ketelmaker, Elektrisien",
+      "occupation": "bv. Verpleegkundige, sekuriteitsbeampte, aanlegoperateur",
       "company": "Voer maatskappy se naam in",
       "country": "Voer jou land in"
     },
@@ -58,16 +72,18 @@
       "countryTooShort": "Land moet ten minste 2 karakters wees",
       "countryTooLong": "Land mag nie 100 karakters oorskry nie"
     },
-    "skipCompany": "Slaan oor"
+    "skipCompany": "Slaan oor",
+    "continue": "Gaan voort",
+    "continueHint": "Gaan na die volgende aanboordstap"
   },
   "shiftSystem": {
-    "title": "Hoeveel skofte loop u webwerf?",
-    "title_named": "Hallo {{name}}, hoeveel skofte loop jou terrein?",
+    "title": "Hoeveel skofte loop jou werkplek?",
+    "title_named": "Hallo {{name}}, hoeveel skofte loop jou werkplek?",
     "reviewAgain": "Hersien asseblief stelsels weer om jou keuse te maak",
     "reviewButton": "Hersien stelsels",
     "continueButton": "Gaan voort",
     "closeButton": "Maak toe",
-    "instruction": "Kies hoe jou werf werk—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
+    "instruction": "Kies hoe jou span werk—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
     "endState": {
       "selectedTitle": "Het dit! Ons sal jou kalender hiervoor opstel.",
       "reviewedTitle": "Jy het al {{count}} skofstelsels bekyk!",
@@ -77,10 +93,10 @@
       "2-shift": {
         "title": "2 skofte (12 uur)",
         "schedule": "Dag & nag",
-        "description": "Jou myn loop twee 12-uur skofte—een gedurende die dag, een in die nag",
+        "description": "Jou span werk twee 12-uur skofte—een gedurende die dag, een in die nag",
         "details": {
           "workRestRatio": "12 uur aan, 12 uur af",
-          "useCases": ["Mynterreine", "Olie en gas", "24/7 operasies", "Werk op afstand"],
+          "useCases": ["Afgeleë bedrywighede", "Olie en gas", "24/7 operasies", "Werk op afstand"],
           "pros": [
             "Verlengde rusperiodes",
             "Voorspelbare skedule",
@@ -96,9 +112,9 @@
         "details": {
           "workRestRatio": "8 uur aan, 16 uur af",
           "useCases": [
-            "Ondergrondse myne",
+            "Produksiespanne",
             "Verwerkingsaanlegte",
-            "Myninfrastruktuur",
+            "Operasionele infrastruktuur",
             "24/7 operasies"
           ],
           "pros": ["Korter skofte", "Meer tyd vir familie", "Makliker om wakker te bly"],
@@ -122,13 +138,13 @@
       "reviewedSubtitle": "Het jy nie joune gesien nie? Jy kan 'n pasgemaakte een bou, of weer kyk",
       "reviewedTitle": "Dit is al {{count}} rotasies wat ons het!"
     },
-    "instruction": "Kies die rotasie wat jou mynterrein gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
+    "instruction": "Kies die rotasie wat jou werkplek gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
     "title": "Wat is jou roosterrotasie?",
     "cards": {
       "4-4-4": {
         "name": "4-4-4 Rotasie",
         "schedule": "4 dae • 4 nagte • 4 af",
-        "description": "Werk 4 dagskofte, dan 4 nagskofte, en kry dan 4 dae af-gewoonlik vir invlieg-uit-weg-plekke"
+        "description": "Werk 4 dagskofte, dan 4 nagskofte, dan 4 dae af — algemeen vir 24/7- en FIFO-spanne"
       },
       "7-7-7": {
         "name": "7-7-7 Rotasie",
@@ -168,42 +184,42 @@
       "custom": {
         "name": "Pasgemaakte rotasie",
         "schedule": "Jy kies",
-        "description": "Gebruik jou werf iets anders? Bou jou eie rotasie hier"
+        "description": "Gebruik jou span iets anders? Bou jou eie rotasie hier"
       },
       "fifo-8-6": {
         "name": "EIEU 8/6",
         "schedule": "8 dae werk • 6 dae tuis",
-        "description": "Werk 8 opeenvolgende dae ter plaatse, dan 6 dae by die huis - gewild in WA mynbou"
+        "description": "Werk 8 agtereenvolgende werkblokdae, dan 6 rusdae — algemeen vir afgeleë en FIFO-spanne"
       },
       "fifo-7-7": {
         "name": "EIEU 7/7 (Ewe-tyd)",
         "schedule": "1 week werk • 1 week tuis",
-        "description": "Een week op die perseel, een week by die huis - perfekte 50/50 balans"
+        "description": "Een week werkblok, een week rus — goeie 50/50-balans"
       },
       "fifo-14-14": {
         "name": "EIEU 14/14 (Ewe-tyd)",
         "schedule": "2 weke werk • 2 weke tuis",
-        "description": "Twee weke op die terrein, twee weke by die huis-perfekte werk-lewe balans"
+        "description": "Twee weke werkblok, twee weke rus — gebalanseerde werk/rus-ritme"
       },
       "fifo-14-7": {
         "name": "EIEU 14/7 (2:1)",
         "schedule": "2 weke werk • 1 week tuis",
-        "description": "Twee weke op die perseel, een week by die huis-hoë verdienstepotensiaal"
+        "description": "Twee weke werkblok, een week rus — vir langer verdienblokke"
       },
       "fifo-21-7": {
         "name": "EIEU 21/7 (3:1)",
         "schedule": "3 weke werk • 1 week tuis",
-        "description": "Drie weke op die perseel, een week by die huis - vir baie afgeleë bedrywighede"
+        "description": "Drie weke werkblok, een week rus — vir baie afgeleë bedrywighede"
       },
       "fifo-28-14": {
         "name": "EIEU 28/14 (2:1)",
         "schedule": "4 weke werk • 2 weke tuis",
-        "description": "Vier weke op die perseel, twee weke by die huis - vir langafstand-afgeleë terreine"
+        "description": "Vier weke werkblok, twee weke rus — vir langafstand-bedrywighede"
       },
       "fifo-custom": {
         "name": "Pasgemaakte EIEU",
         "schedule": "Bou jou eie",
-        "description": "Gebruik jou EIEU-werf 'n unieke rooster? Stel jou eie werk-/rusblokke op"
+        "description": "Gebruik jou FIFO-span ’n unieke rooster? Stel jou eie werk/rusblokke op"
       }
     },
     "title_named": "Wat is jou patroon, {{name}}?",
@@ -211,7 +227,7 @@
   },
   "rosterType": {
     "title": "Hoe werk jou rooster?",
-    "instruction": "Kies die roosterstyl wat jou mynterrein gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
+    "instruction": "Kies die roosterstyl wat jou werkplek gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
     "preparingNextStep": "Berei tans volgende stap voor...",
     "learnMore": {
       "examples": "Voorbeelde",
@@ -249,20 +265,20 @@
       "fifo": {
         "title": "EIEU / Swing Roster",
         "subtitle": "Werkblokke • Tuisblokke",
-        "description": "Jy werk opeenvolgende dae ter plaatse en kry dan lang tyd by die huis",
+        "description": "Jy werk opeenvolgende werkblokdae en kry dan verlengde rustyd by die huis",
         "details": {
-          "howItWorks": "Werkers vlieg na afgeleë terreine, werk opeenvolgende dae (werkblok), vlieg dan huis toe vir lang rus (rusblok)",
+          "howItWorks": "Werkers reis na afgeleë bedrywighede, werk opeenvolgende dae (werkblok), en reis dan huis toe vir verlengde rus (rusblok)",
           "examples": [
-            "8/6 (gewone WA)",
+            "8/6 (algemeen)",
             "14/14 (gelyktyd)",
-            "21/7 (afgeleë werwe)",
+            "21/7 (afgeleë bedrywighede)",
             "28/14 (lang siklus)"
           ],
-          "regions": ["Australië", "Kanada", "Afgeleë globale mynbou"],
+          "regions": ["Australië", "Kanada", "Afgeleë globale bedrywighede"],
           "pros": [
             "Verlengde tyd by die huis",
             "Hoër betaalkoerse",
-            "Goed vir afgeleë werwe",
+            "Goed vir afgeleë bedrywighede",
             "Voorspelbare blokke"
           ],
           "cons": [
@@ -276,11 +292,11 @@
     },
     "title_named": "Hoe werk jou rooster, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Dit wys Ellie presies waar jy in jou siklus is - geen raaiwerk meer nie",
-      "wrong_alarm": "Kry dit reg en Ellie stel elke alarm vir die korrekte skof",
-      "days_off": "Dit wys Ellie wanneer jou afdae val sodat jy vooruit kan beplan",
-      "family": "Ellie sal jou waarsku oor gebeure wat jy andersins sou mis sodra jou rooster bekend is",
-      "mental_math": "Hierna doen Ellie al die telwerk vir jou"
+      "cycle_lost": "Dit wys Ryvro presies waar jy in jou siklus is - geen raaiwerk meer nie",
+      "wrong_alarm": "Kry dit reg en Ryvro stel elke alarm vir die korrekte skof",
+      "days_off": "Dit wys Ryvro wanneer jou afdae val sodat jy vooruit kan beplan",
+      "family": "Ryvro sal jou waarsku oor gebeure wat jy andersins sou mis sodra jou rooster bekend is",
+      "mental_math": "Hierna doen Ryvro al die telwerk vir jou"
     },
     "countryHint": "Algemeen in {{country}}"
   },
@@ -288,28 +304,28 @@
     "saveFailed": "Kon nie jou data stoor nie. Probeer asseblief weer.",
     "features": {
       "reminders": "Slim skof-herinneringe",
-      "remindersDesc": "Moet nooit 'n oproepe mis nie — slim herinneringe wat aanpas by jou roosterskof",
+      "remindersDesc": "Moet nooit 'n oorhandiging, oproep of vroeë begin mis nie — slim herinneringe wat by jou rotasie aanpas",
       "sleep": "Slaap dop en insigte",
       "sleepDesc": "Optimaliseer jou rus tussen skofte met gepersonaliseerde slaapanalise",
       "fatigue": "Moegheidsmonitering",
-      "fatigueDesc": "Monitor moegheidsrisiko op lang skofte — krities vir ondergrondse veiligheid",
+      "fatigueDesc": "Monitor moegheidsrisiko op lang skofte — belangrik vir veeleisende werk",
       "team": "Span koördinering",
       "teamDesc": "Sien jou bemanningskedule en koördineer oorhandigings naatloos",
       "balance": "Werk-lewe balans",
-      "balanceDesc": "Bly gesond tussen FIFO-swaai met roetine- en welstandopsporing",
+      "balanceDesc": "Bly gesond tussen skofblokke met roetine- en welstandopsporing",
       "earnings": "Verdienste sakrekenaar",
-      "earningsDesc": "Bereken terreintoelae, FIFO-ladings en oortyd outomaties",
+      "earningsDesc": "Skat skofure, toelae en oortyd oor roterende skedules",
       "meals": "Ete & hidrasie",
-      "mealsDesc": "Bly gehidreer en brandstof deur 12-uur ondergrondse skofte"
+      "mealsDesc": "Bly gehidreer en vol energie deur lang dag-, nag-, reis- en oproepskofte"
     },
     "featureHint": "Tik 'n kenmerkskyfie om meer besonderhede te sien.",
-    "featuresTitle": "Wat jy met Ellie kan doen",
+    "featuresTitle": "Wat jy met Ryvro kan doen",
     "getStartedA11yHint": "Tik om die toepassing te begin gebruik",
-    "getStartedA11yLabel": "Begin met Ellie",
+    "getStartedA11yLabel": "Begin met Ryvro",
     "loading": "Bou jou roosterskalender...",
     "retryA11yHint": "Tik om weer te probeer om jou data te stoor",
     "retryA11yLabel": "Probeer weer om jou data te stoor",
-    "subtitle": "Welkom aan Ellie",
+    "subtitle": "Welkom aan Ryvro",
     "summary": {
       "company": "Maatskappy",
       "cycle": "Siklus",
@@ -326,12 +342,12 @@
       "startDate": "Begindatum",
       "title": "Jou profiel",
       "workPattern": "Werkpatroon",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Heeldag",
+      "notTimed": "Geen tyd",
+      "rosterTypeUniversal": "Universele skedule",
+      "universalShiftSystem": "Universele pasgemaakte skofte",
+      "scheduleEngine": "Skedule-enjin",
+      "scheduleType": "Skeduletipe"
     },
     "title": "Jy is reg.",
     "tryAgain": "Probeer weer",
@@ -354,7 +370,7 @@
         "shiftPattern": "Skofpatroon",
         "fifoConfiguration": "FIFO-opstelling",
         "customPatternConfiguration": "Pasgemaakte patroonopstelling",
-        "phaseOffset": "Faseverskuiwing",
+        "phaseOffset": "Huidige posisie",
         "startDate": "Begindatum",
         "shiftTimes": "Skofure"
       }
@@ -375,8 +391,8 @@
       "decline": "Nie nou nie"
     },
     "title_named": "{{name}}, jy is reg.",
-    "setupReady": "Jou {{setup}}-rooster is gereed.",
-    "reminderPromise": "Ellie sal jou voor elke skof herinner."
+    "setupReady": "Jou {{setup}}-skedule is gereed.",
+    "reminderPromise": "Ryvro sal jou voor elke skof herinner."
   },
   "phaseSelector": {
     "hints": {
@@ -448,7 +464,7 @@
       "swingConfig": "Stel jou swaaiverdeling op",
       "block": "Waar is jy in jou EIEU-siklus?",
       "dayWithinBlock": "Op watter dag van {{blockTitle}} is jy?",
-      "block_named": "Is jy nou op die terrein of by die huis, {{name}}?"
+      "block_named": "Is jy nou in jou werkblok of rusblok, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swiep regs om jou werkblokpatroon te kies, links vir volgende opsie, of op vir inligting",
@@ -469,7 +485,7 @@
       "straightNights": {
         "title": "Reguit nagte",
         "description": "Jou werkblok loop slegs nagskof.",
-        "quickInfo": "Gebruik dit wanneer terreinspanne vir die volle werkblok op nagskof bly."
+        "quickInfo": "Gebruik dit wanneer spanne op nagskofte bly vir die volle werkblok."
       },
       "swing": {
         "title": "Swaai",
@@ -479,16 +495,16 @@
     },
     "blocks": {
       "work": {
-        "title": "Op die terrein (werk)",
-        "descriptionDay": "Jy is tans by die mynperseel op jou dagskofwerkblok",
-        "descriptionNight": "Jy is tans by die mynperseel op jou nagskofwerkblok",
-        "descriptionNeutral": "Jy is tans by die mynperseel op jou werkblok",
+        "title": "Werkblok",
+        "descriptionDay": "Jy is tans by jou werkplek op jou dagskofwerkblok",
+        "descriptionNight": "Jy is tans by jou werkplek op jou nagskofwerkblok",
+        "descriptionNeutral": "Jy is tans by jou werkplek op jou werkblok",
         "quickInfoDay": "Dit beteken jou siklus begin tel vanaf jou dagskof-werkblok.",
         "quickInfoNight": "Dit beteken jou siklus begin tel vanaf jou nagskof-werkblok.",
         "quickInfoNeutral": "Dit beteken jou siklus begin tel vanaf jou huidige werkblok."
       },
       "rest": {
-        "title": "By die huis (Rus)",
+        "title": "Rusblok",
         "description": "Jy is tans tuis op jou rusblok",
         "quickInfo": "Dit verreken jou siklus eers deur jou werkbloklengte."
       }
@@ -510,9 +526,9 @@
       },
       "defaultDayTitle": "Dag {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Eerste dag terug op die terrein",
-        "firstNightAtSite": "Eerste nagskof terug op werf",
-        "firstShiftAtSite": "Eerste skof terug by werf",
+        "firstDayAtSite": "Eerste dag van jou werkblok",
+        "firstNightAtSite": "Eerste nagskof van jou werkblok",
+        "firstShiftAtSite": "Eerste skof van jou werkblok",
         "lastDayBeforeHome": "Laaste dag voor huistoe vlieg",
         "lastNightBeforeHome": "Gisteraandskof voor ek huis toe vlieg",
         "lastShiftBeforeHome": "Laaste skof voor huis toe vlieg",
@@ -522,12 +538,12 @@
       },
       "rest": {
         "firstDayAtHome": "Eerste dag terug by die huis",
-        "lastDayBeforeSite": "Laaste dag voor terugkeer na werf",
+        "lastDayBeforeSite": "Laaste dag voor die volgende werkblok",
         "dayOfRestBlock": "Dag {{dayNumber}} van jou rusblok"
       },
       "swing": {
         "dayShiftTitle": "Dagskofdag {{dayNumber}}",
-        "firstDayShiftAtSite": "Eerste dagskof terug op terrein",
+        "firstDayShiftAtSite": "Eerste dagskof van jou werkblok",
         "finalDayShiftBeforeNights": "Laaste dagskof voor oorskakeling na nagte",
         "dayShiftDayDescription": "Dagskof dag {{dayNumber}} van jou werkblok",
         "nightShiftTitle": "Nagskofdag {{dayNumber}}",
@@ -543,7 +559,7 @@
           "afternoon": "Middag",
           "off": "Af"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} dag {{dayNumber}}",
         "description": "{{shiftType}} skof {{dayNumber}} van jou pasgemaakte volgorde"
       }
     },
@@ -679,7 +695,7 @@
     },
     "guidance": {
       "aboutTitle": "Oor skoftye",
-      "aboutBody": "Jou {{patternName}}-rotasie bly dieselfde, maar ons het jou skofbegintye nodig sodat Ellie ure kan naspoor en jou voor elke skof waarsku.",
+      "aboutBody": "Jou {{patternName}}-rotasie bly dieselfde, maar ons het jou skofbegintye nodig sodat Ryvro ure kan naspoor en jou voor elke skof waarsku.",
       "hint": "Gebruik nou die naaste begintyd. Jy kan dit later in instellings verfyn.",
       "definitions": {
         "twoShiftTitle": "Dag vs Nag:",
@@ -918,10 +934,10 @@
         "swingWorkBlock": "Swaaiwerkblok",
         "customWorkBlock": "Pasgemaakte werkblok"
       },
-      "ratioLabel": "Site to home ritme",
+      "ratioLabel": "Werk-tot-rus ritme",
       "restLabel": "Rus: {{restBlockDays}} dae",
-      "siteDays": "werf dae",
-      "subtitle": "{{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis",
+      "siteDays": "werkblokdae",
+      "subtitle": "{{workBlockDays}} werkblokdae, dan {{restBlockDays}} rusdae",
       "swingSplit": "Swaaiverdeling: {{daysOnDayShift}} dagskof dae + {{daysOnNightShift}} nagskof dae",
       "title": "Jou EIEU-rotasievoorskou",
       "workLabel": "Werk: {{workBlockDays}} dae",
@@ -946,38 +962,38 @@
     "saveHintValid": "{{workBlockDays}} dae werk, {{restBlockDays}} dae rus",
     "sliders": {
       "daysAtHome": "Dae by die huis (rusblok)",
-      "daysAtSite": "Dae op die terrein (werkblok)",
+      "daysAtSite": "Werkblokdae",
       "daysOnDayShift": "Dae op dagskof",
       "daysOnNightShift": "Dae op Nagskof"
     },
     "slidersTitle": "Stel jou EIEU-patroon op",
-    "subtitle": "Stel jou ter plaatse blok, huis blok, en werk-blok skof styl vir 'n skedule wat pas by jou webwerf siklus.",
+    "subtitle": "Stap 1: Stel werkblokdae en rusdae. Stap 2: Kies hoe skofte gedurende jou werkblok loop.",
     "subtitleSecondary": "Werkblok, rusblok en patroonverdeling",
-    "success": "Soliede EIEU-opstelling. {{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis.",
+    "success": "Soliede FIFO-opstelling. {{workBlockDays}} werkblokdae, dan {{restBlockDays}} rusdae.",
     "swingSubtitle": "Verdeel jou werkblok tussen dag- en nagskofte.",
     "swingTitle": "Swaai-konfigurasie",
     "swingTotal": "Gedeelde totaal: {{swingTotal}}/{{workBlockDays}} dae",
-    "tip": "Wenk: Pas jou huisblok by herstel- en reiseise. EIEU-patrone werk die beste wanneer die rusblok lank genoeg is om terug te stel voor jou volgende werfloop.",
+    "tip": "Wenk: Pas jou huisblok by herstel- en reiseise. EIEU-patrone werk die beste wanneer die rusblok lank genoeg is om terug te stel voor jou volgende werkblok.",
     "title": "Bou jou EIEU-rotasie",
     "validation": {
       "blocksMinimum": "Werk- en rusblokke moet elk minstens 1 dag wees.",
       "swingMismatch": "Swaaiverdeling moet gelyk wees aan {{workBlockDays}} dae voor stoor."
     },
     "warning": "Hierdie rooster is swaar ({{workPercentage}}% werk). Oorweeg om met meer tuisdae te balanseer as moegheid 'n probleem word.",
-    "workPatternSubtitle": "Hoe word jou skofte georganiseer terwyl jy op die terrein is?",
+    "workPatternSubtitle": "Kies hoe skofte gedurende jou werkblok loop.",
     "workPatternTitle": "Werkpatroon tydens werkblok",
     "workPatterns": {
       "straight-days": {
         "title": "Reguit Dae",
-        "description": "Werk dagskofte slegs vir die hele werkblok (bv. 07:00-19:00)"
+        "description": "Alle werkblokdae is dagskof."
       },
       "straight-nights": {
         "title": "Reguit nagte",
-        "description": "Werk slegs nagskof vir die hele werkblok (bv. 19:00-07:00)"
+        "description": "Alle werkblokdae is nagskof."
       },
       "swing": {
         "title": "Swaairooster",
-        "description": "Wissel af tussen dagskof en nagskofte tydens werkblok"
+        "description": "Die werkblok bevat dag- en nagskofte."
       },
       "custom": {
         "title": "Pasgemaakte volgorde",
@@ -1020,7 +1036,7 @@
     "a11y": "Bot tik"
   },
   "chatAvatar": {
-    "a11y": "Myn-assistent avatar"
+    "a11y": "Ryvro-assistent avatar"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Vorige maand",
@@ -1045,7 +1061,7 @@
   "chatMessage": {
     "skipped": "Oorgeslaan",
     "a11y": {
-      "botMessage": "Ellie-boodskap: {{content}}",
+      "botMessage": "Ryvro-boodskap: {{content}}",
       "userMessage": "Jou boodskap: {{content}}",
       "longPressToEdit": "Hou lank in om te wysig"
     }
@@ -1082,7 +1098,6 @@
   "ahaMoment": {
     "headline": "Jou volgende 3 maande, uitgekaart.",
     "subheadline": "Hier is 'n voorskou van jou volgende 3 maande. Geen tweede raaiskote meer in jou kop nie.",
-    "heyEllieTitle": "Vra vir Ellie oor jou rooster",
     "ctaPrimary": "Begin gratis proef",
     "ctaSecondary": "of slaan oor — net huidige week, geen volle jaar nie",
     "stats": {
@@ -1109,7 +1124,7 @@
       "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?",
       "startBack": "Wanneer begin ek weer?"
     },
-    "buttonLabel": "Hallo Ellie",
+    "buttonLabel": "Hallo Ryvro",
     "headline_named": "{{name}} se skofte, uitgekaart.",
     "ctaSecondaryA11y": "Slaan proef oor — beperk tot huidige week, geen volledige jaar-aansig nie",
     "painCallback": {
@@ -1120,11 +1135,12 @@
       "mental_math": "Geen tel op jou vingers meer nie."
     },
     "previewLabel": "VOORSKOU VAN JOU VOLGENDE 3 MAANDE",
-    "checkingAccess": "Kontroleer toegang…"
+    "checkingAccess": "Kontroleer toegang…",
+    "ryvroTitle": "Vra vir Ryvro oor jou rooster"
   },
   "painHook": {
     "title": "Wat is nou die moeilikste deel van jou rooster?",
-    "subtitle": "Ons sal Ellie aanpas rondom wat vir jou die meeste saak maak.",
+    "subtitle": "Ons sal Ryvro aanpas rondom wat vir jou die meeste saak maak.",
     "options": {
       "cycle_lost": "Ek verloor tred met waar ek in my siklus is",
       "wrong_alarm": "Ek het my alarm vir die verkeerde skof gestel",
@@ -1172,12 +1188,12 @@
       "placeholder": "My Skedule"
     },
     "anchorDate": {
-      "label": "Ankerdatum",
-      "hint": "Die reeks herhaal vanaf hierdie datum"
+      "label": "Skedule-pasdatum",
+      "hint": "Kies die regte datum waarmee Ryvro jou rotasie moet laat ooreenstem"
     },
     "phaseOffset": {
-      "label": "Huidige dag in siklus",
-      "hint": "0 = begin van siklus"
+      "label": "Waar is jy in die rotasie?",
+      "hint": "Gebruik 1 vir die eerste item in die reeks, 2 vir die tweede, ensovoorts"
     },
     "ai": {
       "sectionTitle": "KI-assistent",
@@ -1220,7 +1236,24 @@
       "discardDraft": "Gooi konsep weg",
       "followUp": "Opvolg...",
       "send": "Stuur",
-      "invalid": "KI-reaksie is ongeldig. Probeer weer."
+      "invalid": "KI-reaksie is ongeldig. Probeer weer.",
+      "aiDraft": "KI-konsep",
+      "clarificationBanner": "Ek het nog net ’n bietjie inligting nodig om dit akkuraat te bou",
+      "summary": "Wat ek verstaan het",
+      "questionsForYou": "Vrae vir jou",
+      "headsUp": "Let op",
+      "sequencePreview": "Volgordevoorskou",
+      "dayA11y": "Dag {{day}}: {{name}}",
+      "cycleLength_one": "{{count}}-dag siklus",
+      "cycleLength_other": "{{count}}-dag siklus",
+      "followUpLabel": "Vra ’n opvolg",
+      "followUpPlaceholder": "bv. Maak dit eerder 8-uur skofte",
+      "followUpA11y": "Opvolgvraag vir KI",
+      "sendFollowUpA11y": "Stuur opvolg",
+      "useDraftA11y": "Gebruik hierdie KI-konsep",
+      "editManuallyA11y": "Wysig skedule eerder handmatig",
+      "discardDraftA11y": "Gooi KI-konsep weg",
+      "cycleLength": "{{count}}-dag siklus"
     },
     "palette": {
       "title": "Skoftipes",
@@ -1228,7 +1261,24 @@
       "usageCount_one": "{{count}} gebruik",
       "usageCount_other": "{{count}} gebruike",
       "deleteBlocked": "In gebruik",
-      "deleteBlockedMessage": "Hierdie skoftipe word {{count}} keer in die volgorde gebruik. Verwyder daardie inskrywings eers of vervang hulle."
+      "deleteBlockedMessage": "Hierdie skoftipe word {{count}} keer in die volgorde gebruik. Verwyder daardie inskrywings eers of vervang hulle.",
+      "createNewA11y": "Skep nuwe skoftipe",
+      "newType": "Nuwe tipe",
+      "emptyTitle": "Nog geen skoftipes nie.",
+      "emptyMessage": "Tik Nuwe tipe om jou eerste skof te skep.",
+      "cannotDeleteTitle": "Kan nie verwyder nie",
+      "cannotDeleteMessage": "\"{{name}}\" word {{count}} keer in jou volgorde gebruik. Verwyder dit eers uit die volgorde.",
+      "cannotDeleteMessage_one": "\"{{name}}\" word {{count}} keer in jou volgorde gebruik. Verwyder dit eers uit die volgorde.",
+      "cannotDeleteMessage_other": "\"{{name}}\" word {{count}} keer in jou volgorde gebruik. Verwyder dit eers uit die volgorde.",
+      "ok": "OK",
+      "deleteTitle": "Vee \"{{name}}\" uit?",
+      "deleteMessage": "Hierdie skoftipe sal permanent verwyder word.",
+      "cancelDelete": "Kanselleer",
+      "confirmDelete": "Vee uit",
+      "addToSequenceA11y": "Voeg {{name}} by volgorde",
+      "editA11y": "Wysig {{name}}",
+      "deleteA11y": "Vee {{name}} uit",
+      "deleteBlockedHint": "Kan nie uitvee nie omdat dit in die volgorde gebruik word"
     },
     "canvas": {
       "title": "Reeks",
@@ -1242,7 +1292,21 @@
       "duplicate": "Dupliseer",
       "insertBefore": "Voeg voor in",
       "insertAfter": "Voeg na in",
-      "delete": "Verwyder"
+      "delete": "Verwyder",
+      "emptyTitle": "Geen skofte in die reeks nie",
+      "emptySubtitle": "Voeg skoftipes hieronder by, tik dan Voeg skof by om jou siklus te bou.",
+      "noShiftTypesTitle": "Geen skoftipes nie",
+      "noShiftTypesMessage": "Skep eers ’n skoftipe met die palet hieronder.",
+      "addShiftA11y": "Voeg skof by reeks",
+      "addBlockA11y": "Voeg herhalende blok by reeks",
+      "modalAddRepeated": "Voeg herhalende blok by",
+      "modalChooseShift": "Kies skoftipe",
+      "modalInsertBefore": "Voeg voor dag {{day}} in",
+      "modalInsertAfter": "Voeg na dag {{day}} in",
+      "repeatCountLabel": "Herhaaltelling:",
+      "repeatInputA11y": "Aantal herhalings",
+      "repeatTimes": "keer",
+      "definitionUsedTimes": "{{count}} keer gebruik"
     },
     "inspector": {
       "titleCreate": "Nuwe skoftipe",
@@ -1273,7 +1337,7 @@
       "countsAsNight": "Tel as nagskof",
       "color": "Kleur",
       "icon": "Ikoon",
-      "location": "Ligging",
+      "location": "Werkplek (opsioneel)",
       "save": "Stoor",
       "delete": "Verwyder tipe",
       "deleteConfirm": {
@@ -1281,7 +1345,50 @@
         "message": "Hierdie aksie kan nie ongedaan gemaak word nie.",
         "confirm": "Verwyder",
         "cancel": "Kanselleer"
-      }
+      },
+      "nameRequiredTitle": "Naam vereis",
+      "nameRequiredMessage": "Voer asseblief ’n naam vir hierdie skoftipe in.",
+      "timesRequiredTitle": "Tye vereis",
+      "timesRequiredMessage": "Stel asseblief begin- en eindtye vir ’n tydgebonde skof.",
+      "colorA11y": "Kleur {{color}}",
+      "customColorPlaceholder": "Pasgemaakte heks (bv. FF5722)",
+      "customColorA11y": "Pasgemaakte kleur-hekskode",
+      "iconA11y": "Ikoon: {{icon}}",
+      "countsAsWorkHint": "Ingesluit by werksdagstatistiek",
+      "countsAsWorkA11y": "Tel as werksdag-skakelaar",
+      "countsAsNightHint": "Beïnvloed nagskofstatistiek",
+      "countsAsNightA11y": "Tel as nagskof-skakelaar",
+      "locationPlaceholder": "bv. Hospitaal, depot, aanleg, stasie",
+      "locationA11y": "Werksliggingnaam",
+      "remindersTitle": "Herinneringe vir hierdie skof",
+      "remindersDisabled": "Af- en verlofskoftipes skeduleer nie voor-skof-herinneringe nie.",
+      "reminderRulesTitle": "Herinneringreëls",
+      "reminderRulesHint": "Hierdie reëls geld net vir hierdie skoftipe.",
+      "reminderProfileA11y": "Herinneringprofielnaam",
+      "firstReminder": "Eerste herinnering",
+      "firstReminderA11y": "Ure voor skof vir eerste herinnering",
+      "hoursBefore": "ure voor",
+      "prepTime": "Voorbereidingstyd",
+      "prepTimeA11y": "Voorbereidingsminute voor skof",
+      "minutes": "minute",
+      "travelTime": "Reistyd",
+      "travelTimeA11y": "Reisminute voor skof",
+      "imminentReminderTitle": "15-minuut waarskuwing",
+      "imminentReminderHint": "Stuur ’n laaste herinnering net voor begintyd",
+      "imminentReminderA11y": "15-minuut-herinnering skakelaar",
+      "briefingReminderTitle": "Inligtingsherinnering",
+      "briefingReminderHint": "Behandel die 15-minuut-herinnering as kritieke voorbereiding",
+      "briefingReminderA11y": "Inligtingsherinnering skakelaar",
+      "fatigueAwareTitle": "Moegheidsbewuste tydsberekening",
+      "fatigueAwareHint": "Skuif voorbereidingsherinneringe vroeër wanneer moegheidsrisiko hoog is",
+      "fatigueAwareA11y": "Moegheidsbewuste herinneringe skakelaar",
+      "postShiftCheckinTitle": "Na-skof inklok",
+      "postShiftCheckinHint": "Vra een uur na die einde hoe die skof gegaan het",
+      "postShiftCheckinA11y": "Na-skof inklok-skakelaar",
+      "travelRemindersTitle": "Reisherinneringe",
+      "travelRemindersHint": "Gebruik hierdie skof in reis-in en reis-uit herinneringe",
+      "travelRemindersA11y": "Reisherinneringe skakelaar",
+      "saveA11y": "Stoor skoftipe"
     },
     "preview": {
       "title": "Voorskou",
@@ -1291,7 +1398,8 @@
       "today": "Vandag",
       "anchor": "Anker",
       "empty": "Geen voorskoudata beskikbaar nie.",
-      "errors": "Voorskou kan nie vertoon word as gevolg van foute nie."
+      "errors": "Voorskou kan nie vertoon word as gevolg van foute nie.",
+      "errorHint": "Maak die uitgeligte probleem hierbo reg; dan sal die kalendervoorskou hier verskyn."
     },
     "validation": {
       "errorTitle_one": "{{count}} fout",
@@ -1300,7 +1408,19 @@
       "warningTitle_other": "{{count}} waarskuwings",
       "fix": "Regmaak",
       "review": "Hersien",
-      "dismiss": "Verwerp"
+      "dismiss": "Verwerp",
+      "fixBeforeSaving": "Maak {{count}} kwessies reg voor jy stoor",
+      "fixBeforeSaving_one": "Maak {{count}} kwessie reg voor jy stoor",
+      "fixBeforeSaving_other": "Maak {{count}} kwessies reg voor jy stoor",
+      "reviewBeforeSaving": "{{count}} waarskuwings - hersien voor jy stoor",
+      "reviewBeforeSaving_one": "{{count}} waarskuwing - hersien voor jy stoor",
+      "reviewBeforeSaving_other": "{{count}} waarskuwings - hersien voor jy stoor",
+      "toggleA11y": "{{headline}}. Tik om lys te {{state}}.",
+      "expand": "uit te brei",
+      "collapse": "toe te vou",
+      "warningsHeader": "Waarskuwings:",
+      "dismissWarnings": "Verwerp waarskuwings",
+      "dismissWarningsA11y": "Verwerp waarskuwings"
     },
     "saveResult": {
       "success": "Skedule gestoor",

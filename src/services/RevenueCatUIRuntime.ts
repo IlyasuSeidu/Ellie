@@ -51,7 +51,7 @@ export const getRevenueCatUIRuntime = (): RevenueCatUIRuntime | null => {
     const nativeMissingHint = getNativeMissingHint(error);
     if (__DEV__ && nativeMissingHint) {
       console.warn(
-        `[RevenueCatUI] Native module unavailable (${nativeMissingHint}). Rebuild and reinstall a development/production client that includes react-native-purchases-ui.`
+        `[RevenueCatUI] Ryvro Pro native paywall module is unavailable in this runtime (${nativeMissingHint}).`
       );
     }
 

@@ -87,11 +87,44 @@ export function validateTimeFormat(time: string): boolean {
  * @returns Formatted time string (e.g., "6:00 AM")
  */
 export function formatTimeForDisplay(time24h: string): string {
+  if (!validateTimeFormat(time24h)) return time24h;
   const { time, period } = convertTo12Hour(time24h);
   // Remove leading zero from hours
   const [hours, minutes] = time.split(':');
   const displayHours = hours.startsWith('0') ? hours.slice(1) : hours;
   return `${displayHours}:${minutes} ${period}`;
+}
+
+/**
+ * Replace 24-hour clock times in user-facing text with AM/PM times.
+ */
+export function formatTimesInTextForDisplay(text: string): string {
+  const timeTokenPattern = '\\b(?:(?:[01]?\\d|2[0-3]):[0-5]\\d)\\b(?:\\s*(?:AM|PM|am|pm))?';
+  const rangePattern = new RegExp(
+    `(${timeTokenPattern})\\s*(?:-|–|—|to)\\s*(${timeTokenPattern})`,
+    'g'
+  );
+
+  const normalizeTimeToken = (raw: string): string => {
+    const match = raw.match(/\b([01]?\d|2[0-3]):([0-5]\d)\b/);
+    if (!match) return raw;
+    const [hours, minutes] = [Number(match[1]), match[2]];
+    const suffixMatch = raw.match(/\b(AM|PM|am|pm)\b/);
+    if (suffixMatch && hours >= 1 && hours <= 12) {
+      return `${hours}:${minutes} ${suffixMatch[1].toUpperCase()}`;
+    }
+    const time = `${match[1]}:${minutes}`;
+    if (!validateTimeFormat(time)) return raw;
+    return formatTimeForDisplay(time);
+  };
+
+  return text
+    .replace(rangePattern, (_match, start: string, end: string) => {
+      return `${normalizeTimeToken(start)} to ${normalizeTimeToken(end)}`;
+    })
+    .replace(/\b([01]?\d|2[0-3]):([0-5]\d)\b(?:\s*(?:AM|PM|am|pm))?/g, (match) => {
+      return normalizeTimeToken(match);
+    });
 }
 
 /**

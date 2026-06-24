@@ -20,6 +20,7 @@ import type {
   UniversalHolidayException,
   UniversalHolidayExceptionAction,
 } from '@/types';
+import { formatTimeForDisplay } from '@/utils/shiftTimeUtils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -799,12 +800,7 @@ export function getUniversalShiftDisplayModel(
 
 /** Format HH:mm to 12h display string */
 function formatDisplayTime(hhmm: string): string {
-  const [hStr, mStr] = hhmm.split(':');
-  const h = parseInt(hStr ?? '0', 10);
-  const m = parseInt(mStr ?? '0', 10);
-  const suffix = h >= 12 ? 'PM' : 'AM';
-  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
-  return m === 0 ? `${h12} ${suffix}` : `${h12}:${mStr} ${suffix}`;
+  return formatTimeForDisplay(hhmm);
 }
 
 // ── ID Generation ─────────────────────────────────────────────────────────────
@@ -853,7 +849,7 @@ export const PRESET_SHIFT_DEFINITIONS: Omit<UniversalShiftDefinition, 'id'>[] = 
     countsAsWork: false,
     countsAsNight: false,
     countsForStats: true,
-    color: '#78716c',
+    color: '#5f7484',
     icon: 'home',
   },
   {

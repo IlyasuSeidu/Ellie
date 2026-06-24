@@ -38,7 +38,7 @@ One card. One pattern. Swipe until it matches your life.
 
 The introduction flow was reworked to ask one thing at a time — conversational, not administrative.
 
-The welcome screen was rebuilt to frame Ellie as a premium shift companion from the first moment.
+The welcome screen was rebuilt to frame Ryvro as a premium shift companion from the first moment.
 
 ---
 
@@ -78,7 +78,7 @@ The easy version of this story: more onboarding screens shipped.
 
 The real version is better.
 
-Day 26 of building Ellie was about removing the feeling of paperwork from the first minute of the product.
+Day 26 of building Ryvro was about removing the feeling of paperwork from the first minute of the product.
 
 Most shift workers do not know the official name of their roster pattern. They know what their weeks feel like. Days on, days off, rotate, repeat. A setup screen that demands the official term is asking the wrong question.
 

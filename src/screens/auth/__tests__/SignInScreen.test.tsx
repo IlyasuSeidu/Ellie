@@ -42,6 +42,18 @@ describe('SignInScreen', () => {
     expect(mockClearError).toHaveBeenCalledTimes(1);
   });
 
+  it('renders the centered app icon as the sign-in logo', () => {
+    const { getByTestId } = render(<SignInScreen />);
+    const logo = getByTestId('sign-in-app-logo');
+
+    expect(logo.props.source).toBe(require('../../../../assets/brand/ryvro-in-app-logo.png'));
+    expect(logo.props.style).toEqual(
+      expect.objectContaining({
+        alignSelf: 'center',
+      })
+    );
+  });
+
   it('validates input before submit', () => {
     const { getByTestId, getByText } = render(<SignInScreen />);
     fireEvent.press(getByTestId('sign-in-button'));
@@ -76,19 +88,17 @@ describe('SignInScreen', () => {
   it('triggers social sign-in actions', async () => {
     mockSignInWithGoogle.mockResolvedValueOnce(undefined);
     mockSignInWithApple.mockResolvedValueOnce(undefined);
-    const { getByTestId, queryByTestId } = render(<SignInScreen />);
+    const { getByTestId } = render(<SignInScreen />);
 
     fireEvent.press(getByTestId('google-sign-in-button'));
     await waitFor(() => {
       expect(mockSignInWithGoogle).toHaveBeenCalledTimes(1);
     });
 
-    const appleButton = queryByTestId('apple-sign-in-button');
-    if (appleButton) {
-      fireEvent.press(appleButton);
-      await waitFor(() => {
-        expect(mockSignInWithApple).toHaveBeenCalledTimes(1);
-      });
-    }
+    const appleButton = getByTestId('apple-sign-in-button');
+    fireEvent.press(appleButton);
+    await waitFor(() => {
+      expect(mockSignInWithApple).toHaveBeenCalledTimes(1);
+    });
   });
 });

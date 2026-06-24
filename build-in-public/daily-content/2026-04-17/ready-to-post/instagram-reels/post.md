@@ -19,7 +19,7 @@ Today we fixed the handoff so setup state carries cleanly, shift/date math stays
 
 Proof: we tightened behavior across 11 languages and backed it with 27 tests.
 
-Ellie only works if your schedule answer feels dependable the first time.
+Ryvro only works if your schedule answer feels dependable the first time.
 
 Where does your scheduling app usually lose your trust?
 
@@ -42,4 +42,4 @@ Built by a miner for shift workers.
 
 Where does your scheduling app usually lose your trust?
 
-#ellieapp #shiftwork #mining #buildinpublic #productdesign #healthtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #productdesign #healthtech

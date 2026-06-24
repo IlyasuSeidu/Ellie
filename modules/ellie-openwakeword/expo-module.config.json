@@ -1,9 +1,0 @@
-{
-  "platforms": ["android", "ios"],
-  "android": {
-    "modules": ["expo.modules.ellieopenwakeword.EllieOpenWakeWordModule"]
-  },
-  "ios": {
-    "modules": ["EllieOpenWakeWordModule"]
-  }
-}

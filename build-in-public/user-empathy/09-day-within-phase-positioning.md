@@ -9,11 +9,11 @@
 
 ## 1. Human Summary (For Miners)
 
-When you download Ellie, you're not always starting fresh on day 1 of your shift cycle. You might be on **day 3 of your night shifts** or **day 5 of your days off**.
+When you download Ryvro, you're not always starting fresh on day 1 of your shift cycle. You might be on **day 3 of your night shifts** or **day 5 of your days off**.
 
-Before this feature, Ellie could only capture "you're on night shift" but assumed you were starting at day 1. Your calendar would be wrong from the start.
+Before this feature, Ryvro could only capture "you're on night shift" but assumed you were starting at day 1. Your calendar would be wrong from the start.
 
-Now when you set up Ellie, after selecting your phase (Day/Night/Off), you see numbered cards asking: **"Which day of your Night Shifts are you on?"** Pick day 3, and your calendar shows your exact position in the cycle. No more mental math. No more wrong schedules.
+Now when you set up Ryvro, after selecting your phase (Day/Night/Off), you see numbered cards asking: **"Which day of your Night Shifts are you on?"** Pick day 3, and your calendar shows your exact position in the cycle. No more mental math. No more wrong schedules.
 
 Your calendar starts accurate, from exactly where you are right now.
 
@@ -23,7 +23,7 @@ Your calendar starts accurate, from exactly where you are right now.
 
 I shipped something small today that makes me think about how we design for real life, not ideal scenarios.
 
-Users don't download Ellie on "Day 1" of their shift cycle. They download it on a Tuesday, three days into their night block, while sitting in the crib room during smoko.
+Users don't download Ryvro on "Day 1" of their shift cycle. They download it on a Tuesday, three days into their night block, while sitting in the crib room during smoko.
 
 The old onboarding asked: "Are you on Day, Night, or Off shifts?"
 
@@ -69,7 +69,7 @@ _Then_ they ask: "Small, medium, or large?"
 
 Each question appears only after you've answered the previous one. This is **progressive disclosure**—revealing information step by step, in the right order.
 
-**In Ellie:**
+**In Ryvro:**
 
 First question: "Which phase are you in?" (Day, Night, or Off)
 
@@ -239,7 +239,7 @@ The key is: derive state when possible, reset dependent state on parent change, 
 
 [0:05 - Setup]
 
-I'm building Ellie, an app for mining shift workers with complex rotating schedules. When I launched the onboarding, I had a blind spot.
+I'm building Ryvro, an app for mining shift workers with complex rotating schedules. When I launched the onboarding, I had a blind spot.
 
 [0:12 - The Problem]
 
@@ -253,7 +253,7 @@ I was assuming everyone downloads the app on day 1. That's never true.
 
 [0:28 - The Realization]
 
-A miner downloads Ellie on a Tuesday, sitting in the crib room during smoko, three days into their night block. They don't want to do math. They know: "I'm on my third night."
+A miner downloads Ryvro on a Tuesday, sitting in the crib room during smoko, three days into their night block. They don't want to do math. They know: "I'm on my third night."
 
 [0:38 - The Solution]
 
@@ -277,7 +277,7 @@ If your onboarding assumes "starting fresh," you're probably wrong.
 
 [1:22 - Call to Action]
 
-I'm building Ellie in public. What features are you building that assume users start from zero?
+I'm building Ryvro in public. What features are you building that assume users start from zero?
 
 Let me know—I'd love to hear your "middle-of-the-workflow" stories.
 

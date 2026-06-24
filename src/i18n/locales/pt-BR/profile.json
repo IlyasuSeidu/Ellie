@@ -3,7 +3,8 @@
     "personalInfo": "Informacoes pessoais",
     "workOverview": "Resumo de trabalho",
     "shiftSettings": "Configuracoes de turno",
-    "smartReminders": "Lembretes inteligentes"
+    "smartReminders": "Lembretes inteligentes",
+    "legalSupport": "Ajuda e jurídico"
   },
   "fields": {
     "name": "Nome",
@@ -16,7 +17,7 @@
   },
   "stats": {
     "dayCycle": "Ciclo em dias",
-    "workRest": "Trabalho : Descanso",
+    "workRest": "Trabalho: Descanso",
     "perShift": "Por turno"
   },
   "language": {
@@ -52,7 +53,7 @@
     "nightShift": "Turno noturno",
     "flyIn": "Fly-in",
     "flyOut": "Fly-out",
-    "site": "Local",
+    "site": "Local de trabalho",
     "dayStart": "Inicio dia",
     "dayEnd": "Fim dia",
     "nightStart": "Inicio noite",
@@ -61,7 +62,7 @@
     "afternoonStart": "Inicio tarde",
     "workBlock": "Bloco de trabalho",
     "restBlock": "Bloco de descanso",
-    "siteName": "Nome do site (opcional)",
+    "siteName": "Local de trabalho (opcional)",
     "flyInDay": "Dia de fly-in",
     "flyOutDay": "Dia de fly-out",
     "cycleReferenceDate": "Data de referencia do ciclo",
@@ -108,7 +109,7 @@
       "fifoBlock": "BLOCO FIFO",
       "workPattern": "PADRAO DE TRABALHO",
       "customSequence": "SEQUENCIA PERSONALIZADA",
-      "siteDetails": "DETALHES DO SITE",
+      "siteDetails": "DETALHES DO LOCAL DE TRABALHO",
       "travelDays": "DIAS DE VIAGEM (OPCIONAL)",
       "scheduleAnchor": "INÍCIO E POSIÇÃO DA ESCALA",
       "customPattern": "PADRAO PERSONALIZADO"
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Tempos",
-      "workDaysOnSite": "{{count}} dias no local",
-      "restDaysAtHome": "{{count}} dias em casa",
+      "workDaysOnSite": "{{count}} dias de bloco de trabalho",
+      "restDaysAtHome": "{{count}} dias de descanso",
       "empty": "Nenhuma configuração de turno definida",
       "footer": "As configurações de turno podem ser atualizadas em Configurações"
     },
@@ -273,10 +274,10 @@
       "timing": "HORARIOS",
       "doNotDisturb": "NAO PERTURBE",
       "adaptive": "ADAPTATIVOS",
-      "travel": "Travel blocks"
+      "travel": "Blocos de viagem"
     },
     "units": {
-      "hoursShort": "{{value}} h",
+      "hoursShort": "{{value}} h.",
       "minutesShort": "{{value}} min",
       "none": "Nenhum"
     },
@@ -291,7 +292,7 @@
       },
       "commute": {
         "label": "Tempo de deslocamento",
-        "sublabel": "Quanto tempo leva para chegar ao site"
+        "sublabel": "Quanto tempo leva para chegar ao seu local de trabalho"
       },
       "imminent": {
         "label": "Alerta de 15 min",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Os lembretes inteligentes estão ativos",
       "body": "Se isto chegar, seus lembretes inteligentes estão funcionando."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Suporte",
+      "hint": "Receba ajuda com sua conta ou escala",
+      "a11y": "Abrir suporte da Ryvro"
+    },
+    "deleteAccount": {
+      "title": "Excluir conta",
+      "hint": "Solicite a exclusão da conta e dos dados do app",
+      "a11y": "Abrir exclusão de conta da Ryvro"
+    },
+    "privacy": {
+      "title": "Política de privacidade",
+      "hint": "Como a Ryvro lida com seus dados",
+      "a11y": "Abrir política de privacidade da Ryvro"
+    },
+    "terms": {
+      "title": "Termos de serviço",
+      "hint": "Termos de assinatura e uso do app",
+      "a11y": "Abrir termos de serviço da Ryvro"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "ellie-brain-functions",
+  "name": "ryvro-brain-functions",
   "version": "1.0.0",
-  "description": "Ellie voice assistant backend — Firebase Cloud Functions",
+  "description": "Ryvro voice assistant backend - Firebase Cloud Functions",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",

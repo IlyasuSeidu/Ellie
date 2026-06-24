@@ -32,7 +32,7 @@ What onboarding step still feels like paperwork to you?
 
 Most onboarding problems are not information problems. They are friction problems.
 
-Ellie was asking the right questions. It was just making people feel every single one of them.
+Ryvro was asking the right questions. It was just making people feel every single one of them.
 
 The fix was not removing steps. It was changing how each step felt in motion. One question at a time. Roster patterns on swipeable cards you recognize instead of a list you decode.
 
@@ -42,4 +42,4 @@ Built by a miner for shift workers.
 
 What onboarding step still feels like paperwork in most apps?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech

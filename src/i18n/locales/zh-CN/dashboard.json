@@ -38,7 +38,7 @@
     "off": "休息并充电！"
   },
   "fifo": {
-    "onSite": "现场名册活跃",
+    "onSite": "工作区块进行中",
     "homeBlock": "主块处于活动状态",
     "workBlock": "工作",
     "restBlock": "休息",
@@ -104,10 +104,10 @@
       "example2": "我第二天什么时候休息？",
       "example3": "这个月有多少夜班？",
       "tryAsking": "试着这样问：",
-      "suggestionA11y": "问 Ellie：{{query}}"
+      "suggestionA11y": "问 Ryvro：{{query}}"
     },
     "permission": {
-      "notice": "艾莉需要使用麦克风才能听到您的问题。",
+      "notice": "Ryvro 需要使用麦克风才能听到您的问题。",
       "grant": "授予许可",
       "grantA11y": "授予麦克风权限",
       "requestA11y": "请求麦克风权限"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
       "sayWakeWordOrTap": "说“{{wakeWordPhrase}}”或轻按麦克风",
       "askAnother": "轻按麦克风询问另一个问题",
-      "askEllie": "轻按麦克风询问艾莉",
-      "typeOrGrantMic": "在下面输入，或授予麦克风权限来讲话"
+      "typeOrGrantMic": "在下面输入，或授予麦克风权限来讲话",
+      "askRyvro": "轻按麦克风询问 Ryvro"
     },
     "errors": {
       "default": "出了点问题",
-      "permissionDeniedIos": "麦克风访问被拒绝。在“设置”>“艾莉”中启用。",
+      "permissionDeniedIos": "麦克风访问被拒绝。在“设置”>“Ryvro”中启用。",
       "permissionDenied": "麦克风访问被拒绝。请授予许可。",
       "network": "检查您的连接并重试。",
       "recognition": "我没听清。请再试一次。",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "别再听了。双击即可结束讲话。",
       "processing": "处理你的问题。请稍等。",
-      "speaking": "艾莉正在讲话。双击即可停止。",
+      "speaking": "Ryvro 正在讲话。双击即可停止。",
       "error": "错误：{{message}}。双击重试。",
-      "idle": "问艾莉一个问题。双击即可开始说话。"
+      "idle": "问 Ryvro 一个问题。双击即可开始说话。"
     },
     "partialTranscriptA11y": "你是说：{{text}}",
-    "processingInline": "艾莉在想……",
+    "processingInline": "Ryvro 在想……",
     "retryHint": "点击麦克风重试",
     "requestRef": "参考：{{requestId}}",
     "responseBubble": {
       "userSaidA11y": "你说：{{text}}",
-      "assistantSaidA11y": "艾莉说：{{text}}"
+      "assistantSaidA11y": "Ryvro 说：{{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Hey Ellie 需要麦克风权限。点击麦克风开始说话。",
+      "microphonePermissionRequired": "Hey Ryvro 需要麦克风权限。点击麦克风开始说话。",
       "wakeWordUnavailableTapToTalk": "唤醒词不可用，请点击麦克风说话。"
     },
     "offlineFallback": {
@@ -170,18 +170,18 @@
       "startBack": "你将在{{date}}返回上班。",
       "patternSummaryRotating": "你的轮班模式是{{dayCount}}个白班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
       "patternSummaryThreeShift": "你的轮班模式是{{morningCount}}个早班、{{afternoonCount}}个下午班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
-      "patternSummaryFifo": "你的模式是现场工作{{workDays}}天，然后休息{{restDays}}天。",
+      "patternSummaryFifo": "你的模式是工作{{workDays}}天，然后休息{{restDays}}天。",
       "unsupportedWithNextShift": "我暂时还不能在离线状态下完整回答这个问题，但我仍然知道你保存的班表。你的下一次工作班次是 {{date}} 的 {{shiftType}}。你可以问我明天的班次、下一个休息日、本月夜班数量或你的轮班模式。",
       "unsupportedGeneric": "我暂时还不能在离线状态下完整回答这个问题，但我仍然可以根据你保存的班表提供帮助。你可以问我明天的班次、下一个休息日、本月夜班数量或你的轮班模式。"
     },
     "notices": {
       "offlineRecognitionUnavailable": "此设备当前不支持离线语音输入。",
-      "audioUnavailable": "当前无法播放语音回复。你仍然可以阅读 Ellie 的回复。"
+      "audioUnavailable": "当前无法播放语音回复。你仍然可以阅读 Ryvro 的回复。"
     },
     "offlineHint": "离线时，只能回答保存在此设备上的简单排班问题。",
     "composer": {
-      "placeholder": "输入要问 Ellie 的问题",
-      "a11y": "输入要问 Ellie 的问题",
+      "placeholder": "输入要问 Ryvro 的问题",
+      "a11y": "输入要问 Ryvro 的问题",
       "sendA11y": "发送文字问题"
     }
   },
@@ -190,10 +190,10 @@
     "schedule": "日程",
     "stats": "统计数据",
     "profile": "轮廓",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "打开艾莉语音助手",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openVoiceAssistantA11y": "打开 Ryvro 语音助手",
+    "openProPlansA11y": "查看 Pro 方案",
+    "voiceAssistantLoadingA11y": "正在检查语音助手访问权限",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "设置",
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "这班怎么样？",
-        "body": "你的{{shiftType}}怎么样？到 Ellie 里记录一下你的精力水平。"
+        "body": "你的{{shiftType}}怎么样？到 Ryvro 里记录一下你的精力水平。"
       },
       "fatigue": {
         "title": "严重疲劳提醒",
@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "出行日",
           "body": "今天你将返家。完成交接、收拾装备，并注意安全出行。"
         },
         "tomorrow": {
           "title": "明天是出发日",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "你明天要前往 {{shiftType}}。今晚请收拾装备并检查证件。"
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{shiftName}}还剩{{time}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "此班次还剩 {{time}}",
     "untilStarts": "{{time}}后{{shiftName}}开始",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "此班次还有 {{time}} 开始",
     "until": "{{time}}后到{{shiftName}}",
     "tomorrow": "明天{{shiftName}}",
     "daysUntil": "{{days}}天后到{{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "这次班次你的精力如何？",
     "energy": {
       "high": "高",
-      "medium": "中",
+      "medium": "中等",
       "low": "低"
     },
     "notesLabel": "备注（可选）",
@@ -319,12 +319,12 @@
     "submit": "保存记录"
   },
   "onboardingChecklist": {
-    "title": "充分发挥 Ellie 的作用",
+    "title": "充分发挥 Ryvro 的作用",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "设置你的排班",
       "shiftTimes": "添加你的班次时间",
       "profile": "完善你的个人资料",
-      "askEllie": "向 Ellie 提一个问题"
+      "askRyvro": "向 Ryvro 提一个问题"
     },
     "actions": {
       "doIt": "去完成",

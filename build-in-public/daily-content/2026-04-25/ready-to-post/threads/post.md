@@ -10,7 +10,7 @@
 
 You can spot onboarding churn in one moment: the long pause before “next.”
 
-In Ellie, that pause showed up at roster pattern selection.
+In Ryvro, that pause showed up at roster pattern selection.
 
 Today I changed setup to one question at a time and rebuilt the pattern step into swipeable choices so it feels easier to compare.
 
@@ -22,7 +22,7 @@ Which setup decision makes users hesitate in your product?
 
 I pay attention to hesitation more than clicks.
 
-Today in Ellie, the fix was reducing decision weight at the roster step, not adding more explanation.
+Today in Ryvro, the fix was reducing decision weight at the roster step, not adding more explanation.
 
 One-question flow + swipeable pattern selection, validated with 11 locale updates and 32 tests touched.
 

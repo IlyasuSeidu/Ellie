@@ -19,7 +19,7 @@ So I did not build the onboarding surface first. I built the answer layer undern
 
 That is the wrong assumption most builders make. Polish is not trust. Trust is what the answer does when the stakes are real.
 
-Ellie is built by a miner for shift workers.
+Ryvro is built by a miner for shift workers.
 
 What do you secure first when the user cannot afford a wrong answer?
 
@@ -31,6 +31,6 @@ So the onboarding surface had to wait. The answer layer came first — shift log
 
 Trust is not a feature you add after the interface looks good. It is a structural decision made before the first screen ever appears.
 
-I am a miner building Ellie with AI-native workflows, but the product problem always comes first.
+I am a miner building Ryvro with AI-native workflows, but the product problem always comes first.
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech

@@ -1,5 +1,5 @@
 /**
- * Ellie Brain — Firebase Cloud Function Entry Point
+ * Ryvro voice backend — Firebase Cloud Function Entry Point
  *
  * HTTPS callable function that processes voice assistant queries.
  * Validates requests, calls OpenAI API with tool use, returns responses.
@@ -7,9 +7,10 @@
 
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
+import { HttpsError, onCall, onRequest, type Request } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { defineSecret, defineString } from 'firebase-functions/params';
+import type { Response } from 'express';
 import {
   AI_DECISION_QUEUE_COLLECTION,
   ANALYTICS_DAILY_SUMMARIES_COLLECTION,
@@ -34,14 +35,14 @@ import {
   requestClaudeDailyIntelligenceAnalysis,
   type ClaudeDailyIntelligenceAnalysis,
 } from './claude-intelligence';
-import { buildDailyAudienceRun, ellieAudienceAdapter } from './audience-os';
+import { buildDailyAudienceRun, ryvroAudienceAdapter } from './audience-os';
 import {
   createAudienceOpsError,
   type AudienceOpsSuccessEnvelope,
   validateAudienceRunInput,
 } from './audience-os/http';
-import { EllieBrainProcessingError, processQuery } from './ellie-brain';
-import { EllieBrainSuccessEnvelope } from './types';
+import { RyvroBrainProcessingError, processQuery } from './ryvro-brain';
+import { RyvroBrainSuccessEnvelope } from './types';
 import { createErrorEnvelope, createRequestId, validateRequestBody } from './http-utils';
 import {
   ShiftScheduleParserError,
@@ -537,122 +538,118 @@ export const markAiDecisionReviewed = onCall(
   }
 );
 
-/**
- * Main HTTPS endpoint for the Ellie Brain.
- *
- * POST /ellieBrain
- * Body: EllieBrainRequest
- * Response: EllieBrainResponse
- */
-export const ellieBrain = onRequest(
-  {
-    secrets: [openaiApiKey],
-    cors: true,
-    maxInstances: 20,
-    timeoutSeconds: 60,
-    memory: '256MiB',
-  },
-  async (req, res) => {
-    const startedAt = Date.now();
-    const requestId = createRequestId(req.get('x-request-id'));
+const ryvroVoiceEndpointOptions = {
+  secrets: [openaiApiKey],
+  cors: true,
+  maxInstances: 20,
+  timeoutSeconds: 60,
+  memory: '256MiB' as const,
+};
 
-    // Only allow POST
-    if (req.method !== 'POST') {
+async function handleRyvroVoiceRequest(req: Request, res: Response) {
+  const startedAt = Date.now();
+  const requestId = createRequestId(req.get('x-request-id'));
+
+  // Only allow POST
+  if (req.method !== 'POST') {
+    res
+      .status(405)
+      .json(createErrorEnvelope(requestId, 'invalid_request', 'Method not allowed.', false));
+    return;
+  }
+
+  try {
+    const validation = validateRequestBody(req.body);
+    if (!validation.ok) {
+      const shouldRetry =
+        validation.code === 'rate_limited' || validation.code === 'provider_timeout';
       res
-        .status(405)
-        .json(createErrorEnvelope(requestId, 'invalid_request', 'Method not allowed.', false));
+        .status(validation.statusCode)
+        .json(createErrorEnvelope(requestId, validation.code, validation.message, shouldRetry));
       return;
     }
 
-    try {
-      const validation = validateRequestBody(req.body);
-      if (!validation.ok) {
-        const shouldRetry =
-          validation.code === 'rate_limited' || validation.code === 'provider_timeout';
-        res
-          .status(validation.statusCode)
-          .json(createErrorEnvelope(requestId, validation.code, validation.message, shouldRetry));
-        return;
-      }
-
-      const apiKey = openaiApiKey.value();
-      if (!apiKey) {
-        logStructured('error', 'OPENAI_API_KEY secret is not configured', {
-          requestId,
-          errorCode: 'internal_error',
-          latencyMs: Date.now() - startedAt,
-        });
-        res
-          .status(500)
-          .json(
-            createErrorEnvelope(requestId, 'internal_error', 'Service configuration error.', false)
-          );
-        return;
-      }
-
-      const response = await processQuery(validation.request, apiKey, {
+    const apiKey = openaiApiKey.value();
+    if (!apiKey) {
+      logStructured('error', 'OPENAI_API_KEY secret is not configured', {
         requestId,
-        timeoutMs: PROVIDER_TIMEOUT_MS,
-      });
-
-      if (!response.text || response.text.trim().length === 0) {
-        throw new EllieBrainProcessingError(
-          'provider_error',
-          'Provider returned an empty response.',
-          true,
-          502
-        );
-      }
-
-      const successEnvelope: EllieBrainSuccessEnvelope = {
-        ok: true,
-        requestId,
-        data: {
-          ...response,
-          requestId,
-        },
-      };
-
-      logStructured('info', 'Ellie Brain request completed', {
-        requestId,
+        errorCode: 'internal_error',
         latencyMs: Date.now() - startedAt,
-        providerStatus: 'ok',
       });
-
-      res.status(200).json(successEnvelope);
-    } catch (error) {
-      const mappedError =
-        error instanceof EllieBrainProcessingError
-          ? error
-          : new EllieBrainProcessingError(
-              'internal_error',
-              'Something went wrong. Please try again.',
-              true,
-              500
-            );
-
-      logStructured('error', 'Ellie Brain request failed', {
-        requestId,
-        errorCode: mappedError.code,
-        retryable: mappedError.retryable,
-        providerStatus: mappedError.providerStatus ?? 'unknown',
-        latencyMs: Date.now() - startedAt,
-        message: mappedError.message,
-      });
-
       res
-        .status(mappedError.statusCode)
+        .status(500)
         .json(
-          createErrorEnvelope(
-            requestId,
-            mappedError.code,
-            mappedError.message,
-            mappedError.retryable
-          )
+          createErrorEnvelope(requestId, 'internal_error', 'Service configuration error.', false)
         );
+      return;
     }
+
+    const response = await processQuery(validation.request, apiKey, {
+      requestId,
+      timeoutMs: PROVIDER_TIMEOUT_MS,
+    });
+
+    if (!response.text || response.text.trim().length === 0) {
+      throw new RyvroBrainProcessingError(
+        'provider_error',
+        'Provider returned an empty response.',
+        true,
+        502
+      );
+    }
+
+    const successEnvelope: RyvroBrainSuccessEnvelope = {
+      ok: true,
+      requestId,
+      data: {
+        ...response,
+        requestId,
+      },
+    };
+
+    logStructured('info', 'Ryvro voice request completed', {
+      requestId,
+      latencyMs: Date.now() - startedAt,
+      providerStatus: 'ok',
+    });
+
+    res.status(200).json(successEnvelope);
+  } catch (error) {
+    const mappedError =
+      error instanceof RyvroBrainProcessingError
+        ? error
+        : new RyvroBrainProcessingError(
+            'internal_error',
+            'Something went wrong. Please try again.',
+            true,
+            500
+          );
+
+    logStructured('error', 'Ryvro voice request failed', {
+      requestId,
+      errorCode: mappedError.code,
+      retryable: mappedError.retryable,
+      providerStatus: mappedError.providerStatus ?? 'unknown',
+      latencyMs: Date.now() - startedAt,
+      message: mappedError.message,
+    });
+
+    res
+      .status(mappedError.statusCode)
+      .json(
+        createErrorEnvelope(requestId, mappedError.code, mappedError.message, mappedError.retryable)
+      );
   }
-);
+}
+
+/**
+ * Primary HTTPS endpoint for the Ryvro voice backend.
+ *
+ * POST /ryvroBrain
+ * Body: RyvroBrainRequest
+ * Response: RyvroBrainResponse
+ */
+export const ryvroBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
 
 /**
  * AI-assisted universal shift schedule parser.
@@ -778,7 +775,7 @@ export const signalLoopPreview = onRequest(
 
     try {
       const input = validateAudienceRunInput(req.body);
-      const result = buildDailyAudienceRun(input, ellieAudienceAdapter);
+      const result = buildDailyAudienceRun(input, ryvroAudienceAdapter);
 
       const response: AudienceOpsSuccessEnvelope = {
         ok: true,

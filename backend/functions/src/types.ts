@@ -1,7 +1,7 @@
 /**
  * Backend Type Definitions
  *
- * Shared types for the Ellie Brain Cloud Function.
+ * Shared types for the Ryvro voice Cloud Function.
  * Mirrors relevant client-side types.
  */
 
@@ -102,7 +102,7 @@ export interface ShiftDay {
   };
 }
 
-export interface EllieBrainRequest {
+export interface RyvroBrainRequest {
   query: string;
   userContext: {
     name: string;
@@ -125,7 +125,7 @@ export interface EllieBrainRequest {
   }>;
 }
 
-export interface EllieBrainResponse {
+export interface RyvroBrainResponse {
   text: string;
   shiftData?: {
     toolName: string;
@@ -134,7 +134,7 @@ export interface EllieBrainResponse {
   requestId?: string;
 }
 
-export type EllieBrainErrorCode =
+export type RyvroBrainErrorCode =
   | 'invalid_request'
   | 'missing_user_context'
   | 'invalid_user_context'
@@ -143,26 +143,26 @@ export type EllieBrainErrorCode =
   | 'provider_error'
   | 'internal_error';
 
-export interface EllieBrainError {
-  code: EllieBrainErrorCode;
+export interface RyvroBrainError {
+  code: RyvroBrainErrorCode;
   message: string;
   retryable: boolean;
   requestId: string;
 }
 
-export interface EllieBrainSuccessEnvelope {
+export interface RyvroBrainSuccessEnvelope {
   ok: true;
   requestId: string;
-  data: EllieBrainResponse;
+  data: RyvroBrainResponse;
 }
 
-export interface EllieBrainErrorEnvelope {
+export interface RyvroBrainErrorEnvelope {
   ok: false;
   requestId: string;
-  error: EllieBrainError;
+  error: RyvroBrainError;
 }
 
-export type EllieBrainResponseEnvelope = EllieBrainSuccessEnvelope | EllieBrainErrorEnvelope;
+export type RyvroBrainResponseEnvelope = RyvroBrainSuccessEnvelope | RyvroBrainErrorEnvelope;
 
 export interface QueryProcessingOptions {
   requestId: string;

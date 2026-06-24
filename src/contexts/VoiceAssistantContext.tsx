@@ -40,9 +40,12 @@ import { speechRecognitionService } from '@/services/SpeechRecognitionService';
 import { WakeWordError, wakeWordService } from '@/services/WakeWordService';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useSubscription } from '@/hooks/useSubscription';
 import { buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString } from '@/utils/dateUtils';
+import { voiceTrialService } from '@/services/VoiceTrialService';
 import { voiceAssistantConfig } from '@/config/env';
+import { CACHE_TTL_SECONDS } from '@/config/cacheConfig';
 import { logger } from '@/utils/logger';
 import i18n from '@/i18n';
 import type {
@@ -106,7 +109,6 @@ export interface VoiceAssistantProviderProps {
 }
 
 const DEFAULT_WAKE_WORD_LABEL = 'wake word';
-const DEFAULT_VOICE_PERSIST_TTL_SECONDS = 12 * 60 * 60;
 const NOTICE_AUTO_DISMISS_MS = 4_000;
 const PERSISTENCE_DEBOUNCE_MS = 2_000;
 const WAKE_WORD_RETRY_BASE_MS = 5_000;
@@ -121,13 +123,13 @@ const getWakeWordUnavailableWarning = (): string =>
 const getWakeWordPermissionRequiredWarning = (): string =>
   i18n.t('voiceAssistant.warnings.microphonePermissionRequired', {
     ns: 'dashboard',
-    defaultValue: 'Microphone permission required for Hey Ellie. Tap mic to talk.',
+    defaultValue: 'Microphone permission required for Hey Ryvro. Tap mic to talk.',
   });
 
 export function getVoicePersistenceTTLSeconds(): number | undefined {
   const rawValue = process.env.EXPO_PUBLIC_VOICE_ASSISTANT_PERSIST_TTL_SECONDS;
   if (!rawValue) {
-    return DEFAULT_VOICE_PERSIST_TTL_SECONDS;
+    return CACHE_TTL_SECONDS.voiceAssistantPersistence;
   }
 
   const parsed = Number(rawValue);
@@ -229,6 +231,12 @@ export function getConfiguredWakeWordLabel(): string {
 export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ children }) => {
   const { data: onboardingData } = useOnboarding();
   const { user } = useAuth();
+  const {
+    isPro,
+    isLoading: isSubscriptionLoading,
+    openPaywall,
+    refreshSubscriptionStatus,
+  } = useSubscription();
   const configuredOpenWakeWordModelPath = getConfiguredOpenWakeWordModelPathForPlatform();
   const configuredOpenWakeWordMelspectrogramModelPath =
     getConfiguredOpenWakeWordMelspectrogramModelPathForPlatform();
@@ -260,6 +268,8 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const [persistenceScope, setPersistenceScope] = useState<string | null>(null);
   const [wakeWordRetryNonce, setWakeWordRetryNonce] = useState(0);
   const [isAssistantReady, setIsAssistantReady] = useState(false);
+  const [hasUsedFreeVoiceAnswer, setHasUsedFreeVoiceAnswer] = useState(false);
+  const [isVoiceTrialLoading, setIsVoiceTrialLoading] = useState(true);
 
   const initializedRef = useRef(false);
   const hydrationCompleteRef = useRef(false);
@@ -277,6 +287,11 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const pendingModalOpenRef = useRef(false);
   const pendingModalQueryRef = useRef<string | null>(null);
   const pendingModalQueryTaskRef = useRef<{ cancel?: () => void } | null>(null);
+  const hasUsedFreeVoiceAnswerRef = useRef(false);
+  const isVoiceTrialLoadingRef = useRef(true);
+  const isSubscriptionLoadingRef = useRef(false);
+  const isProRef = useRef(false);
+  const freeAnswerConsumptionPendingRef = useRef(false);
 
   const wakeWordConfigFingerprint = useMemo(
     () =>
@@ -340,6 +355,22 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   }, [isAssistantReady]);
 
   useEffect(() => {
+    hasUsedFreeVoiceAnswerRef.current = hasUsedFreeVoiceAnswer;
+  }, [hasUsedFreeVoiceAnswer]);
+
+  useEffect(() => {
+    isVoiceTrialLoadingRef.current = isVoiceTrialLoading;
+  }, [isVoiceTrialLoading]);
+
+  useEffect(() => {
+    isSubscriptionLoadingRef.current = isSubscriptionLoading;
+  }, [isSubscriptionLoading]);
+
+  useEffect(() => {
+    isProRef.current = isPro;
+  }, [isPro]);
+
+  useEffect(() => {
     isAppActiveRef.current = isAppActive;
   }, [isAppActive]);
 
@@ -349,6 +380,37 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       setWakeWordRetryNonce((previous) => previous + 1);
     }
   }, [isAppActive]);
+
+  useEffect(() => {
+    let isCancelled = false;
+    setIsVoiceTrialLoading(true);
+    freeAnswerConsumptionPendingRef.current = false;
+
+    voiceTrialService
+      .getState(user?.uid ?? null)
+      .then((trialState) => {
+        if (isCancelled) return;
+        setHasUsedFreeVoiceAnswer(trialState.hasUsedFreeVoiceAnswer);
+      })
+      .catch((trialError) => {
+        logger.warn('Failed to load free voice answer state', {
+          error: trialError instanceof Error ? trialError.message : String(trialError),
+          userId: user?.uid ?? null,
+        });
+        if (!isCancelled) {
+          setHasUsedFreeVoiceAnswer(false);
+        }
+      })
+      .finally(() => {
+        if (!isCancelled) {
+          setIsVoiceTrialLoading(false);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [user?.uid]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -404,6 +466,8 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     return {
       name: onboardingData.name,
       occupation: onboardingData.occupation,
+      company: onboardingData.company,
+      country: onboardingData.country,
       shiftCycle,
       currentDate: toDateString(now),
       currentTime: `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
@@ -449,6 +513,67 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     },
     [clearNoticeDismissTimeout]
   );
+
+  const openHardVoicePaywall = useCallback(() => {
+    openPaywall({
+      entryPoint: 'feature_gate',
+      allowDismiss: false,
+    });
+  }, [openPaywall]);
+
+  const canUseVoiceOrOpenPaywall = useCallback(async (): Promise<boolean> => {
+    if (isProRef.current) {
+      return true;
+    }
+
+    if (isSubscriptionLoadingRef.current || isVoiceTrialLoadingRef.current) {
+      showNotice({
+        type: 'info',
+        message: 'Ryvro is checking your access. Please try again in a moment.',
+        code: 'voice_access_checking',
+      });
+      return false;
+    }
+
+    if (!hasUsedFreeVoiceAnswerRef.current) {
+      return true;
+    }
+
+    const hasActiveSubscription = await refreshSubscriptionStatus();
+    if (hasActiveSubscription) {
+      isProRef.current = true;
+      return true;
+    }
+
+    openHardVoicePaywall();
+    return false;
+  }, [openHardVoicePaywall, refreshSubscriptionStatus, showNotice]);
+
+  const markFreeVoiceAnswerUsed = useCallback(() => {
+    if (
+      isProRef.current ||
+      hasUsedFreeVoiceAnswerRef.current ||
+      freeAnswerConsumptionPendingRef.current
+    ) {
+      return;
+    }
+
+    freeAnswerConsumptionPendingRef.current = true;
+    const usedAt = Date.now();
+    setHasUsedFreeVoiceAnswer(true);
+
+    void voiceTrialService
+      .markUsed(user?.uid ?? null, usedAt)
+      .catch((trialError) => {
+        logger.warn('Failed to persist free voice answer usage', {
+          error: trialError instanceof Error ? trialError.message : String(trialError),
+          userId: user?.uid ?? null,
+        });
+      })
+      .finally(() => {
+        openHardVoicePaywall();
+      });
+  }, [openHardVoicePaywall, user?.uid]);
 
   const appendDiagnostic = useCallback(
     (
@@ -588,6 +713,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         },
         onAssistantMessage: (message) => {
           setMessages((prev) => [...prev, message]);
+          markFreeVoiceAnswerUsed();
         },
         onError: (err) => {
           clearNotice();
@@ -736,6 +862,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     clearNoticeDismissTimeout,
     getPersistenceOptions,
     isWakeWordEnabled,
+    markFreeVoiceAnswerUsed,
     persistenceScope,
     resetAssistantUiState,
     showNotice,
@@ -809,6 +936,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   }, []);
 
   const startListeningFromWakeWord = useCallback(async (): Promise<void> => {
+    if (!(await canUseVoiceOrOpenPaywall())) {
+      return;
+    }
+
     if (!hasPermissionRef.current) {
       const granted = await requestPermissions();
       if (!granted) return;
@@ -821,7 +952,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     }
 
     await voiceAssistantService.startListening();
-  }, [requestPermissions, buildUserContext]);
+  }, [buildUserContext, canUseVoiceOrOpenPaywall, requestPermissions]);
 
   useEffect(() => {
     startListeningFromWakeWordRef.current = startListeningFromWakeWord;
@@ -882,6 +1013,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         return;
       }
 
+      if (!(await canUseVoiceOrOpenPaywall())) {
+        return;
+      }
+
       if (!isAssistantReadyRef.current) {
         pendingModalOpenRef.current = true;
         pendingModalQueryRef.current = trimmedQuery;
@@ -896,7 +1031,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       clearNotice();
       await voiceAssistantService.processTextQuery(trimmedQuery);
     },
-    [buildUserContext, clearNotice]
+    [buildUserContext, canUseVoiceOrOpenPaywall, clearNotice]
   );
 
   const openModalWithQuery = useCallback((query: string) => {

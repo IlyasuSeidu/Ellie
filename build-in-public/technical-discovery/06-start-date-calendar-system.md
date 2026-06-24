@@ -148,7 +148,7 @@ Modulo (%) gives you the REMAINDER after division:
 
 It "wraps around" the cycle automatically.
 
-**Code from Ellie**:
+**Code from Ryvro**:
 
 ```typescript
 const getShiftTypeForDate = (
@@ -228,7 +228,7 @@ User requests: "What shift am I on March 15?"
 - Can update calculation without app update
 - Can add features like "notify me if my shift changes"
 
-**For Ellie**: Client-side is correct. Shift patterns don't change frequently. Offline is critical. Speed matters.
+**For Ryvro**: Client-side is correct. Shift patterns don't change frequently. Offline is critical. Speed matters.
 
 **Calendar Rendering Optimization**:
 
@@ -364,7 +364,7 @@ This gives users confidence: "Yes, this is correct. I start on Monday with day s
 "Building a calendar. How hard can it be? Turns out: very hard. Here's what I learned."
 
 **[WHAT I BUILT - 0:08-0:35]**
-"This is the start date screen in Ellie. Users pick when their shift cycle starts. Simple, right?
+"This is the start date screen in Ryvro. Users pick when their shift cycle starts. Simple, right?
 
 Wrong. It's not just 'February 1st.' It's 'February 1st, starting on night shifts, which is day 8 of a 21-day cycle that repeats forever.'
 
@@ -385,7 +385,7 @@ I wrote 32 tests just for this screen. Not because I'm paranoid. Because 'off by
 Dates are deceptively complex. Test everything."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. Follow to see how simple requirements hide complex implementations. Every detail matters when the stakes are someone's job."
+"Building Ryvro in public. Follow to see how simple requirements hide complex implementations. Every detail matters when the stakes are someone's job."
 
 ---
 

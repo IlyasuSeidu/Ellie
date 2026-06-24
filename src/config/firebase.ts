@@ -24,6 +24,7 @@ import {
 } from '@/services/firebase/appSdk';
 import { getAuth, initializeAuth, type Auth, type Dependencies } from '@/services/firebase/authSdk';
 import {
+  enablePersistentCacheIndexAutoCreation,
   getFirestore,
   getPersistentCacheIndexManager,
   type Firestore,
@@ -39,6 +40,9 @@ let firestore: Firestore | undefined;
 let storage: FirebaseStorage | undefined;
 let functions: Functions | undefined;
 let jsSdkServiceApp: FirebaseJsApp | undefined;
+
+const RYVRO_JS_SERVICE_APP_NAME = '__RYVRO_JS_SERVICES__';
+const RETIRED_JS_SERVICE_APP_NAME = '__ELLIE_JS_SERVICES__';
 
 type FirebaseAuthPackageRuntime = {
   getReactNativePersistence?: (
@@ -123,13 +127,15 @@ function getFirebaseJsServiceApp(firebaseApp: FirebaseApp): FirebaseJsApp {
   }
 
   const firebaseAppModule = getFirebaseJsSdkAppModule();
-  const sidecarAppName = '__ELLIE_JS_SERVICES__';
   const existingSidecar = firebaseAppModule
     .getApps()
-    .find((registeredApp) => registeredApp.name === sidecarAppName);
+    .find((registeredApp) =>
+      [RYVRO_JS_SERVICE_APP_NAME, RETIRED_JS_SERVICE_APP_NAME].includes(registeredApp.name)
+    );
 
   jsSdkServiceApp =
-    existingSidecar ?? firebaseAppModule.initializeApp(buildFirebaseOptions(), sidecarAppName);
+    existingSidecar ??
+    firebaseAppModule.initializeApp(buildFirebaseOptions(), RYVRO_JS_SERVICE_APP_NAME);
 
   console.log('Firebase JS service sidecar initialized for Storage/Functions');
   return jsSdkServiceApp;
@@ -142,6 +148,9 @@ function initializeFirebaseApp(): FirebaseApp {
 
   try {
     if (canUseNativeFirebase()) {
+      if (getApps().length === 0) {
+        void initializeApp(buildFirebaseOptions());
+      }
       app = getApp();
       console.log('Firebase app initialized successfully');
       return app;
@@ -211,12 +220,9 @@ function initializeFirebaseFirestore(firebaseApp: FirebaseApp): Firestore {
     firestore = getFirestore(firebaseApp);
 
     if (canUseNativeFirebase()) {
-      const indexManager = getPersistentCacheIndexManager?.(firestore) as
-        | { enableIndexAutoCreation?: () => Promise<void> }
-        | null
-        | undefined;
-      if (indexManager?.enableIndexAutoCreation) {
-        void indexManager.enableIndexAutoCreation().catch((error: unknown) => {
+      const indexManager = getPersistentCacheIndexManager?.(firestore);
+      if (indexManager) {
+        void enablePersistentCacheIndexAutoCreation(indexManager).catch((error: unknown) => {
           console.warn('Failed to enable Firestore offline index auto-creation:', error);
         });
       }

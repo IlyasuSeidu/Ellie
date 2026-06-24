@@ -13,6 +13,8 @@ import config, {
   googleConfig,
   apiConfig,
   appConfig,
+  legalConfig,
+  ryvroBrainConfig,
 } from '@/config/env';
 
 describe('Environment Configuration', () => {
@@ -23,6 +25,7 @@ describe('Environment Configuration', () => {
     expect(config.google).toBeDefined();
     expect(config.api).toBeDefined();
     expect(config.app).toBeDefined();
+    expect(config.legal).toBeDefined();
   });
 
   it('should have valid environment type', () => {
@@ -60,6 +63,7 @@ describe('Environment Configuration', () => {
     it('should have Google web client ID', () => {
       expect(googleConfig.webClientId).toBeDefined();
       expect(typeof googleConfig.webClientId).toBe('string');
+      expect(['string', 'undefined']).toContain(typeof googleConfig.androidClientId);
     });
 
     it('should have non-empty Google client ID', () => {
@@ -89,6 +93,13 @@ describe('Environment Configuration', () => {
     });
   });
 
+  describe('Ryvro Brain Configuration', () => {
+    it('does not expose the old placeholder voice endpoint', () => {
+      expect(ryvroBrainConfig.url).toMatch(/^https:\/\/.+cloudfunctions\.net\/ryvroBrain$/);
+      expect(ryvroBrainConfig.url).not.toContain('REGION-PROJECT');
+    });
+  });
+
   describe('App Configuration', () => {
     it('should have app name', () => {
       expect(appConfig.name).toBeDefined();
@@ -105,6 +116,22 @@ describe('Environment Configuration', () => {
     it('should have build number', () => {
       expect(appConfig.buildNumber).toBeDefined();
       expect(typeof appConfig.buildNumber).toBe('string');
+    });
+  });
+
+  describe('Legal Configuration', () => {
+    it('should have live Ryvro legal and support URLs', () => {
+      expect(legalConfig.privacyPolicyUrl).toBe('https://getryvro.com/privacy');
+      expect(legalConfig.termsOfServiceUrl).toBe('https://getryvro.com/terms');
+      expect(legalConfig.supportUrl).toBe('https://getryvro.com/support');
+      expect(legalConfig.accountDeletionUrl).toBe('https://getryvro.com/delete-account');
+    });
+
+    it('should use HTTPS URLs', () => {
+      expect(legalConfig.privacyPolicyUrl).toMatch(/^https:\/\//);
+      expect(legalConfig.termsOfServiceUrl).toMatch(/^https:\/\//);
+      expect(legalConfig.supportUrl).toMatch(/^https:\/\//);
+      expect(legalConfig.accountDeletionUrl).toMatch(/^https:\/\//);
     });
   });
 
@@ -135,7 +162,7 @@ describe('Environment Configuration', () => {
 
   describe('Configuration Structure', () => {
     it('should have consistent structure', () => {
-      const expectedKeys = ['env', 'firebase', 'google', 'api', 'app'];
+      const expectedKeys = ['env', 'firebase', 'google', 'api', 'app', 'legal'];
       const actualKeys = Object.keys(config);
 
       expectedKeys.forEach((key) => {
@@ -148,6 +175,7 @@ describe('Environment Configuration', () => {
       expect(googleConfig).toBe(config.google);
       expect(apiConfig).toBe(config.api);
       expect(appConfig).toBe(config.app);
+      expect(legalConfig).toBe(config.legal);
     });
   });
 
@@ -179,6 +207,7 @@ describe('Environment Configuration', () => {
 
       // Google config types
       expect(typeof config.google.webClientId).toBe('string');
+      expect(['string', 'undefined']).toContain(typeof config.google.androidClientId);
 
       // API config types
       expect(typeof config.api.baseUrl).toBe('string');
@@ -188,6 +217,12 @@ describe('Environment Configuration', () => {
       expect(typeof config.app.name).toBe('string');
       expect(typeof config.app.version).toBe('string');
       expect(typeof config.app.buildNumber).toBe('string');
+
+      // Legal config types
+      expect(typeof config.legal.privacyPolicyUrl).toBe('string');
+      expect(typeof config.legal.termsOfServiceUrl).toBe('string');
+      expect(typeof config.legal.supportUrl).toBe('string');
+      expect(typeof config.legal.accountDeletionUrl).toBe('string');
     });
 
     it('should have proper enum for environment', () => {

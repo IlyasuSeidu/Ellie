@@ -1,623 +1,201 @@
-# Ellie - Shift Schedule Manager for Mining Workers
+# Ryvro
 
-![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
-![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
-[![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
+![CI Pipeline](https://github.com/IlyasuSeidu/ryvro/workflows/CI%20Pipeline/badge.svg)
+![E2E Tests](https://github.com/IlyasuSeidu/ryvro/workflows/E2E%20Tests/badge.svg)
+[![codecov](https://codecov.io/gh/IlyasuSeidu/ryvro/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/ryvro)
 
-**Ellie** helps mining shift workers manage complex rotating shift schedules during multi-week work cycles. Never lose track of whether you're on day shifts, night shifts, or off days again.
+Ryvro is a voice-first shift assistant.
 
-> **"Did I set my alarm for the right time? Am I on days or nights tomorrow?"**
-> **"When's my next fly-out day?"**
-> **"Am I working on my kid's birthday in March?"**
+The product promise is simple:
 
-Ellie answers these questions with a glance—no mental math, no counting forward from your start date, no missed shifts.
+> Configure your shift once. Then ask Ryvro by voice anytime and get the right shift answer instantly.
 
----
+Ryvro is built for shift workers who do not want to manage a calendar, study a dashboard, or count through a repeating pattern. They open the app, ask a question, and hear the answer.
 
-## 🎯 The Problem
+## Current Product Concept
 
-Mining shift workers operate on repeating cycles (7-7-7, 4-4-4, 2-2-3, custom patterns) that span weeks. Keeping track of which day of the cycle you're on, across months and life events, is mentally exhausting. Workers constantly:
+Ryvro has one main job:
 
-- Lose their place in the 21-day cycle, especially after days off
-- Do mental math to figure out if they're working a specific future date
-- Miss shift start times because they set alarms for the wrong shift
-- Can't plan family events without counting through their pattern manually
+- Help the worker set up an accurate repeating shift pattern.
+- Let the worker ask natural voice questions about that pattern.
+- Answer today, future dates, ranges, next days off, next work days, weekends, and named weekdays clearly.
+- Keep the app simple enough for a non-technical worker to understand without friction.
 
-**The Core Insight**: Humans aren't built to track repeating patterns across months. We need a tool that does the math for us.
+The shipped mental model is not a roster manager. It is not a calendar app. It is not a productivity dashboard. It is a voice assistant for shift answers.
 
----
+## Main Surfaces
 
-## ✨ The Solution
+### Onboarding And Setup
 
-Ellie is a **premium shift schedule app** built specifically for mining workers. It provides:
+The setup flow gathers only what Ryvro needs to answer accurately:
 
-- **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
-- **Long-term planning**: See your schedule months in advance
-- **Smart notifications**: Reminders before shift starts
-- **Offline-first**: Works underground with no cell signal
-- **Pattern flexibility**: Supports all standard patterns + custom cycles
-- **Dual roster paradigms**: Rotating rosters and FIFO/block rosters
-- **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, and current block info
+- The repeating shift pattern.
+- A known date.
+- The exact shift phase on that known date.
+- Shift times in 12-hour format.
+- Reminder preference.
+- A final setup check before the user tries Ryvro.
 
----
+The setup screens use the new Ryvro visual system: dark base, cyan, blue, silver, and muted text. The UI avoids shift-specific random colors.
 
-## 🚀 Current Features
+### Ask
 
-### FIFO + Rotating Support (Phase 1-7)
+The Ask screen is the main app surface after onboarding.
 
-- **Dual-paradigm scheduling**: `RosterType` split between `rotating` and `fifo`
-- **FIFO onboarding path**: Roster selection, FIFO patterns, custom FIFO config, FIFO phase selector
-- **FIFO dashboard UX**: Work/Rest block labels, block countdowns, FIFO legends and badges
-- **Voice assistant FIFO tools**:
-  - `get_next_work_block`
-  - `get_next_rest_block`
-  - `days_until_work`
-  - `days_until_rest`
-  - `current_block_info`
-- **Backend parity**: Cloud Function tool execution supports rotating + FIFO behaviors
-- **Persistence + migration**: Backward-compatible onboarding migration to `rosterType`
+It contains:
 
-### Premium Onboarding Flow (Completed)
+- Ryvro brand header.
+- Settings icon in the top-right corner.
+- Large animated microphone.
+- Voice-only interaction.
+- One polished answer card.
 
-Ellie features a polished, Tinder-inspired onboarding experience built with React Native Reanimated 4:
+There is no chat composer, no typing box, and no bottom tab bar in the main concept.
 
-#### 1. **Welcome Screen** - First Impressions Matter
+### Settings
 
-- Orchestrated entrance animations with staggered delays
-- Spring physics for natural motion
-- Accessibility-first with reduced motion support
-- [Read the story →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)
+Settings is opened from the Ask screen. It exists for repair and account tasks:
 
-#### 2. **Introduction Screen** - Conversational Onboarding
+- View or fix shift setup.
+- Edit shift times.
+- Edit reminders.
+- Edit user details.
+- Manage Ryvro Pro.
+- Contact support, privacy, terms, and sign out.
 
-- Progressive disclosure chatbot experience (one question at a time)
-- Animated mining helmet avatar with breathing animation
-- Typing indicators for natural conversation feel
-- Smart editing (long-press any response to rewind conversation)
-- Name personalization ("Great to meet you, John!")
-- Sacred Theme colors throughout (gold and stone)
-- 60fps spring animations for all transitions
-- [Read the story →](build-in-public/emotional-moment/10-conversational-introduction.md)
+Settings should keep advanced setup hidden behind plain-language repair paths.
 
-#### 3. **Shift Pattern Selection** - Tinder-Style Cards
+### Ryvro Pro
 
-- Swipeable cards for 9 standard patterns (4-4-4, 7-7-7, 2-2-3, etc.)
-- Physics-based gestures with rotation and depth effects
-- Learn More modals for pattern details
-- Custom pattern option
-- [Read the story →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md)
+Ryvro uses a hard paywall with one voice trial:
 
-#### 4. **Custom Pattern Builder** - Every Mine is Different
+- A new user can try Ryvro voice once.
+- After the first answer, Ryvro Pro is required for ongoing voice answers.
+- RevenueCat entitlement source of truth is `pro`.
+- Product IDs are `ryvro_pro_monthly` and `ryvro_pro_annual`.
 
-- Visual sliders with 3D icon thumbs (sun, moon, rest)
-- Real-time pattern preview with color-coded blocks
-- Smart validation with helpful warnings
-- Live cycle visualization
-- [Read the story →](build-in-public/user-empathy/05-custom-pattern-builder.md)
+## What Ryvro Answers
 
-#### 5. **Phase Selector** - Tinder-Style Phase Selection
+Ryvro supports exact-date and range questions through the local offline brain and the online backend.
 
-- Dedicated screen for phase selection (separated from Start Date)
-- Swipeable cards for phases (Day/Night/Off for 2-shift, +Morning/Afternoon for 3-shift)
-- Two-stage selection flow: Phase cards → Day-within-phase cards
-- **Day-within-phase selector** - capture exact cycle position (e.g., day 3 of 7 nights)
-- Physics-based gestures with spring animations
-- Stack depth effects (scale, opacity, rotation)
-- Progressive disclosure (day cards only shown if phase length > 1)
-- Calculates phaseOffset and saves to context
-- [Read the story →](build-in-public/system-thinking/11-phase-selector-separation.md)
+Examples:
 
-#### 6. **Start Date Selection** - Calendar Intelligence
+- What shift am I on today?
+- What shift am I on tomorrow?
+- Am I working next Saturday?
+- What shift do I have in two weeks?
+- When is my next day off?
+- What am I working from June 12 to June 27?
+- What do I work over the next 14 days?
+- What shift is the first Saturday in August?
+- What do I work at the end of the month?
 
-- Interactive calendar with swipe gestures for month navigation
-- Live shift preview icons on calendar days (☀️🌙🏠)
-- 7-day timeline showing upcoming shifts
-- Smart defaults (tomorrow as start date)
-- Calendar legend for shift types
-- Uses phaseOffset from Phase Selector for accurate positioning
-- [Read the calendar story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
-- [Day positioning story →](build-in-public/user-empathy/09-day-within-phase-positioning.md)
+Answers should be friendly, include the user's name when available, use 12-hour time, and avoid technical schedule language.
 
-#### 7. **Shift Time Input** - Smart Time Configuration
+## Architecture
 
-- 6 preset shift times (Early Day, Standard Day, Late Day, Evening, Night)
-- Custom time input with 12/24-hour format conversion
-- Auto-detection of day/night shifts based on start time
-- Overnight shift handling (crossing midnight)
-- Duration selector (8 or 12 hours)
-- Live preview of shift start/end times
-- Pattern summary card with floating animations
-- [Read the story →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)
+Ryvro keeps the accurate schedule engine behind a simplified experience.
 
-### Core Technology (Foundation)
+High-level flow:
 
-- **Bulletproof Shift Calculation**: Pure functions for instant, offline calculations
-- **TypeScript + Zod Validation**: Runtime safety for user data
-- **Firebase Backend**: Cloud Firestore for data sync
-- **Sacred Theme System**: Premium design language for shift workers
-- **1,500+ Tests**: Comprehensive coverage across 42 test suites
-- [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
+1. Onboarding captures the user's repeating pattern and exact phase.
+2. The app stores the normalized schedule locally and syncs it to Firebase when available.
+3. The offline local brain answers deterministic schedule questions instantly.
+4. The online backend handles broader natural-language questions and range parsing.
+5. The voice surface reads answers aloud and displays a clean answer card.
 
----
+Important implementation areas:
 
-## 🛠 Tech Stack
+- `src/screens/onboarding/premium/` for the current setup flow.
+- `src/screens/main/RyvroAskScreen.tsx` for the main voice surface.
+- `src/screens/main/SimpleSettingsScreen.tsx` for settings and repair entry points.
+- `src/services/VoiceAssistantService.ts` for voice orchestration.
+- `src/utils/localShiftBrain.ts` for offline answers.
+- `src/utils/shiftQueryTools.ts` for deterministic schedule tools.
+- `backend/functions/src/ryvro-brain.ts` for online backend answers.
 
-### Frontend
+## Visual System
 
-- **Framework**: Expo SDK 54 with React Native 0.81
-- **Language**: TypeScript 5.9 (strict mode)
-- **Animations**: React Native Reanimated 4
-- **Gestures**: React Native Gesture Handler
-- **UI Components**: Custom components with Sacred theme
-- **Navigation**: React Navigation 7.x (Native Stack)
+Use only the current Ryvro palette for active surfaces:
 
-### Backend
+- Dark base.
+- Cyan.
+- Blue `#147cff`.
+- Silver.
+- Muted text.
 
-- **Database**: Firebase Cloud Firestore
-- **Authentication**: Firebase Auth
-- **Storage**: Firebase Storage (for icons/assets)
-- **Environment Management**: dotenv with environment validation
+Do not use shift-specific color themes for tabs, status areas, cards, or buttons. Shift type can be shown with words and icons, but the app should remain visually consistent.
 
-### State Management
+## Language
 
-- **Onboarding**: React Context (`OnboardingContext`)
-- **Shift Calculations**: Pure functions (client-side)
-- **User Data**: Firebase Firestore + local state
+The active product is English-only.
 
-### Code Quality
+Old locale files may remain for history or migration, but the app runtime should not expose a language picker or localized user-facing copy in the new concept.
 
-- **Linting**: ESLint with TypeScript rules
-- **Formatting**: Prettier
-- **Pre-commit Hooks**: Husky + lint-staged
-- **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,500 tests), React Testing Library, Detox (E2E)
+## Backend And Firebase
 
-### CI/CD
+Production Firebase project:
 
-- **GitHub Actions**: Automated testing and builds
-- **Code Coverage**: Codecov integration
-- **Platform Builds**: EAS Build (iOS/Android)
+- `ryvro-shift-planner`
 
----
+Main functions:
 
-## 📦 Getting Started
+- `ryvroBrain`
+- `parseShiftScheduleDescription`
 
-### Prerequisites
-
-- **Node.js**: v18.x or later
-- **npm**: v9.x or later
-- **Expo CLI**: Latest version
-- **iOS Development** (macOS only):
-  - Xcode 14 or later
-  - CocoaPods
-- **Android Development**:
-  - Android Studio
-  - Android SDK (API 33 or later)
-  - JDK 17
-
-### Installation
+Deploy backend functions:
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/IlyasuSeidu/Ellie.git
-cd Ellie
+firebase deploy --only functions --project ryvro-shift-planner
+```
 
-# 2. Install dependencies (use --legacy-peer-deps due to React Native constraints)
-npm install --legacy-peer-deps
+## Development
 
-# 3. Set up environment variables
-# Create .env file in root directory
-cp .env.example .env
+Install dependencies:
 
-# 4. Add your Firebase configuration to .env
-FIREBASE_API_KEY=your_api_key
-FIREBASE_AUTH_DOMAIN=your_auth_domain
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_STORAGE_BUCKET=your_storage_bucket
-FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-FIREBASE_APP_ID=your_app_id
+```bash
+npm ci --legacy-peer-deps
+```
 
-# 5. Start the development server
+Start Expo:
+
+```bash
 npm start
 ```
 
-### Running the App
+Run the main quality gates:
 
 ```bash
-# iOS Simulator (macOS only)
-npm run ios
-
-# Android Emulator
-npm run android
-
-# Expo Go (physical device)
-npm start  # Then scan QR code with Expo Go app
-```
-
----
-
-## 🧪 Development
-
-### Available Scripts
-
-#### Development
-
-```bash
-npm start                # Start Expo development server
-npm run android          # Run on Android emulator
-npm run ios              # Run on iOS simulator
-npm run web              # Run in web browser (limited support)
-```
-
-#### Code Quality
-
-```bash
-npm run lint             # Run ESLint
-npm run lint:fix         # Fix ESLint errors automatically
-npm run format           # Format code with Prettier
-npm run format:check     # Check if code is formatted
-npm run type-check       # Run TypeScript type checking
-npm run validate         # Run type-check and lint together
-```
-
-#### Testing
-
-```bash
-npm test                 # Run all unit tests
-npm run test:watch       # Run tests in watch mode
-npm run test:coverage    # Run tests with coverage report
-npm run test:e2e         # Run E2E tests (requires built app)
-npm run test:e2e:build   # Build app for E2E testing
-```
-
-#### Specific Test Suites
-
-```bash
-# Test individual screens
-npm test -- --testPathPattern="PremiumWelcomeScreen"
-npm test -- --testPathPattern="PremiumShiftPatternScreen"
-npm test -- --testPathPattern="PremiumStartDateScreen"
-
-# Test utils and services
-npm test -- --testPathPattern="shiftUtils"
-npm test -- --testPathPattern="ShiftDataService"
-```
-
----
-
-## 📁 Project Structure
-
-```
-Ellie/
-├── .github/                      # GitHub configuration & CI/CD workflows
-├── .husky/                       # Git hooks (pre-commit)
-├── assets/                       # Static assets
-│   └── onboarding/
-│       └── icons/
-│           ├── consolidated/     # 3D pattern icons
-│           ├── phase-selector/   # Day/night/off icons
-│           └── ui-elements/      # Buttons, hints, etc.
-├── build-in-public/              # 📝 Build-in-public content
-│   ├── system-thinking/          # Foundation & architecture stories
-│   ├── design-tradeoff/          # Sacred theme & design decisions
-│   ├── emotional-moment/         # Welcome screen & first impressions
-│   ├── unexpected-challenge/     # Tinder-style pattern selection
-│   ├── user-empathy/             # Custom pattern builder
-│   └── technical-discovery/      # Start date calendar system
-├── src/
-│   ├── components/               # Reusable UI components
-│   │   └── onboarding/
-│   │       └── premium/          # Premium onboarding components
-│   │           ├── PatternCard.tsx
-│   │           ├── PhaseSelector.tsx
-│   │           ├── PremiumButton.tsx
-│   │           ├── PremiumCalendar.tsx
-│   │           ├── PremiumSlider.tsx
-│   │           └── __tests__/    # Component tests
-│   ├── contexts/                 # React contexts
-│   │   ├── OnboardingContext.tsx # Onboarding state management
-│   │   └── __tests__/
-│   ├── navigation/               # Navigation configuration
-│   │   └── OnboardingNavigator.tsx
-│   ├── screens/                  # Screen components
-│   │   └── onboarding/
-│   │       └── premium/
-│   │           ├── PremiumWelcomeScreen.tsx
-│   │           ├── PremiumIntroductionScreen.tsx
-│   │           ├── PremiumShiftPatternScreen.tsx     # Tinder-style cards
-│   │           ├── PremiumCustomPatternScreen.tsx    # Custom builder
-│   │           ├── PremiumStartDateScreen.tsx        # Calendar & phase
-│   │           ├── PremiumShiftTimeInputScreen.tsx   # Shift time configuration
-│   │           └── __tests__/
-│   ├── services/                 # Backend services
-│   │   ├── AsyncStorageService.ts
-│   │   ├── AuthService.ts
-│   │   ├── FirebaseService.ts
-│   │   ├── ShiftDataService.ts
-│   │   └── __tests__/
-│   ├── types/                    # TypeScript type definitions
-│   │   └── index.ts              # ShiftPattern, ShiftCycle, etc.
-│   ├── utils/                    # Utility functions
-│   │   ├── shiftUtils.ts         # Shift calculation logic
-│   │   ├── dateUtils.ts          # Date manipulation
-│   │   ├── theme.ts              # Sacred theme system
-│   │   └── __tests__/
-│   └── config/                   # App configuration
-│       └── firebase.config.ts
-├── tests/                        # Integration tests
-├── App.tsx                       # Root component
-├── app.json                      # Expo configuration
-└── README.md                     # This file
-```
-
----
-
-## 🎨 Design System - Sacred Theme
-
-Ellie uses a custom design system called **"Sacred"** - built specifically for shift workers who check their schedules at 4am before heading underground.
-
-### Color Palette
-
-Colors inspired by the mining environment itself:
-
-| Name           | Hex       | Usage                                   |
-| -------------- | --------- | --------------------------------------- |
-| **deepVoid**   | `#0C0A09` | Backgrounds (the darkness underground)  |
-| **sacredGold** | `#C5975C` | Primary accents (the mineral extracted) |
-| **paleGold**   | `#F5F1E8` | Body text (4.8:1 contrast, WCAG AA)     |
-| **ashStone**   | `#1C1917` | Card backgrounds (the rock face)        |
-| **warmStone**  | `#A8A29E` | Secondary text                          |
-| **lightStone** | `#78716C` | Labels and hints                        |
-| **dayShift**   | `#2196F3` | Day shift indicators                    |
-| **nightShift** | `#651FFF` | Night shift indicators                  |
-| **daysOff**    | `#FF9800` | Days off indicators                     |
-
-[Read the design story →](build-in-public/design-tradeoff/02-sacred-theme-system.md)
-
----
-
-## 🧭 Roadmap
-
-### ✅ Phase 1: Foundation (Completed)
-
-- [x] Project setup and development environment
-- [x] TypeScript types and Zod validation
-- [x] Utility functions (shift calculation, date handling)
-- [x] Firebase integration
-- [x] Sacred theme system
-- [x] Testing infrastructure (1,500+ tests)
-
-### ✅ Phase 2: Premium Onboarding (In Progress)
-
-- [x] Welcome screen with orchestrated animations
-- [x] Introduction screen (name, occupation, company, country)
-- [x] Tinder-style shift pattern selection
-- [x] Custom pattern builder with visual sliders
-- [x] Start date & phase selection with calendar
-- [x] Shift time input with presets and custom options
-- [x] Onboarding navigation flow
-
-### 🚧 Phase 3: Core App Features (In Progress)
-
-- [ ] Energy level selection
-- [ ] AI assistance preference
-- [ ] Earnings input (hourly rate, overtime)
-- [ ] Onboarding completion screen
-
-### 📋 Phase 4: Main App (Planned)
-
-- [ ] Home screen with "Tomorrow: [Shift Type]" display
-- [ ] Full calendar view with shift preview
-- [ ] Shift notifications (1 hour before start)
-- [ ] Pattern editing and management
-- [ ] Fly-out day countdown
-- [ ] Important date checking ("Am I working on...")
-
-### 🔮 Phase 5: Advanced Features (Future)
-
-- [ ] Multiple pattern support (different sites)
-- [ ] Shift swap tracking
-- [ ] Calendar export (Google Calendar integration)
-- [ ] Pattern sharing with coworkers
-- [ ] Recurring event support (holidays, shutdowns)
-- [ ] Analytics and insights (hours worked, earnings tracking)
-
----
-
-## 📖 Build-in-Public Journey
-
-I'm building Ellie in public, documenting every decision, challenge, and lesson learned. Each major feature has a dedicated story:
-
-| Feature                 | Story Angle          | Link                                                                                |
-| ----------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| **Day 1: Foundation**   | System Thinking      | [Read →](build-in-public/system-thinking/01-day-one-foundations.md)                 |
-| **Sacred Theme**        | Design Tradeoff      | [Read →](build-in-public/design-tradeoff/02-sacred-theme-system.md)                 |
-| **Welcome Screen**      | Emotional Moment     | [Read →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)    |
-| **Pattern Selection**   | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
-| **Custom Builder**      | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
-| **Start Date Screen**   | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
-| **Shift Time Input**    | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
-| **Shift System**        | System Thinking      | [Read →](build-in-public/system-thinking/08-shift-system-architecture.md)           |
-| **Day Within Phase**    | User Empathy         | [Read →](build-in-public/user-empathy/09-day-within-phase-positioning.md)           |
-| **Introduction Screen** | Emotional Moment     | [Read →](build-in-public/emotional-moment/10-conversational-introduction.md)        |
-| **Phase Selector**      | System Thinking      | [Read →](build-in-public/system-thinking/11-phase-selector-separation.md)           |
-
-Each story includes:
-
-- Human summary for miners
-- Build-in-public post
-- Beginner lesson
-- Expert insight
-- Short video script
-- Future improvements
-
----
-
-## 🧪 Testing Strategy
-
-Ellie has comprehensive test coverage across all layers:
-
-### Unit Tests (1,500+ tests)
-
-- **Utilities**: Shift calculations, date manipulation, validation
-- **Components**: All onboarding components
-- **Services**: Firebase, storage, auth, shift data
-- **Contexts**: Onboarding state management
-
-### Integration Tests
-
-- **Services Integration**: Cross-service data flow
-- **Onboarding Flow**: Complete user journey
-
-### E2E Tests (Planned)
-
-- **Critical Flows**: Onboarding completion, shift viewing
-- **Platform-Specific**: iOS and Android behavior
-
-### Test Commands
-
-```bash
-# Run all tests
-npm test
-
-# Run specific test suite
-npm test -- --testPathPattern="PremiumStartDateScreen"
-
-# Watch mode for TDD
-npm run test:watch
-
-# Coverage report
-npm run test:coverage
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-### 1. Code Standards
-
-- **TypeScript**: Strict mode, no `any` types
-- **Testing**: Add tests for all new features
-- **Formatting**: Prettier + ESLint (auto-fixed on commit)
-- **Commits**: Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-
-### 2. Development Workflow
-
-```bash
-# 1. Create feature branch
-git checkout -b feature/your-feature-name
-
-# 2. Make changes and add tests
-# 3. Run validation
-npm run validate
-npm test
-
-# 4. Commit (pre-commit hooks will run automatically)
-git commit -m "feat: add new feature"
-
-# 5. Push and create PR
-git push origin feature/your-feature-name
-```
-
-### 3. Pull Request Template
-
-- Describe what changed and why
-- Link related issues
-- Include screenshots for UI changes
-- Verify all CI checks pass
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Metro bundler cache issues**
-
-```bash
-npx expo start -c
-```
-
-**iOS build failing**
-
-```bash
-cd ios && pod install && cd ..
-npm run ios
-```
-
-**Android build failing**
-
-```bash
-cd android && ./gradlew clean && cd ..
-npm run android
-```
-
-**Type errors after dependency update**
-
-```bash
+npm run lint
 npm run type-check
+npm test -- --runInBand --silent
+npm --prefix backend/functions test
+npm --prefix backend/functions run build
 ```
 
-**Pre-commit hook failing**
+Run the full release gate:
 
 ```bash
-npm run validate
-npm run format
+npm run release:check
 ```
 
-**Firebase connection issues**
+## Release Status
 
-- Verify `.env` file has correct Firebase credentials
-- Check Firebase project is active
-- Ensure Firestore rules allow read/write
+Ryvro is still in launch preparation. The app is not live in the App Store or Google Play until the owner completes store submission, physical-device QA, subscription QA, screenshots, and final review steps.
 
----
+Current launch handoff files:
 
-## 📊 Metrics
+- [Release tasks](RYVRO_RELEASE_TASKS.md)
+- [Release readiness report](docs/RYVRO_RELEASE_READINESS_REPORT.md)
+- [External service setup](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md)
+- [RevenueCat handoff](docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md)
+- [App Store and TestFlight handoff](docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md)
+- [Submit blocker triage](docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md)
 
-### Current Status (as of latest commit)
+## Historical Material
 
-- **Total Tests**: 1,701 passing (51 test suites)
-- **Test Coverage**:
-  - Branches: 62.03% (≥60% ✅)
-  - Functions: 76.95% (≥70% ✅)
-  - Lines: 73.60% (≥70% ✅)
-  - Statements: 74.27% (≥70% ✅)
-- **TypeScript Errors**: 0
-- **ESLint Errors**: 0
-- **Onboarding Screens**: 7 completed (Welcome, Introduction, Shift System, Pattern Selection, Custom Builder, Phase Selector, Start Date, Shift Time Input)
-- **Lines of Code**: ~18,000+
-- **Commits**: 79+
-- **Build Time**: ✅ Passing
-- **CI/CD**: ✅ All workflows green
+The repository still contains historical documents and archived implementation notes from the old builder, dashboard, calendar, and multi-language direction. Those files are engineering history, not the current product model.
 
----
+For any new code, docs, screenshots, store copy, or GitHub issue, use the current concept:
 
-## 📄 License
-
-This project is private and proprietary.
-
----
-
-## 📞 Contact
-
-**GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
-**Repository**: [Ellie](https://github.com/IlyasuSeidu/Ellie)
-
----
-
-## 💡 The Vision
-
-**Ellie exists because shift work is hard enough without the mental overhead of tracking complex rotating schedules.**
-
-Every feature is designed with one question in mind: _"Will this help a miner know what shift they're on at 4am?"_
-
-If you're a shift worker tired of counting through your pattern, Ellie is for you.
-
----
-
-_Built with respect for the work, using Expo and React Native._
-
-_"Track your shifts. Own your time."_
+> Configure your shift once. Ask Ryvro by voice. Get the right shift answer instantly.

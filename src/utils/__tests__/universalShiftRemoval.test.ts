@@ -144,6 +144,17 @@ describe('universal-only shift model', () => {
     expect(prompt).toContain('Universal Refinery Rotation');
     expect(prompt).toContain('Refinery Day (work)');
     expect(prompt).toContain('Control Room Night (work)');
+    expect(prompt).toContain('If the user asks about a specific date, use get_shift_for_date.');
+    expect(prompt).toContain(
+      'If they ask about a range (week, month, next 7 days, next 14 days, last week, end of the month, from June 12 to June 27), use get_shifts_in_range.'
+    );
+    expect(prompt).toContain('"next two weeks Saturday" mean the Saturday');
+    expect(prompt).toContain('"next week Saturday" or "Saturday next week"');
+    expect(prompt).toContain('"Next 7 days" means the current date through six days');
+    expect(prompt).toContain('"Last week" means the previous Sunday through Saturday');
+    expect(prompt).toContain('"first Saturday in August" are exact dates');
+    expect(prompt).toContain('For all range questions, call get_shifts_in_range');
+    expect(prompt).toContain('If a date phrase can reasonably mean two different things');
     expect(prompt).not.toContain('legacy shift pattern');
   });
 

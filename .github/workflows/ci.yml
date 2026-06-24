@@ -25,8 +25,8 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
-      ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
-      ELLIE_BRAIN_TIMEOUT: '30000'
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
 
     steps:
       - name: Checkout code
@@ -69,8 +69,8 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
-      ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
-      ELLIE_BRAIN_TIMEOUT: '30000'
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
       NODE_ENV: test
 
     steps:
@@ -144,8 +144,8 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
-      ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
-      ELLIE_BRAIN_TIMEOUT: '30000'
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
 
     steps:
       - name: Checkout code
@@ -177,3 +177,41 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-
+
+  release-check:
+    name: Release Check
+    runs-on: ubuntu-latest
+
+    env:
+      # Firebase configuration (dummy values for CI)
+      FIREBASE_API_KEY: ci-test-api-key
+      FIREBASE_AUTH_DOMAIN: ci-test.firebaseapp.com
+      FIREBASE_PROJECT_ID: ci-test-project
+      FIREBASE_STORAGE_BUCKET: ci-test.appspot.com
+      FIREBASE_MESSAGING_SENDER_ID: '123456789'
+      FIREBASE_APP_ID: 1:123456789:web:abcdef
+      GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
+      NODE_ENV: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            backend/functions/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          npm ci --legacy-peer-deps
+          npm --prefix backend/functions ci
+
+      - name: Run release gate
+        run: npm run release:check

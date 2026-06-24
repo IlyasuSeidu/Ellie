@@ -42,7 +42,7 @@ Use the same day in native formats, but keep the public story focused on trust a
 
 - Best format: text post
 - Best angle: Founder Opinion + Mini Case Study
-- Opening move: "Day 1 of Ellie had two jobs"
+- Opening move: "Day 1 of Ryvro had two jobs"
 - Structure: honest chronology -> why the order mattered -> principle -> question
 - Best proof to show: the answer layer came before the visible layer, even though both happened on the same day
 - Tone note: reflective, sharp, and defensible

@@ -5,6 +5,7 @@
  */
 
 import { HolidayService } from '@/services/HolidayService';
+import { CACHE_TTL_MS } from '@/config/cacheConfig';
 import { Holiday } from '@/types';
 import { logger } from '@/utils/logger';
 
@@ -137,7 +138,8 @@ describe('HolidayService', () => {
     service = new HolidayService(storage);
 
     // Create mock data loader
-    mockDataLoader = jest.fn(async (country: string, year: number) => { await Promise.resolve();
+    mockDataLoader = jest.fn(async (country: string, year: number) => {
+      await Promise.resolve();
       if (country === 'US' && year === 2024) {
         return {
           country: 'US',
@@ -209,7 +211,8 @@ describe('HolidayService', () => {
       });
 
       it('should handle data loader errors', async () => {
-        await Promise.resolve(); mockDataLoader.mockRejectedValue(new Error('File read error'));
+        await Promise.resolve();
+        mockDataLoader.mockRejectedValue(new Error('File read error'));
 
         const holidays = await service.getHolidaysForCountry('US', 2024);
 
@@ -244,6 +247,8 @@ describe('HolidayService', () => {
 
   describe('Cache Management', () => {
     it('should cache loaded holidays', async () => {
+      const storageSetSpy = jest.spyOn(storage, 'set');
+
       await service.getHolidaysForCountry('US', 2024);
 
       const cacheKey = 'holidays:US:2024';
@@ -251,6 +256,11 @@ describe('HolidayService', () => {
 
       expect(cached).toBeDefined();
       expect(cached).toHaveLength(6);
+      expect(storageSetSpy).toHaveBeenCalledWith(
+        cacheKey,
+        expect.any(Array),
+        CACHE_TTL_MS.holidays
+      );
     });
 
     it('should use cache on subsequent calls', async () => {

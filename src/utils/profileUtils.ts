@@ -1,4 +1,5 @@
 import type { OnboardingData } from '@/contexts/OnboardingContext';
+import { formatTimeForDisplay } from '@/utils/shiftTimeUtils';
 
 export function getPatternDisplayName(data: OnboardingData): string {
   return data.universalSchedule?.name ?? 'Universal Schedule';
@@ -48,14 +49,5 @@ export function getShiftDurationSummary(data: OnboardingData): string {
 
 export function formatShiftTime(time?: string): string {
   if (!time) return '';
-  const [hoursRaw, minutesRaw] = time.split(':');
-  const hours = Number(hoursRaw);
-  const minutes = Number(minutesRaw);
-  if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return time;
-
-  const suffix = hours >= 12 ? 'PM' : 'AM';
-  const hour12 = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-  return minutes === 0
-    ? `${hour12} ${suffix}`
-    : `${hour12}:${String(minutes).padStart(2, '0')} ${suffix}`;
+  return formatTimeForDisplay(time);
 }

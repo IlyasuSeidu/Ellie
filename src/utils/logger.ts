@@ -14,9 +14,15 @@ interface LogContext {
 /**
  * Logger configuration
  */
+const debugLoggingEnabled =
+  process.env.DEBUG === 'true' || process.env.EXPO_PUBLIC_DEBUG === 'true';
+
 const config = {
-  // Only log debug in development
-  minLevel: process.env.NODE_ENV === 'production' ? ('info' as LogLevel) : ('debug' as LogLevel),
+  // Debug logs are noisy on device, so keep them opt-in even in development.
+  minLevel:
+    process.env.NODE_ENV === 'production' || !debugLoggingEnabled
+      ? ('info' as LogLevel)
+      : ('debug' as LogLevel),
 
   // Format timestamps
   includeTimestamp: true,

@@ -1,7 +1,7 @@
 /**
  * Voice Assistant Prompts & Tool Definitions
  *
- * System prompt and Claude tool definitions for the Ellie voice assistant.
+ * System prompt and Claude tool definitions for the Ryvro voice assistant.
  * These are used by the backend Cloud Function when calling Claude API.
  * Kept in the frontend codebase for reference and testing.
  */
@@ -19,13 +19,14 @@ export function buildSystemPrompt(context: VoiceAssistantUserContext): string {
     .map((definition) => `${definition.name} (${definition.kind})`)
     .join(', ');
 
-  return `You are Ellie, a friendly and helpful voice assistant for shift workers. You help ${context.name} understand their work schedule.
+  return `You are Ryvro, a friendly and helpful voice assistant for shift workers. You help ${context.name} understand their work schedule.
 
 PERSONALITY:
 - Warm, concise, and empathetic to shift workers
 - Use second person ("you have a night shift") not third person
 - Keep responses under 2-3 sentences for voice readability
 - When mentioning dates, use natural language ("this Saturday, December 5th")
+- Always use 12-hour AM/PM time format for user-facing times, for example "7:00 AM" and "7:00 PM". Never answer with 24-hour times such as "07:00" or "19:00".
 - For shift types, use the user's configured shift names, colors, icons, and schedule metadata when available.
 - Be conversational and supportive
 
@@ -37,12 +38,22 @@ CONTEXT:
 - Schedule mode: universal custom schedule
 - Schedule name: ${context.scheduleName}
 - Universal shift types: ${universalShiftTypes}
-- User's name: ${context.name}${context.occupation ? `\n- User's occupation: ${context.occupation}` : ''}
+- User's name: ${context.name}${context.occupation ? `\n- User's occupation: ${context.occupation}` : ''}${context.company ? `\n- User's company: ${context.company}` : ''}${context.country ? `\n- User's work country: ${context.country}` : ''}
 
 RULES:
 - Always use the provided tools to look up shift data. Never guess or make up schedules.
 - If the user asks about a specific date, use get_shift_for_date.
-- If they ask about a range (week, month), use get_shifts_in_range.
+- If they ask about a range (week, month, next 7 days, next 14 days, last week, end of the month, from June 12 to June 27), use get_shifts_in_range.
+- Treat natural date phrases as dates before answering. Examples: "Saturday two weeks from now" and "next two weeks Saturday" mean the Saturday in the week that starts two weeks from the current date. "Next two Saturdays" means answer both upcoming Saturdays.
+- For week ranges, "this week" means the current Sunday through Saturday calendar week, and "next week" means the following Sunday through Saturday calendar week. If the user adds a weekday, for example "next week Saturday" or "Saturday next week", answer that weekday inside the following Sunday-through-Saturday week, not the immediate upcoming weekday.
+- For month ranges, "this month" means the current calendar month, and "next month" means the following calendar month.
+- "Next 7 days" means the current date through six days after the current date. "Next 14 days" means the current date through thirteen days after the current date.
+- "Last week" means the previous Sunday through Saturday calendar week.
+- "End of the month" means the final seven calendar days of the current month. "From today to the end of the month" means the current date through the final calendar day of the current month.
+- Date ranges such as "from June 12 to June 27" and "from the 12th to the 27th of June" are inclusive and should use get_shifts_in_range.
+- Ordinal weekday phrases such as "first Saturday in August" are exact dates and should use get_shift_for_date.
+- For all range questions, call get_shifts_in_range instead of answering from memory so the app can display and speak a grouped schedule.
+- If a date phrase can reasonably mean two different things, ask one short clarification question before using a tool. Do not guess.
 - If they ask "am I working now/today", use get_current_status.
 - If they ask about counts or statistics, use get_statistics.
 - For "next day off", "next night shift", or a named universal shift such as on-call, training, travel, leave, or custom work, use get_next_occurrence.
@@ -76,7 +87,7 @@ export const CLAUDE_TOOL_DEFINITIONS = [
   {
     name: 'get_shifts_in_range',
     description:
-      'Get all shifts in a date range. Use for queries like "What shifts do I have next week?", "Show me my schedule for March", or "What am I working this week?"',
+      'Get all shifts in a date range. Use for queries like "What shifts do I have next week?", "What shifts do I have next 14 days?", "What did I work last week?", "What shifts do I have from June 12 to June 27?", or "What do I work at the end of the month?"',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -174,7 +185,7 @@ export const CLAUDE_TOOL_DEFINITIONS = [
   {
     name: 'get_next_rest_block',
     description:
-      'Find the next date when a rest/home block starts. Useful for "when am I next off-site?"',
+      'Find the next date when a rest/home block starts. Useful for rest, recovery, and rotating questions like "when does my next break start?"',
     input_schema: {
       type: 'object' as const,
       properties: {

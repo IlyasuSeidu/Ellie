@@ -10,7 +10,7 @@
 
 1. Localization is a product surface, not a copy task.
 
-2. Ellie’s shift calculations were fine. The drop-off risk was language mismatch between setup, Aha preview, and paywall.
+2. Ryvro’s shift calculations were fine. The drop-off risk was language mismatch between setup, Aha preview, and paywall.
 
 3. I rewrote those moments to reinforce one promise: set your roster once, preview upcoming shifts clearly.
 
@@ -22,8 +22,8 @@
 
 ## Short Version
 
-Localization is a product surface, not a copy task. I aligned Ellie’s setup, Aha preview, and paywall language around one clear promise. Same feature set, less onboarding hesitation.
+Localization is a product surface, not a copy task. I aligned Ryvro’s setup, Aha preview, and paywall language around one clear promise. Same feature set, less onboarding hesitation.
 
 ## Builder Variation
 
-I build Ellie between mine shifts, so I optimize for one thing: can someone understand the value before fatigue wins? Today’s pass was pure language alignment across key onboarding screens.
+I build Ryvro between mine shifts, so I optimize for one thing: can someone understand the value before fatigue wins? Today’s pass was pure language alignment across key onboarding screens.

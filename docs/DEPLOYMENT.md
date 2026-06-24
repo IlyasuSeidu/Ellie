@@ -2,26 +2,33 @@
 
 ## Overview
 
-This guide covers building and deploying the Ellie application to iOS and Android platforms using Expo Application Services (EAS).
+This guide covers building and deploying the Ryvro application to iOS and Android platforms using Expo Application Services (EAS).
 
-## Release Checklist (Dual Roster + Voice)
+Current Ryvro release source of truth:
+
+- `RYVRO_RELEASE_TASKS.md` for the current store-release sequence.
+- `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, RevenueCat, App Store Connect, Play Console, domain, social, and support setup.
+- `RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md` for production environment values.
+- `RYVRO_RELEASE_TASKS.md` for owner/account steps that cannot be completed from the repo.
+
+## Release Checklist (Ryvro Voice Assistant)
 
 Before cutting a release, run this gate in order:
 
 1. `npm run type-check`
 2. `npm test -- --runInBand`
 3. `npm run backend:build`
-4. Confirm voice env values are set (`EXPO_PUBLIC_ELLIE_BRAIN_URL`, wake-word env keys)
+4. Confirm backend env values are set (`RYVRO_BRAIN_URL`, `RYVRO_BRAIN_TIMEOUT`, `SHIFT_SCHEDULE_PARSER_URL`, parser timeout/length values, and wake-word env keys; retired `ELLIE_BRAIN_*` values must be removed before Ryvro release builds)
 5. Build dev clients for smoke:
    - `npx expo run:ios`
    - `npx expo run:android`
 6. Smoke pass:
-   - Rotating onboarding path
-   - FIFO onboarding path
-   - Dashboard block labels for FIFO
-   - Voice assistant: no-speech/offline/backend failure/wake-word-unavailable paths
+   - Simplified setup path: pattern, known date, exact phase, shift times, reminders
+   - Settings repair paths: setup, times, reminders, user details
+   - Ask screen: voice trial, answer card, online answer, offline fallback, and purchased-user path
+   - Paywall: trial gate, sandbox purchase, entitlement activation, restore, and relock
 7. Update release notes:
-   - `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`
+   - `SHIFT_WORKER_APP_REBRAND_AUDIT.md` and the release notes for the current PR/release branch
 
 Recommended branch naming:
 
@@ -94,54 +101,47 @@ eas login
 eas build:configure
 ```
 
-This creates `eas.json` configuration file.
+This repo already tracks `eas.json`. Use `eas build:configure` only when refreshing EAS project linkage, then keep the committed Ryvro build profiles intact.
 
-### 2. Configure EAS Build Profiles
+### 2. Verify EAS Build Profiles
 
-Edit `eas.json`:
+Do not replace the committed `eas.json` with an older sample from Expo docs. The tracked Ryvro file is the source of truth and must keep:
 
 ```json
 {
   "cli": {
-    "version": ">= 5.0.0"
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
+      "node": "20.19.4",
       "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      },
-      "android": {
-        "buildType": "apk"
-      }
+      "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal",
-      "ios": {
-        "simulator": false
-      },
-      "android": {
-        "buildType": "apk"
-      }
+      "node": "20.19.4",
+      "distribution": "internal"
     },
     "production": {
-      "distribution": "store",
-      "autoIncrement": true,
-      "env": {
-        "APP_ENV": "production"
+      "node": "20.19.4",
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "app-bundle"
       }
     }
   },
   "submit": {
     "production": {
       "ios": {
-        "appleId": "your-apple-id@example.com",
-        "ascAppId": "your-app-store-connect-id",
-        "appleTeamId": "your-team-id"
+        "appleId": "seiduilyasu94@gmail.com",
+        "ascAppId": "6776994726",
+        "appleTeamId": "BZ798WZJCB"
       },
       "android": {
-        "serviceAccountKeyPath": "./path/to/api-key.json",
+        "serviceAccountKeyPath": "./google-play-key.json",
         "track": "internal"
       }
     }
@@ -149,107 +149,92 @@ Edit `eas.json`:
 }
 ```
 
-### 3. Update app.json
+`submit.production` now includes the verified App Store Connect Apple ID email, ASC app ID, Android service-account key path, and internal Play track. The real Android key file stays outside the repository at ignored path `./google-play-key.json`; current evidence records that file path as passed, so `npm run release:submit:check` now fails only until the remaining owner evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
 
-```json
-{
-  "expo": {
-    "name": "Ellie",
-    "slug": "ellie",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "bundleIdentifier": "com.ilyasuseidu.ellie",
-      "buildNumber": "1",
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSCameraUsageDescription": "Allow Ellie to access your camera",
-        "NSPhotoLibraryUsageDescription": "Allow Ellie to access your photos"
-      }
-    },
-    "android": {
-      "package": "com.ilyasuseidu.ellie",
-      "versionCode": 1,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
-    },
-    "extra": {
-      "eas": {
-        "projectId": "your-project-id"
-      }
-    }
-  }
-}
+Because `cli.appVersionSource` is `remote`, Expo ignores tracked `ios.buildNumber` and `android.versionCode` for EAS store builds. Before each production-auth rebuild, check the remote values:
+
+```bash
+npm run release:versions:get
 ```
+
+If iOS build number or Android versionCode still matches an uploaded store binary, increment the remote value before rebuilding:
+
+```bash
+eas build:version:set --platform ios --profile production
+eas build:version:set --platform android --profile production
+```
+
+App Store Connect already has Ryvro version `1.0.0`, build `2`, from EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd` and EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`. The next production-auth-ready iOS build must increment the remote iOS build number past `2` before upload. Check Android `versionCode` with `npm run release:versions:get` and increment it before the next Play upload if it still matches an uploaded build.
+
+### 3. Verify app.config.js
+
+Ryvro uses dynamic Expo config in `app.config.js`, not a static `app.json` release sample. Before release, verify `app.config.js` still owns:
+
+- `name: 'Ryvro Shift Planner'`
+- `slug: 'ryvro'`
+- `scheme: 'ryvro'`
+- `icon: './assets/icon.png'`
+- `splash.image: './assets/splash-icon.png'`
+- iOS bundle identifier `com.ryvro.shiftplanner`
+- Android package `com.ryvro.shiftplanner`
+- native display name `Ryvro`
+- legal/support URLs on `https://getryvro.com`
+- Ryvro function defaults for `ryvroBrain` and `parseShiftScheduleDescription`
 
 ## Environment Configuration
 
 ### 1. Create Environment Files
 
-Create separate `.env` files for each environment:
+Create a production `.env` from the Ryvro production template. Do not start release builds from `.env.example`; that file is for local development defaults.
 
-- `.env.development`
-- `.env.staging`
-- `.env.production`
+```bash
+cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
+cp .env.production.example .env
+```
+
+Fill `.env` with the remaining real production values for Firebase web API/app IDs, RevenueCat SDK keys, legal/support URLs, EAS project ID, `RYVRO_BRAIN_URL`, and `SHIFT_SCHEDULE_PARSER_URL`. The committed production example already includes the known non-secret Ryvro Google web, iOS, and Android OAuth client IDs. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json` for local preflight. The production example still intentionally contains owner-only placeholders and should fail `npm run release:env:check` until those values are replaced locally.
+
+Before pushing secrets to EAS or starting production builds, run:
+
+```bash
+npm run release:env:check
+```
 
 ### 2. Configure Environment in EAS
 
-Add environment variables to EAS:
+After `npm run release:env:check` passes, push the checked `.env` values to EAS:
 
 ```bash
-eas secret:create --scope project --name FIREBASE_API_KEY --value "your-api-key"
-eas secret:create --scope project --name FIREBASE_PROJECT_ID --value "your-project-id"
+npm run release:env:push
 ```
 
-Or add to `eas.json`:
+Then create or refresh the Firebase native service files as EAS file variables, because `.easignore` excludes the root files from the cloud build archive:
 
-```json
-{
-  "build": {
-    "production": {
-      "env": {
-        "FIREBASE_API_KEY": "your-api-key",
-        "FIREBASE_PROJECT_ID": "your-project-id"
-      }
-    }
-  }
-}
+```bash
+npm run release:env:files
 ```
+
+That helper validates `.env` first, then runs:
+
+```bash
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_PLIST --type file --value ./GoogleService-Info.plist
+npx eas-cli env:create --environment production --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
+
+`app.config.js` prefers those EAS file-variable paths over the plain `EXPO_*_GOOGLE_SERVICES_FILE` local paths during cloud builds.
+
+Do not commit `.env`, service account keys, keystores, provisioning profiles, or real Firebase config copied from the consoles.
 
 ### 3. Load Environment Variables
 
-Install dotenv:
+Ryvro already loads release configuration from `app.config.js`; do not replace it with a static sample. If you add a new environment key, add it to:
 
-```bash
-npm install --save-dev dotenv
-```
-
-Update `app.config.js`:
-
-```javascript
-require('dotenv').config();
-
-export default {
-  expo: {
-    // ... existing config
-    extra: {
-      firebaseApiKey: process.env.FIREBASE_API_KEY,
-      firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
-      // ... other env vars
-    },
-  },
-};
-```
+- `.env.example`
+- `RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md`
+- `.env.production.example` when the key is required for release builds
+- `src/config/env.ts`
+- `scripts/verify-ryvro-production-env.js`
+- related tests in `tests/config/`
 
 ## Building for iOS
 
@@ -319,14 +304,16 @@ Edit `eas.json` for iOS-specific settings:
 
 ### 1. Create Keystore
 
-Generate a new keystore for signing:
+Generate a new upload keystore for signing if you are not letting EAS manage Android credentials:
 
 ```bash
-keytool -genkeypair -v -storetype PKCS12 -keystore ellie.keystore \
-  -alias ellie-key-alias -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkeypair -v \
+  -keystore ryvro-upload-key.keystore \
+  -alias ryvro-upload \
+  -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-**Important**: Store keystore and passwords securely!
+**Important**: Store keystore and passwords securely. Never commit the keystore. If using local Gradle signing, use `RYVRO_UPLOAD_*` properties as described in `docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md`.
 
 ### 2. Configure Android Credentials
 
@@ -391,10 +378,10 @@ Edit `eas.json` for Android-specific settings:
    - Fill in app information
 
 2. **App Information**:
-   - Name: Ellie
+   - Name: Ryvro Shift Planner
    - Primary Language: English
-   - Bundle ID: com.ilyasuseidu.ellie
-   - SKU: ellie-ios
+   - Bundle ID: com.ryvro.shiftplanner
+   - SKU: ryvro-shift-ios
 
 3. **Pricing and Availability**:
    - Set price tier
@@ -402,23 +389,25 @@ Edit `eas.json` for Android-specific settings:
 
 ### 2. Prepare App Metadata
 
-- **App Description**: Compelling description of Ellie
+- **App Description**: Use `docs/RYVRO_STORE_LISTING.md`
 - **Keywords**: Search optimization keywords
-- **Screenshots**: Required sizes for all devices
-  - iPhone 6.7": 1290 x 2796
-  - iPhone 6.5": 1242 x 2688
-  - iPhone 5.5": 1242 x 2208
-  - iPad Pro 12.9": 2048 x 2732
+- **Screenshots**: use `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for the current store-ready capture matrix
+  - App Store iPhone 6.9 inch bucket: 1290 x 2796
+  - App Store iPad 13 inch bucket: 2048 x 2732
+  - Google Play phone recommendation surfaces: 1080 x 1920 or higher, 9:16 portrait, JPEG or 24-bit PNG without alpha
 - **App Icon**: 1024 x 1024 (no transparency)
-- **Privacy Policy URL**: Required
-- **Support URL**: Required
+- **Privacy Policy URL**: Publish from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
+- **Support URL**: Publish from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
 
 ### 3. Submit to App Store
+
+Submit to TestFlight first. Do not submit for App Review until `npm run release:submit:check` passes, a production-auth-ready build is uploaded, TestFlight install QA passes on a real iPhone, App Store privacy/forms/subscriptions are complete, and non-secret evidence is recorded in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
 
 #### Option 1: Using EAS Submit
 
 ```bash
-eas submit --platform ios --profile production
+npm run release:submit:check
+eas submit --platform ios --latest
 ```
 
 #### Option 2: Manual Upload
@@ -426,7 +415,8 @@ eas submit --platform ios --profile production
 1. Download IPA from EAS build
 2. Use Transporter app or Xcode to upload
 3. Go to App Store Connect
-4. Select build and submit for review
+4. Select build for TestFlight processing and internal testing
+5. Submit for App Review only after the submit-readiness guard and TestFlight QA evidence pass
 
 ### 4. App Store Review Checklist
 
@@ -443,15 +433,17 @@ eas submit --platform ios --profile production
 
 ### 1. Prepare Google Play Console
 
+The Google Play app now exists in draft status as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`, and EAS Submit has uploaded versionCode `8` to the Play internal track. The remaining Play release work is internal tester-list and opt-in-link confirmation, Google Payments merchant-account completion before subscription products, physical Android QA from the store-signed internal-testing build, the required closed-testing period before production access, screenshots, and final production promotion evidence. The emulator is not acceptable for the final physical-device QA evidence.
+
 1. **Create Application**:
    - Go to [Google Play Console](https://play.google.com/console/)
    - Create new app
    - Fill in app details
 
 2. **App Information**:
-   - Name: Ellie
+   - Name: Ryvro Shift Planner
    - Default Language: English
-   - Package name: com.ilyasuseidu.ellie
+   - Package name: com.ryvro.shiftplanner
 
 3. **Store Listing**:
    - Short description (80 chars)
@@ -462,26 +454,30 @@ eas submit --platform ios --profile production
 
 ### 2. Create Release
 
-1. Go to "Production" → "Create new release"
+1. Go to "Internal testing" → "Create new release"
 2. Upload AAB file from EAS build
 3. Fill in release notes
-4. Set rollout percentage (optional)
+4. Add internal testers and keep the release off production until physical Android QA passes
 
 ### 3. Submit to Google Play
+
+Submit to the internal track first. Do not promote to production until `npm run release:submit:check` passes, the ignored local `./google-play-key.json` remains present outside Git for any Android EAS submit retry, Play Console app/package evidence is complete, internal-track Android install QA passes on a physical Android device, and the evidence log is updated.
 
 #### Option 1: Using EAS Submit
 
 ```bash
-eas submit --platform android --profile production
+npm run release:submit:check
+eas submit --platform android --latest
 ```
 
 #### Option 2: Manual Upload
 
 1. Download AAB from EAS build
 2. Go to Google Play Console
-3. Upload to production track
+3. Upload to the internal testing track
 4. Fill in release details
-5. Review and rollout
+5. Review and start internal testing
+6. Promote from internal testing to production only after all submit-readiness and physical-device QA gates pass
 
 ### 4. Content Rating
 
@@ -518,7 +514,7 @@ Configure in `app.json`:
 {
   "expo": {
     "updates": {
-      "url": "https://u.expo.dev/your-project-id"
+      "url": "https://u.expo.dev/b306643e-1688-448e-8acd-f72bf74312c3"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -526,6 +522,8 @@ Configure in `app.json`:
   }
 }
 ```
+
+The linked Ryvro EAS project is `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`. The active app config derives the same update URL from that project ID, so do not replace it with a generic placeholder during release prep.
 
 ### 2. Publish Update
 
@@ -635,8 +633,9 @@ jobs:
 
       - name: Submit to stores
         run: |
-          eas submit --platform ios --profile production --non-interactive
-          eas submit --platform android --profile production --non-interactive
+          npm run release:submit:check
+          eas submit --platform ios --latest --non-interactive
+          eas submit --platform android --latest --non-interactive
 ```
 
 ## Environment-Specific Configs
@@ -649,7 +648,7 @@ jobs:
     "development": {
       "env": {
         "APP_ENV": "development",
-        "API_URL": "https://dev-api.ellie.app"
+        "API_URL": "https://dev-api.getryvro.com"
       }
     }
   }
@@ -664,7 +663,7 @@ jobs:
     "staging": {
       "env": {
         "APP_ENV": "staging",
-        "API_URL": "https://staging-api.ellie.app"
+        "API_URL": "https://staging-api.getryvro.com"
       }
     }
   }
@@ -679,7 +678,7 @@ jobs:
     "production": {
       "env": {
         "APP_ENV": "production",
-        "API_URL": "https://api.ellie.app"
+        "API_URL": "https://api.getryvro.com"
       }
     }
   }
@@ -718,7 +717,7 @@ cd ..
 
 ```bash
 # Verify keystore
-keytool -list -v -keystore ellie.keystore
+keytool -list -v -keystore ryvro.keystore
 ```
 
 ### EAS Build Issues

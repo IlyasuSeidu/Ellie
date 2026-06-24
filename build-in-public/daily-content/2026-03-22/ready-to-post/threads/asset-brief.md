@@ -16,7 +16,7 @@
 - Chapter: language pass across onboarding moments
 - Hook: Small wording changes can remove big onboarding hesitation.
 - Proof line: The same value statement now appears consistently in setup, Aha, and paywall moments.
-- Builder overlay: Ellie is built from real shift-work constraints, keeping product language practical and direct.
+- Builder overlay: Ryvro is built from real shift-work constraints, keeping product language practical and direct.
 
 ## Asset Needs
 

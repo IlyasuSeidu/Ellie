@@ -179,13 +179,13 @@ describe('Style Utilities', () => {
       expect(() => hexToRGBA('#1234567', 0.5)).toThrow('Invalid hex color: #1234567');
     });
 
-    it('should convert Sacred palette colors', () => {
+    it('should convert Ryvro palette colors', () => {
       // Test with actual colors from the theme
       const goldRgba = hexToRGBA(colors.sacredGold, 0.1);
-      expect(goldRgba).toBe('rgba(180, 83, 9, 0.1)');
+      expect(goldRgba).toBe('rgba(32, 244, 220, 0.1)');
 
       const voidRgba = hexToRGBA(colors.deepVoid, 0.9);
-      expect(voidRgba).toBe('rgba(12, 10, 9, 0.9)');
+      expect(voidRgba).toBe('rgba(2, 7, 11, 0.9)');
     });
 
     it('should handle lowercase hex', () => {

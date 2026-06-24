@@ -1,6 +1,6 @@
 # End-of-Day Stop-Scroll Automation Prompt
 
-Run the daily Ellie content pack and refine it into publish-ready, platform-native assets.
+Run the daily Ryvro content pack and refine it into publish-ready, platform-native assets.
 
 ## Steps
 
@@ -51,12 +51,12 @@ build-in-public/daily-content/
 - `ready-to-post/x/asset-brief.md`
 - `ready-to-post/threads/post.md`
 - `ready-to-post/threads/asset-brief.md`
-- `/Users/Shared/Ellie/docs/HYBRID_REWRITE_STYLE.md`
-- `/Users/Shared/Ellie/docs/ELLIE_ANGLE_FRAMEWORK.md`
-- `/Users/Shared/Ellie/config/ellie-brand-context.js`
-- `/Users/Shared/Ellie/config/ellie-platform-playbook.js`
-- `/Users/Shared/Ellie/docs/ELLIE_BUILD_IN_PUBLIC_AGENT.md`
-- `/Users/Shared/Ellie/docs/ELLIE_PLATFORM_PLAYBOOK.md`
+- `<repo-root>/docs/HYBRID_REWRITE_STYLE.md`
+- `<repo-root>/docs/RYVRO_ANGLE_FRAMEWORK.md`
+- `<repo-root>/config/ryvro-brand-context.js`
+- `<repo-root>/config/ryvro-platform-playbook.js`
+- `<repo-root>/docs/RYVRO_BUILD_IN_PUBLIC_AGENT.md`
+- `<repo-root>/docs/RYVRO_PLATFORM_PLAYBOOK.md`
 
 4. Also inspect the last 3 previously generated dated folders to avoid repeating the same hooks, angles, or CTA patterns.
 
@@ -76,7 +76,7 @@ build-in-public/daily-content/
 - Preserve the strongest story moment from the day.
 - Do not lead with `GitHub`, `commit`, `push`, `diff`, or other internal build terms in publishable drafts.
 - Apply the hybrid rewrite style from `docs/HYBRID_REWRITE_STYLE.md`: keep the strongest tension, remove any claim the brief cannot defend, preserve chronology, and translate technical work into human consequence.
-- Keep Ellie product-first. For LinkedIn, X, and Threads you may layer in the miner-builder or vibe-coding angle, but it should support the product story rather than replace it.
+- Keep Ryvro product-first. For LinkedIn, X, and Threads you may layer in the miner-builder or vibe-coding angle, but it should support the product story rather than replace it.
 - Use `asset-brief.md` files to keep the format native to each platform rather than collapsing everything into one generic post shape.
 - For the scheduled `20:30` run, treat the pack as a rollover window from the previous day’s `20:30:00` to the current day’s `20:29:59`.
 

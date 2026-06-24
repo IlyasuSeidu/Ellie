@@ -1,0 +1,167 @@
+# Ryvro Environment Configuration Reference
+
+# This file documents every supported environment key.
+
+# For local development, copy .env.example to .env.
+
+# For release builds, copy .env.production.example to .env and run npm run release:env:check.
+
+# DO NOT commit .env to version control
+
+# App Environment (development, staging, production)
+
+APP_ENV=development
+
+# Firebase Configuration
+
+# Replace with your Firebase project's Web app config
+
+FIREBASE_API_KEY=your-firebase-api-key
+FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
+FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+FIREBASE_APP_ID=your-firebase-app-id
+FIREBASE_MEASUREMENT_ID=
+EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist
+EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json
+
+# EAS cloud builds should upload those same files as file variables:
+
+# GOOGLE_SERVICES_PLIST and GOOGLE_SERVICES_JSON
+
+# Google Sign-In Configuration
+
+# Get this from Google Cloud Console > APIs & Services > Credentials
+
+# Use the web client for Firebase/Auth, plus the native iOS and Android clients for the final bundle/package.
+
+GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
+
+# API Configuration
+
+API_BASE_URL=https://api.getryvro.com
+API_TIMEOUT=30000
+
+# Legal and Support URLs
+
+# Must be live HTTPS pages before App Store / Play submission.
+
+LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy
+LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms
+SUPPORT_URL=https://getryvro.com/support
+ACCOUNT_DELETION_URL=https://getryvro.com/delete-account
+
+# Ryvro Brain (Firebase Cloud Function)
+
+RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain
+RYVRO_BRAIN_TIMEOUT=30000
+
+# Wake Word Provider
+
+# Default uses OpenWakeWord local ONNX model (no cloud key required).
+
+WAKE_WORD_PROVIDER=openwakeword
+PICOVOICE_ACCESS_KEY=
+WAKE_WORD_ENABLED=false
+WAKE_WORD_AUTO_START=true
+WAKE_WORD_SENSITIVITY=0.65
+WAKE_WORD_PHRASE=Ryvro
+
+# Optional fallback paths (used if platform-specific variables are empty)
+
+WAKE_WORD_KEYWORD_PATHS=
+
+# Recommended for custom Ryvro wake word:
+
+# Android: place ryvro_android.ppn in android/app/src/main/assets/
+
+WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn
+
+# iOS: add ryvro_ios.ppn to the current Xcode app target resources
+
+WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn
+
+# Optional: built-in keywords (used when custom paths are empty)
+
+# Available examples: PORCUPINE, ALEXA, HEY_GOOGLE, JARVIS
+
+WAKE_WORD_BUILT_IN_KEYWORDS=
+
+# OpenWakeWord (custom provider, no cloud key required)
+
+# Set WAKE_WORD_PROVIDER=openwakeword to use these settings.
+
+# Set these after generating and bundling real Ryvro ONNX wake-word models.
+
+OPENWAKEWORD_MODEL_PATH=
+OPENWAKEWORD_MODEL_PATH_ANDROID=
+OPENWAKEWORD_MODEL_PATH_IOS=
+
+# Optional advanced feature-model overrides (defaults are bundled in native module):
+
+OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH=
+OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH_ANDROID=
+OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH_IOS=
+OPENWAKEWORD_EMBEDDING_MODEL_PATH=
+OPENWAKEWORD_EMBEDDING_MODEL_PATH_ANDROID=
+OPENWAKEWORD_EMBEDDING_MODEL_PATH_IOS=
+OPENWAKEWORD_THRESHOLD=0.45
+OPENWAKEWORD_TRIGGER_COOLDOWN_MS=1200
+
+# Anti-false-trigger tuning (recommended for mobile):
+
+# Minimum RMS (voice energy) required to count a trigger candidate.
+
+OPENWAKEWORD_MIN_RMS=0.0025
+
+# Number of consecutive inference frames that must meet threshold + min RMS.
+
+OPENWAKEWORD_ACTIVATION_FRAMES=3
+
+# Exponential smoothing applied to raw classifier score (0 = off, 1 = no smoothing).
+
+OPENWAKEWORD_SCORE_SMOOTHING_ALPHA=0.35
+
+# EAS Configuration (for Expo Application Services)
+
+# Get this from https://expo.dev after creating your project
+
+EAS_PROJECT_ID=your-eas-project-id
+
+# Development/Debugging
+
+DEBUG=false
+LOG_LEVEL=info
+
+# RevenueCat Subscriptions
+
+REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+REVENUECAT_ENTITLEMENT_ID=pro
+EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
+
+# Universal Shift Builder
+
+# Cloud Function URL for AI-assisted schedule parsing.
+
+# Leave empty to use the built-in deterministic fallback when the remote AI parser is unavailable.
+
+SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription
+SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000
+SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000
+
+# Set to true to expose the Universal Shift Builder entry point in Profile.
+
+UNIVERSAL_SHIFT_BUILDER_ENABLED=true
+
+# Set to true to expose AI-assisted schedule drafting inside the builder.
+
+AI_SHIFT_BUILDER_ENABLED=true

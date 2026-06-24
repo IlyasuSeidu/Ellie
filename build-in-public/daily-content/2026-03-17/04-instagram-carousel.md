@@ -51,7 +51,7 @@ The language experience forced a better decision.
 The last confusing edges removed.
 
 The goal wasn't translation.
-It was instant comprehension — in every language Ellie ships in.
+It was instant comprehension — in every language Ryvro ships in.
 
 ---
 
@@ -89,13 +89,13 @@ Onboarding? Pricing? The first screen after sign-up?
 
 ## Caption
 
-Today's work touched three moments inside Ellie: the welcome screen, the pricing moment, and the language experience.
+Today's work touched three moments inside Ryvro: the welcome screen, the pricing moment, and the language experience.
 
 What tied them together wasn't a feature. It was product clarity — the kind that makes a first impression feel safe instead of effortful.
 
 The language experience was the most useful pass of the day. Not because it was visible, but because it exposed a wrong assumption: that visual polish alone builds trust. It doesn't. Comprehension does.
 
-Ellie is a shift scheduling app built for miners. I am a miner building it. The standard I hold it to is the standard I'd want as a shift worker picking up a new tool at the start of a rotation.
+Ryvro is a shift scheduling app built for miners. I am a miner building it. The standard I hold it to is the standard I'd want as a shift worker picking up a new tool at the start of a rotation.
 
 If you build products: where do you most often find hidden trust leaks — onboarding, pricing, language, or somewhere else?
 

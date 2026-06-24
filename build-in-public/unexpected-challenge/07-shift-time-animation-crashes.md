@@ -166,7 +166,7 @@ const useNavigationAnimation = (animationValue: SharedValue<number>) => {
 
 **[10-30s] What I Built**
 
-"I'm building Ellie - an app for mining shift workers. Today I added the shift time input screen. It lets miners select when their shifts start: 6 AM? 10 PM? Custom time? Then it auto-calculates when they finish, handles overnight shifts crossing midnight, and detects if it's a day or night shift.
+"I'm building Ryvro - an app for mining shift workers. Today I added the shift time input screen. It lets miners select when their shifts start: 6 AM? 10 PM? Custom time? Then it auto-calculates when they finish, handles overnight shifts crossing midnight, and detects if it's a day or night shift.
 
 But when I tapped 'Continue' on the previous screen... crash."
 
@@ -186,7 +186,7 @@ The fix? Three things:
 
 **[85-90s] Invitation**
 
-"Have you dealt with Reanimated crashes? Drop your solution below. Building in public at github.com/IlyasuSeidu/Ellie"
+"Have you dealt with Reanimated crashes? Drop your solution below. Building in public at github.com/IlyasuSeidu/Ryvro"
 
 ---
 
@@ -219,7 +219,7 @@ The fix? Three things:
 
 6. **Accessibility Improvements**
    - Add voice input for time selection
-   - "Hey Ellie, my shift starts at 6 AM"
+   - "Ryvro, my shift starts at 6 AM"
    - Helpful for miners with gloves on or limited vision
 
 ---
@@ -501,4 +501,4 @@ Accessibility:
 
 ---
 
-_Building Ellie in public. Follow the journey at [github.com/IlyasuSeidu/Ellie](https://github.com/IlyasuSeidu/Ellie)_
+_Building Ryvro in public. Follow the journey at [github.com/IlyasuSeidu/Ryvro](https://github.com/IlyasuSeidu/Ryvro)_

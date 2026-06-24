@@ -60,6 +60,7 @@ export function formatLocalizedTime(
   return date.toLocaleTimeString(getLocaleTag(language), {
     hour: 'numeric',
     minute: '2-digit',
+    hour12: true,
     timeZone: 'UTC',
     ...options,
   });

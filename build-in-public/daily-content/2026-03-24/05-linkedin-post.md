@@ -1,6 +1,6 @@
 # LinkedIn Post
 
-Day 2 of Ellie taught a very specific product lesson:
+Day 2 of Ryvro taught a very specific product lesson:
 
 If onboarding feels like paperwork, people leave before the product earns enough trust to ask for anything.
 

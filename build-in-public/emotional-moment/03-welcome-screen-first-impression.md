@@ -8,7 +8,7 @@
 
 ## 1. HUMAN SUMMARY
 
-**What was built**: The first screen a miner sees when opening Ellie - a carefully orchestrated welcome animation with staggered entrance effects, floating icons, and a clear promise: "Track your shifts, own your time."
+**What was built**: The first screen a miner sees when opening Ryvro - a carefully orchestrated welcome animation with staggered entrance effects, floating icons, and a clear promise: "Track your shifts, own your time."
 
 **Why it matters for miners**: First impressions set expectations. If the app feels cheap or rushed, miners won't trust it with something as important as their work schedule. The Welcome Screen establishes credibility immediately—smooth animations say "we care about details," the sacred gold color says "your work is valuable," and the simple message says "we understand your problem."
 
@@ -22,7 +22,7 @@ I just spent 12 hours on a screen users see for 3 seconds.
 
 Worth it? Absolutely.
 
-**The Context**: Building Ellie's welcome screen. Users see it once, on first open, then never again (unless they reinstall).
+**The Context**: Building Ryvro's welcome screen. Users see it once, on first open, then never again (unless they reinstall).
 
 So why obsess over it?
 
@@ -97,7 +97,7 @@ useEffect(() => {
 
 Result: Users see a choreographed entrance. Their eyes follow the sequence. They process each element before the next appears.
 
-**Real Example from Ellie**:
+**Real Example from Ryvro**:
 
 ```typescript
 // Logo entrance
@@ -256,7 +256,7 @@ This way:
 "I spent 12 hours on a screen users see for 3 seconds. Here's why that's not crazy."
 
 **[WHAT I BUILT - 0:07-0:30]**
-"This is Ellie's welcome screen. The first thing miners see when they open the app.
+"This is Ryvro's welcome screen. The first thing miners see when they open the app.
 
 Watch how it loads: Logo bounces in. Then the tagline fades up from below. Then three icons float in, one by one. Then the continue button glows into existence.
 
@@ -277,7 +277,7 @@ Those staggered animations tell users: 'We thought about this. We cared enough t
 Also: I learned React Native Reanimated the hard way. Turns out animations that look smooth on the simulator can be janky on real devices. Always test on hardware."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. Follow to see how every detail—even a 3-second welcome screen—contributes to the whole. Next: making shift pattern selection feel like Tinder."
+"Building Ryvro in public. Follow to see how every detail—even a 3-second welcome screen—contributes to the whole. Next: making shift pattern selection feel like Tinder."
 
 ---
 
@@ -287,7 +287,7 @@ Also: I learned React Native Reanimated the hard way. Turns out animations that 
 
 1. **Skip Button**: Currently users MUST wait for animations to finish before tapping Continue. Should add a "Skip" button that appears after 0.5s for impatient users.
 
-2. **Lottie Animations**: Currently using simple opacity/transform animations. Could use Lottie for richer motion graphics (e.g., mining helmet icon animates on). Tradeoff: Bundle size +200KB.
+2. **Lottie Animations**: Currently using simple opacity/transform animations. Could use Lottie for richer motion graphics (e.g., Ryvro mark animates on). Tradeoff: Bundle size +200KB.
 
 3. **Audio Feedback**: Subtle "whoosh" sound as each element appears? Some apps do this. Feels premium but also annoying if user has sound on in public. Probably not worth it.
 

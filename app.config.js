@@ -10,54 +10,499 @@ try {
   // dotenv is optional in some environments
 }
 
+const fs = require('node:fs');
+const path = require('node:path');
+
+const GOOGLE_IOS_CLIENT_SUFFIX = '.apps.googleusercontent.com';
+const IOS_FIREBASE_APP_ID_PATTERN = /^1:\d+:ios:[a-f0-9]+$/i;
+const RYVRO_GOOGLE_PROJECT_NUMBER = '1002666052675';
+const RYVRO_GOOGLE_WEB_CLIENT_ID =
+  '1002666052675-qnj0l50lectmqq4g44alrvb0iuvaoh75.apps.googleusercontent.com';
+const RYVRO_GOOGLE_IOS_CLIENT_ID =
+  '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com';
+const RYVRO_GOOGLE_ANDROID_CLIENT_ID =
+  '1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com';
+
+function resolveProjectPath(filePath) {
+  return path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
+}
+
+function readOptionalFile(filePath) {
+  if (!filePath) {
+    return '';
+  }
+
+  try {
+    return fs.readFileSync(resolveProjectPath(filePath), 'utf8');
+  } catch (_error) {
+    return '';
+  }
+}
+
+function readOptionalJsonFile(filePath) {
+  const content = readOptionalFile(filePath);
+
+  if (!content) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(content);
+  } catch (_error) {
+    return null;
+  }
+}
+
+function readPlistStringValues(filePath) {
+  const content = readOptionalFile(filePath);
+  const values = {};
+  const pattern = /<key>([^<]+)<\/key>\s*<string>([^<]*)<\/string>/g;
+  let match;
+
+  while ((match = pattern.exec(content)) !== null) {
+    values[match[1]] = match[2];
+  }
+
+  return values;
+}
+
+function isValidIosFirebaseAppId(appId) {
+  return (
+    IOS_FIREBASE_APP_ID_PATTERN.test(appId || '') &&
+    !appId.includes('000000000000') &&
+    !/placeholder|local/i.test(appId)
+  );
+}
+
+function buildFirebaseConfigFromIosGoogleServicesFile(filePath) {
+  const values = readPlistStringValues(filePath);
+
+  if (
+    values.BUNDLE_ID !== 'com.ryvro.shiftplanner' ||
+    !isValidIosFirebaseAppId(values.GOOGLE_APP_ID)
+  ) {
+    return null;
+  }
+
+  return {
+    apiKey: values.API_KEY || '',
+    authDomain: values.PROJECT_ID ? `${values.PROJECT_ID}.firebaseapp.com` : '',
+    projectId: values.PROJECT_ID || '',
+    storageBucket: values.STORAGE_BUCKET || '',
+    messagingSenderId: values.GCM_SENDER_ID || '',
+    appId: values.GOOGLE_APP_ID || '',
+    googleIosClientId: values.CLIENT_ID || '',
+  };
+}
+
+function buildFirebaseConfigFromAndroidGoogleServicesFile(filePath) {
+  const values = readOptionalJsonFile(filePath);
+  const projectInfo = values?.project_info || {};
+  const client = Array.isArray(values?.client)
+    ? values.client.find(
+        (entry) =>
+          entry?.client_info?.android_client_info?.package_name === 'com.ryvro.shiftplanner'
+      )
+    : null;
+
+  if (
+    !client ||
+    projectInfo.project_id !== 'ryvro-shift-planner' ||
+    projectInfo.project_number !== RYVRO_GOOGLE_PROJECT_NUMBER
+  ) {
+    return null;
+  }
+
+  const oauthClients = Array.isArray(client.oauth_client) ? client.oauth_client : [];
+  const androidOAuthClient = oauthClients.find((entry) => entry?.client_type === 1);
+  const webOAuthClient = oauthClients.find((entry) => entry?.client_type === 3);
+
+  return {
+    apiKey: client.api_key?.[0]?.current_key || '',
+    authDomain: projectInfo.project_id ? `${projectInfo.project_id}.firebaseapp.com` : '',
+    projectId: projectInfo.project_id || '',
+    storageBucket: projectInfo.storage_bucket || '',
+    messagingSenderId: projectInfo.project_number || '',
+    googleAndroidClientId: androidOAuthClient?.client_id || '',
+    googleWebClientId: webOAuthClient?.client_id || '',
+  };
+}
+
+function getGoogleIosUrlScheme(googleIosClientId) {
+  if (!googleIosClientId || !googleIosClientId.endsWith(GOOGLE_IOS_CLIENT_SUFFIX)) {
+    return '';
+  }
+
+  return `com.googleusercontent.apps.${googleIosClientId.slice(0, -GOOGLE_IOS_CLIENT_SUFFIX.length)}`;
+}
+
+function getOAuthClientProjectNumber(clientId) {
+  const match = String(clientId || '').match(/^(\d+)-/);
+  return match?.[1] || '';
+}
+
+function isCompatibleGoogleOAuthClientId(clientId, projectNumber) {
+  if (!clientId) {
+    return false;
+  }
+
+  if (!projectNumber) {
+    return true;
+  }
+
+  return getOAuthClientProjectNumber(clientId) === projectNumber;
+}
+
+function getCompatibleEnvGoogleOAuthProjectNumber() {
+  const envMobileClientIds = [
+    process.env.GOOGLE_IOS_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    process.env.GOOGLE_ANDROID_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+  ].filter(Boolean);
+  const projectNumbers = envMobileClientIds.map(getOAuthClientProjectNumber).filter(Boolean);
+  const uniqueProjectNumbers = [...new Set(projectNumbers)];
+
+  return uniqueProjectNumbers.length === 1 ? uniqueProjectNumbers[0] : '';
+}
+
+function isRyvroFirebaseProjectId(projectId) {
+  return /^ryvro(?:-|$)/i.test(projectId || '');
+}
+
+function getCompatibleGoogleWebClientId(projectNumber, androidFirebaseConfig) {
+  const candidates = [
+    process.env.GOOGLE_WEB_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    androidFirebaseConfig?.googleWebClientId,
+    projectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_WEB_CLIENT_ID : '',
+  ];
+
+  for (const clientId of candidates) {
+    if (isCompatibleGoogleOAuthClientId(clientId, projectNumber)) {
+      return clientId;
+    }
+  }
+
+  return '';
+}
+
+function getCompatibleFirebaseFunctionUrl(envUrl, firebaseProjectId, functionName) {
+  const fallback = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/${functionName}`
+    : '';
+
+  if (!envUrl) {
+    return fallback;
+  }
+
+  try {
+    const parsed = new URL(envUrl);
+    if (
+      firebaseProjectId &&
+      parsed.hostname === `us-central1-${firebaseProjectId}.cloudfunctions.net` &&
+      parsed.pathname === `/${functionName}`
+    ) {
+      return envUrl;
+    }
+  } catch (_error) {
+    return fallback;
+  }
+
+  return fallback;
+}
+
+function getCompatibleGoogleClientId(projectNumber, candidates, fallbackClientId) {
+  for (const clientId of [...candidates, fallbackClientId]) {
+    if (isCompatibleGoogleOAuthClientId(clientId, projectNumber)) {
+      return clientId;
+    }
+  }
+
+  return '';
+}
+
+function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
+  if (!iosUrlScheme) {
+    return plugins;
+  }
+
+  return plugins.map((plugin) => {
+    const pluginName = Array.isArray(plugin) ? plugin[0] : plugin;
+
+    if (pluginName !== '@react-native-google-signin/google-signin') {
+      return plugin;
+    }
+
+    const pluginOptions =
+      Array.isArray(plugin) && plugin[1] && typeof plugin[1] === 'object' ? plugin[1] : {};
+
+    return [
+      '@react-native-google-signin/google-signin',
+      {
+        ...pluginOptions,
+        iosUrlScheme,
+      },
+    ];
+  });
+}
+
+function getPluginName(plugin) {
+  return Array.isArray(plugin) ? plugin[0] : plugin;
+}
+
+function ensurePlugin(plugins, plugin) {
+  const pluginName = getPluginName(plugin);
+  if (plugins.some((existingPlugin) => getPluginName(existingPlugin) === pluginName)) {
+    return plugins;
+  }
+
+  return [...plugins, plugin];
+}
+
 module.exports = ({ config = {} }) => {
+  const envFirebaseProjectId = process.env.FIREBASE_PROJECT_ID || '';
+  const ryvroIdentity = {
+    name: 'Ryvro Shift Planner',
+    slug: 'ryvro',
+    scheme: 'ryvro',
+    version: '1.0.0',
+    icon: './assets/icon.png',
+    splash: {
+      image: './assets/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#05080c',
+    },
+    iosBundleIdentifier: 'com.ryvro.shiftplanner',
+    iosBuildNumber: '1',
+    androidPackage: 'com.ryvro.shiftplanner',
+    androidVersionCode: 1,
+    adaptiveIcon: {
+      foregroundImage: './assets/adaptive-icon.png',
+      backgroundColor: '#05080c',
+    },
+    favicon: './assets/favicon.png',
+  };
+  const ryvroIosInfoPlist = {
+    CFBundleDisplayName: 'Ryvro',
+    NSSpeechRecognitionUsageDescription:
+      'Ryvro needs speech recognition to understand your questions.',
+    NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
+    UIBackgroundModes: ['fetch', 'remote-notification'],
+    ITSAppUsesNonExemptEncryption: false,
+  };
+  const ryvroPlugins = [
+    'expo-localization',
+    'expo-font',
+    'expo-asset',
+    'expo-apple-authentication',
+    '@react-native-firebase/app',
+    '@react-native-firebase/auth',
+    './plugins/withFirebaseCoreConfigure',
+    './plugins/withRyvroStoreKitConfig',
+    [
+      'expo-build-properties',
+      {
+        ios: {
+          deploymentTarget: '16.0',
+          useFrameworks: 'static',
+        },
+      },
+    ],
+    './plugins/withNonModularHeaders',
+    [
+      '@react-native-google-signin/google-signin',
+      {
+        iosUrlScheme: 'com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io',
+      },
+    ],
+    [
+      'expo-image-picker',
+      {
+        photosPermission: 'Ryvro needs access to your photos to set a profile picture.',
+        cameraPermission: 'Ryvro needs access to your camera to take a profile picture.',
+      },
+    ],
+    [
+      'expo-speech-recognition',
+      {
+        microphonePermission: 'Ryvro needs microphone access for voice commands.',
+        speechRecognitionPermission: 'Ryvro needs speech recognition to understand your questions.',
+      },
+    ],
+  ];
   const appEnv = process.env.APP_ENV || 'development';
   const configExtra = config.extra || {};
   const easProjectId = process.env.EAS_PROJECT_ID || configExtra?.eas?.projectId || '';
   const expoUpdates = {
     ...(config.updates || {}),
   };
+  const isE2ETestMode = process.env.E2E_TEST_MODE === '1' || process.env.E2E_TEST_MODE === 'true';
   const iosGoogleServicesFile =
+    process.env.GOOGLE_SERVICES_PLIST ||
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
     process.env.IOS_GOOGLE_SERVICES_FILE ||
-    process.env.GOOGLE_SERVICES_FILE;
+    process.env.GOOGLE_SERVICES_FILE ||
+    './GoogleService-Info.plist';
+  const androidGoogleServicesFile =
+    process.env.GOOGLE_SERVICES_JSON ||
+    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE ||
+    process.env.ANDROID_GOOGLE_SERVICES_FILE ||
+    process.env.GOOGLE_SERVICES_FILE ||
+    './google-services.json';
+  const iosFirebaseConfig = buildFirebaseConfigFromIosGoogleServicesFile(iosGoogleServicesFile);
+  const androidFirebaseConfig =
+    buildFirebaseConfigFromAndroidGoogleServicesFile(androidGoogleServicesFile);
+  const firebaseProjectId = isRyvroFirebaseProjectId(envFirebaseProjectId)
+    ? envFirebaseProjectId
+    : iosFirebaseConfig?.projectId || androidFirebaseConfig?.projectId || envFirebaseProjectId;
+  const firebaseMessagingSenderId =
+    iosFirebaseConfig?.messagingSenderId ||
+    androidFirebaseConfig?.messagingSenderId ||
+    process.env.FIREBASE_MESSAGING_SENDER_ID ||
+    '';
+  const envGoogleOAuthProjectNumber = getCompatibleEnvGoogleOAuthProjectNumber();
+  const googleOAuthProjectNumber =
+    envGoogleOAuthProjectNumber ||
+    iosFirebaseConfig?.messagingSenderId ||
+    androidFirebaseConfig?.messagingSenderId ||
+    '';
+  const defaultRyvroBrainUrl = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/ryvroBrain`
+    : '';
+  const defaultShiftScheduleParserUrl = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/parseShiftScheduleDescription`
+    : '';
+  const googleIosClientId =
+    getCompatibleGoogleClientId(
+      googleOAuthProjectNumber,
+      [process.env.GOOGLE_IOS_CLIENT_ID, process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID],
+      ''
+    ) ||
+    iosFirebaseConfig?.googleIosClientId ||
+    (googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER ? RYVRO_GOOGLE_IOS_CLIENT_ID : '');
+  const googleAndroidClientId =
+    getCompatibleGoogleClientId(
+      googleOAuthProjectNumber,
+      [process.env.GOOGLE_ANDROID_CLIENT_ID, process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID],
+      ''
+    ) ||
+    androidFirebaseConfig?.googleAndroidClientId ||
+    (googleOAuthProjectNumber === RYVRO_GOOGLE_PROJECT_NUMBER
+      ? RYVRO_GOOGLE_ANDROID_CLIENT_ID
+      : '');
+  const googleWebClientId = getCompatibleGoogleWebClientId(
+    googleOAuthProjectNumber,
+    androidFirebaseConfig
+  );
+  const googleIosUrlScheme = getGoogleIosUrlScheme(googleIosClientId);
 
   if (!expoUpdates.url && easProjectId) {
     expoUpdates.url = `https://u.expo.dev/${easProjectId}`;
   }
 
-  // Use appVersion runtime in non-production to avoid local-vs-cloud fingerprint drift in dev builds.
-  // Keep fingerprint policy in production to protect OTA/native compatibility.
-  const runtimeVersion =
-    config.runtimeVersion ||
-    (appEnv === 'production' ? { policy: 'fingerprint' } : { policy: 'appVersion' });
+  if (isE2ETestMode) {
+    expoUpdates.enabled = false;
+    delete expoUpdates.url;
+  }
+
+  // Use appVersion runtime to avoid local-vs-cloud fingerprint drift during store builds.
+  const runtimeVersion = config.runtimeVersion || { policy: 'appVersion' };
+  const plugins = ensurePlugin(
+    ensurePlugin(
+      ensurePlugin(config.plugins || ryvroPlugins, './plugins/withNonModularHeaders'),
+      './plugins/withFirebaseCoreConfigure'
+    ),
+    './plugins/withRyvroStoreKitConfig'
+  );
 
   return {
     ...config,
+    name: config.name || ryvroIdentity.name,
+    slug: config.slug || ryvroIdentity.slug,
+    scheme: config.scheme || ryvroIdentity.scheme,
+    version: config.version || ryvroIdentity.version,
+    icon: config.icon || ryvroIdentity.icon,
+    splash: {
+      ...ryvroIdentity.splash,
+      ...(config.splash || {}),
+    },
     updates: expoUpdates,
     runtimeVersion,
     ios: {
       ...(config.ios || {}),
+      supportsTablet: config.ios?.supportsTablet ?? true,
+      usesAppleSignIn: config.ios?.usesAppleSignIn ?? true,
+      infoPlist: {
+        ...ryvroIosInfoPlist,
+        ...(config.ios?.infoPlist || {}),
+      },
+      bundleIdentifier: config.ios?.bundleIdentifier || ryvroIdentity.iosBundleIdentifier,
+      buildNumber: config.ios?.buildNumber || ryvroIdentity.iosBuildNumber,
       ...(iosGoogleServicesFile ? { googleServicesFile: iosGoogleServicesFile } : {}),
     },
+    android: {
+      ...(config.android || {}),
+      package: config.android?.package || ryvroIdentity.androidPackage,
+      versionCode: config.android?.versionCode || ryvroIdentity.androidVersionCode,
+      edgeToEdgeEnabled: config.android?.edgeToEdgeEnabled ?? true,
+      predictiveBackGestureEnabled: config.android?.predictiveBackGestureEnabled ?? false,
+      permissions: config.android?.permissions || ['android.permission.RECORD_AUDIO'],
+      adaptiveIcon: {
+        ...ryvroIdentity.adaptiveIcon,
+        ...(config.android?.adaptiveIcon || {}),
+      },
+      ...(androidGoogleServicesFile ? { googleServicesFile: androidGoogleServicesFile } : {}),
+    },
+    web: {
+      ...(config.web || {}),
+      favicon: config.web?.favicon || ryvroIdentity.favicon,
+    },
+    plugins: withGoogleSignInIosUrlScheme(plugins, googleIosUrlScheme),
     extra: {
       ...configExtra,
       APP_ENV: appEnv,
-      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
-      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
-      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
-      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
-      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
-      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+      FIREBASE_API_KEY:
+        iosFirebaseConfig?.apiKey ||
+        androidFirebaseConfig?.apiKey ||
+        process.env.FIREBASE_API_KEY ||
+        '',
+      FIREBASE_AUTH_DOMAIN:
+        iosFirebaseConfig?.authDomain ||
+        androidFirebaseConfig?.authDomain ||
+        process.env.FIREBASE_AUTH_DOMAIN ||
+        '',
+      FIREBASE_PROJECT_ID: firebaseProjectId,
+      FIREBASE_STORAGE_BUCKET:
+        iosFirebaseConfig?.storageBucket ||
+        androidFirebaseConfig?.storageBucket ||
+        process.env.FIREBASE_STORAGE_BUCKET ||
+        '',
+      FIREBASE_MESSAGING_SENDER_ID: firebaseMessagingSenderId,
+      FIREBASE_APP_ID: iosFirebaseConfig?.appId || process.env.FIREBASE_APP_ID || '',
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
-      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID:
-        process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || process.env.GOOGLE_WEB_CLIENT_ID || '',
-      GOOGLE_WEB_CLIENT_ID:
-        process.env.GOOGLE_WEB_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
+      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: googleWebClientId,
+      GOOGLE_WEB_CLIENT_ID: googleWebClientId,
       EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID:
-        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || process.env.GOOGLE_IOS_CLIENT_ID || '',
+        googleIosClientId ||
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
+        process.env.GOOGLE_IOS_CLIENT_ID ||
+        '',
       GOOGLE_IOS_CLIENT_ID:
-        process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
+        googleIosClientId ||
+        process.env.GOOGLE_IOS_CLIENT_ID ||
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ||
+        '',
+      EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID:
+        googleAndroidClientId ||
+        process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
+        process.env.GOOGLE_ANDROID_CLIENT_ID ||
+        '',
+      GOOGLE_ANDROID_CLIENT_ID:
+        googleAndroidClientId ||
+        process.env.GOOGLE_ANDROID_CLIENT_ID ||
+        process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
+        '',
       REVENUECAT_API_KEY:
         process.env.REVENUECAT_API_KEY || process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || '',
       EXPO_PUBLIC_REVENUECAT_API_KEY:
@@ -94,19 +539,41 @@ module.exports = ({ config = {} }) => {
         process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
         process.env.REVENUECAT_API_KEY ||
         '',
-      API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
+      REVENUECAT_TEST_STORE_KEY:
+        process.env.REVENUECAT_TEST_STORE_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY ||
+        '',
+      EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY:
+        process.env.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY ||
+        process.env.REVENUECAT_TEST_STORE_KEY ||
+        '',
+      API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
-      ELLIE_BRAIN_URL:
-        process.env.ELLIE_BRAIN_URL ||
-        'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
-      ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '30000',
-      SHIFT_SCHEDULE_PARSER_URL: process.env.SHIFT_SCHEDULE_PARSER_URL || '',
+      LEGAL_PRIVACY_POLICY_URL:
+        process.env.LEGAL_PRIVACY_POLICY_URL || 'https://getryvro.com/privacy',
+      LEGAL_TERMS_OF_SERVICE_URL:
+        process.env.LEGAL_TERMS_OF_SERVICE_URL || 'https://getryvro.com/terms',
+      SUPPORT_URL: process.env.SUPPORT_URL || 'https://getryvro.com/support',
+      ACCOUNT_DELETION_URL:
+        process.env.ACCOUNT_DELETION_URL || 'https://getryvro.com/delete-account',
+      RYVRO_BRAIN_URL: getCompatibleFirebaseFunctionUrl(
+        process.env.RYVRO_BRAIN_URL,
+        firebaseProjectId,
+        'ryvroBrain'
+      ),
+      RYVRO_BRAIN_TIMEOUT: process.env.RYVRO_BRAIN_TIMEOUT || '30000',
+      SHIFT_SCHEDULE_PARSER_URL: getCompatibleFirebaseFunctionUrl(
+        process.env.SHIFT_SCHEDULE_PARSER_URL,
+        firebaseProjectId,
+        'parseShiftScheduleDescription'
+      ),
       SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',
       SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH:
         process.env.SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH || '2000',
       UNIVERSAL_SHIFT_BUILDER_ENABLED: process.env.UNIVERSAL_SHIFT_BUILDER_ENABLED || '',
       AI_SHIFT_BUILDER_ENABLED: process.env.AI_SHIFT_BUILDER_ENABLED || '',
       E2E_TEST_MODE: process.env.E2E_TEST_MODE || '',
+      EXPO_PUBLIC_E2E_TEST_MODE: process.env.EXPO_PUBLIC_E2E_TEST_MODE || '',
       PICOVOICE_ACCESS_KEY: process.env.PICOVOICE_ACCESS_KEY || '',
       WAKE_WORD_PROVIDER: process.env.WAKE_WORD_PROVIDER || '',
       WAKE_WORD_ENABLED: process.env.WAKE_WORD_ENABLED || '',

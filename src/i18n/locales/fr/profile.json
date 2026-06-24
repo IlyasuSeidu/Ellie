@@ -3,7 +3,8 @@
     "personalInfo": "Informations personnelles",
     "workOverview": "Aperçu du travail",
     "shiftSettings": "Paramètres de quart de travail",
-    "smartReminders": "Rappels intelligents"
+    "smartReminders": "Rappels intelligents",
+    "legalSupport": "Aide et mentions légales"
   },
   "fields": {
     "name": "Nom",
@@ -16,7 +17,7 @@
   },
   "stats": {
     "dayCycle": "Cycle de jour",
-    "workRest": "Travail : Repos",
+    "workRest": "Travail: Repos",
     "perShift": "Par quart de travail"
   },
   "language": {
@@ -52,7 +53,7 @@
     "nightShift": "Équipe de nuit",
     "flyIn": "Arrivée par avion",
     "flyOut": "Départ aérien",
-    "site": "Site minier",
+    "site": "Lieu de travail",
     "dayStart": "Début de la journée",
     "dayEnd": "Fin de journée",
     "nightStart": "Début de nuit",
@@ -61,7 +62,7 @@
     "afternoonStart": "Début de l'après-midi",
     "workBlock": "Bloc de travail",
     "restBlock": "Bloc de repos",
-    "siteName": "Nom du site (facultatif)",
+    "siteName": "Lieu de travail (facultatif)",
     "flyInDay": "Journée d'arrivée par avion",
     "flyOutDay": "Journée d'envol",
     "cycleReferenceDate": "Date de référence du cycle",
@@ -87,11 +88,11 @@
     "saveDisabledHint": "Aucune modification à enregistrer",
     "cancelEditA11y": "Annuler la modification des paramètres d'équipe",
     "editA11y": "Modifier les paramètres d'équipe",
-    "shiftPatternA11y": "Modèle de quart de travail : {{pattern}}. Appuyez deux fois pour modifier.",
+    "shiftPatternA11y": "Modèle de quart de travail: {{pattern}}. Appuyez deux fois pour modifier.",
     "shiftPatternHint": "Ouvre le sélecteur de motif",
-    "startDateA11y": "Date de début : {{date}}. Appuyez deux fois pour modifier.",
+    "startDateA11y": "Date de début: {{date}}. Appuyez deux fois pour modifier.",
     "startDateHint": "Ouvre le sélecteur de date",
-    "cyclePositionA11y": "Position du cycle : {{position}}. Appuyez deux fois pour resynchroniser.",
+    "cyclePositionA11y": "Position du cycle: {{position}}. Appuyez deux fois pour resynchroniser.",
     "cyclePositionHint": "Ouvre le sélecteur de position de cycle",
     "decreaseA11y": "Diminuer {{label}}",
     "increaseA11y": "Augmenter {{label}}",
@@ -108,7 +109,7 @@
       "fifoBlock": "BLOC FIFO",
       "workPattern": "MODÈLE DE TRAVAIL",
       "customSequence": "SÉQUENCE PERSONNALISÉE",
-      "siteDetails": "DÉTAILS DU SITE",
+      "siteDetails": "LIEU DE TRAVAIL",
       "travelDays": "JOURS DE VOYAGE (OPTIONNEL)",
       "scheduleAnchor": "DÉBUT ET POSITION DU ROSTER",
       "customPattern": "MOTIF PERSONNALISÉ"
@@ -220,11 +221,11 @@
     "cycleResync": {
       "title": "Cycle de resynchronisation",
       "subtitleFifo": "Êtes-vous au travail ou à la maison?",
-      "subtitleRotating": "Dans quelle phase de changement êtes-vous ?",
+      "subtitleRotating": "Dans quelle phase de changement êtes-vous?",
       "closeA11y": "Fermer",
       "backdropCloseA11y": "Fermer",
       "backToPhaseA11y": "Retour à la sélection des phases",
-      "daySubtitle": "Quel jour es-tu ?",
+      "daySubtitle": "Quel jour es-tu?",
       "dayA11y": "Jour {{day}}",
       "confirmA11y": "Confirmer la position du cycle",
       "confirm": "Confirmer la position",
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Fois",
-      "workDaysOnSite": "{{count}} jours sur place",
-      "restDaysAtHome": "{{count}} jours à la maison",
+      "workDaysOnSite": "{{count}} jours de bloc de travail",
+      "restDaysAtHome": "{{count}} jours de repos",
       "empty": "Aucune configuration de quart de travail définie",
       "footer": "Les paramètres de changement peuvent être mis à jour dans Paramètres"
     },
@@ -264,7 +265,7 @@
     "fifoSummarySubtitle": "{{workDays}} jours de travail · {{restDays}} jours de repos",
     "openCustomBuilderTitle": "Ouvrir le créateur de rotation personnalisée",
     "openCustomBuilderSubtitle": "Configurez les blocs de jour, de nuit et de repos dans le parcours de rotation personnalisée",
-    "discardChangesTitle": "Ignorer les modifications non enregistrées ?",
+    "discardChangesTitle": "Ignorer les modifications non enregistrées?",
     "discardChangesMessage": "Ouvrir un autre éditeur supprimera les modifications que vous n'avez pas encore enregistrées.",
     "discardChangesConfirm": "Ignorer les modifications"
   },
@@ -273,10 +274,10 @@
       "timing": "HORAIRES",
       "doNotDisturb": "NE PAS DERANGER",
       "adaptive": "ADAPTATIFS",
-      "travel": "Travel blocks"
+      "travel": "Blocs de trajet"
     },
     "units": {
-      "hoursShort": "{{value}} h",
+      "hoursShort": "{{value}} h.",
       "minutesShort": "{{value}} min",
       "none": "Aucun"
     },
@@ -291,7 +292,7 @@
       },
       "commute": {
         "label": "Temps de trajet",
-        "sublabel": "Temps nécessaire pour arriver sur site"
+        "sublabel": "Temps nécessaire pour rejoindre votre lieu de travail"
       },
       "imminent": {
         "label": "Alerte à 15 min",
@@ -323,8 +324,8 @@
       }
     },
     "quietHours": {
-      "startA11y": "Début des heures calmes : {{time}}",
-      "endA11y": "Fin des heures calmes : {{time}}",
+      "startA11y": "Début des heures calmes: {{time}}",
+      "endA11y": "Fin des heures calmes: {{time}}",
       "overnight": "Nuit complète · {{hours}} h",
       "minimumAdjusted": "Les heures calmes ont été ajustées à une fenêtre minimale de 30 minutes."
     },
@@ -350,6 +351,28 @@
     "test": {
       "title": "Les rappels intelligents sont activés",
       "body": "Si ceci arrive, vos rappels intelligents fonctionnent."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Assistance",
+      "hint": "Obtenez de l’aide pour votre compte ou votre planning",
+      "a11y": "Ouvrir l’assistance Ryvro"
+    },
+    "deleteAccount": {
+      "title": "Supprimer le compte",
+      "hint": "Demander la suppression du compte et des données de l’app",
+      "a11y": "Ouvrir la suppression de compte Ryvro"
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "hint": "Comment Ryvro traite vos données",
+      "a11y": "Ouvrir la politique de confidentialité de Ryvro"
+    },
+    "terms": {
+      "title": "Conditions d’utilisation",
+      "hint": "Conditions d’abonnement et d’utilisation de l’app",
+      "a11y": "Ouvrir les conditions d’utilisation de Ryvro"
     }
   }
 }

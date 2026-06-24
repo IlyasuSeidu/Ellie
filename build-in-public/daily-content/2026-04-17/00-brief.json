@@ -1,9 +1,9 @@
 {
   "date": "2026-04-17",
   "humanDate": "April 17, 2026",
-  "repository": "Ellie",
+  "repository": "Ryvro",
   "branch": "codex/native-firestore-offline",
-  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "remote": "https://github.com/IlyasuSeidu/Ryvro.git",
   "window": {
     "mode": "rollover-time",
     "rolloverTime": "20:30",
@@ -116,7 +116,7 @@
       {
         "path": "src/components/voice/VoiceAssistantModal.tsx",
         "role": "touched",
-        "summary": "VoiceAssistantModal Full-screen modal for the Ellie voice assistant.",
+        "summary": "VoiceAssistantModal Full-screen modal for the Ryvro voice assistant.",
         "signals": ["physics-motion", "localized-copy", "calendar-setup", "proof-through-tests"],
         "relatedFiles": [
           "src/utils/theme.ts",

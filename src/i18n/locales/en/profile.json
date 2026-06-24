@@ -3,7 +3,8 @@
     "personalInfo": "Personal Information",
     "workOverview": "Work Overview",
     "shiftSettings": "Shift Settings",
-    "smartReminders": "Smart Reminders"
+    "smartReminders": "Smart Reminders",
+    "legalSupport": "Help & Legal"
   },
   "fields": {
     "name": "Name",
@@ -16,7 +17,7 @@
   },
   "stats": {
     "dayCycle": "Day Cycle",
-    "workRest": "Work : Rest",
+    "workRest": "Work: Rest",
     "perShift": "Per Shift"
   },
   "language": {
@@ -52,7 +53,7 @@
     "nightShift": "Night Shift",
     "flyIn": "Fly-In",
     "flyOut": "Fly-Out",
-    "site": "Site",
+    "site": "Work location",
     "dayStart": "Day Start",
     "dayEnd": "Day End",
     "nightStart": "Night Start",
@@ -61,7 +62,7 @@
     "afternoonStart": "Afternoon Start",
     "workBlock": "Work Block",
     "restBlock": "Rest Block",
-    "siteName": "Site Name (optional)",
+    "siteName": "Work location (optional)",
     "flyInDay": "Fly-In Day",
     "flyOutDay": "Fly-Out Day",
     "cycleReferenceDate": "Cycle reference date",
@@ -108,7 +109,7 @@
       "fifoBlock": "FIFO BLOCK",
       "workPattern": "WORK PATTERN",
       "customSequence": "CUSTOM SEQUENCE",
-      "siteDetails": "SITE DETAILS",
+      "siteDetails": "WORK LOCATION",
       "travelDays": "TRAVEL DAYS (OPTIONAL)",
       "scheduleAnchor": "ROSTER START & POSITION",
       "customPattern": "CUSTOM PATTERN"
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
+      "workDaysOnSite": "{{count}} work-block days",
+      "restDaysAtHome": "{{count}} rest days",
       "empty": "No shift configuration set",
       "footer": "Shift settings can be updated in Settings"
     },
@@ -291,7 +292,7 @@
       },
       "commute": {
         "label": "Commute time",
-        "sublabel": "How long to get to site"
+        "sublabel": "How long to reach your work location"
       },
       "imminent": {
         "label": "15-min imminent alert",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Smart reminders are on",
       "body": "If this arrives, your smart reminders are working."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Support",
+      "hint": "Get help with your account or schedule",
+      "a11y": "Open Ryvro support"
+    },
+    "deleteAccount": {
+      "title": "Delete account",
+      "hint": "Request account and app data deletion",
+      "a11y": "Open Ryvro account deletion"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "hint": "How Ryvro handles your data",
+      "a11y": "Open Ryvro privacy policy"
+    },
+    "terms": {
+      "title": "Terms of service",
+      "hint": "Subscription and app usage terms",
+      "a11y": "Open Ryvro terms of service"
     }
   }
 }

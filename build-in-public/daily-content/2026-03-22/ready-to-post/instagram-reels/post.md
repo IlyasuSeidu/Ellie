@@ -13,7 +13,7 @@
 
 Readable copy can still feel wrong.
 
-In Ellie, people set a shift pattern, expect a clear payoff, then hit an Aha screen and paywall.
+In Ryvro, people set a shift pattern, expect a clear payoff, then hit an Aha screen and paywall.
 
 Today I rewrote those moments so they speak one language: choose your pattern once, preview your upcoming shifts with confidence.
 
@@ -34,10 +34,10 @@ Where does onboarding language usually lose you?
 
 Today’s product pass was language clarity, not feature work.
 
-I aligned copy across Ellie’s setup flow so the value lands faster for shift workers.
+I aligned copy across Ryvro’s setup flow so the value lands faster for shift workers.
 
 Small edit, big behavior change potential.
 
 Built from real mining-shift routines.
 
-#ellieapp #shiftwork #reels #productbuild
+#ryvro #shiftwork #reels #productbuild

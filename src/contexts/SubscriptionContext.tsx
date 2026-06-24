@@ -28,15 +28,21 @@ type NativePaywallResult =
   | 'unavailable';
 type CustomerCenterResult = 'presented' | 'error' | 'unavailable';
 
+export interface OpenPaywallOptions {
+  entryPoint?: 'feature_gate' | 'settings' | 'post_aha' | 'aha_moment';
+  allowDismiss?: boolean;
+}
+
 interface SubscriptionContextValue {
   isPro: boolean;
   isLoading: boolean;
-  openPaywall: () => void;
+  openPaywall: (options?: OpenPaywallOptions) => void;
   canPresentNativePaywall: boolean;
   canOpenCustomerCenter: boolean;
   restorePurchases: () => Promise<RestorePurchasesResult>;
   presentNativePaywall: (offering?: unknown) => Promise<NativePaywallResult>;
   openCustomerCenter: () => Promise<CustomerCenterResult>;
+  refreshSubscriptionStatus: () => Promise<boolean>;
   syncCustomerInfo: (info: RevenueCatCustomerInfo) => Promise<void>;
 }
 
@@ -49,12 +55,13 @@ const SubscriptionContext = createContext<SubscriptionContextValue>({
   restorePurchases: () => Promise.resolve('unavailable'),
   presentNativePaywall: () => Promise.resolve('unavailable'),
   openCustomerCenter: () => Promise.resolve('unavailable'),
+  refreshSubscriptionStatus: () => Promise.resolve(false),
   syncCustomerInfo: async () => {},
 });
 
 interface SubscriptionProviderProps {
   children: React.ReactNode;
-  onOpenPaywall: () => void;
+  onOpenPaywall: (options?: OpenPaywallOptions) => void;
 }
 
 const hasProEntitlement = (info: RevenueCatCustomerInfo): boolean => hasActiveProEntitlement(info);
@@ -329,6 +336,25 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     }
   }, [resolveEntitlementCacheScope, syncCustomerInfo]);
 
+  const refreshSubscriptionStatus = useCallback(async (): Promise<boolean> => {
+    const availability = getRevenueCatAvailability();
+    const revenueCatRuntime = getRevenueCatRuntime();
+    if (!revenueCatRuntime || availability.reason !== null) {
+      return false;
+    }
+
+    try {
+      const info = await refreshCustomerInfo(revenueCatRuntime.Purchases);
+      return hasProEntitlement(info);
+    } catch (error) {
+      logger.warn('SubscriptionProvider: subscription status refresh failed', {
+        error: error instanceof Error ? error.message : String(error),
+        userId: authScopeRef.current,
+      });
+      return false;
+    }
+  }, [refreshCustomerInfo]);
+
   const presentNativePaywall = useCallback(
     async (offering?: unknown): Promise<NativePaywallResult> => {
       const availability = getRevenueCatAvailability();
@@ -411,6 +437,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
         restorePurchases,
         presentNativePaywall,
         openCustomerCenter,
+        refreshSubscriptionStatus,
         syncCustomerInfo,
       }}
     >

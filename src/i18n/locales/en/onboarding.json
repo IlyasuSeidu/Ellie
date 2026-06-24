@@ -1,17 +1,138 @@
 {
   "welcome": {
-    "tagline": "Know your next shift\nbefore you even think to check.",
-    "getStarted": "Set Up My Schedule",
+    "headline": "Ask Ryvro what shift you have.",
+    "tagline": "Set your shifts once. Then ask by voice anytime.",
+    "demoQuestion": "What shift am I on Friday?",
+    "demoAnswer": "On Friday, you are on Night shift.",
+    "promise": "Made for tired shift workers who just need a straight answer.",
+    "getStarted": "Set up my shifts",
     "socialProof": "Built for shift workers like you",
     "trust": {
       "freeTrial": "Free trial",
       "noCard": "No credit card",
       "cancelAnytime": "Cancel anytime"
-    }
+    },
+    "getStartedHint": "Continue to set up your shifts."
+  },
+  "setupIntro": {
+    "stepLabel": "Shift setup",
+    "headline": "Let's set up your shifts.",
+    "support": "Tell Ryvro your pattern. Ryvro turns it into a schedule you can check.",
+    "cardTitle": "What we'll ask",
+    "patternTitle": "Say your pattern",
+    "patternBody": "Example: I work 2 days, 2 nights, then 4 off",
+    "dateTitle": "Ryvro repeats it back",
+    "dateBody": "You check the exact order before moving on",
+    "shiftTitle": "Then anchor it",
+    "shiftBody": "Use one date you know for sure",
+    "promise": "Ryvro will not save guesses. You confirm the exact pattern first.",
+    "cta": "Tell Ryvro my pattern",
+    "ctaHint": "Continue to tell Ryvro your shift pattern."
+  },
+  "guidedShiftChat": {
+    "stepLabel": "Pattern chat",
+    "headline": "Tell Ryvro your pattern.",
+    "support": "Example: 2 days, 2 nights, then 4 off.",
+    "botPrompt": "Tell Ryvro your work pattern.",
+    "botHint": "Example: 2 days, 2 nights, then 4 off.",
+    "inputLabel": "Your pattern",
+    "inputPlaceholder": "I work 2 days, 2 nights, then 4 off",
+    "example": "I work 2 days, 2 nights, then 4 off",
+    "useExample": "Use this example",
+    "voiceLabel": "Say it",
+    "submit": "Check my pattern",
+    "loading": "Ryvro is reading your pattern...",
+    "reviewTitle": "Did Ryvro get this right?",
+    "reviewSubtitle": "This is only a draft. You must confirm it before Ryvro uses it.",
+    "sequenceLabel": "Exact order",
+    "yes": "Yes, this is right",
+    "change": "No, change it",
+    "fallbackError": "Ryvro could not read that pattern yet. Try saying it like: I work 2 days, 2 nights, then 4 off.",
+    "continueHint": "Continue with this draft schedule.",
+    "changeHint": "Go back and edit the pattern."
+  },
+  "knownShiftDate": {
+    "stepLabel": "Known date",
+    "headline": "Pick one date you know.",
+    "support": "Choose a date where you are sure what shift you had.",
+    "cardTitle": "This date anchors your pattern",
+    "cardBody": "Ryvro will line up the pattern from this exact day.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "twoDaysAgo": "2 days ago",
+    "previousDay": "Previous day",
+    "nextDay": "Next day",
+    "selectedLabel": "Date you know",
+    "cta": "I know this date",
+    "ctaHint": "Continue with this known date."
+  },
+  "knownShiftType": {
+    "stepLabel": "Known shift",
+    "headline": "What shift is on that date?",
+    "support": "Choose the correct shift for {{date}}.",
+    "cardTitle": "This lines up the whole pattern",
+    "cardBody": "Ryvro uses this answer to place your pattern correctly.",
+    "day": "Day",
+    "dayBody": "Day shift",
+    "night": "Night",
+    "nightBody": "Night shift",
+    "off": "Off",
+    "offBody": "Not working",
+    "other": "Other",
+    "otherBody": "Something different",
+    "cta": "Use this shift",
+    "ctaHint": "Continue with this known shift."
+  },
+  "knownShiftPhase": {
+    "stepLabel": "Exact day",
+    "headline": "Which exact one?",
+    "support": "You chose {{shift}} for {{date}}.",
+    "cardTitle": "This makes the dates exact",
+    "cardBody": "Pick where that day sits inside your repeating pattern.",
+    "cta": "Use this exact day",
+    "ctaHint": "Continue with this exact day in the pattern.",
+    "unsure": "I don't know",
+    "unsureHint": "Open the fix options if you do not know which one."
+  },
+  "schedulePreview": {
+    "stepLabel": "Preview",
+    "headline": "Here is what Ryvro understood.",
+    "support": "Check this once before Ryvro answers your shift questions.",
+    "cardTitle": "Your shift setup",
+    "cardBody": "If this is right, Ryvro can answer by voice.",
+    "repeatLabel": "Repeats every",
+    "repeatValue": "{{count}} days",
+    "patternLabel": "Pattern",
+    "knownDateLabel": "Known date",
+    "knownDateValue": "{{date}}: {{shift}}.",
+    "proofTitle": "Next few days",
+    "proofBody": "A quick check that the dates line up.",
+    "today": "Today",
+    "confirm": "Yes, this is right",
+    "saving": "Saving...",
+    "confirmHint": "Save this schedule and continue.",
+    "fix": "Fix something",
+    "fixHint": "Open the editor to fix this schedule.",
+    "saveError": "Ryvro could not save this yet. Please try again."
+  },
+  "fixMenu": {
+    "stepLabel": "Fix setup",
+    "headline": "What do you want to fix?",
+    "support": "Choose one thing. Ryvro will take you to the right screen.",
+    "patternTitle": "The pattern is wrong",
+    "patternBody": "Start again with the words you use for your work pattern.",
+    "dateTitle": "The known date is wrong",
+    "dateBody": "Pick a different date you know for sure.",
+    "shiftTitle": "The shift on that date is wrong",
+    "shiftBody": "Change whether that date is day, night, off, or something else.",
+    "timesTitle": "The shift times are wrong",
+    "timesBody": "Change the start and finish times Ryvro uses in answers.",
+    "editorTitle": "I need the full editor",
+    "editorBody": "Open the schedule editor with your draft already filled in."
   },
   "painHook": {
     "title": "What's the hardest part of your schedule right now?",
-    "subtitle": "We'll personalise Ellie around what matters most to you.",
+    "subtitle": "We'll personalise Ryvro around what matters most to you.",
     "options": {
       "cycle_lost": "I lose track of where I am in my cycle",
       "wrong_alarm": "I've set my alarm for the wrong shift",
@@ -49,6 +170,19 @@
     },
     "cancel": "Cancel"
   },
+  "e2eSwipeControls": {
+    "status": "Simulator",
+    "statusWithAction": "Simulator • {{action}}",
+    "select": "Select",
+    "nextA11y": "Move to next option",
+    "selectA11y": "Select current option",
+    "infoA11y": "Open option information",
+    "actions": {
+      "select": "select",
+      "next": "next",
+      "info": "info"
+    }
+  },
   "chatInput": {
     "submitA11y": "Submit response"
   },
@@ -56,7 +190,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Ryvro shift assistant avatar"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -65,7 +199,6 @@
   "ahaMoment": {
     "headline": "Your shifts, mapped.",
     "subheadline": "Here's a preview of your next 3 months. No second-guessing, just a clear schedule.",
-    "heyEllieTitle": "Ask Ellie about your schedule",
     "ctaPrimary": "Start Free Trial",
     "ctaSecondary": "or skip — current week only, no full year",
     "stats": {
@@ -92,7 +225,7 @@
       "nightShiftsThisMonth": "How many night shifts this month?",
       "startBack": "When do I start back?"
     },
-    "buttonLabel": "Hey Ellie",
+    "buttonLabel": "Hey Ryvro",
     "headline_named": "{{name}}'s shifts, mapped.",
     "ctaSecondaryA11y": "Skip trial — limited to current week only, no full year view",
     "painCallback": {
@@ -103,19 +236,20 @@
       "mental_math": "No more counting on your fingers."
     },
     "previewLabel": "PREVIEW OF YOUR NEXT 3 MONTHS",
-    "checkingAccess": "Checking access…"
+    "checkingAccess": "Checking access…",
+    "ryvroTitle": "Ask Ryvro about your schedule"
   },
   "intro": {
-    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
+    "welcome": "Welcome to Ryvro! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
     "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your role on site?",
+    "askOccupation": "Great to meet you, {{name}}! What shift-work role do you do?",
     "askCompany": "Got it! Which company do you work for? (optional)",
     "skipCompany": "Skip",
     "askCountry": "Almost done! Which country are you based in?",
     "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
     "placeholders": {
       "name": "Enter your name",
-      "occupation": "e.g. Haul truck operator, Boilermaker, Electrician",
+      "occupation": "e.g. Nurse, security officer, plant operator",
       "company": "Enter company name",
       "country": "Enter your country"
     },
@@ -133,16 +267,18 @@
       "companyRequired": "Company is required",
       "countryTooShort": "Country must be at least 2 characters",
       "countryTooLong": "Country must not exceed 100 characters"
-    }
+    },
+    "continue": "Continue",
+    "continueHint": "Move to the next onboarding step"
   },
   "shiftSystem": {
-    "title": "How Many Shifts Does Your Site Run?",
-    "title_named": "Hey {{name}}, How Many Shifts Does Your Site Run?",
+    "title": "How Many Shifts Does Your Workplace Run?",
+    "title_named": "Hey {{name}}, How Many Shifts Does Your Workplace Run?",
     "reviewAgain": "Please review systems again to make your selection",
     "reviewButton": "Review Systems",
     "continueButton": "Continue",
     "closeButton": "Close",
-    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "instruction": "Select how your team operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
     "endState": {
       "selectedTitle": "Got it! We'll set up your calendar for this.",
       "reviewedTitle": "You've viewed all {{count}} shift systems!",
@@ -152,10 +288,10 @@
       "2-shift": {
         "title": "2 Shifts (12 hours)",
         "schedule": "Day & night",
-        "description": "Your mine runs two 12-hour shifts—one during the day, one at night",
+        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
         "details": {
           "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
+          "useCases": ["Healthcare", "Security", "Oil & gas", "24/7 operations"],
           "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
           "cons": [
             "Long shift duration",
@@ -167,15 +303,10 @@
       "3-shift": {
         "title": "3 Shifts (8 hours)",
         "schedule": "Morning, afternoon & night",
-        "description": "Your processing plant runs three 8-hour shifts—morning, afternoon, and night",
+        "description": "Your operation runs three 8-hour shifts—morning, afternoon, and night",
         "details": {
           "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": [
-            "Underground mines",
-            "Processing plants",
-            "Mine infrastructure",
-            "24/7 operations"
-          ],
+          "useCases": ["Hospitals", "Manufacturing", "Transport hubs", "24/7 operations"],
           "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
           "cons": [
             "More frequent shift changes",
@@ -199,13 +330,13 @@
       "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
       "reviewedTitle": "That's all {{count}} rotations we've got!"
     },
-    "instruction": "Choose the rotation your mine site uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "instruction": "Choose the rotation your workplace uses — we will build your calendar from it\nSwipe right to choose, left to see more, up for info",
     "title": "What's Your Roster Rotation?",
     "cards": {
       "4-4-4": {
         "name": "4-4-4 Rotation",
         "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off-common for fly-in fly-out sites"
+        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off — common for 24/7 teams and FIFO crews"
       },
       "7-7-7": {
         "name": "7-7-7 Rotation",
@@ -235,7 +366,7 @@
       "continental": {
         "name": "Continental Rotation",
         "schedule": "2 mornings • 2 afternoons • 2 nights • 4 off",
-        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift sites"
+        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift teams"
       },
       "pitman": {
         "name": "Pitman Schedule",
@@ -245,55 +376,55 @@
       "custom": {
         "name": "Custom Rotation",
         "schedule": "You choose",
-        "description": "Your site uses something different? Build your own rotation here"
+        "description": "Your workplace uses something different? Build your own rotation here"
       },
       "fifo-8-6": {
         "name": "FIFO 8/6",
         "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home-popular in WA mining"
+        "description": "Work 8 consecutive work-block days, then 6 rest days — common for remote and FIFO teams"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (Even-Time)",
         "schedule": "1 week work • 1 week home",
-        "description": "One week on-site, one week at home-perfect 50/50 balance"
+        "description": "One work-block week, one rest week — good 50/50 balance"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14 (Even-Time)",
         "schedule": "2 weeks work • 2 weeks home",
-        "description": "Two weeks on-site, two weeks at home-perfect work-life balance"
+        "description": "Two work-block weeks, two rest weeks — balanced work/rest rhythm"
       },
       "fifo-14-7": {
         "name": "FIFO 14/7 (2:1)",
         "schedule": "2 weeks work • 1 week home",
-        "description": "Two weeks on-site, one week at home-high earning potential"
+        "description": "Two work-block weeks, one rest week — for longer earning blocks"
       },
       "fifo-21-7": {
         "name": "FIFO 21/7 (3:1)",
         "schedule": "3 weeks work • 1 week home",
-        "description": "Three weeks on-site, one week at home-for very remote operations"
+        "description": "Three work-block weeks, one rest week — for very remote operations"
       },
       "fifo-28-14": {
         "name": "FIFO 28/14 (2:1)",
         "schedule": "4 weeks work • 2 weeks home",
-        "description": "Four weeks on-site, two weeks at home-for long-haul remote sites"
+        "description": "Four work-block weeks, two rest weeks — for long-haul remote operations"
       },
       "fifo-custom": {
         "name": "Custom FIFO",
         "schedule": "Build your own",
-        "description": "Your FIFO site uses a unique roster? Configure your own work/rest blocks"
+        "description": "Your FIFO team uses a unique roster? Configure your own work/rest blocks"
       }
     }
   },
   "rosterType": {
     "title": "How Does Your Roster Work?",
     "title_named": "How Does Your Roster Work, {{name}}?",
-    "instruction": "Choose the roster style your mine site uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
+    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
     "instruction_pain": {
-      "cycle_lost": "This tells Ellie exactly where you are in your cycle — no more guessing",
-      "wrong_alarm": "Get this right and Ellie sets every alarm for the correct shift",
-      "days_off": "This shows Ellie when your days off fall so you can plan ahead",
-      "family": "Ellie will alert you to events you'd otherwise miss once it knows your roster",
-      "mental_math": "After this, Ellie does all the counting for you"
+      "cycle_lost": "This tells Ryvro exactly where you are in your cycle — no more guessing",
+      "wrong_alarm": "Get this right and Ryvro sets every alarm for the correct shift",
+      "days_off": "This shows Ryvro when your days off fall so you can plan ahead",
+      "family": "Ryvro will alert you to events you'd otherwise miss once it knows your roster",
+      "mental_math": "After this,Ryvro does all the counting for you"
     },
     "countryHint": "Common in {{country}}",
     "preparingNextStep": "Preparing next step...",
@@ -316,7 +447,13 @@
             "7-7-7 (long cycle)",
             "2-2-3 (short cycle)"
           ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "regions": [
+            "Australia",
+            "Canada",
+            "Remote operations",
+            "Hospitals",
+            "Security operations"
+          ],
           "pros": [
             "Go home daily or frequently",
             "Regular routine at each phase",
@@ -333,20 +470,20 @@
       "fifo": {
         "title": "FIFO / Swing Roster",
         "subtitle": "Work blocks • Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "description": "You work consecutive work-block days, then get extended rest time at home",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "Workers travel to remote operations, work consecutive days (work block), then return home for extended rest (rest block)",
           "examples": [
-            "8/6 (common WA)",
+            "8/6 (common)",
             "14/14 (even-time)",
-            "21/7 (remote sites)",
+            "21/7 (remote operations)",
             "28/14 (long cycle)"
           ],
-          "regions": ["Australia", "Canada", "Remote global mining"],
+          "regions": ["Australia", "Canada", "Remote global operations"],
           "pros": [
             "Extended time at home",
             "Higher pay rates",
-            "Good for remote sites",
+            "Good for remote operations",
             "Predictable blocks"
           ],
           "cons": [
@@ -363,24 +500,24 @@
     "saveFailed": "Failed to save your data. Please try again.",
     "features": {
       "reminders": "Smart shift reminders",
-      "remindersDesc": "Never miss a callout — smart reminders that adapt to your roster swing",
+      "remindersDesc": "Never miss a handover, callout, or early start — smart reminders that adapt to your rotation",
       "sleep": "Sleep tracking & insights",
       "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
       "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Monitor fatigue risk on long shifts — critical for underground safety",
+      "fatigueDesc": "Monitor fatigue risk on long shifts across work locations, wards, depots, and field work",
       "team": "Team coordination",
       "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
       "balance": "Work-life balance",
-      "balanceDesc": "Stay healthy between FIFO swings with routine and wellness tracking",
+      "balanceDesc": "Stay healthy between shift blocks with routine and wellness tracking",
       "earnings": "Earnings calculator",
-      "earningsDesc": "Calculate site allowances, FIFO loadings, and overtime automatically",
+      "earningsDesc": "Estimate shift hours, allowances, and overtime across rotating schedules",
       "meals": "Meal & hydration",
-      "mealsDesc": "Stay hydrated and fuelled through 12-hour underground shifts"
+      "mealsDesc": "Stay hydrated and fuelled through long days, night shifts, travel days, and callouts"
     },
     "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
+    "featuresTitle": "What you can do with Ryvro",
     "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
+    "getStartedA11yLabel": "Get started with Ryvro",
     "loading": "Building your roster calendar...",
     "nextShiftCountdown": "Next shift {{relative}} ({{date}})",
     "checkInTitle": "When do you check your schedule?",
@@ -399,7 +536,7 @@
     },
     "retryA11yHint": "Tap to try saving your data again",
     "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "subtitle": "Welcome to Ryvro",
     "summary": {
       "company": "Company",
       "cycle": "Cycle",
@@ -444,14 +581,14 @@
         "shiftPattern": "Shift Pattern",
         "fifoConfiguration": "FIFO Configuration",
         "customPatternConfiguration": "Custom Pattern Configuration",
-        "phaseOffset": "Phase Offset",
+        "phaseOffset": "Current position",
         "startDate": "Start Date",
         "shiftTimes": "Shift Times"
       }
     },
     "title_named": "{{name}}, you're all set.",
     "setupReady": "Your {{setup}} schedule is ready.",
-    "reminderPromise": "Ellie will remind you before every shift."
+    "reminderPromise": "Ryvro will remind you before every shift."
   },
   "phaseSelector": {
     "options": {
@@ -522,7 +659,7 @@
       "workPattern": "How are shifts run during your FIFO work block?",
       "swingConfig": "Configure your swing split",
       "block": "Where are you in your FIFO cycle?",
-      "block_named": "Are you at site or at home right now, {{name}}?",
+      "block_named": "Are you in your work block or rest block right now, {{name}}?",
       "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
     },
     "anticipation": "Almost there. One more tap and your FIFO roster is ready.",
@@ -545,7 +682,7 @@
       "straightNights": {
         "title": "Straight Nights",
         "description": "Your work block runs night shifts only.",
-        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+        "quickInfo": "Use this when crews remain on night shifts for the full work block."
       },
       "swing": {
         "title": "Swing",
@@ -555,16 +692,16 @@
     },
     "blocks": {
       "work": {
-        "title": "At Site (Working)",
-        "descriptionDay": "You are currently at the mine site on your day-shift work block",
-        "descriptionNight": "You are currently at the mine site on your night-shift work block",
-        "descriptionNeutral": "You are currently at the mine site on your work block",
+        "title": "Work Block",
+        "descriptionDay": "You are currently at work on your day-shift work block",
+        "descriptionNight": "You are currently at work on your night-shift work block",
+        "descriptionNeutral": "You are currently at work on your work block",
         "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
         "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
         "quickInfoNeutral": "This means your cycle starts counting from your current work block."
       },
       "rest": {
-        "title": "At Home (Rest)",
+        "title": "Rest Block",
         "description": "You are currently at home on your rest block",
         "quickInfo": "This offsets your cycle by your work block length first."
       }
@@ -586,9 +723,9 @@
       },
       "defaultDayTitle": "Day {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "First day back at site",
-        "firstNightAtSite": "First night shift back at site",
-        "firstShiftAtSite": "First shift back at site",
+        "firstDayAtSite": "First day of your work block",
+        "firstNightAtSite": "First night shift of your work block",
+        "firstShiftAtSite": "First shift of your work block",
         "lastDayBeforeHome": "Last day before flying home",
         "lastNightBeforeHome": "Last night shift before flying home",
         "lastShiftBeforeHome": "Last shift before flying home",
@@ -598,12 +735,12 @@
       },
       "rest": {
         "firstDayAtHome": "First day back at home",
-        "lastDayBeforeSite": "Last day before returning to site",
+        "lastDayBeforeSite": "Last day before the next work block",
         "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
       },
       "swing": {
         "dayShiftTitle": "Day Shift Day {{dayNumber}}",
-        "firstDayShiftAtSite": "First day shift back at site",
+        "firstDayShiftAtSite": "First day shift of your work block",
         "finalDayShiftBeforeNights": "Final day shift before switching to nights",
         "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
         "nightShiftTitle": "Night Shift Day {{dayNumber}}",
@@ -754,7 +891,7 @@
     },
     "guidance": {
       "aboutTitle": "About shift times",
-      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
+      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ryvro can track hours and alert you before each shift.",
       "hint": "Use the closest start time now. You can fine-tune it later in settings.",
       "definitions": {
         "twoShiftTitle": "Day vs Night:",
@@ -993,10 +1130,10 @@
         "swingWorkBlock": "Swing Work Block",
         "customWorkBlock": "Custom Work Block"
       },
-      "ratioLabel": "Site to home rhythm",
+      "ratioLabel": "Work to rest rhythm",
       "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
+      "siteDays": "work-block days",
+      "subtitle": "{{workBlockDays}} work-block days, then {{restBlockDays}} rest days",
       "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
       "title": "Your FIFO Rotation Preview",
       "workLabel": "Work: {{workBlockDays}} days",
@@ -1021,38 +1158,38 @@
     "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
     "sliders": {
       "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
+      "daysAtSite": "Work-block days",
       "daysOnDayShift": "Days on Day Shift",
       "daysOnNightShift": "Days on Night Shift"
     },
     "slidersTitle": "Step 1: Set block lengths",
-    "subtitle": "Step 1: Set days at site and days at home. Step 2: Choose how shifts run while you are on site.",
+    "subtitle": "Step 1: Set work-block days and rest days. Step 2: Choose how shifts run during your work block.",
     "subtitleSecondary": "Step 3: Review preview and save",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
+    "success": "Solid FIFO setup. {{workBlockDays}} work-block days, then {{restBlockDays}} rest days.",
     "swingSubtitle": "Set exactly how many work-block days are day shift vs night shift.",
     "swingTitle": "Step 2A: Swing Split",
     "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Start with your real travel + recovery rhythm. Then adjust site/home days until the cycle is sustainable.",
+    "tip": "Tip: Start with your real travel and recovery rhythm. Then adjust work-block and rest-block days until the cycle is sustainable.",
     "title": "Build Your FIFO Roster",
     "validation": {
       "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
       "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
     },
     "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "Choose how shifts run during your site block.",
+    "workPatternSubtitle": "Choose how shifts run during your work block.",
     "workPatternTitle": "Step 2: Work-Block Shift Style",
     "workPatterns": {
       "straight-days": {
         "title": "Straight Days",
-        "description": "All site days are day shift."
+        "description": "All work-block days are day shift."
       },
       "straight-nights": {
         "title": "Straight Nights",
-        "description": "All site days are night shift."
+        "description": "All work-block days are night shift."
       },
       "swing": {
         "title": "Swing (Days + Nights)",
-        "description": "Site block includes both day shifts and night shifts."
+        "description": "Work block includes both day shifts and night shifts."
       },
       "custom": {
         "title": "Custom Sequence",
@@ -1172,12 +1309,12 @@
       "placeholder": "My Schedule"
     },
     "anchorDate": {
-      "label": "Anchor date",
-      "hint": "The sequence repeats from this date"
+      "label": "Schedule match date",
+      "hint": "Pick the real date Ryvro should line up with your rotation"
     },
     "phaseOffset": {
-      "label": "Current day in cycle",
-      "hint": "0 = start of cycle"
+      "label": "Where are you in the rotation?",
+      "hint": "Use 1 for the first item in the sequence, 2 for the second, and so on"
     },
     "ai": {
       "sectionTitle": "AI Assistant",
@@ -1220,7 +1357,24 @@
       "discardDraft": "Discard",
       "followUp": "Ask a follow-up...",
       "send": "Send",
-      "invalid": "I couldn't build a schedule from that description. Try rephrasing."
+      "invalid": "I couldn't build a schedule from that description. Try rephrasing.",
+      "aiDraft": "AI Draft",
+      "clarificationBanner": "I need a bit more info to build this accurately",
+      "summary": "What I understood",
+      "questionsForYou": "Questions for you",
+      "headsUp": "Heads up",
+      "sequencePreview": "Sequence preview",
+      "dayA11y": "Day {{day}}: {{name}}",
+      "cycleLength_one": "{{count}}-day cycle",
+      "cycleLength_other": "{{count}}-day cycle",
+      "followUpLabel": "Ask a follow-up",
+      "followUpPlaceholder": "e.g. Make it 8-hour shifts instead",
+      "followUpA11y": "Follow-up question for AI",
+      "sendFollowUpA11y": "Send follow-up",
+      "useDraftA11y": "Use this AI draft",
+      "editManuallyA11y": "Edit schedule manually instead",
+      "discardDraftA11y": "Discard AI draft",
+      "cycleLength": "{{count}}-day cycle"
     },
     "palette": {
       "title": "Shift Types",
@@ -1228,7 +1382,24 @@
       "usageCount_one": "{{count}} use",
       "usageCount_other": "{{count}} uses",
       "deleteBlocked": "In use",
-      "deleteBlockedMessage": "This shift type is used {{count}} time(s) in the sequence. Remove those entries first or replace them."
+      "deleteBlockedMessage": "This shift type is used {{count}} time(s) in the sequence. Remove those entries first or replace them.",
+      "createNewA11y": "Create new shift type",
+      "newType": "New type",
+      "emptyTitle": "No shift types yet.",
+      "emptyMessage": "Tap New type to create your first shift.",
+      "cannotDeleteTitle": "Cannot delete",
+      "cannotDeleteMessage": "\"{{name}}\" is used {{count}} times in your sequence. Remove it from the sequence first.",
+      "cannotDeleteMessage_one": "\"{{name}}\" is used {{count}} time in your sequence. Remove it from the sequence first.",
+      "cannotDeleteMessage_other": "\"{{name}}\" is used {{count}} times in your sequence. Remove it from the sequence first.",
+      "ok": "OK",
+      "deleteTitle": "Delete \"{{name}}\"?",
+      "deleteMessage": "This shift type will be permanently removed.",
+      "cancelDelete": "Cancel",
+      "confirmDelete": "Delete",
+      "addToSequenceA11y": "Add {{name}} to sequence",
+      "editA11y": "Edit {{name}}",
+      "deleteA11y": "Delete {{name}}",
+      "deleteBlockedHint": "Cannot delete because it is used in the sequence"
     },
     "canvas": {
       "title": "Sequence",
@@ -1242,7 +1413,21 @@
       "duplicate": "Duplicate",
       "insertBefore": "Insert before",
       "insertAfter": "Insert after",
-      "delete": "Delete"
+      "delete": "Delete",
+      "emptyTitle": "No shifts in sequence",
+      "emptySubtitle": "Add shift types below, then tap Add shift to build your cycle.",
+      "noShiftTypesTitle": "No shift types",
+      "noShiftTypesMessage": "Create a shift type first using the palette below.",
+      "addShiftA11y": "Add shift to sequence",
+      "addBlockA11y": "Add repeated block to sequence",
+      "modalAddRepeated": "Add repeated block",
+      "modalChooseShift": "Choose shift type",
+      "modalInsertBefore": "Insert before day {{day}}",
+      "modalInsertAfter": "Insert after day {{day}}",
+      "repeatCountLabel": "Repeat count:",
+      "repeatInputA11y": "Number of repetitions",
+      "repeatTimes": "times",
+      "definitionUsedTimes": "used {{count}} times"
     },
     "inspector": {
       "titleCreate": "New Shift Type",
@@ -1273,7 +1458,7 @@
       "countsAsNight": "Counts as night shift",
       "color": "Colour",
       "icon": "Icon",
-      "location": "Site / Location (optional)",
+      "location": "Work location (optional)",
       "save": "Save",
       "delete": "Delete shift type",
       "deleteConfirm": {
@@ -1281,7 +1466,50 @@
         "message": "This will remove it from your palette. Existing uses in the sequence will be removed.",
         "confirm": "Delete",
         "cancel": "Cancel"
-      }
+      },
+      "nameRequiredTitle": "Name required",
+      "nameRequiredMessage": "Please enter a name for this shift type.",
+      "timesRequiredTitle": "Times required",
+      "timesRequiredMessage": "Please set start and end times for a timed shift.",
+      "colorA11y": "Color {{color}}",
+      "customColorPlaceholder": "Custom hex (e.g. FF5722)",
+      "customColorA11y": "Custom color hex code",
+      "iconA11y": "Icon: {{icon}}",
+      "countsAsWorkHint": "Included in work day stats",
+      "countsAsWorkA11y": "Counts as work day toggle",
+      "countsAsNightHint": "Affects night shift statistics",
+      "countsAsNightA11y": "Counts as night shift toggle",
+      "locationPlaceholder": "e.g. Hospital, depot, plant, station",
+      "locationA11y": "Work location name",
+      "remindersTitle": "Reminders for this shift",
+      "remindersDisabled": "Off and leave shift types do not schedule pre-shift reminders.",
+      "reminderRulesTitle": "Reminder rules",
+      "reminderRulesHint": "These rules apply only to this shift type.",
+      "reminderProfileA11y": "Reminder profile name",
+      "firstReminder": "First reminder",
+      "firstReminderA11y": "Hours before shift for first reminder",
+      "hoursBefore": "hours before",
+      "prepTime": "Prep time",
+      "prepTimeA11y": "Preparation minutes before shift",
+      "minutes": "minutes",
+      "travelTime": "Travel time",
+      "travelTimeA11y": "Travel minutes before shift",
+      "imminentReminderTitle": "15-minute alert",
+      "imminentReminderHint": "Send a final reminder just before start time",
+      "imminentReminderA11y": "15 minute reminder toggle",
+      "briefingReminderTitle": "Briefing reminder",
+      "briefingReminderHint": "Treat the 15-minute reminder as critical briefing prep",
+      "briefingReminderA11y": "Briefing reminder toggle",
+      "fatigueAwareTitle": "Fatigue-aware timing",
+      "fatigueAwareHint": "Move prep reminders earlier when fatigue risk is high",
+      "fatigueAwareA11y": "Fatigue-aware reminders toggle",
+      "postShiftCheckinTitle": "Post-shift check-in",
+      "postShiftCheckinHint": "Ask how the shift went one hour after it ends",
+      "postShiftCheckinA11y": "Post shift check-in toggle",
+      "travelRemindersTitle": "Travel reminders",
+      "travelRemindersHint": "Use this shift in travel-in and travel-out reminders",
+      "travelRemindersA11y": "Travel reminders toggle",
+      "saveA11y": "Save shift type"
     },
     "preview": {
       "title": "Preview",
@@ -1291,7 +1519,8 @@
       "today": "Today",
       "anchor": "Anchor",
       "empty": "Add shifts to see a preview",
-      "errors": "Fix errors to see preview"
+      "errors": "Fix errors to see preview",
+      "errorHint": "Fix the highlighted issue above, then your calendar preview will appear here."
     },
     "validation": {
       "errorTitle_one": "{{count}} error",
@@ -1300,7 +1529,19 @@
       "warningTitle_other": "{{count}} warnings",
       "fix": "Fix issues before saving",
       "review": "Review before saving",
-      "dismiss": "Dismiss"
+      "dismiss": "Dismiss",
+      "fixBeforeSaving": "Fix {{count}} issues before saving",
+      "fixBeforeSaving_one": "Fix {{count}} issue before saving",
+      "fixBeforeSaving_other": "Fix {{count}} issues before saving",
+      "reviewBeforeSaving": "{{count}} warnings - review before saving",
+      "reviewBeforeSaving_one": "{{count}} warning - review before saving",
+      "reviewBeforeSaving_other": "{{count}} warnings - review before saving",
+      "toggleA11y": "{{headline}}. Tap to {{state}} list.",
+      "expand": "expand",
+      "collapse": "collapse",
+      "warningsHeader": "Warnings:",
+      "dismissWarnings": "Dismiss warnings",
+      "dismissWarningsA11y": "Dismiss warnings"
     },
     "kinds": {
       "work": "Work",

@@ -1,7 +1,7 @@
 /**
  * Voice Assistant Type Definitions
  *
- * Types for the Ellie voice assistant feature including
+ * Types for the Ryvro voice assistant feature including
  * conversation state, messages, tool calls, and service interfaces.
  */
 
@@ -56,6 +56,10 @@ export interface VoiceAssistantUserContext {
   name?: string;
   /** User's occupation */
   occupation?: string;
+  /** User's company or workplace */
+  company?: string;
+  /** Country where the user works, preferably ISO alpha-2 */
+  country?: string;
   /** Serialized ShiftCycle */
   shiftCycle: ShiftCycle;
   /** Current date in YYYY-MM-DD */
@@ -69,7 +73,7 @@ export interface VoiceAssistantUserContext {
 /**
  * Request payload to the backend
  */
-export interface EllieBrainRequest {
+export interface RyvroBrainRequest {
   /** Transcribed user query */
   query: string;
   /** User context for personalized responses */
@@ -81,7 +85,7 @@ export interface EllieBrainRequest {
 /**
  * Response from the backend
  */
-export interface EllieBrainResponse {
+export interface RyvroBrainResponse {
   /** Natural language response text */
   text: string;
   /** Optional structured shift data */
@@ -93,7 +97,7 @@ export interface EllieBrainResponse {
 /**
  * Normalized backend error payload.
  */
-export interface EllieBrainErrorPayload {
+export interface RyvroBrainErrorPayload {
   /** Stable machine-readable code */
   code:
     | 'invalid_request'
@@ -119,11 +123,11 @@ export interface EllieBrainErrorPayload {
 /**
  * Backward-compatible backend response envelope.
  */
-export interface EllieBrainResponseEnvelope {
+export interface RyvroBrainResponseEnvelope {
   ok?: boolean;
   requestId?: string;
-  data?: EllieBrainResponse;
-  error?: EllieBrainErrorPayload | string;
+  data?: RyvroBrainResponse;
+  error?: RyvroBrainErrorPayload | string;
 }
 
 /**
@@ -179,7 +183,7 @@ export interface VoiceAssistantNotice {
 export type VoiceAssistantDiagnosticCategory =
   | 'wake_word'
   | 'speech_recognition'
-  | 'ellie_brain'
+  | 'ryvro_brain'
   | 'tts'
   | 'pipeline'
   | 'persistence';

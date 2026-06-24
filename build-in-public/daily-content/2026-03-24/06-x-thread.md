@@ -2,7 +2,7 @@
 
 1. If choosing your roster feels like paperwork, people quit before the app earns trust.
 
-2. That was the real problem on day 2 of Ellie.
+2. That was the real problem on day 2 of Ryvro.
 
 3. The morning tightened the path: onboarding navigation, a stronger introduction screen, and country selection.
 

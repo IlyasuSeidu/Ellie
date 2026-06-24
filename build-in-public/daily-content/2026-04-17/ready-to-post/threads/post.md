@@ -10,7 +10,7 @@
 
 A shift app loses me the moment I have to wonder, “did that setup actually stick?”
 
-That was today’s Ellie focus: making the flow feel dependable when people move between onboarding, reminders, voice assistant, and subscription moments.
+That was today’s Ryvro focus: making the flow feel dependable when people move between onboarding, reminders, voice assistant, and subscription moments.
 
 We tightened setup carryover, strengthened shift/date behavior, and validated the risky paths with tests.
 
@@ -20,7 +20,7 @@ What part of your daily app flow makes you double-check the result?
 
 ## Builder Variation
 
-I’m building Ellie as a miner, so I care less about perfect demos and more about reliability when someone is tired after shift.
+I’m building Ryvro as a miner, so I care less about perfect demos and more about reliability when someone is tired after shift.
 
 Today was transition hardening: setup continuity + shift/date consistency + safer cross-flow behavior.
 

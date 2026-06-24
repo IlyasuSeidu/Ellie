@@ -144,6 +144,8 @@ export interface UniversalShiftSchedule {
     confidence: number;
     assumptions: string[];
     unresolvedQuestions: string[];
+    parserSource?: 'remote_ai' | 'local_fallback';
+    fallbackReason?: 'not_configured' | 'not_found' | 'server_error' | 'network_error' | 'timeout';
   };
 }
 

@@ -1,6 +1,6 @@
 # Anthropic Content Provider
 
-Ellie's stop-scroll generator now supports Anthropic as an optional writing provider.
+Ryvro's stop-scroll generator now supports Anthropic as an optional writing provider.
 
 ## How It Works
 
@@ -77,7 +77,7 @@ That file records:
 
 Anthropic is prompted to:
 
-- keep Ellie product-first
+- keep Ryvro product-first
 - avoid internal build terms in publishable drafts
 - avoid fake traction, fake users, and fake outcomes
 - use current codebase context only for naming and understanding, not false history

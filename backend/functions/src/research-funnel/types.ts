@@ -1,8 +1,12 @@
-export type MinerPersonaId =
+export type ShiftWorkerPersonaId =
   | 'underground-production-operator'
   | 'fifo-field-worker'
   | 'maintenance-trades-miner'
   | 'process-plant-control-room-operator'
+  | 'healthcare-rotating-clinician'
+  | 'security-operations-officer'
+  | 'transport-logistics-shift-worker'
+  | 'hospitality-manufacturing-shift-worker'
   | 'crew-lead-supervisor'
   | 'unknown';
 
@@ -15,8 +19,8 @@ export type ResearchStage =
   | 'awaiting_reply'
   | 'paused_no_reply'
   | 'fit_review'
-  | 'ellie_intro_ready'
-  | 'ellie_intro_sent'
+  | 'ryvro_intro_ready'
+  | 'ryvro_intro_sent'
   | 'research_only'
   | 'not_fit'
   | 'closed';
@@ -53,7 +57,7 @@ export interface ResearchLead {
   jobTitle?: string;
   company?: string;
   country?: string;
-  personaId?: MinerPersonaId;
+  personaId?: ShiftWorkerPersonaId;
   stage: ResearchStage;
   sequenceDay: number;
   consecutiveMisses: number;
@@ -65,7 +69,7 @@ export interface ResearchLead {
 }
 
 export interface PersonaClassificationResult {
-  personaId: MinerPersonaId;
+  personaId: ShiftWorkerPersonaId;
   confidence: number;
   matchedSignals: string[];
 }
@@ -89,13 +93,13 @@ export interface LeadScoreBreakdown {
 export type SequencePlanAction =
   | 'hold'
   | 'send_question'
-  | 'send_ellie_intro'
+  | 'send_ryvro_intro'
   | 'pause_no_reply'
   | 'close_not_fit';
 
 export interface SequencePlan {
   action: SequencePlanAction;
-  personaId: MinerPersonaId;
+  personaId: ShiftWorkerPersonaId;
   messageDay: number | null;
   nextSequenceDay: number;
   nextStage: ResearchStage;

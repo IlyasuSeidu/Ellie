@@ -32,4 +32,4 @@ Built by a miner for shift workers.
 
 What onboarding step still feels like paperwork in most apps?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech #vibecoding
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech #vibecoding

@@ -83,6 +83,8 @@ interface FailedUserMutation extends PendingUserMutation {
   lastError: string;
 }
 
+const PROFILE_SYNC_TIMEOUT_MS = 4500;
+
 /**
  * UserService class
  */
@@ -574,11 +576,16 @@ export class UserService extends FirebaseService {
    *
    * This is safe to call multiple times:
    * - existing user: update changed onboarding fields
-   * - missing user: create with onboarding values and placeholder email
+   * - missing user: create with onboarding values and the authenticated email when available
    */
-  async createOrSyncUserProfile(userId: string, onboarding: OnboardingData): Promise<void> {
+  async createOrSyncUserProfile(
+    userId: string,
+    onboarding: OnboardingData,
+    authEmail?: string | null
+  ): Promise<void> {
     const now = new Date().toISOString();
     const normalizedCountry = this.normalizeCountryCode(onboarding.country);
+    const normalizedAuthEmail = this.normalizeOptionalEmail(authEmail);
 
     const profileUpdates: Partial<UserProfile> = {
       id: userId,
@@ -594,30 +601,40 @@ export class UserService extends FirebaseService {
       profileUpdates.shiftCycle = cycle;
     }
 
+    if (normalizedAuthEmail) {
+      profileUpdates.email = normalizedAuthEmail;
+    }
+
     try {
-      const existing = await this.getUser(userId);
-
-      if (existing) {
-        await this.updateUser(userId, profileUpdates);
-        logger.info('UserService: synced existing user profile from onboarding', { userId });
-        return;
-      }
-
-      const createPayload: UserProfile = {
+      const cachedProfile = await this.getCachedUser(userId);
+      const nextProfile = this.validateUserProfile({
+        ...(cachedProfile ?? {
+          id: userId,
+          createdAt: now,
+          email: normalizedAuthEmail ?? `pending+${userId}@ryvro.local`,
+        }),
         id: userId,
         name: profileUpdates.name ?? 'User',
         occupation: profileUpdates.occupation ?? 'Unknown',
         company: profileUpdates.company ?? 'Unknown',
         country: profileUpdates.country ?? 'US',
-        // Replaced after auth-sync in PremiumCompletionScreen.
-        email: `pending+${userId}@ellie.local`,
-        createdAt: now,
+        email: normalizedAuthEmail ?? cachedProfile?.email ?? `pending+${userId}@ryvro.local`,
+        createdAt: cachedProfile?.createdAt ?? now,
         updatedAt: now,
         shiftCycle: profileUpdates.shiftCycle,
-      };
+      });
 
-      await this.createUser(userId, createPayload);
-      logger.info('UserService: created new user profile from onboarding', { userId });
+      await this.commitProfileMutation(
+        userId,
+        nextProfile,
+        () =>
+          this.withProfileSyncTimeout(
+            this.upsert(this.USERS_COLLECTION, userId, nextProfile, { merge: true })
+          ),
+        'profile-sync'
+      );
+
+      logger.info('UserService: synced user profile from onboarding', { userId });
     } catch (error) {
       logger.error('UserService: failed to sync user profile', error as Error, { userId });
       throw error;
@@ -674,6 +691,11 @@ export class UserService extends FirebaseService {
   private normalizeRequiredText(value: string | undefined, fallback: string): string {
     const normalized = value?.trim();
     return normalized && normalized.length > 0 ? normalized : fallback;
+  }
+
+  private normalizeOptionalEmail(value: string | null | undefined): string | undefined {
+    const normalized = value?.trim();
+    return normalized && normalized.includes('@') ? normalized : undefined;
   }
 
   private normalizeCountryCode(value: string | undefined): string {
@@ -805,6 +827,27 @@ export class UserService extends FirebaseService {
     }
   }
 
+  private withProfileSyncTimeout<T>(operation: Promise<T>): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const timeout = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => {
+        reject(
+          new NetworkError(
+            'Profile sync timed out. Ryvro saved locally and will retry.',
+            'PROFILE_SYNC_TIMEOUT'
+          )
+        );
+      }, PROFILE_SYNC_TIMEOUT_MS);
+    });
+
+    return Promise.race([operation, timeout]).finally(() => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    });
+  }
+
   private async resolveUserForMutation(userId: string): Promise<UserProfile> {
     const existing = await this.getUser(userId);
     if (existing) {
@@ -822,7 +865,7 @@ export class UserService extends FirebaseService {
       occupation: 'Unknown',
       company: 'Unknown',
       country: 'US',
-      email: `pending+${userId}@ellie.local`,
+      email: `pending+${userId}@ryvro.local`,
       createdAt: now,
       updatedAt: now,
     };

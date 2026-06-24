@@ -8,7 +8,7 @@
 
 ## Story Lens
 
-Day 2 was about one risk: asking mining workers to do admin before Ellie had earned enough trust to ask it.
+Day 2 was about one risk: asking mining workers to do admin before Ryvro had earned enough trust to ask it.
 
 The day started by turning separate onboarding pieces into a guided path: navigation, a stronger introduction screen, and a country selector that made setup feel coherent.
 
@@ -48,7 +48,7 @@ By the end of the day, the hardest choice in the flow, shift pattern selection, 
 ## Angle Mix
 
 - **Stakes / Consequence**: Lead with what goes wrong for the user if the product fails or feels uncertain.
-- **Identity / Worldview**: Tie the work to what Ellie stands for and how it should feel in the world.
+- **Identity / Worldview**: Tie the work to what Ryvro stands for and how it should feel in the world.
 - **Myth-Bust**: Knock down the obvious but wrong explanation or product cliché.
 - **Proof / Demo**: Show the product working, the test passing, or the claim becoming visible.
 - **Open Loop / Cliffhanger**: End with the unresolved edge that naturally pulls people into the next post.

@@ -1,10 +1,10 @@
-import { classifyMinerPersona } from './personas';
+import { classifyShiftWorkerPersona } from './personas';
 import { scoreResearchLead } from './score-lead';
-import type { MinerPersonaId, ResearchLead, ResearchStage, SequencePlan } from './types';
+import type { ResearchLead, ResearchStage, SequencePlan, ShiftWorkerPersonaId } from './types';
 
 type DayPrompt = {
   default: string;
-  variants?: Partial<Record<MinerPersonaId, string>>;
+  variants?: Partial<Record<ShiftWorkerPersonaId, string>>;
 };
 
 const DAY_PROMPTS: Record<number, DayPrompt> = {
@@ -16,6 +16,20 @@ const DAY_PROMPTS: Record<number, DayPrompt> = {
         'Do you ever lose track of whether the next swing is days, nights, or off?',
       'fifo-field-worker':
         'What is harder to keep straight for you: next swing in, next swing home, or planning around the block?',
+      'maintenance-trades-miner':
+        'What catches you out more often: the roster itself, the start times, or the knock-on effect on your life outside site?',
+      'process-plant-control-room-operator':
+        "How often do you still need to check the pattern even when you've been on the same roster for ages?",
+      'healthcare-rotating-clinician':
+        'What is hardest to keep straight right now: nights, days, handovers, on-call, or days off?',
+      'security-operations-officer':
+        'What is hardest to keep straight right now: posts, patrol blocks, nights, or last-minute coverage changes?',
+      'transport-logistics-shift-worker':
+        'What is hardest to keep straight right now: early starts, depot changes, routes, or rest days?',
+      'hospitality-manufacturing-shift-worker':
+        'What is hardest to keep straight right now: weekends, split shifts, line rotations, or nights?',
+      'crew-lead-supervisor':
+        'When your own roster changes, what is hardest to keep straight: handovers, coverage gaps, nights, or days off?',
     },
   },
   2: {
@@ -40,7 +54,7 @@ const DAY_PROMPTS: Record<number, DayPrompt> = {
   },
   7: {
     default:
-      'We’re building Ellie around exactly this problem. Want early access when the next version is ready?',
+      'We’re building Ryvro around exactly this problem. Want early access when the next version is ready?',
   },
 };
 
@@ -54,7 +68,7 @@ function normalizeSequenceDay(sequenceDay: number): number {
   return Math.floor(sequenceDay);
 }
 
-function choosePrompt(day: number, personaId: MinerPersonaId): string {
+function choosePrompt(day: number, personaId: ShiftWorkerPersonaId): string {
   const prompt = DAY_PROMPTS[day];
   if (!prompt) {
     return DAY_PROMPTS[7].default;
@@ -62,10 +76,10 @@ function choosePrompt(day: number, personaId: MinerPersonaId): string {
   return prompt.variants?.[personaId] ?? prompt.default;
 }
 
-function buildEllieIntroMessage(lead: ResearchLead): string {
+function buildRyvroIntroMessage(lead: ResearchLead): string {
   const painSummary = lead.lastPainSummary?.trim();
   if (painSummary) {
-    return `We’re building Ellie around exactly this problem: ${painSummary}. Want early access when the next version is ready?`;
+    return `We’re building Ryvro around exactly this problem: ${painSummary}. Want early access when the next version is ready?`;
   }
 
   return DAY_PROMPTS[7].default;
@@ -80,7 +94,7 @@ function activeOrAwaitingStage(currentStage: ResearchStage): ResearchStage {
 }
 
 export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
-  const classification = classifyMinerPersona(lead);
+  const classification = classifyShiftWorkerPersona(lead);
   const scoring = scoreResearchLead({
     ...lead,
     personaId: lead.personaId ?? classification.personaId,
@@ -95,7 +109,7 @@ export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
       nextSequenceDay: normalizeSequenceDay(lead.sequenceDay),
       nextStage: 'not_fit',
       message: null,
-      reason: 'Lead is disqualified because the problem does not fit Ellie’s current wedge.',
+      reason: 'Lead is disqualified because the problem does not fit Ryvro’s current wedge.',
     };
   }
 
@@ -127,13 +141,13 @@ export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
 
   if (scoring.introEligible && day >= 7) {
     return {
-      action: 'send_ellie_intro',
+      action: 'send_ryvro_intro',
       personaId,
       messageDay: 7,
       nextSequenceDay: 7,
-      nextStage: 'ellie_intro_ready',
-      message: buildEllieIntroMessage(lead),
-      reason: 'Lead is qualified for Ellie introduction.',
+      nextStage: 'ryvro_intro_ready',
+      message: buildRyvroIntroMessage(lead),
+      reason: 'Lead is qualified for Ryvro introduction.',
     };
   }
 

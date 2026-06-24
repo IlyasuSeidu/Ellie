@@ -10,7 +10,7 @@
 
 Onboarding quality is mostly decision design, not copy quality.
 
-In Ellie, the roster-pattern step was technically correct but cognitively heavy. People slowed down there before they ever saw the payoff.
+In Ryvro, the roster-pattern step was technically correct but cognitively heavy. People slowed down there before they ever saw the payoff.
 
 Today’s decision:
 
@@ -20,7 +20,7 @@ Today’s decision:
 
 Proof from this pass: 11 locale updates and 32 tests touched around onboarding behavior.
 
-I build Ellie as a miner for shift workers, so I track where tired users hesitate, not where product teams assume clarity.
+I build Ryvro as a miner for shift workers, so I track where tired users hesitate, not where product teams assume clarity.
 
 Which onboarding decision in your product creates the most silent churn?
 
@@ -28,7 +28,7 @@ Which onboarding decision in your product creates the most silent churn?
 
 I used to think onboarding friction was mostly a copy problem.
 
-Today in Ellie proved the opposite: interaction shape matters more.
+Today in Ryvro proved the opposite: interaction shape matters more.
 
 We reduced decision weight at the roster step with one-question flow + swipeable pattern selection, then validated the change across 11 locales and 32 tests touched.
 

@@ -372,7 +372,7 @@ export class SmartReminderService {
                 body: translate(
                   'notifications.smartReminders.postShift.body',
                   { shiftType: localizedShiftType },
-                  'How was your {{shiftType}}? Log your energy level in Ellie.',
+                  'How was your {{shiftType}}? Log your energy level in Ryvro.',
                   language
                 ),
               },

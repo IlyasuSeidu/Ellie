@@ -14,10 +14,10 @@ const ROOT_DIR = process.cwd();
 loadSimpleEnv(ROOT_DIR);
 const OUTPUT_ROOT = path.join(ROOT_DIR, 'build-in-public', 'daily-content');
 const { ANGLES, DAILY_SELECTION, LEGACY_ANGLE_ALIASES, PLATFORM_PROFILES } = require(
-  path.join(ROOT_DIR, 'config', 'ellie-angle-framework')
+  path.join(ROOT_DIR, 'config', 'ryvro-angle-framework')
 );
-const BRAND_CONTEXT = require(path.join(ROOT_DIR, 'config', 'ellie-brand-context'));
-const { PLATFORM_PLAYBOOK } = require(path.join(ROOT_DIR, 'config', 'ellie-platform-playbook'));
+const BRAND_CONTEXT = require(path.join(ROOT_DIR, 'config', 'ryvro-brand-context'));
+const { PLATFORM_PLAYBOOK } = require(path.join(ROOT_DIR, 'config', 'ryvro-platform-playbook'));
 
 const THEME_RULES = [
   {
@@ -84,7 +84,7 @@ const THEME_RULES = [
     id: 'voice',
     label: 'Voice Assistant',
     publicLabel: 'assistant responsiveness',
-    keywords: ['voice', 'wake word', 'speech', 'ellie brain'],
+    keywords: ['voice', 'wake word', 'speech', 'ryvro brain'],
     pathFragments: ['VoiceAssistant', 'wakeWord', 'SpeechRecognition'],
   },
   {
@@ -267,7 +267,7 @@ const FILE_SUMMARY_HINTS = [
   },
   {
     pattern: /src\/screens\/onboarding\/premium\/PremiumWelcomeScreen\.tsx$/,
-    summary: 'First screen that frames Ellie as a premium shift companion from the opening moment.',
+    summary: 'First screen that frames Ryvro as a premium shift companion from the opening moment.',
   },
   {
     pattern: /src\/navigation\/OnboardingNavigator\.tsx$/,
@@ -1876,7 +1876,7 @@ function buildFoundationLaunchContext(analysis) {
     character:
       'a miner checking tomorrow before dawn and deciding in half a second whether to trust the answer',
     friction:
-      'The easy day-1 story is "ship something visible." For Ellie, the real risk was making promises on the surface before the answer layer deserved trust.',
+      'The easy day-1 story is "ship something visible." For Ryvro, the real risk was making promises on the surface before the answer layer deserved trust.',
     wrongRead:
       'It is tempting to tell a cleaner story and pretend day 1 was only invisible work. It was not. The real day had both: deep foundation work first, then the first visible onboarding layer on top of it.',
     shift:
@@ -1928,7 +1928,7 @@ function buildFoundationLaunchContext(analysis) {
       'The welcome screen was never the real risk. The answer behind it was.',
       'If the first visible layer sits on shaky logic, design just hides the problem for a few seconds.',
       'The product did not start with animations. It started with whether tomorrow could be trusted.',
-      'Day 1 was not setup. It was the first decision about whether Ellie would deserve belief.',
+      'Day 1 was not setup. It was the first decision about whether Ryvro would deserve belief.',
       'What do you secure first when the user cannot afford a wrong answer?',
       'The more interesting day-1 story is not what appeared on screen. It is what made that screen safe to believe.',
     ],
@@ -2184,7 +2184,7 @@ ${windowLine ? `**Window**: ${windowLine}\n` : ''}**Series**: The First Minute
 
 ## Story Lens
 
-Day 2 was about one risk: asking mining workers to do admin before Ellie had earned enough trust to ask it.
+Day 2 was about one risk: asking mining workers to do admin before Ryvro had earned enough trust to ask it.
 
 The day started by turning separate onboarding pieces into a guided path: navigation, a stronger introduction screen, and a country selector that made setup feel coherent.
 
@@ -2453,7 +2453,7 @@ function buildHeroShort(analysis) {
 
 If "Tomorrow: Night Shift" is wrong, the animation does not matter.
 
-That was day 1 of Ellie.
+That was day 1 of Ryvro.
 
 The first job was invisible: shift math, date handling, services, and the reliability underneath the app.
 
@@ -2479,7 +2479,7 @@ What is one product moment where the surface means nothing if the underneath tru
 
 ## Caption Draft
 
-By the end of day 1, Ellie had a welcome screen.
+By the end of day 1, Ryvro had a welcome screen.
 
 The more important part is what happened before that.
 
@@ -2548,7 +2548,7 @@ What onboarding step in most apps still feels like paperwork to you?
 
 ## Caption Draft
 
-Day 2 of Ellie was not really about adding another onboarding screen.
+Day 2 of Ryvro was not really about adding another onboarding screen.
 
 It was about removing the feeling of admin.
 
@@ -2663,9 +2663,9 @@ The lazy version of this story would be: day 1 started invisible, day 2 became v
 
 That is not what happened.
 
-Day 1 of Ellie had both. The invisible answer layer came first. The first visible onboarding layer followed on top of it later that same day.
+Day 1 of Ryvro had both. The invisible answer layer came first. The first visible onboarding layer followed on top of it later that same day.
 
-That order matters because Ellie will eventually answer one simple question for a miner before dawn:
+That order matters because Ryvro will eventually answer one simple question for a miner before dawn:
 
 "What shift am I on tomorrow?"
 
@@ -2705,7 +2705,7 @@ The easy version of this story is: more onboarding work shipped.
 
 The real version is better.
 
-Day 2 of Ellie was about removing the feeling of paperwork.
+Day 2 of Ryvro was about removing the feeling of paperwork.
 
 The morning built the guided path.
 The evening rebuilt the hardest decision inside that path.
@@ -2773,7 +2773,7 @@ function buildLinkedInPost(analysis) {
     return `
 # LinkedIn Post
 
-Day 1 of Ellie had two jobs:
+Day 1 of Ryvro had two jobs:
 
 Build the answer.
 Then build the first screen people could trust.
@@ -2788,7 +2788,7 @@ But by the end of the day there was also a visible layer: premium onboarding pie
 
 That is the more honest story, and it teaches the better lesson.
 
-If Ellie eventually says "Tomorrow: Night Shift," that answer has to deserve belief before the interface starts looking polished.
+If Ryvro eventually says "Tomorrow: Night Shift," that answer has to deserve belief before the interface starts looking polished.
 
 So the sequencing mattered.
 
@@ -2815,7 +2815,7 @@ What is something you have built where the visible layer only worked because of 
     return `
 # LinkedIn Post
 
-Day 2 of Ellie taught a very specific product lesson:
+Day 2 of Ryvro taught a very specific product lesson:
 
 If onboarding feels like paperwork, people leave before the product earns enough trust to ask for anything.
 
@@ -2952,7 +2952,7 @@ Use the same day in native formats, but keep the public story focused on trust a
 
 - Best format: text post
 - Best angle: ${linkedinAngleMix}
-- Opening move: "Day 1 of Ellie had two jobs"
+- Opening move: "Day 1 of Ryvro had two jobs"
 - Structure: honest chronology -> why the order mattered -> principle -> question
 - Best proof to show: the answer layer came before the visible layer, even though both happened on the same day
 - Tone note: reflective, sharp, and defensible
@@ -3149,7 +3149,7 @@ function buildXThread(analysis) {
   if (foundationLaunch) {
     const posts = [
       `If "Tomorrow: Night Shift" is wrong, the animation does not matter.`,
-      `Day 1 of Ellie had two jobs: build the answer, then build the first screen people could trust.`,
+      `Day 1 of Ryvro had two jobs: build the answer, then build the first screen people could trust.`,
       `The first job was invisible: shift math, date handling, services, and the reliability underneath the product.`,
       `The second job was visible: premium onboarding pieces and the first welcome screen.`,
       `Both landed on day 1. The sequencing is the point.`,
@@ -3168,7 +3168,7 @@ ${posts.map((post, index) => `${index + 1}. ${post}`).join('\n\n')}
   if (platformStory.slug === 'onboarding-momentum') {
     const posts = [
       `If choosing your roster feels like paperwork, people quit before the app earns trust.`,
-      `That was the real problem on day 2 of Ellie.`,
+      `That was the real problem on day 2 of Ryvro.`,
       `The morning tightened the path: onboarding navigation, a stronger introduction screen, and country selection.`,
       `The harder problem was shift pattern selection.`,
       `Most workers do not know the official name of their pattern first. They know what their weeks feel like.`,
@@ -3535,7 +3535,7 @@ function getPlatformSpec(platformId) {
       id: platformId,
       label: platformId,
       folder: platformId,
-      audience: 'people likely to care about Ellie',
+      audience: 'people likely to care about Ryvro',
       objective: 'turn a real product chapter into a public story',
       nativeFormat: 'platform-native post',
       targetLength: 'n/a',
@@ -3576,7 +3576,7 @@ function buildBuilderOverlay(platformId, variant = 'primary') {
 
   if (spec.overlayMode === 'builder') {
     if (variant === 'primary') {
-      return 'I am a miner building Ellie with AI-native, mostly vibe-coded workflows. The point is not the tooling flex. The point is turning real shift-work pain into working product decisions.';
+      return 'I am a miner building Ryvro with AI-native, mostly vibe-coded workflows. The point is not the tooling flex. The point is turning real shift-work pain into working product decisions.';
     }
 
     return 'The longer arc is simple: build software out of real operator pain, learn the AI-native workflow well enough to repeat it, then teach other people how to do the same with useful apps.';
@@ -3587,7 +3587,7 @@ function buildBuilderOverlay(platformId, variant = 'primary') {
       return 'Built by a miner for shift workers.';
     }
 
-    return 'I am building Ellie as a miner with AI-native, mostly vibe-coded workflows, but the product problem stays first.';
+    return 'I am building Ryvro as a miner with AI-native, mostly vibe-coded workflows, but the product problem stays first.';
   }
 
   return BRAND_CONTEXT.identity.builderLine;
@@ -3595,11 +3595,11 @@ function buildBuilderOverlay(platformId, variant = 'primary') {
 
 function buildReadyPostHashtags(platformId) {
   if (platformId === 'carousel' || platformId === 'reels' || platformId === 'tiktok') {
-    return '#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech #vibecoding';
+    return '#ryvro #shiftwork #shiftworkers #rosterlife #buildinpublic #theminerbuildingtech #vibecoding';
   }
 
   if (platformId === 'shorts') {
-    return '#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech';
+    return '#ryvro #shiftwork #shiftworkers #rosterlife #buildinpublic #theminerbuildingtech';
   }
 
   return '';
@@ -3622,7 +3622,7 @@ function buildPlatformStoryContext(analysis, platformId = 'linkedin') {
       shift:
         'Build shift math, services, and safeguards first. Then let the first visible layer land on top of that base.',
       proof:
-        'By the end of the day, Ellie had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.',
+        'By the end of the day, Ryvro had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.',
       lesson:
         'Trust is not a feature you add after the interface looks good. It is a structural decision.',
       question: 'What do you secure first when the user cannot afford a wrong answer?',
@@ -3630,7 +3630,7 @@ function buildPlatformStoryContext(analysis, platformId = 'linkedin') {
       coverText: `If "Tomorrow: Night Shift" is wrong, the animation does not matter.`,
       pinnedComment: 'High-stakes products live or die on the first answer people decide to trust.',
       builderVariation:
-        'I am building Ellie as a miner using AI-native workflows, but the lesson is older than the tooling: if the answer underneath is shaky, the product never deserves trust.',
+        'I am building Ryvro as a miner using AI-native workflows, but the lesson is older than the tooling: if the answer underneath is shaky, the product never deserves trust.',
       overlayLine: buildBuilderOverlay(platformId, 'primary'),
       deeperOverlayLine: buildBuilderOverlay(platformId, 'secondary'),
       platformLabel: spec.label,
@@ -3658,7 +3658,7 @@ function buildPlatformStoryContext(analysis, platformId = 'linkedin') {
       pinnedComment:
         'The hardest onboarding step is usually not the one with the most fields. It is the one that feels like work.',
       builderVariation:
-        'I am building Ellie as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.',
+        'I am building Ryvro as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.',
       overlayLine: buildBuilderOverlay(platformId, 'primary'),
       deeperOverlayLine: buildBuilderOverlay(platformId, 'secondary'),
       platformLabel: spec.label,
@@ -3711,7 +3711,7 @@ function buildPlatformStoryContext(analysis, platformId = 'linkedin') {
     coverText: capitalizeFirst(hero.tension),
     pinnedComment: buildStoryAtoms(analysis).openLoop,
     builderVariation:
-      'I am building Ellie as a miner using AI-native workflows, but I still want the public story to stay grounded in the product problem, not the tooling alone.',
+      'I am building Ryvro as a miner using AI-native workflows, but I still want the public story to stay grounded in the product problem, not the tooling alone.',
     overlayLine: buildBuilderOverlay(platformId, 'primary'),
     deeperOverlayLine: buildBuilderOverlay(platformId, 'secondary'),
     platformLabel: spec.label,

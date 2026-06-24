@@ -1,9 +1,9 @@
 {
   "date": "2026-01-26",
   "humanDate": "January 26, 2026",
-  "repository": "Ellie",
+  "repository": "Ryvro",
   "branch": "main",
-  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "remote": "https://github.com/IlyasuSeidu/Ryvro.git",
   "selectedAngles": [
     "unexpected-challenge",
     "build-confession",
@@ -25,7 +25,7 @@
     "storyHighlights": [
       "One-question-at-a-time introduction flow that makes profile setup feel conversational instead of administrative.",
       "Roster-pattern choice rebuilt into swipeable cards so people can recognize their schedule faster.",
-      "First screen that frames Ellie as a premium shift companion from the opening moment.",
+      "First screen that frames Ryvro as a premium shift companion from the opening moment.",
       "guided onboarding path",
       "physics-based motion that needs to feel solid",
       "chat-style introduction that asks one thing at a time"
@@ -72,7 +72,7 @@
       {
         "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
         "role": "touched",
-        "summary": "First screen that frames Ellie as a premium shift companion from the opening moment.",
+        "summary": "First screen that frames Ryvro as a premium shift companion from the opening moment.",
         "signals": [
           "physics-motion",
           "localized-copy",
@@ -352,7 +352,7 @@
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/1x/mining-helmet-sacred-flame.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"
@@ -370,7 +370,7 @@
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/2x/mining-helmet-sacred-flame.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"
@@ -388,7 +388,7 @@
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/3x/mining-helmet-sacred-flame.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"
@@ -418,19 +418,19 @@
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/consolidated/mining-helmet-sacred-flame@2x.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/consolidated/mining-helmet-sacred-flame@3x.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"
@@ -448,7 +448,7 @@
           "category": "assets"
         },
         {
-          "path": "assets/onboarding/icons/source/mining-helmet-sacred-flame.png",
+          "path": "assets/icon.png",
           "added": 0,
           "deleted": 0,
           "category": "assets"

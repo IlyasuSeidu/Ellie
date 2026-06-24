@@ -32,6 +32,11 @@ jest.mock('firebase/firestore', () => ({
 
 jest.mock('@/config/firebase', () => ({
   firestore: {},
+  getFirebaseInstances: () => ({
+    app: {},
+    auth: { currentUser: null },
+    firestore: {},
+  }),
 }));
 
 jest.mock('@/utils/logger', () => ({

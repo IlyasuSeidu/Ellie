@@ -7,7 +7,8 @@
       "freeTrial": "Teste grátis",
       "noCard": "Sem cartão de crédito",
       "cancelAnytime": "Cancele quando quiser"
-    }
+    },
+    "getStartedHint": "Comece a configurar sua escala"
   },
   "common": {
     "swipeHint": "Deslize para a direita para selecionar, esquerda para ver o proximo ou para cima para mais informacoes",
@@ -30,16 +31,29 @@
     },
     "cancel": "Cancelar"
   },
+  "e2eSwipeControls": {
+    "status": "Simulador",
+    "statusWithAction": "Simulador • {{action}}",
+    "select": "Selecionar",
+    "nextA11y": "Ir para a próxima opção",
+    "selectA11y": "Selecionar a opção atual",
+    "infoA11y": "Abrir informações da opção",
+    "actions": {
+      "select": "selecionar",
+      "next": "próximo",
+      "info": "informações"
+    }
+  },
   "intro": {
-    "welcome": "Bem-vindo ao Ellie! Estou aqui para ajudar a configurar seu calendario de turnos. Vamos comecar com seus dados.",
+    "welcome": "Bem-vindo ao Ryvro! Estou aqui para ajudar a configurar seu calendario de turnos. Vamos comecar com seus dados.",
     "askName": "Qual e o seu nome?",
-    "askOccupation": "Prazer em conhecer voce, {{name}}! Qual e a sua funcao no site?",
+    "askOccupation": "Prazer em conhecer voce, {{name}}! Qual e a sua funcao em trabalho por turnos?",
     "askCompany": "Perfeito! Em qual empresa você trabalha? (opcional)",
     "askCountry": "Quase pronto! Em qual pais voce esta?",
     "allSet": "Perfeito! Tudo pronto, {{name}}. Vamos configurar seu calendario de turnos.",
     "placeholders": {
       "name": "Digite seu nome",
-      "occupation": "ex. Operador de caminhão, Caldeireiro, Eletricista",
+      "occupation": "ex. Enfermeiro, segurança, operador de planta",
       "company": "Digite a empresa",
       "country": "Digite seu pais"
     },
@@ -58,16 +72,18 @@
       "countryTooShort": "O pais deve ter pelo menos 2 caracteres",
       "countryTooLong": "O pais nao pode exceder 100 caracteres"
     },
-    "skipCompany": "Pular"
+    "skipCompany": "Pular",
+    "continue": "Continuar",
+    "continueHint": "Ir para a próxima etapa de integração"
   },
   "shiftSystem": {
-    "title_named": "Oi {{name}}, quantos turnos seu site executa?",
+    "title_named": "Oi {{name}}, quantos turnos seu local de trabalho executa?",
     "reviewAgain": "Revise os sistemas novamente para selecionar",
     "reviewButton": "Revisar sistemas",
     "continueButton": "Continuar",
     "closeButton": "Fechar",
-    "instruction": "Selecione como seu site opera-com isso montamos seu calendario\nDeslize para a direita para selecionar, esquerda para ver o proximo ou para cima para mais informacoes",
-    "title": "Quantos turnos seu site executa?",
+    "instruction": "Selecione como sua equipe opera; com isso montamos seu calendario\nDeslize para a direita para selecionar, esquerda para ver mais ou para cima para informacoes",
+    "title": "Quantos turnos seu local de trabalho executa?",
     "endState": {
       "selectedTitle": "Entendi! Configuraremos seu calendário para isso.",
       "reviewedTitle": "Você viu todos os sistemas de mudança {{count}}!",
@@ -77,15 +93,10 @@
       "2-shift": {
         "title": "2 turnos (12 horas)",
         "schedule": "Dia e noite",
-        "description": "Sua mina funciona em dois turnos de 12 horas – um durante o dia e outro à noite",
+        "description": "Sua equipe funciona em dois turnos de 12 horas: um durante o dia e outro à noite.",
         "details": {
           "workRestRatio": "12 horas ligado, 12 horas desligado",
-          "useCases": [
-            "Locais de mineração",
-            "Petróleo e gás",
-            "Operações 24 horas por dia, 7 dias por semana",
-            "Trabalho remoto"
-          ],
+          "useCases": ["Locais remotos", "Petróleo e gás", "Operações 24/7", "Saúde e segurança"],
           "pros": [
             "Períodos de descanso prolongados",
             "Cronograma previsível",
@@ -104,12 +115,7 @@
         "description": "Sua planta de processamento funciona em três turnos de 8 horas – manhã, tarde e noite",
         "details": {
           "workRestRatio": "8 horas ligado, 16 horas desligado",
-          "useCases": [
-            "Minas subterrâneas",
-            "Plantas de processamento",
-            "Infraestrutura de mineração",
-            "Operações 24/7"
-          ],
+          "useCases": ["Plantas de processamento", "Hospitais", "Manufatura", "Operações 24/7"],
           "pros": ["Turnos mais curtos", "Mais tempo para a família", "Mais fácil de ficar alerta"],
           "cons": [
             "Mudanças de turno mais frequentes",
@@ -131,13 +137,13 @@
       "reviewedSubtitle": "Não viu o seu? Você pode construir um personalizado ou dar uma outra olhada",
       "reviewedTitle": "Essas são todas as rotações {{count}} que temos!"
     },
-    "instruction": "Escolha o rodízio que seu site de mineração usa. Criaremos seu calendário a partir dele\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informações",
+    "instruction": "Escolha a rotacao que seu local de trabalho usa. Criaremos seu calendario a partir dela\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informacoes",
     "title": "Qual é a rotação da sua lista?",
     "cards": {
       "4-4-4": {
         "name": "Rotação 4-4-4",
         "schedule": "4 dias • 4 noites • 4 folgas",
-        "description": "Você faz 4 turnos diurnos, 4 noturnos e depois 4 dias de folga; comum no FIFO."
+        "description": "Trabalhe 4 turnos diurnos, depois 4 noturnos e então 4 dias de folga — comum para equipes 24/7 e FIFO"
       },
       "7-7-7": {
         "name": "Rotação 7-7-7",
@@ -167,7 +173,7 @@
       "continental": {
         "name": "Rotação Continental",
         "schedule": "2 manhãs • 2 tardes • 2 noites • 4 folgas",
-        "description": "2 manhãs, 2 tardes, 2 noites e 4 folgas para sites de 8 horas."
+        "description": "2 manhãs, 2 tardes, 2 noites e 4 folgas para equipes de turnos de 8 horas."
       },
       "pitman": {
         "name": "Escala Pitman",
@@ -177,42 +183,42 @@
       "custom": {
         "name": "Rotação personalizada",
         "schedule": "Você escolhe",
-        "description": "Se seu site usa outro modelo, monte sua própria rotação."
+        "description": "Se sua equipe usa outro modelo, monte sua própria rotação."
       },
       "fifo-8-6": {
         "name": "Padrão FIFO 8/6",
         "schedule": "8 dias trabalho • 6 dias em casa",
-        "description": "8 dias consecutivos no site e 6 em casa, comum na mineração WA."
+        "description": "Trabalhe 8 dias consecutivos de bloco de trabalho e depois 6 dias de descanso — comum para equipes remotas e FIFO"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (tempo igual)",
         "schedule": "1 semana trabalho • 1 semana casa",
-        "description": "Uma semana no site e uma em casa para equilíbrio 50/50."
+        "description": "Uma semana de trabalho, uma semana de descanso — bom equilíbrio 50/50"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14 (tempo igual)",
         "schedule": "2 semanas trabalho • 2 semanas casa",
-        "description": "Duas semanas no site e duas em casa, ótimo equilíbrio."
+        "description": "Duas semanas de trabalho, duas de descanso — ritmo equilibrado de trabalho/descanso"
       },
       "fifo-14-7": {
         "name": "Padrão FIFO 14/7 (2:1)",
         "schedule": "2 semanas trabalho • 1 semana casa",
-        "description": "Duas semanas no site e uma em casa com maior potencial de ganhos."
+        "description": "Duas semanas de trabalho, uma de descanso — para blocos de ganho mais longos"
       },
       "fifo-21-7": {
         "name": "Padrão FIFO 21/7 (3:1)",
         "schedule": "3 semanas trabalho • 1 semana casa",
-        "description": "Três semanas no site e uma em casa para operações muito remotas."
+        "description": "Três semanas de trabalho, uma de descanso — para operações muito remotas"
       },
       "fifo-28-14": {
         "name": "Padrão FIFO 28/14 (2:1)",
         "schedule": "4 semanas trabalho • 2 semanas casa",
-        "description": "Quatro semanas no site e duas em casa para locais muito distantes."
+        "description": "Quatro semanas de trabalho, duas de descanso — para operações remotas longas"
       },
       "fifo-custom": {
         "name": "FIFO personalizado",
         "schedule": "Monte o seu",
-        "description": "Se seu site FIFO é único, configure seus próprios blocos de trabalho/descanso."
+        "description": "Sua equipe FIFO usa uma escala única? Configure seus próprios blocos de trabalho/descanso"
       }
     },
     "title_named": "Qual é o seu padrão, {{name}}?",
@@ -226,24 +232,24 @@
       "sleep": "Rastreamento de sono",
       "sleepDesc": "Otimize seu descanso entre turnos com analises personalizadas",
       "fatigue": "Monitoramento de fadiga",
-      "fatigueDesc": "Monitore o risco de fadiga em turnos longos — crítico para segurança subterrânea",
+      "fatigueDesc": "Monitore o risco de fadiga em turnos longos — importante para trabalhos exigentes",
       "team": "Coordenacao de equipe",
       "teamDesc": "Veja a escala da equipe e coordene passagens de turno",
       "balance": "Equilibrio trabalho vida",
-      "balanceDesc": "Mantenha a saúde entre swings FIFO com acompanhamento de rotina e bem-estar",
+      "balanceDesc": "Mantenha a saúde entre blocos de turnos com acompanhamento de rotina e bem-estar",
       "earnings": "Calculadora de ganhos",
-      "earningsDesc": "Calcule adições do site, cargas FIFO e horas extras automaticamente",
+      "earningsDesc": "Estime horas de turno, adicionais e horas extras em escalas rotativas",
       "meals": "Refeicoes e hidratacao",
-      "mealsDesc": "Fique hidratado e com energia durante turnos subterrâneos de 12 horas"
+      "mealsDesc": "Fique hidratado e com energia em dias longos, turnos noturnos, viagens e chamados"
     },
     "featureHint": "Toque em um ícone de recurso para ver mais detalhes.",
-    "featuresTitle": "O que você pode fazer com Ellie",
+    "featuresTitle": "O que você pode fazer com Ryvro",
     "getStartedA11yHint": "Toque para começar a usar o aplicativo",
-    "getStartedA11yLabel": "Comece com Ellie",
+    "getStartedA11yLabel": "Comece com Ryvro",
     "loading": "Construindo seu calendário de turnos...",
     "retryA11yHint": "Toque para tentar salvar seus dados novamente",
     "retryA11yLabel": "Tente salvar seus dados novamente",
-    "subtitle": "Bem vindo a Ellie",
+    "subtitle": "Bem vindo a Ryvro",
     "summary": {
       "company": "Empresa",
       "cycle": "Ciclo",
@@ -260,12 +266,12 @@
       "startDate": "Data de início",
       "title": "Seu perfil",
       "workPattern": "Padrão de Trabalho",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Dia inteiro",
+      "notTimed": "Sem horario",
+      "rosterTypeUniversal": "Escala universal",
+      "universalShiftSystem": "Turnos personalizados universais",
+      "scheduleEngine": "Motor de escala",
+      "scheduleType": "Tipo de escala"
     },
     "title": "Tudo pronto.",
     "tryAgain": "Tente novamente",
@@ -288,7 +294,7 @@
         "shiftPattern": "Padrão de turnos",
         "fifoConfiguration": "Configuração FIFO",
         "customPatternConfiguration": "Configuração de padrão personalizado",
-        "phaseOffset": "Deslocamento de fase",
+        "phaseOffset": "Posição atual",
         "startDate": "Data de início",
         "shiftTimes": "Horários de turno"
       }
@@ -309,12 +315,12 @@
       "decline": "Agora não"
     },
     "title_named": "{{name}}, tudo pronto.",
-    "setupReady": "Your {{setup}} schedule is ready.",
-    "reminderPromise": "Ellie vai te lembrar antes de cada turno."
+    "setupReady": "Sua escala {{setup}} esta pronta.",
+    "reminderPromise": "Ryvro vai te lembrar antes de cada turno."
   },
   "rosterType": {
     "title": "Como funciona sua lista?",
-    "instruction": "Escolha o estilo de lista que seu site de mineração usa – isso molda toda a sua programação\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para ver detalhes",
+    "instruction": "Escolha o estilo de escala que seu local de trabalho usa — isso molda toda a sua programação\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para ver detalhes",
     "preparingNextStep": "Preparando o próximo passo...",
     "learnMore": {
       "examples": "Exemplos",
@@ -352,20 +358,20 @@
       "fifo": {
         "title": "Lista FIFO / Swing",
         "subtitle": "Blocos de trabalho • Blocos iniciais",
-        "description": "Você trabalha dias consecutivos no local e depois passa mais tempo em casa",
+        "description": "Você trabalha dias consecutivos de bloco de trabalho e depois tem descanso prolongado em casa",
         "details": {
-          "howItWorks": "Os trabalhadores voam para locais remotos, trabalham dias consecutivos (bloco de trabalho) e depois voam para casa para descanso prolongado (bloco de descanso)",
+          "howItWorks": "Trabalhadores viajam para operações remotas, trabalham dias consecutivos (bloco de trabalho) e depois voltam para casa para descanso prolongado (bloco de descanso)",
           "examples": [
-            "8/6 (WA comum)",
-            "14/14 (horário par)",
-            "21/7 (locais remotos)",
+            "8/6 (comum)",
+            "14/14 (tempo equilibrado)",
+            "21/7 (operações remotas)",
             "28/14 (ciclo longo)"
           ],
-          "regions": ["Austrália", "Canadá", "Mineração global remota"],
+          "regions": ["Austrália", "Canadá", "Operações remotas globais"],
           "pros": [
             "Tempo prolongado em casa",
             "Taxas de pagamento mais altas",
-            "Bom para sites remotos",
+            "Bom para operações remotas",
             "Blocos previsíveis"
           ],
           "cons": [
@@ -379,11 +385,11 @@
     },
     "title_named": "Como funciona sua escala, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Isso mostra à Ellie exatamente em que ponto do seu ciclo você está - sem adivinhação",
-      "wrong_alarm": "Acertando isso, a Ellie configura cada alarme para o turno correto",
-      "days_off": "Isso mostra à Ellie quando caem suas folgas para você conseguir se planejar antes",
-      "family": "A Ellie vai te avisar sobre eventos que você perderia quando souber sua escala",
-      "mental_math": "Depois disso, a Ellie faz toda a contagem por você"
+      "cycle_lost": "Isso mostra à Ryvro exatamente em que ponto do seu ciclo você está - sem adivinhação",
+      "wrong_alarm": "Acertando isso, a Ryvro configura cada alarme para o turno correto",
+      "days_off": "Isso mostra à Ryvro quando caem suas folgas para você conseguir se planejar antes",
+      "family": "A Ryvro vai te avisar sobre eventos que você perderia quando souber sua escala",
+      "mental_math": "Depois disso, a Ryvro faz toda a contagem por você"
     },
     "countryHint": "Comum em {{country}}"
   },
@@ -453,11 +459,11 @@
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "Como os turnos funcionam durante seu bloco FIFO na mina?",
+      "workPattern": "Como os turnos funcionam durante seu bloco FIFO no trabalho?",
       "swingConfig": "Configure a divisão do swing",
       "block": "Em que parte do seu ciclo FIFO você está?",
       "dayWithinBlock": "Qual dia de {{blockTitle}} você está?",
-      "block_named": "Você está na mina ou em casa agora, {{name}}?"
+      "block_named": "Você está no bloco de trabalho ou no bloco de descanso agora, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Deslize para a direita para escolher o padrão de trabalho, para a esquerda para a próxima opção, ou para cima para mais informações",
@@ -478,7 +484,7 @@
       "straightNights": {
         "title": "Noites seguidas",
         "description": "Seu bloco de trabalho roda apenas em turnos noturnos.",
-        "quickInfo": "Use quando as equipes no site ficam no turno da noite durante todo o bloco."
+        "quickInfo": "Use isto quando as equipes permanecem em turnos noturnos durante todo o bloco de trabalho."
       },
       "swing": {
         "title": "Misto (Swing)",
@@ -488,16 +494,16 @@
     },
     "blocks": {
       "work": {
-        "title": "Na mina (Trabalhando)",
-        "descriptionDay": "Você está atualmente na mina no seu bloco de trabalho diurno",
-        "descriptionNight": "Você está atualmente na mina no seu bloco de trabalho noturno",
-        "descriptionNeutral": "Você está atualmente na mina no seu bloco de trabalho",
+        "title": "Bloco de trabalho",
+        "descriptionDay": "Você está atualmente no trabalho no seu bloco de turno diurno",
+        "descriptionNight": "Você está atualmente no trabalho no seu bloco de turno noturno",
+        "descriptionNeutral": "Você está atualmente no trabalho no seu bloco de trabalho",
         "quickInfoDay": "Isso significa que seu ciclo começa a contar a partir do seu bloco de trabalho diurno.",
         "quickInfoNight": "Isso significa que seu ciclo começa a contar a partir do seu bloco de trabalho noturno.",
         "quickInfoNeutral": "Isso significa que seu ciclo começa a contar a partir do seu bloco de trabalho atual."
       },
       "rest": {
-        "title": "Em casa (Descanso)",
+        "title": "Bloco de descanso",
         "description": "Você está atualmente em casa no seu bloco de descanso",
         "quickInfo": "Isso desloca seu ciclo primeiro pelo tamanho do bloco de trabalho."
       }
@@ -519,9 +525,9 @@
       },
       "defaultDayTitle": "Dia {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Primeiro dia de volta à mina",
-        "firstNightAtSite": "Primeiro turno noturno de volta à mina",
-        "firstShiftAtSite": "Primeiro turno de volta à mina",
+        "firstDayAtSite": "Primeiro dia do seu bloco de trabalho",
+        "firstNightAtSite": "Primeiro turno noturno do seu bloco de trabalho",
+        "firstShiftAtSite": "Primeiro turno do seu bloco de trabalho",
         "lastDayBeforeHome": "Último dia antes de voltar para casa",
         "lastNightBeforeHome": "Último turno noturno antes de voltar para casa",
         "lastShiftBeforeHome": "Último turno antes de voltar para casa",
@@ -531,12 +537,12 @@
       },
       "rest": {
         "firstDayAtHome": "Primeiro dia de volta em casa",
-        "lastDayBeforeSite": "Último dia antes de retornar à mina",
+        "lastDayBeforeSite": "Último dia antes do próximo bloco de trabalho",
         "dayOfRestBlock": "Dia {{dayNumber}} do seu bloco de descanso"
       },
       "swing": {
         "dayShiftTitle": "Turno diurno dia {{dayNumber}}",
-        "firstDayShiftAtSite": "Primeiro turno diurno de volta à mina",
+        "firstDayShiftAtSite": "Primeiro turno diurno do seu bloco de trabalho",
         "finalDayShiftBeforeNights": "Último turno diurno antes de mudar para noites",
         "dayShiftDayDescription": "Turno diurno dia {{dayNumber}} do seu bloco de trabalho",
         "nightShiftTitle": "Turno noturno dia {{dayNumber}}",
@@ -552,7 +558,7 @@
           "afternoon": "Tarde",
           "off": "Folga"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} dia {{dayNumber}}",
         "description": "Turno {{shiftType}} {{dayNumber}} da sua sequência personalizada"
       }
     },
@@ -688,7 +694,7 @@
     },
     "guidance": {
       "aboutTitle": "Sobre os horários de turno",
-      "aboutBody": "Sua rotação {{patternName}} continua a mesma, mas precisamos dos horários de início para a Ellie acompanhar horas e alertar antes de cada turno.",
+      "aboutBody": "Sua rotação {{patternName}} continua a mesma, mas precisamos dos horários de início para a Ryvro acompanhar horas e alertar antes de cada turno.",
       "hint": "Use agora o horário de início mais próximo. Você pode ajustar depois em configurações.",
       "definitions": {
         "twoShiftTitle": "Diurno vs Noturno:",
@@ -753,8 +759,8 @@
       "label": "Que horas você costuma bater o ponto?",
       "helper": "Use formato de 12 horas (ex.: 6:00 AM)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "a.m.",
+        "pm": "p.m."
       }
     },
     "validation": {
@@ -927,10 +933,10 @@
         "swingWorkBlock": "Bloco de trabalho alternado",
         "customWorkBlock": "Bloco de trabalho personalizado"
       },
-      "ratioLabel": "Ritmo do site para casa",
+      "ratioLabel": "Ritmo de trabalho para descanso",
       "restLabel": "Descanso: {{restBlockDays}} dias",
-      "siteDays": "dias do site",
-      "subtitle": "{{workBlockDays}} dias no local, depois {{restBlockDays}} dias em casa",
+      "siteDays": "dias de bloco de trabalho",
+      "subtitle": "{{workBlockDays}} dias de trabalho, depois {{restBlockDays}} dias de descanso",
       "swingSplit": "Divisão oscilante: {{daysOnDayShift}} dias de turno diurno + {{daysOnNightShift}} dias de turno noturno",
       "title": "Sua visualização de rotação FIFO",
       "workLabel": "Trabalho: {{workBlockDays}} dias",
@@ -955,38 +961,38 @@
     "saveHintValid": "{{workBlockDays}} dias de trabalho, {{restBlockDays}} dias de descanso",
     "sliders": {
       "daysAtHome": "Dias em casa (bloco de descanso)",
-      "daysAtSite": "Dias no local (bloco de trabalho)",
+      "daysAtSite": "Dias de bloco de trabalho",
       "daysOnDayShift": "Dias no turno diurno",
       "daysOnNightShift": "Dias no turno da noite"
     },
     "slidersTitle": "Configure seu padrão FIFO",
-    "subtitle": "Defina seu estilo de turno de bloco no local, bloco inicial e bloco de trabalho para uma programação que se adapte ao ciclo do seu site.",
+    "subtitle": "Etapa 1: Defina dias de trabalho e descanso. Etapa 2: Escolha como os turnos rodam durante seu bloco de trabalho.",
     "subtitleSecondary": "Bloco de trabalho, bloco de descanso e divisão de padrão",
-    "success": "Configuração FIFO sólida. {{workBlockDays}} dias no local, depois {{restBlockDays}} dias em casa.",
+    "success": "Configuração FIFO sólida. {{workBlockDays}} dias de trabalho, depois {{restBlockDays}} dias de descanso.",
     "swingSubtitle": "Divida seu bloco de trabalho entre turnos diurnos e noturnos.",
     "swingTitle": "Configuração de balanço",
     "swingTotal": "Total dividido: dias {{swingTotal}}/{{workBlockDays}}",
-    "tip": "Dica: Combine o seu quarteirão residencial com as demandas de recuperação e viagens. Os padrões FIFO funcionam melhor quando o bloco restante é longo o suficiente para ser redefinido antes da próxima execução do site.",
+    "tip": "Dica: Combine seu bloco em casa com as necessidades de recuperação e viagem. Os padrões FIFO funcionam melhor quando o bloco de descanso é longo o suficiente para você se recuperar antes do próximo bloco de trabalho.",
     "title": "Construa sua rotação FIFO",
     "validation": {
       "blocksMinimum": "Os blocos de trabalho e descanso devem durar pelo menos 1 dia cada.",
       "swingMismatch": "A divisão do swing deve ser igual a {{workBlockDays}} dias antes de salvar."
     },
     "warning": "Esta lista é pesada ({{workPercentage}}% trabalho). Considere equilibrar com mais dias em casa se a fadiga se tornar um problema.",
-    "workPatternSubtitle": "Como seus turnos são organizados no local?",
+    "workPatternSubtitle": "Escolha como os turnos rodam durante seu bloco de trabalho.",
     "workPatternTitle": "Padrão de trabalho durante o bloco de trabalho",
     "workPatterns": {
       "straight-days": {
         "title": "Dias contínuos",
-        "description": "Trabalhe apenas turnos diurnos durante todo o bloco de trabalho."
+        "description": "Todos os dias do bloco de trabalho são turno diurno."
       },
       "straight-nights": {
         "title": "Noites contínuas",
-        "description": "Trabalhe apenas turnos noturnos durante todo o bloco de trabalho."
+        "description": "Todos os dias do bloco de trabalho são turno noturno."
       },
       "swing": {
         "title": "Escala alternada",
-        "description": "Alterne entre turnos diurnos e noturnos durante o bloco de trabalho."
+        "description": "O bloco de trabalho inclui turnos diurnos e noturnos."
       },
       "custom": {
         "title": "Sequência personalizada",
@@ -1029,7 +1035,7 @@
     "a11y": "O bot está digitando"
   },
   "chatAvatar": {
-    "a11y": "Avatar do assistente de mineração"
+    "a11y": "Avatar do assistente Ryvro"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Mês anterior",
@@ -1038,7 +1044,7 @@
   "chatMessage": {
     "skipped": "Ignorado",
     "a11y": {
-      "botMessage": "Mensagem da Ellie: {{content}}",
+      "botMessage": "Mensagem da Ryvro: {{content}}",
       "userMessage": "Sua mensagem: {{content}}",
       "longPressToEdit": "Pressione e segure para editar"
     }
@@ -1091,7 +1097,6 @@
   "ahaMoment": {
     "headline": "Seus próximos 3 meses, mapeados.",
     "subheadline": "Aqui está uma prévia dos seus próximos 3 meses. Chega de adivinhar isso na cabeça.",
-    "heyEllieTitle": "Pergunte à Ellie sobre seu roster",
     "ctaPrimary": "Iniciar teste grátis",
     "ctaSecondary": "ou pular — só a semana atual, sem o ano completo",
     "stats": {
@@ -1118,7 +1123,7 @@
       "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?",
       "startBack": "Quando eu volto ao trabalho?"
     },
-    "buttonLabel": "Oi Ellie",
+    "buttonLabel": "Oi Ryvro",
     "headline_named": "Os turnos de {{name}}, mapeados.",
     "ctaSecondaryA11y": "Pular teste — limitado apenas à semana atual, sem visão do ano completo",
     "painCallback": {
@@ -1129,11 +1134,12 @@
       "mental_math": "Chega de contar nos dedos."
     },
     "previewLabel": "PRÉVIA DOS SEUS PRÓXIMOS 3 MESES",
-    "checkingAccess": "Verificando acesso…"
+    "checkingAccess": "Verificando acesso…",
+    "ryvroTitle": "Pergunte à Ryvro sobre seu roster"
   },
   "painHook": {
     "title": "Qual é a parte mais difícil da sua escala agora?",
-    "subtitle": "Vamos personalizar Ellie em torno do que mais importa para você.",
+    "subtitle": "Vamos personalizar Ryvro em torno do que mais importa para você.",
     "options": {
       "cycle_lost": "Perco a noção de onde estou no meu ciclo",
       "wrong_alarm": "Já coloquei o alarme para o turno errado",
@@ -1181,12 +1187,12 @@
       "placeholder": "Minha Escala"
     },
     "anchorDate": {
-      "label": "Data âncora",
-      "hint": "A sequência se repete a partir desta data"
+      "label": "Data para alinhar a escala",
+      "hint": "Escolha a data real que o Ryvro deve usar para alinhar sua rotação"
     },
     "phaseOffset": {
-      "label": "Dia atual no ciclo",
-      "hint": "0 = início do ciclo"
+      "label": "Onde você está na rotação?",
+      "hint": "Use 1 para o primeiro item da sequência, 2 para o segundo, e assim por diante"
     },
     "ai": {
       "sectionTitle": "Assistente de IA",
@@ -1229,7 +1235,24 @@
       "discardDraft": "Descartar rascunho",
       "followUp": "Fazer um acompanhamento...",
       "send": "Enviar",
-      "invalid": "A resposta da IA é inválida. Tente novamente."
+      "invalid": "A resposta da IA é inválida. Tente novamente.",
+      "aiDraft": "Rascunho da IA",
+      "clarificationBanner": "Preciso de um pouco mais de informação para montar isso com precisão",
+      "summary": "O que entendi",
+      "questionsForYou": "Perguntas para você",
+      "headsUp": "Atenção",
+      "sequencePreview": "Prévia da sequência",
+      "dayA11y": "Dia {{day}}: {{name}}",
+      "cycleLength_one": "Ciclo de {{count}} dia",
+      "cycleLength_other": "Ciclo de {{count}} dias",
+      "followUpLabel": "Faça uma pergunta de acompanhamento",
+      "followUpPlaceholder": "ex.: Transforme em turnos de 8 horas",
+      "followUpA11y": "Pergunta de acompanhamento para a IA",
+      "sendFollowUpA11y": "Enviar acompanhamento",
+      "useDraftA11y": "Usar este rascunho da IA",
+      "editManuallyA11y": "Editar a escala manualmente em vez disso",
+      "discardDraftA11y": "Descartar rascunho da IA",
+      "cycleLength": "Ciclo de {{count}} dias"
     },
     "palette": {
       "title": "Tipos de turno",
@@ -1237,7 +1260,24 @@
       "usageCount_one": "{{count}} uso",
       "usageCount_other": "{{count}} usos",
       "deleteBlocked": "Em uso",
-      "deleteBlockedMessage": "Este tipo de turno é usado {{count}} vez(es) na sequência. Remova essas entradas primeiro ou substitua-as."
+      "deleteBlockedMessage": "Este tipo de turno é usado {{count}} vez(es) na sequência. Remova essas entradas primeiro ou substitua-as.",
+      "createNewA11y": "Criar novo tipo de turno",
+      "newType": "Novo tipo",
+      "emptyTitle": "Ainda não há tipos de turno.",
+      "emptyMessage": "Toque em Novo tipo para criar seu primeiro turno.",
+      "cannotDeleteTitle": "Não é possível excluir",
+      "cannotDeleteMessage": "\"{{name}}\" é usado {{count}} vezes na sua sequência. Remova-o da sequência primeiro.",
+      "cannotDeleteMessage_one": "\"{{name}}\" é usado {{count}} vez na sua sequência. Remova-o da sequência primeiro.",
+      "cannotDeleteMessage_other": "\"{{name}}\" é usado {{count}} vezes na sua sequência. Remova-o da sequência primeiro.",
+      "ok": "OK",
+      "deleteTitle": "Excluir \"{{name}}\"?",
+      "deleteMessage": "Este tipo de turno será removido permanentemente.",
+      "cancelDelete": "Cancelar",
+      "confirmDelete": "Excluir",
+      "addToSequenceA11y": "Adicionar {{name}} à sequência",
+      "editA11y": "Editar {{name}}",
+      "deleteA11y": "Excluir {{name}}",
+      "deleteBlockedHint": "Não é possível excluir porque está usado na sequência"
     },
     "canvas": {
       "title": "Sequência",
@@ -1251,7 +1291,21 @@
       "duplicate": "Duplicar",
       "insertBefore": "Inserir antes",
       "insertAfter": "Inserir depois",
-      "delete": "Excluir"
+      "delete": "Excluir",
+      "emptyTitle": "Nenhum turno na sequência",
+      "emptySubtitle": "Adicione tipos de turno abaixo e toque em Adicionar turno para montar seu ciclo.",
+      "noShiftTypesTitle": "Nenhum tipo de turno",
+      "noShiftTypesMessage": "Crie primeiro um tipo de turno usando a paleta abaixo.",
+      "addShiftA11y": "Adicionar turno à sequência",
+      "addBlockA11y": "Adicionar bloco repetido à sequência",
+      "modalAddRepeated": "Adicionar bloco repetido",
+      "modalChooseShift": "Escolher tipo de turno",
+      "modalInsertBefore": "Inserir antes do dia {{day}}",
+      "modalInsertAfter": "Inserir depois do dia {{day}}",
+      "repeatCountLabel": "Contagem de repetição:",
+      "repeatInputA11y": "Número de repetições",
+      "repeatTimes": "vezes",
+      "definitionUsedTimes": "usado {{count}} vezes"
     },
     "inspector": {
       "titleCreate": "Novo tipo de turno",
@@ -1282,7 +1336,7 @@
       "countsAsNight": "Conta como turno noturno",
       "color": "Cor",
       "icon": "Ícone",
-      "location": "Local",
+      "location": "Local de trabalho (opcional)",
       "save": "Salvar",
       "delete": "Excluir tipo",
       "deleteConfirm": {
@@ -1290,7 +1344,50 @@
         "message": "Esta ação não pode ser desfeita.",
         "confirm": "Excluir",
         "cancel": "Cancelar"
-      }
+      },
+      "nameRequiredTitle": "Nome obrigatório",
+      "nameRequiredMessage": "Informe um nome para este tipo de turno.",
+      "timesRequiredTitle": "Horários obrigatórios",
+      "timesRequiredMessage": "Defina horários de início e fim para um turno com horário.",
+      "colorA11y": "Cor {{color}}",
+      "customColorPlaceholder": "Hex personalizado (ex. FF5722)",
+      "customColorA11y": "Código hex de cor personalizada",
+      "iconA11y": "Ícone: {{icon}}",
+      "countsAsWorkHint": "Incluído nas estatísticas de dias trabalhados",
+      "countsAsWorkA11y": "Alternar conta como dia de trabalho",
+      "countsAsNightHint": "Afeta estatísticas de turno noturno",
+      "countsAsNightA11y": "Alternar conta como turno noturno",
+      "locationPlaceholder": "ex. Hospital, depósito, fábrica, estação",
+      "locationA11y": "Nome do local de trabalho",
+      "remindersTitle": "Lembretes para este turno",
+      "remindersDisabled": "Tipos de folga e licença não agendam lembretes pré-turno.",
+      "reminderRulesTitle": "Regras de lembrete",
+      "reminderRulesHint": "Estas regras se aplicam apenas a este tipo de turno.",
+      "reminderProfileA11y": "Nome do perfil de lembrete",
+      "firstReminder": "Primeiro lembrete",
+      "firstReminderA11y": "Horas antes do turno para o primeiro lembrete",
+      "hoursBefore": "horas antes",
+      "prepTime": "Tempo de preparo",
+      "prepTimeA11y": "Minutos de preparo antes do turno",
+      "minutes": "minutos",
+      "travelTime": "Tempo de deslocamento",
+      "travelTimeA11y": "Minutos de deslocamento antes do turno",
+      "imminentReminderTitle": "Alerta de 15 minutos",
+      "imminentReminderHint": "Enviar um lembrete final pouco antes do início",
+      "imminentReminderA11y": "Alternar lembrete de 15 minutos",
+      "briefingReminderTitle": "Lembrete de briefing",
+      "briefingReminderHint": "Tratar o lembrete de 15 minutos como preparação crítica",
+      "briefingReminderA11y": "Alternar lembrete de briefing",
+      "fatigueAwareTitle": "Horário sensível à fadiga",
+      "fatigueAwareHint": "Antecipar lembretes de preparo quando o risco de fadiga for alto",
+      "fatigueAwareA11y": "Alternar lembretes sensíveis à fadiga",
+      "postShiftCheckinTitle": "Check-in pós-turno",
+      "postShiftCheckinHint": "Perguntar como foi o turno uma hora depois do fim",
+      "postShiftCheckinA11y": "Alternar check-in pós-turno",
+      "travelRemindersTitle": "Lembretes de deslocamento",
+      "travelRemindersHint": "Usar este turno em lembretes de ida e volta",
+      "travelRemindersA11y": "Alternar lembretes de deslocamento",
+      "saveA11y": "Salvar tipo de turno"
     },
     "preview": {
       "title": "Visualização",
@@ -1300,7 +1397,8 @@
       "today": "Hoje",
       "anchor": "Âncora",
       "empty": "Nenhum dado de visualização disponível.",
-      "errors": "A visualização não pode ser exibida por causa de erros."
+      "errors": "A visualização não pode ser exibida por causa de erros.",
+      "errorHint": "Corrija o problema destacado acima e a prévia do calendário aparecerá aqui."
     },
     "validation": {
       "errorTitle_one": "{{count}} erro",
@@ -1309,7 +1407,19 @@
       "warningTitle_other": "{{count}} avisos",
       "fix": "Corrigir",
       "review": "Revisar",
-      "dismiss": "Ignorar"
+      "dismiss": "Ignorar",
+      "fixBeforeSaving": "Corrija {{count}} problemas antes de salvar",
+      "fixBeforeSaving_one": "Corrija {{count}} problema antes de salvar",
+      "fixBeforeSaving_other": "Corrija {{count}} problemas antes de salvar",
+      "reviewBeforeSaving": "{{count}} avisos - revise antes de salvar",
+      "reviewBeforeSaving_one": "{{count}} aviso - revise antes de salvar",
+      "reviewBeforeSaving_other": "{{count}} avisos - revise antes de salvar",
+      "toggleA11y": "{{headline}}. Toque para {{state}} a lista.",
+      "expand": "expandir",
+      "collapse": "recolher",
+      "warningsHeader": "Avisos:",
+      "dismissWarnings": "Dispensar avisos",
+      "dismissWarningsA11y": "Dispensar avisos"
     },
     "saveResult": {
       "success": "Escala salva",

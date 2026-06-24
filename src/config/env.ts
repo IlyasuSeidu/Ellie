@@ -28,13 +28,6 @@ export interface SupportedLocale {
 export const SUPPORTED_LOCALES: SupportedLocale[] = [
   { code: 'en-US', label: 'English (US)', ttsLanguage: 'en-US' },
   { code: 'en-GB', label: 'English (UK)', ttsLanguage: 'en-GB' },
-  { code: 'de-DE', label: 'Deutsch', ttsLanguage: 'de-DE' },
-  { code: 'fr-FR', label: 'Fran\u00e7ais', ttsLanguage: 'fr-FR' },
-  { code: 'es-ES', label: 'Espa\u00f1ol', ttsLanguage: 'es-ES' },
-  { code: 'nl-NL', label: 'Nederlands', ttsLanguage: 'nl-NL' },
-  { code: 'sv-SE', label: 'Svenska', ttsLanguage: 'sv-SE' },
-  { code: 'nb-NO', label: 'Norsk', ttsLanguage: 'nb-NO' },
-  { code: 'da-DK', label: 'Dansk', ttsLanguage: 'da-DK' },
 ];
 
 /**
@@ -60,7 +53,7 @@ export interface WakeWordConfig {
   enabled: boolean;
   /** Picovoice AccessKey */
   accessKey?: string;
-  /** Human-readable wake-word phrase label (e.g. "Hey Ellie") */
+  /** Human-readable wake-word phrase label (e.g. "Ryvro") */
   phrase?: string;
   /** Optional custom keyword model paths (.ppn) */
   keywordPaths: string[];
@@ -111,8 +104,9 @@ export interface AppConfig {
   env: Environment;
   firebase: FirebaseConfig;
   google: {
-    webClientId: string;
+    webClientId?: string;
     iosClientId?: string;
+    androidClientId?: string;
   };
   api: {
     baseUrl: string;
@@ -123,8 +117,14 @@ export interface AppConfig {
     version: string;
     buildNumber: string;
   };
-  ellieBrain: {
-    /** Cloud Function URL for the Ellie voice assistant brain */
+  legal: {
+    privacyPolicyUrl: string;
+    termsOfServiceUrl: string;
+    supportUrl: string;
+    accountDeletionUrl: string;
+  };
+  ryvroBrain: {
+    /** Cloud Function URL for the Ryvro voice assistant backend */
     url: string;
     /** Request timeout in milliseconds */
     timeout: number;
@@ -159,7 +159,7 @@ export interface AppConfig {
   };
 }
 
-export function isConfiguredEllieBrainUrl(url: string | undefined | null): boolean {
+export function isConfiguredRyvroBrainUrl(url: string | undefined | null): boolean {
   const normalized = typeof url === 'string' ? url.trim() : '';
   if (!normalized || normalized.includes('REGION-PROJECT')) {
     return false;
@@ -332,6 +332,9 @@ function buildAppConfig(): AppConfig {
   );
   const defaultWakeWordEnabled =
     wakeWordProvider === 'openwakeword' ? hasOpenWakeWordModelPath : Boolean(wakeWordAccessKey);
+  const defaultRyvroBrainUrl = firebase.projectId
+    ? `https://us-central1-${firebase.projectId}.cloudfunctions.net/ryvroBrain`
+    : '';
   const defaultShiftScheduleParserUrl = firebase.projectId
     ? `https://us-central1-${firebase.projectId}.cloudfunctions.net/parseShiftScheduleDescription`
     : '';
@@ -340,23 +343,31 @@ function buildAppConfig(): AppConfig {
     env,
     firebase,
     google: {
-      webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID') as string,
+      webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID', false),
       iosClientId: getEnvVar('GOOGLE_IOS_CLIENT_ID', false),
+      androidClientId: getEnvVar('GOOGLE_ANDROID_CLIENT_ID', false),
     },
     api: {
-      baseUrl: getEnvVar('API_BASE_URL', false) || 'https://api.shiftsync.app',
+      baseUrl: getEnvVar('API_BASE_URL', false) || 'https://api.getryvro.com',
       timeout: parseInt(getEnvVar('API_TIMEOUT', false) || '30000', 10),
     },
     app: {
-      name: Constants.expoConfig?.name || 'ShiftSync',
+      name: Constants.expoConfig?.name || 'Ryvro Shift Planner',
       version: Constants.expoConfig?.version || '1.0.0',
       buildNumber: Constants.expoConfig?.ios?.buildNumber || '1',
     },
-    ellieBrain: {
-      url:
-        getEnvVar('ELLIE_BRAIN_URL', false) ||
-        'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
-      timeout: parseInt(getEnvVar('ELLIE_BRAIN_TIMEOUT', false) || '30000', 10),
+    legal: {
+      privacyPolicyUrl:
+        getEnvVar('LEGAL_PRIVACY_POLICY_URL', false) || 'https://getryvro.com/privacy',
+      termsOfServiceUrl:
+        getEnvVar('LEGAL_TERMS_OF_SERVICE_URL', false) || 'https://getryvro.com/terms',
+      supportUrl: getEnvVar('SUPPORT_URL', false) || 'https://getryvro.com/support',
+      accountDeletionUrl:
+        getEnvVar('ACCOUNT_DELETION_URL', false) || 'https://getryvro.com/delete-account',
+    },
+    ryvroBrain: {
+      url: getEnvVar('RYVRO_BRAIN_URL', false) || defaultRyvroBrainUrl,
+      timeout: parseInt(getEnvVar('RYVRO_BRAIN_TIMEOUT', false) || '30000', 10),
       maxQueryLength: 500,
     },
     shiftScheduleParser: {
@@ -368,8 +379,8 @@ function buildAppConfig(): AppConfig {
       ),
     },
     features: {
-      universalShiftBuilderEnabled: parseBooleanEnv('UNIVERSAL_SHIFT_BUILDER_ENABLED', false),
-      aiShiftBuilderEnabled: parseBooleanEnv('AI_SHIFT_BUILDER_ENABLED', false),
+      universalShiftBuilderEnabled: parseBooleanEnv('UNIVERSAL_SHIFT_BUILDER_ENABLED', true),
+      aiShiftBuilderEnabled: parseBooleanEnv('AI_SHIFT_BUILDER_ENABLED', true),
     },
     voiceAssistant: {
       locale: 'en-US',
@@ -422,19 +433,25 @@ function validateConfig(config: AppConfig): void {
     throw new Error('Firebase project ID is required');
   }
 
-  // Validate Google config
-  if (!config.google.webClientId) {
-    throw new Error('Google web client ID is required');
-  }
-
   // Validate API config
   if (config.api.timeout < 1000 || config.api.timeout > 60000) {
     throw new Error('API timeout must be between 1000 and 60000 milliseconds');
   }
 
-  if (!isConfiguredEllieBrainUrl(config.ellieBrain.url)) {
+  Object.entries(config.legal).forEach(([key, value]) => {
+    try {
+      const parsed = new URL(value);
+      if (parsed.protocol !== 'https:') {
+        throw new Error('not https');
+      }
+    } catch {
+      throw new Error(`Legal URL ${key} must be a valid HTTPS URL`);
+    }
+  });
+
+  if (!isConfiguredRyvroBrainUrl(config.ryvroBrain.url)) {
     const message =
-      'ELLIE_BRAIN_URL must be configured with a valid deployed endpoint. ' +
+      'RYVRO_BRAIN_URL must be configured with a valid deployed endpoint. ' +
       'Placeholder Cloud Function URLs are not supported.';
     if (config.env === 'production') {
       throw new Error(message);
@@ -544,18 +561,25 @@ try {
       google: {
         webClientId: 'test-web-client-id',
         iosClientId: 'test-ios-client-id',
+        androidClientId: 'test-android-client-id',
       },
       api: {
         baseUrl: 'https://api.test.com',
         timeout: 30000,
       },
       app: {
-        name: 'ShiftSync',
+        name: 'Ryvro Shift Planner',
         version: '1.0.0',
         buildNumber: '1',
       },
-      ellieBrain: {
-        url: 'https://ellie-brain-test.cloudfunctions.net/ellieBrain',
+      legal: {
+        privacyPolicyUrl: 'https://getryvro.com/privacy',
+        termsOfServiceUrl: 'https://getryvro.com/terms',
+        supportUrl: 'https://getryvro.com/support',
+        accountDeletionUrl: 'https://getryvro.com/delete-account',
+      },
+      ryvroBrain: {
+        url: 'https://ryvro-brain-test.cloudfunctions.net/ryvroBrain',
         timeout: 30000,
         maxQueryLength: 500,
       },
@@ -635,5 +659,6 @@ export const firebaseConfig = config.firebase;
 export const googleConfig = config.google;
 export const apiConfig = config.api;
 export const appConfig = config.app;
-export const ellieBrainConfig = config.ellieBrain;
+export const legalConfig = config.legal;
+export const ryvroBrainConfig = config.ryvroBrain;
 export const voiceAssistantConfig = config.voiceAssistant;

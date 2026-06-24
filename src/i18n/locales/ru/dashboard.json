@@ -38,7 +38,7 @@
     "off": "Отдыхайте и заряжайтесь!"
   },
   "fifo": {
-    "onSite": "Реестр на месте активен",
+    "onSite": "Рабочий блок активен",
     "homeBlock": "Домашняя блокировка активна",
     "workBlock": "Работа",
     "restBlock": "Отдых",
@@ -104,10 +104,10 @@
       "example2": "Когда у меня следующий выходной?",
       "example3": "Сколько ночных смен в этом месяце?",
       "tryAsking": "Попробуйте спросить:",
-      "suggestionA11y": "Спросить Элли: {{query}}"
+      "suggestionA11y": "Спросить Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Элли нужен доступ к микрофону, чтобы услышать ваши вопросы.",
+      "notice": "Ryvro нужен доступ к микрофону, чтобы услышать ваши вопросы.",
       "grant": "Предоставить разрешение",
       "grantA11y": "Предоставить разрешение на использование микрофона",
       "requestA11y": "Запросить разрешение на использование микрофона"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Ключевая фраза недоступна, нажмите на микрофон, чтобы говорить",
       "sayWakeWordOrTap": "Скажите «{{wakeWordPhrase}}» или коснитесь микрофона.",
       "askAnother": "Коснитесь микрофона, чтобы задать еще один вопрос.",
-      "askEllie": "Коснитесь микрофона, чтобы задать вопрос Элли.",
-      "typeOrGrantMic": "Введите вопрос ниже или дайте доступ к микрофону, чтобы говорить"
+      "typeOrGrantMic": "Введите вопрос ниже или дайте доступ к микрофону, чтобы говорить",
+      "askRyvro": "Коснитесь микрофона, чтобы задать вопрос Ryvro."
     },
     "errors": {
       "default": "Что-то пошло не так",
-      "permissionDeniedIos": "Доступ к микрофону запрещен. Включите параметр «Настройки» > «Элли».",
+      "permissionDeniedIos": "Доступ к микрофону запрещен. Включите параметр «Настройки» > Ryvro.",
       "permissionDenied": "Доступ к микрофону запрещен. Пожалуйста, дайте разрешение.",
       "network": "Проверьте соединение и повторите попытку.",
       "recognition": "Я этого не уловил. Пожалуйста, попробуйте еще раз.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "Хватит слушать. Нажмите дважды, чтобы закончить говорить.",
       "processing": "Обработка вашего вопроса. Пожалуйста, подождите.",
-      "speaking": "Элли говорит. Нажмите дважды, чтобы остановить.",
+      "speaking": "Ryvro говорит. Нажмите дважды, чтобы остановить.",
       "error": "Ошибка: {{message}}. Нажмите дважды, чтобы повторить попытку.",
-      "idle": "Задайте Элли вопрос. Нажмите дважды, чтобы начать говорить."
+      "idle": "Задайте Ryvro вопрос. Нажмите дважды, чтобы начать говорить."
     },
     "partialTranscriptA11y": "Вы говорите: {{text}}",
-    "processingInline": "Элли думает...",
+    "processingInline": "Ryvro думает...",
     "retryHint": "Коснитесь микрофона, чтобы повторить попытку.",
     "requestRef": "Ссылка: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Вы сказали: {{text}}",
-      "assistantSaidA11y": "Элли сказала: {{text}}"
+      "assistantSaidA11y": "Ryvro сказала: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Для Hey Ellie требуется доступ к микрофону. Нажмите на микрофон, чтобы говорить.",
+      "microphonePermissionRequired": "Для Hey Ryvro требуется доступ к микрофону. Нажмите на микрофон, чтобы говорить.",
       "wakeWordUnavailableTapToTalk": "Активационная фраза недоступна, нажмите на микрофон, чтобы говорить."
     },
     "offlineFallback": {
@@ -170,18 +170,18 @@
       "startBack": "Вы снова выходите на работу {{date}}.",
       "patternSummaryRotating": "Ваш график: {{dayCount}} дневных смен, {{nightCount}} ночных смен, затем {{offCount}} выходных дней.",
       "patternSummaryThreeShift": "Ваш график: {{morningCount}} утренних смен, {{afternoonCount}} дневных смен, {{nightCount}} ночных смен, затем {{offCount}} выходных дней.",
-      "patternSummaryFifo": "Ваш график: {{workDays}} дней на объекте, затем {{restDays}} выходных дней.",
+      "patternSummaryFifo": "Ваш график: {{workDays}} рабочих дней, затем {{restDays}} выходных дней.",
       "unsupportedWithNextShift": "Я пока не могу полностью ответить на это офлайн, но всё ещё знаю ваш сохранённый график. Ваша следующая рабочая смена — {{shiftType}} {{date}}. Попробуйте спросить про завтра, следующий выходной, ночные смены в этом месяце или ваш цикл.",
       "unsupportedGeneric": "Я пока не могу полностью ответить на это офлайн, но всё ещё могу помочь с вашим сохранённым графиком. Попробуйте спросить про завтра, следующий выходной, ночные смены в этом месяце или ваш цикл."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Офлайн-голосовой ввод сейчас недоступен на этом устройстве.",
-      "audioUnavailable": "Аудиоответы сейчас недоступны. Вы все равно можете прочитать ответ Ellie."
+      "audioUnavailable": "Аудиоответы сейчас недоступны. Вы все равно можете прочитать ответ Ryvro."
     },
     "offlineHint": "Офлайн-ответы ограничены простыми вопросами о графике, сохранённом на этом устройстве.",
     "composer": {
-      "placeholder": "Введите вопрос для Элли",
-      "a11y": "Введите вопрос для Элли",
+      "placeholder": "Введите вопрос для Ryvro",
+      "a11y": "Введите вопрос для Ryvro",
       "sendA11y": "Отправить текстовый вопрос"
     }
   },
@@ -190,10 +190,10 @@
     "schedule": "Расписание",
     "stats": "Статистика",
     "profile": "Профиль",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Открыть голосовой помощник Элли",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openVoiceAssistantA11y": "Открыть голосовой помощник Ryvro",
+    "openProPlansA11y": "Посмотреть планы Pro",
+    "voiceAssistantLoadingA11y": "Проверка доступа к голосовому помощнику",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Настройки",
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "Как все прошло?",
-        "body": "Как прошла ваша {{shiftType}}? Отметьте уровень энергии в Ellie."
+        "body": "Как прошла ваша {{shiftType}}? Отметьте уровень энергии в Ryvro."
       },
       "fatigue": {
         "title": "Критическое предупреждение об усталости",
@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "День выезда",
           "body": "Сегодня вы отправляетесь домой. Завершите передачу смены, соберите снаряжение и добирайтесь безопасно."
         },
         "tomorrow": {
           "title": "Завтра день вылета",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Завтра вы едете на {{shiftType}}. Соберите вещи и проверьте документы сегодня вечером."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "Осталось {{time}} в {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "В этой смене осталось {{time}}",
     "untilStarts": "{{time}} до начала {{shiftName}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "До начала этой смены {{time}}",
     "until": "{{time}} до {{shiftName}}",
     "tomorrow": "{{shiftName}} завтра",
     "daysUntil": "{{days}} дн. до {{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "Какой у вас был уровень энергии на этой смене?",
     "energy": {
       "high": "Высокий",
-      "medium": "Средний",
+      "medium": "Средняя",
       "low": "Низкий"
     },
     "notesLabel": "Заметки (необязательно)",
@@ -319,12 +319,12 @@
     "submit": "Сохранить отметку"
   },
   "onboardingChecklist": {
-    "title": "Получите максимум от Ellie",
+    "title": "Получите максимум от Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Настройте график",
       "shiftTimes": "Добавьте время своих смен",
       "profile": "Заполните профиль",
-      "askEllie": "Задайте вопрос Ellie"
+      "askRyvro": "Задайте вопрос Ryvro"
     },
     "actions": {
       "doIt": "Сделать",

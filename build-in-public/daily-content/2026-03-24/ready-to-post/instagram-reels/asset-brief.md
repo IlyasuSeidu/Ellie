@@ -1,6 +1,6 @@
 # Instagram Reels Asset Brief
 
-- Audience: miners, shift workers, and broad discovery viewers
+- Audience: FIFO crews, shift workers, and broad discovery viewers
 - Objective: create a fast before/after trust story tied to a real product fix
 - Native format: short vertical video with immediate visual clarity
 - Target length: 12-25 seconds

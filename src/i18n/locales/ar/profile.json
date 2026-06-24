@@ -3,7 +3,8 @@
     "personalInfo": "معلومات شخصية",
     "workOverview": "نظرة عامة على العمل",
     "shiftSettings": "إعدادات التحول",
-    "smartReminders": "التذكيرات الذكية"
+    "smartReminders": "التذكيرات الذكية",
+    "legalSupport": "المساعدة والشؤون القانونية"
   },
   "fields": {
     "name": "اسم",
@@ -16,7 +17,7 @@
   },
   "stats": {
     "dayCycle": "دورة اليوم",
-    "workRest": "العمل : راحة",
+    "workRest": "العمل: راحة",
     "perShift": "لكل التحول"
   },
   "language": {
@@ -52,7 +53,7 @@
     "nightShift": "التحول الليلي",
     "flyIn": "طيران للداخل",
     "flyOut": "يطير للخارج",
-    "site": "موقع",
+    "site": "موقع العمل",
     "dayStart": "بداية اليوم",
     "dayEnd": "نهاية اليوم",
     "nightStart": "بداية الليل",
@@ -61,7 +62,7 @@
     "afternoonStart": "بداية بعد الظهر",
     "workBlock": "كتلة العمل",
     "restBlock": "كتلة الراحة",
-    "siteName": "اسم الموقع (اختياري)",
+    "siteName": "موقع العمل (اختياري)",
     "flyInDay": "يوم الطيران",
     "flyOutDay": "يوم الطيران",
     "cycleReferenceDate": "التاريخ المرجعي للدورة",
@@ -108,7 +109,7 @@
       "fifoBlock": "كتلة ما يصرف أولاً",
       "workPattern": "نمط العمل",
       "customSequence": "تسلسل مخصص",
-      "siteDetails": "تفاصيل الموقع",
+      "siteDetails": "تفاصيل موقع العمل",
       "travelDays": "أيام السفر (اختياري)",
       "scheduleAnchor": "بداية الجدول وموقعك",
       "customPattern": "نمط مخصص"
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "مرات",
-      "workDaysOnSite": "{{count}} أيام في الموقع",
-      "restDaysAtHome": "{{count}} أيام في المنزل",
+      "workDaysOnSite": "{{count}} أيام كتلة العمل",
+      "restDaysAtHome": "{{count}} أيام راحة",
       "empty": "لم يتم ضبط تكوين التحول",
       "footer": "يمكن تحديث إعدادات Shift في الإعدادات"
     },
@@ -273,7 +274,7 @@
       "timing": "التوقيت",
       "doNotDisturb": "عدم الإزعاج",
       "adaptive": "التنبيهات التكيفية",
-      "travel": "Travel blocks"
+      "travel": "كتل السفر"
     },
     "units": {
       "hoursShort": "{{value}} س",
@@ -350,6 +351,28 @@
     "test": {
       "title": "التذكيرات الذكية مفعلة",
       "body": "إذا وصلك هذا الإشعار فالتذكيرات الذكية تعمل."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "الدعم",
+      "hint": "احصل على مساعدة بشأن حسابك أو جدولك",
+      "a11y": "فتح دعم Ryvro"
+    },
+    "deleteAccount": {
+      "title": "حذف الحساب",
+      "hint": "اطلب حذف الحساب وبيانات التطبيق",
+      "a11y": "فتح حذف حساب Ryvro"
+    },
+    "privacy": {
+      "title": "سياسة الخصوصية",
+      "hint": "كيف يتعامل Ryvro مع بياناتك",
+      "a11y": "فتح سياسة خصوصية Ryvro"
+    },
+    "terms": {
+      "title": "شروط الخدمة",
+      "hint": "شروط الاشتراك واستخدام التطبيق",
+      "a11y": "فتح شروط خدمة Ryvro"
     }
   }
 }

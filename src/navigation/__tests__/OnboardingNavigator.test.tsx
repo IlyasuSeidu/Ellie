@@ -15,14 +15,38 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 jest.mock('@/screens/onboarding/premium/PremiumWelcomeScreen', () => ({
   PremiumWelcomeScreen: () => null,
 }));
-jest.mock('@/screens/onboarding/premium/PremiumPainHookScreen', () => ({
-  PremiumPainHookScreen: () => null,
+jest.mock('@/screens/onboarding/premium/PremiumSetupIntroScreen', () => ({
+  PremiumSetupIntroScreen: () => null,
 }));
-jest.mock('@/screens/onboarding/premium/PremiumIntroductionScreen', () => ({
-  PremiumIntroductionScreen: () => null,
+jest.mock('@/screens/onboarding/premium/PremiumGuidedShiftChatScreen', () => ({
+  PremiumGuidedShiftChatScreen: () => null,
 }));
-jest.mock('@/screens/main/UniversalShiftBuilderScreen', () => ({
-  UniversalShiftBuilderScreen: () => null,
+jest.mock('@/screens/onboarding/premium/PremiumShiftTimesScreen', () => ({
+  PremiumShiftTimesScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumKnownShiftDateScreen', () => ({
+  PremiumKnownShiftDateScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumKnownShiftTypeScreen', () => ({
+  PremiumKnownShiftTypeScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumKnownShiftPhaseScreen', () => ({
+  PremiumKnownShiftPhaseScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumSchedulePreviewScreen', () => ({
+  PremiumSchedulePreviewScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumFixMenuScreen', () => ({
+  PremiumFixMenuScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumSetupSummaryScreen', () => ({
+  PremiumSetupSummaryScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumReminderSetupScreen', () => ({
+  PremiumReminderSetupScreen: () => null,
+}));
+jest.mock('@/screens/main/VoiceAssistantScreen', () => ({
+  VoiceAssistantScreen: () => null,
 }));
 jest.mock('@/screens/onboarding/premium/PremiumAhaMomentScreen', () => ({
   PremiumAhaMomentScreen: () => null,
@@ -59,19 +83,27 @@ describe('OnboardingNavigator', () => {
   });
 
   describe('TypeScript Types', () => {
-    it('should have correct ParamList with Universal Builder routes', () => {
+    it('should have correct ParamList for the voice-first onboarding routes', () => {
       type ExpectedRoutes = keyof OnboardingStackParamList;
       const routes: ExpectedRoutes[] = [
         'Welcome',
-        'PainHook',
-        'Introduction',
-        'UniversalShiftBuilder',
+        'SetupIntro',
+        'GuidedShiftChatSetup',
+        'ShiftTimesSetup',
+        'KnownShiftDateSetup',
+        'KnownShiftTypeSetup',
+        'KnownShiftPhaseSetup',
+        'SchedulePreviewSetup',
+        'FixMenuSetup',
+        'SetupSummary',
+        'ReminderSetup',
         'AhaMoment',
+        'VoiceAssistantTaste',
         'Completion',
       ];
 
       // Verify all routes exist
-      expect(routes.length).toBe(6);
+      expect(routes.length).toBe(14);
 
       // Verify each route is valid (TypeScript will catch type errors at compile time)
       routes.forEach((route) => {
@@ -82,28 +114,71 @@ describe('OnboardingNavigator', () => {
     it('should type params correctly for onboarding and settings-entry routes', () => {
       // Type check for base routes
       type WelcomeParams = OnboardingStackParamList['Welcome'];
-      type PainHookParams = OnboardingStackParamList['PainHook'];
-      type IntroParams = OnboardingStackParamList['Introduction'];
-      type UniversalShiftBuilderParams = OnboardingStackParamList['UniversalShiftBuilder'];
+      type SetupIntroParams = OnboardingStackParamList['SetupIntro'];
+      type GuidedShiftChatParams = OnboardingStackParamList['GuidedShiftChatSetup'];
+      type ShiftTimesParams = OnboardingStackParamList['ShiftTimesSetup'];
+      type KnownShiftDateParams = OnboardingStackParamList['KnownShiftDateSetup'];
+      type KnownShiftTypeParams = OnboardingStackParamList['KnownShiftTypeSetup'];
+      type KnownShiftPhaseParams = OnboardingStackParamList['KnownShiftPhaseSetup'];
+      type SchedulePreviewParams = OnboardingStackParamList['SchedulePreviewSetup'];
+      type FixMenuParams = OnboardingStackParamList['FixMenuSetup'];
+      type SetupSummaryParams = OnboardingStackParamList['SetupSummary'];
+      type ReminderSetupParams = OnboardingStackParamList['ReminderSetup'];
       type AhaMomentParams = OnboardingStackParamList['AhaMoment'];
+      type VoiceAssistantTasteParams = OnboardingStackParamList['VoiceAssistantTaste'];
       type CompletionParams = OnboardingStackParamList['Completion'];
 
       const welcomeParams: WelcomeParams = undefined;
-      const painHookParams: PainHookParams = undefined;
-      const introParams: IntroParams = undefined;
-      const universalBuilderParams: UniversalShiftBuilderParams = {
-        mode: 'create',
-        entryPoint: 'onboarding',
-        onSaveNextScreen: 'AhaMoment',
+      const setupIntroParams: SetupIntroParams = undefined;
+      const guidedShiftChatParams: GuidedShiftChatParams = undefined;
+      const scheduleDraft = {} as never;
+      const knownShiftDateParams: KnownShiftDateParams = {
+        scheduleDraft,
+      };
+      const shiftTimesParams: ShiftTimesParams = {
+        scheduleDraft,
+        returnTo: 'KnownShiftDateSetup',
+      };
+      const knownShiftTypeParams: KnownShiftTypeParams = {
+        scheduleDraft,
+      };
+      const knownShiftPhaseParams: KnownShiftPhaseParams = {
+        scheduleDraft,
+        selectedShift: 'off',
+      };
+      const schedulePreviewParams: SchedulePreviewParams = {
+        scheduleDraft,
+      };
+      const fixMenuParams: FixMenuParams = {
+        scheduleDraft,
+      };
+      const setupSummaryParams: SetupSummaryParams = {
+        scheduleDraft,
+      };
+      const reminderSetupParams: ReminderSetupParams = {
+        scheduleDraft,
       };
       const ahaMomentParams: AhaMomentParams = undefined;
+      const voiceAssistantTasteParams: VoiceAssistantTasteParams = {
+        autoStart: true,
+        showBackButton: true,
+        voiceOnly: true,
+      };
       const completionParams: CompletionParams = undefined;
 
       expect(welcomeParams).toBeUndefined();
-      expect(painHookParams).toBeUndefined();
-      expect(introParams).toBeUndefined();
-      expect(universalBuilderParams).toBeTruthy();
+      expect(setupIntroParams).toBeUndefined();
+      expect(guidedShiftChatParams).toBeUndefined();
+      expect(shiftTimesParams).toBeTruthy();
+      expect(knownShiftDateParams).toBeTruthy();
+      expect(knownShiftTypeParams).toBeTruthy();
+      expect(knownShiftPhaseParams).toBeTruthy();
+      expect(schedulePreviewParams).toBeTruthy();
+      expect(fixMenuParams).toBeTruthy();
+      expect(setupSummaryParams).toBeTruthy();
+      expect(reminderSetupParams).toBeTruthy();
       expect(ahaMomentParams).toBeUndefined();
+      expect(voiceAssistantTasteParams).toBeTruthy();
       expect(completionParams).toBeUndefined();
     });
   });

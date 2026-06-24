@@ -38,7 +38,7 @@
     "off": "Rest and recharge!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
+    "onSite": "Work block active",
     "homeBlock": "Home block active",
     "workBlock": "Work",
     "restBlock": "Rest",
@@ -97,10 +97,10 @@
     "schedule": "Schedule",
     "stats": "Stats",
     "profile": "Profile",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant",
+    "openVoiceAssistantA11y": "Open Ryvro voice assistant",
     "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "voiceAssistantLoadingA11y": "Checking voice assistant access",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Settings",
@@ -120,10 +120,10 @@
       "example2": "When is my next day off?",
       "example3": "How many night shifts this month?",
       "tryAsking": "Try asking:",
-      "suggestionA11y": "Ask Ellie: {{query}}"
+      "suggestionA11y": "Ask Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
+      "notice": "Ryvro needs microphone access to hear your questions.",
       "grant": "Grant Permission",
       "grantA11y": "Grant microphone permission",
       "requestA11y": "Request microphone permission"
@@ -135,12 +135,12 @@
       "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie",
-      "typeOrGrantMic": "Type below or grant microphone access to talk"
+      "typeOrGrantMic": "Type below or grant microphone access to talk",
+      "askRyvro": "Tap the mic to ask Ryvro"
     },
     "errors": {
       "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
+      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ryvro.",
       "permissionDenied": "Microphone access denied. Please grant permission.",
       "network": "Check your connection and retry.",
       "recognition": "I didn't catch that. Please try again.",
@@ -153,20 +153,20 @@
     "micA11y": {
       "listening": "Stop listening. Double tap to finish speaking.",
       "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
+      "speaking": "Ryvro is speaking. Double tap to stop.",
       "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "idle": "Ask Ryvro a question. Double tap to start speaking."
     },
     "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
+    "processingInline": "Ryvro is thinking...",
     "retryHint": "Tap the mic to try again",
     "requestRef": "Ref: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "assistantSaidA11y": "Ryvro said: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Microphone permission required for Hey Ellie. Tap mic to talk.",
+      "microphonePermissionRequired": "Microphone permission required for Hey Ryvro. Tap mic to talk.",
       "wakeWordUnavailableTapToTalk": "Wake-word unavailable, tap mic to talk."
     },
     "offlineFallback": {
@@ -186,18 +186,18 @@
       "startBack": "You start back on {{date}}.",
       "patternSummaryRotating": "Your pattern is {{dayCount}} day shifts, {{nightCount}} night shifts, then {{offCount}} days off.",
       "patternSummaryThreeShift": "Your pattern is {{morningCount}} morning shifts, {{afternoonCount}} afternoon shifts, {{nightCount}} night shifts, then {{offCount}} days off.",
-      "patternSummaryFifo": "Your pattern is {{workDays}} days on site, then {{restDays}} days off.",
+      "patternSummaryFifo": "Your pattern is {{workDays}} work days, then {{restDays}} days off.",
       "unsupportedWithNextShift": "I can't answer that fully offline yet, but I still know your saved roster. Your next work shift is {{shiftType}} on {{date}}. Try asking about tomorrow, your next day off, night shifts this month, or your pattern.",
       "unsupportedGeneric": "I can't answer that fully offline yet, but I can still help with your saved roster. Try asking about tomorrow, your next day off, night shifts this month, or your pattern."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Offline voice input isn't available on this device right now.",
-      "audioUnavailable": "Audio replies aren't available right now. You can still read Ellie's answer."
+      "audioUnavailable": "Audio replies aren't available right now. You can still read Ryvro's answer."
     },
     "offlineHint": "Offline answers are limited to simple roster questions saved on this device.",
     "composer": {
-      "placeholder": "Type a question for Ellie",
-      "a11y": "Type a question for Ellie",
+      "placeholder": "Type a question for Ryvro",
+      "a11y": "Type a question for Ryvro",
       "sendA11y": "Send typed question"
     }
   },
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "How did that go?",
-        "body": "How was your {{shiftType}}? Log your energy level in Ellie."
+        "body": "How was your {{shiftType}}? Log your energy level in Ryvro."
       },
       "fatigue": {
         "title": "Critical fatigue alert",
@@ -319,12 +319,12 @@
     "submit": "Save check-in"
   },
   "onboardingChecklist": {
-    "title": "Get the most out of Ellie",
+    "title": "Get the most out of Ryvro",
     "items": {
       "schedule": "Set up your schedule",
       "shiftTimes": "Add your shift times",
       "profile": "Complete your profile",
-      "askEllie": "Ask Ellie a question"
+      "askRyvro": "Ask Ryvro a question"
     },
     "actions": {
       "doIt": "Do it",

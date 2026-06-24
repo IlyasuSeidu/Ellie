@@ -3,7 +3,8 @@
     "personalInfo": "Persoonlike inligting",
     "workOverview": "Werk Oorsig",
     "shiftSettings": "Shift instellings",
-    "smartReminders": "Slim herinneringe"
+    "smartReminders": "Slim herinneringe",
+    "legalSupport": "Hulp en Regte"
   },
   "fields": {
     "name": "Naam",
@@ -52,7 +53,7 @@
     "nightShift": "Nagskof",
     "flyIn": "Invlieg",
     "flyOut": "Uitvlieg",
-    "site": "Werf",
+    "site": "Werkplek",
     "dayStart": "Dag Begin",
     "dayEnd": "Dag Einde",
     "nightStart": "Nag Begin",
@@ -61,7 +62,7 @@
     "afternoonStart": "Middag Begin",
     "workBlock": "Werk Blok",
     "restBlock": "Rusblok",
-    "siteName": "Werfnaam (opsioneel)",
+    "siteName": "Werkplek (opsioneel)",
     "flyInDay": "Invliegdag",
     "flyOutDay": "Vlieg-uit-dag",
     "cycleReferenceDate": "Siklus verwysingsdatum",
@@ -108,7 +109,7 @@
       "fifoBlock": "EIEU BLOK",
       "workPattern": "WERKPATROON",
       "customSequence": "GEPASTE VOLGORDE",
-      "siteDetails": "WERFBESONDERHEDE",
+      "siteDetails": "WERKPLEKBESONDERHEDE",
       "travelDays": "REISDAE (OPSIONEEL)",
       "scheduleAnchor": "ROOSTER BEGIN & POSISIE",
       "customPattern": "GEPASTE PATROON"
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Tye",
-      "workDaysOnSite": "{{count}} dae op die terrein",
-      "restDaysAtHome": "{{count}} dae by die huis",
+      "workDaysOnSite": "{{count}} werkblokdae",
+      "restDaysAtHome": "{{count}} rusdae",
       "empty": "Geen skofkonfigurasie gestel nie",
       "footer": "Shift-instellings kan in Instellings opgedateer word"
     },
@@ -273,7 +274,7 @@
       "timing": "TYDSBEREKENING",
       "doNotDisturb": "MOENIE STEUR NIE",
       "adaptive": "AANPASBAAR",
-      "travel": "Travel blocks"
+      "travel": "Reisblokke"
     },
     "units": {
       "hoursShort": "{{value}} u",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Slim herinneringe is aan",
       "body": "As dit aankom, werk jou slim herinneringe."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Ondersteuning",
+      "hint": "Kry hulp met jou rekening of skedule",
+      "a11y": "Maak Ryvro-ondersteuning oop"
+    },
+    "deleteAccount": {
+      "title": "Vee rekening uit",
+      "hint": "Versoek dat jou rekening en appdata uitgevee word",
+      "a11y": "Maak Ryvro-rekeninguitvee oop"
+    },
+    "privacy": {
+      "title": "Privaatheidsbeleid",
+      "hint": "Hoe Ryvro jou data hanteer",
+      "a11y": "Maak Ryvro-privaatheidsbeleid oop"
+    },
+    "terms": {
+      "title": "Diensbepalings",
+      "hint": "Intekening- en appgebruiksbepalings",
+      "a11y": "Maak Ryvro-diensbepalings oop"
     }
   }
 }

@@ -1,9 +1,9 @@
 {
   "date": "2026-03-24",
   "humanDate": "March 24, 2026",
-  "repository": "Ellie",
+  "repository": "Ryvro",
   "branch": "main",
-  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "remote": "https://github.com/IlyasuSeidu/Ryvro.git",
   "window": {
     "mode": "rollover-time",
     "rolloverTime": "20:30",
@@ -140,7 +140,7 @@
       {
         "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
         "role": "touched",
-        "summary": "First screen that frames Ellie as a premium shift companion from the opening moment.",
+        "summary": "First screen that frames Ryvro as a premium shift companion from the opening moment.",
         "signals": [
           "physics-motion",
           "localized-copy",

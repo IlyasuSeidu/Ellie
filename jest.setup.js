@@ -132,7 +132,7 @@ jest.mock('expo-file-system/legacy', () => {
 jest.mock('expo-constants', () => ({
   default: {
     expoConfig: {
-      name: 'ShiftSync',
+      name: 'Ryvro Shift Planner',
       version: '1.0.0',
       ios: {
         buildNumber: '1',
@@ -337,6 +337,10 @@ jest.mock('react-native-gesture-handler', () => {
     Gesture: {
       Pan: () => ({
         enabled: jest.fn().mockReturnThis(),
+        activeOffsetX: jest.fn().mockReturnThis(),
+        activeOffsetY: jest.fn().mockReturnThis(),
+        failOffsetX: jest.fn().mockReturnThis(),
+        failOffsetY: jest.fn().mockReturnThis(),
         activateAfterLongPress: jest.fn().mockReturnThis(),
         runOnJS: jest.fn().mockReturnThis(),
         onBegin: jest.fn().mockReturnThis(),

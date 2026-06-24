@@ -1,6 +1,6 @@
 # Instagram Reels Asset Brief
 
-- Audience: miners, shift workers, and broad discovery viewers
+- Audience: FIFO crews, shift workers, and broad discovery viewers
 - Objective: earn a stop, a rewatch, and a comment inside a short vertical story
 - Native format: short vertical video with fast visual clarity
 - Target length: 12-25 seconds
@@ -15,7 +15,7 @@
 
 - Chapter: building the answer before the screen
 - Hook: If "Tomorrow: Night Shift" is wrong, the animation does not matter.
-- Proof line: By the end of the day, Ellie had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.
+- Proof line: By the end of the day, Ryvro had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

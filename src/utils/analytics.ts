@@ -24,6 +24,10 @@ type AnalyticsClient = {
   logEvent: (name: string, params?: AnalyticsPayload) => Promise<void>;
 };
 
+function shouldLogNoopAnalytics(): boolean {
+  return process.env.EXPO_PUBLIC_ANALYTICS_DEBUG === 'true';
+}
+
 function getAnalyticsClient(): AnalyticsClient | null {
   try {
     // Runtime-safe optional dependency: keeps app compiling even when native module
@@ -66,7 +70,7 @@ async function safeCall(
 
   const client = getAnalyticsClient();
   if (!client) {
-    if (__DEV__) {
+    if (__DEV__ && shouldLogNoopAnalytics()) {
       // Keep Dev visibility for funnel instrumentation even when analytics SDK isn't present.
       logger.debug('[Analytics:no-op]', {
         event: fallbackName,
@@ -91,10 +95,19 @@ async function safeCall(
 // Typed event names — prevents typos and keeps the event schema consistent
 export type OnboardingStep =
   | 'welcome'
+  | 'setup_intro'
+  | 'guided_shift_chat'
+  | 'shift_times'
+  | 'known_shift_date'
+  | 'known_shift_type'
+  | 'known_shift_phase'
+  | 'fix_menu'
   | 'pain_hook'
   | 'introduction'
   | 'universal_shift_builder'
   | 'schedule_preview'
+  | 'setup_summary'
+  | 'reminder_setup'
   | 'aha_moment'
   | 'completion';
 
@@ -194,7 +207,7 @@ export const Analytics = {
       { seconds_since_install: secondsSinceInstall, ...metadata }
     ),
 
-  // Hey Ellie demo on AhaMoment screen — tracks which suggestion drives most taps
+  // Ryvro voice demo on AhaMoment screen — tracks which suggestion drives most taps
   ahaMomentVoiceTried: (queryText: string, metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>

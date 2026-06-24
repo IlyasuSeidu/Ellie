@@ -15,7 +15,7 @@
 
 - Chapter: building the answer before the screen
 - Hook: If "Tomorrow: Night Shift" is wrong, the animation does not matter.
-- Proof line: By the end of the day, Ellie had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.
+- Proof line: By the end of the day, Ryvro had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

@@ -1,6 +1,6 @@
 # Stop-Scroll Content OS
 
-Ellie now includes a local `git -> story -> platform pack` pipeline for end-of-day content generation.
+Ryvro now includes a local `git -> story -> platform pack` pipeline for end-of-day content generation.
 
 ## Goal
 
@@ -109,7 +109,7 @@ Each pack should be refined with these constraints in mind:
 - Publishable drafts should not lead with `GitHub`, `commit`, `push`, or similar internal terms unless you intentionally want a niche builder-only post.
 - Current-codebase context should be used to understand what the feature area actually does now, but it should not be used to invent historical claims that the day brief cannot support.
 - Current-codebase context should stay mostly invisible in public-facing drafts. Use it to sharpen names, stakes, and proof, not to write “the current code shows...” style copy.
-- Ellie should stay product-first. Builder-facing posts can use the miner-builder or vibe-coding lens, but the product problem still comes first.
+- Ryvro should stay product-first. Builder-facing posts can use the miner-builder or vibe-coding lens, but the product problem still comes first.
 - Ready-to-post folders should include the actual post plus an asset brief so recording, editing, and posting decisions are platform-native.
 
 ## Recommended Automation Behavior
@@ -129,11 +129,11 @@ An editable prompt version is stored in:
 
 - `docs/STOP_SCROLL_AUTOMATION_PROMPT.md`
 - `docs/HYBRID_REWRITE_STYLE.md`
-- `docs/ELLIE_ANGLE_FRAMEWORK.md`
-- `config/ellie-brand-context.js`
-- `config/ellie-platform-playbook.js`
-- `docs/ELLIE_BUILD_IN_PUBLIC_AGENT.md`
-- `docs/ELLIE_PLATFORM_PLAYBOOK.md`
+- `docs/RYVRO_ANGLE_FRAMEWORK.md`
+- `config/ryvro-brand-context.js`
+- `config/ryvro-platform-playbook.js`
+- `docs/RYVRO_BUILD_IN_PUBLIC_AGENT.md`
+- `docs/RYVRO_PLATFORM_PLAYBOOK.md`
 - `docs/ANTHROPIC_CONTENT_PROVIDER.md`
 
 ## Provider Modes

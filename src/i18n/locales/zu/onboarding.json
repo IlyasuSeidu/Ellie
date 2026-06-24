@@ -7,7 +7,8 @@
       "freeTrial": "Isilingo samahhala",
       "noCard": "Alikho ikhadi lesikweletu",
       "cancelAnytime": "Khansela noma nini"
-    }
+    },
+    "getStartedHint": "Qala ukusetha uhlelo lwakho"
   },
   "common": {
     "swipeHint": "Swayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okulandelayo, noma phezulu ukuze uthole ulwazi olwengeziwe",
@@ -30,16 +31,29 @@
     },
     "cancel": "Khansela"
   },
+  "e2eSwipeControls": {
+    "status": "Isilingisi",
+    "statusWithAction": "Isilingisi • {{action}}",
+    "select": "Khetha",
+    "nextA11y": "Yiya enkethweni elandelayo",
+    "selectA11y": "Khetha inketho yamanje",
+    "infoA11y": "Vula imininingwane yenketho",
+    "actions": {
+      "select": "khetha",
+      "next": "okulandelayo",
+      "info": "imininingwane"
+    }
+  },
   "intro": {
-    "welcome": "Siyakwamukela ku-Ellie! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
+    "welcome": "Siyakwamukela ku- Ryvro! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
     "askName": "Ubani igama lakho?",
-    "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Yini indima yakho eceleni?",
+    "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Iyiphi indima yakho yomsebenzi wamashifu?",
     "askCompany": "Ngikuzwile! Usebenzela yiphi inkampani? (akuphoqelekile)",
     "askCountry": "Sengiyaqeda! Uzinze kuliphi izwe?",
     "allSet": "Iphelele! Usulungile, {{name}}. Masilungise ikhalenda lakho leshifu.",
     "placeholders": {
       "name": "Faka igama lakho",
-      "occupation": "isb. Ummeli we-haul truck, Boilermaker, Ugesi",
+      "occupation": "isb. Nurse, Security Officer, Technician",
       "company": "Faka igama lenkampani",
       "country": "Faka izwe lakini"
     },
@@ -58,16 +72,18 @@
       "countryTooShort": "Izwe kufanele okungenani libe nezinhlamvu ezingu-2",
       "countryTooLong": "Izwe akumele leqe izinhlamvu eziyi-100"
     },
-    "skipCompany": "Yeqa"
+    "skipCompany": "Yeqa",
+    "continue": "Qhubeka",
+    "continueHint": "Dlulela esinyathelweni esilandelayo sokuqalisa"
   },
   "shiftSystem": {
-    "title": "Isayithi Lakho Lisebenza Kangakanani?",
-    "title_named": "Sawubona {{name}}, isayithi lakho lisebenza ngamashifu amangaki?",
+    "title": "Indawo yakho yokusebenza isebenza ngamashifu amangaki?",
+    "title_named": "Sawubona {{name}}, indawo yakho yokusebenza isebenza ngamashifu amangaki?",
     "reviewAgain": "Sicela ubuyekeze amasistimu futhi ukuze ukhethe",
     "reviewButton": "Buyekeza Amasistimu",
     "continueButton": "Qhubeka",
     "closeButton": "Vala",
-    "instruction": "Khetha ukuthi isayithi lakho lisebenza kanjani—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole ulwazi",
+    "instruction": "Khetha ukuthi ithimba lakho lisebenza kanjani—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, phezulu ukuze uthole ulwazi",
     "endState": {
       "selectedTitle": "Ngiyitholile! Sizosethela lokhu ikhalenda lakho.",
       "reviewedTitle": "Ubuke wonke {{count}} amasistimu we-shift!",
@@ -135,13 +151,13 @@
       "reviewedSubtitle": "Awuzange uyibone eyakho? Ungakha engokwezifiso, noma ubheke okunye",
       "reviewedTitle": "Yilokho kuphela {{count}} ukuzungezisa esinakho!"
     },
-    "instruction": "Khetha ukuzungezisa okusetshenziswa esikhundleni sakho semigodi—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole ulwazi",
+    "instruction": "Khetha ukuzungezisa okusetshenziswa indawo yakho yokusebenza—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, phezulu ukuze uthole ulwazi",
     "title": "Kuyini Ukuzungeziswa Kohlelo lwakho?",
     "cards": {
       "4-4-4": {
         "name": "4-4-4 Ukujikeleza",
         "schedule": "Izinsuku ezi-4 • ubusuku obu-4 • 4 isaphulelo",
-        "description": "Sebenza amashifu ezinsuku ezi-4, bese kuba amashifu ama-4 ebusuku, bese uthola izinsuku ezi-4 ungekho okuvamile kumasayithi okundiza okungena ngaphakathi."
+        "description": "Sebenza amashifu osuku angu-4, bese kuba awasebusuku angu-4, bese uphumula izinsuku ezingu-4 — kuvamile kumaqembu angu-24/7 nawe-FIFO"
       },
       "7-7-7": {
         "name": "7-7-7 Ukujikeleza",
@@ -181,42 +197,42 @@
       "custom": {
         "name": "Ukuzungezisa Ngokwezifiso",
         "schedule": "Uyakhetha",
-        "description": "Isayithi lakho lisebenzisa okuthile okuhlukile? Yakha okwakho ukuzungezisa lapha"
+        "description": "Ithimba lakho lisebenzisa okuthile okuhlukile? Yakha okwakho ukuzungezisa lapha"
       },
       "fifo-8-6": {
         "name": "I-FIFO 8/6",
         "schedule": "Ukusebenza kwezinsuku eziyi-8 • Izinsuku eziyisi-6 ekhaya",
-        "description": "Sebenza izinsuku eziyi-8 ezilandelanayo endaweni, bese izinsuku eziyisi-6 usekhaya-okudumile ezimayini ze-WA"
+        "description": "Sebenza izinsuku zebhulokhi yomsebenzi ezingu-8 zilandelana, bese uphumula izinsuku ezingu-6 — kuvamile kumaqembu akude nawe-FIFO"
       },
       "fifo-7-7": {
         "name": "I-FIFO 7/7 (Isikhathi Esilinganayo)",
         "schedule": "Umsebenzi wesonto eli-1 • Isonto eli-1 ekhaya",
-        "description": "Isonto elilodwa esizeni, isonto elilodwa ekhaya-ibhalansi ephelele engu-50/50"
+        "description": "Isonto elilodwa lomsebenzi, isonto elilodwa lokuphumula — ibhalansi enhle engu-50/50"
       },
       "fifo-14-14": {
         "name": "I-FIFO 14/14 (Isikhathi Sokulingana)",
         "schedule": "2 amasonto ukusebenza • 2 amasonto ekhaya",
-        "description": "Amaviki amabili esizeni, amaviki amabili ebhalansi yempilo esebenza kahle ekhaya"
+        "description": "Amasonto amabili omsebenzi, amasonto amabili okuphumula — isigqi esilinganiselayo somsebenzi/nokuphumula"
       },
       "fifo-14-7": {
         "name": "I-FIFO 14/7 (2:1)",
         "schedule": "Umsebenzi wamaviki ama-2 • Isonto eli-1 ekhaya",
-        "description": "Amaviki amabili esizeni, isonto elilodwa emandleni okuthola imali ephezulu ekhaya"
+        "description": "Amasonto amabili omsebenzi, isonto elilodwa lokuphumula — ngamabhulokhi omsebenzi amade"
       },
       "fifo-21-7": {
         "name": "I-FIFO 21/7 (3:1)",
         "schedule": "Umsebenzi wamaviki ama-3 • Isonto eli-1 ekhaya",
-        "description": "Amaviki amathathu esizeni, isonto elilodwa usekhaya-ngemisebenzi ekude kakhulu"
+        "description": "Amasonto amathathu omsebenzi, isonto elilodwa lokuphumula — emisebenzini ekude kakhulu"
       },
       "fifo-28-14": {
         "name": "I-FIFO 28/14 (2:1)",
         "schedule": "Umsebenzi wamaviki ama-4 • Amaviki ama-2 usekhaya",
-        "description": "Amaviki amane esizeni, amasonto amabili ekhaya-ezindaweni ezikude ezikude"
+        "description": "Amasonto amane omsebenzi, amasonto amabili okuphumula — emisebenzini ekude yesikhathi eside"
       },
       "fifo-custom": {
         "name": "I-FIFO yangokwezifiso",
         "schedule": "Yakha eyakho",
-        "description": "Isayithi lakho le-FIFO lisebenzisa uhlelo oluhlukile? Lungiselela amabhlogo akho omsebenzi/ukuphumula"
+        "description": "Iqembu lakho le-FIFO lisebenzisa i-roster ehlukile? Lungisa amabhulokhi akho omsebenzi/okuphumula"
       }
     },
     "title_named": "Iyiphi iphethini yakho, {{name}}?",
@@ -224,7 +240,7 @@
   },
   "rosterType": {
     "title": "Lusebenza Kanjani Uhlu Lwakho?",
-    "instruction": "Khetha isitayela sohlelo olusetshenziswa esikhundleni sakho semigodi - lokhu kulolonga uhlelo lwakho lonke\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole imininingwane",
+    "instruction": "Khetha isitayela sohlelo olusetshenziswa indawo yakho yokusebenza - lokhu kulolonga uhlelo lwakho lonke\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole imininingwane",
     "preparingNextStep": "Ilungiselela isinyathelo esilandelayo...",
     "learnMore": {
       "examples": "Izibonelo",
@@ -268,21 +284,21 @@
       "fifo": {
         "title": "I-FIFO / Swing Roster",
         "subtitle": "Amabhulokhi okusebenza • Amabhulokhi asekhaya",
-        "description": "Usebenza izinsuku ezilandelanayo endaweni, bese uthola isikhathi esengeziwe ekhaya",
+        "description": "Usebenza izinsuku zebhulokhi yomsebenzi zilandelana, bese uthola isikhathi sokuphumula eside ekhaya",
         "details": {
-          "howItWorks": "Izisebenzi zindizela ezindaweni ezikude, zisebenze izinsuku ezilandelanayo (indawo yomsebenzi), bese zindizela ekhaya ukuze ziphumule isikhathi eside (indawo yokuphumula)",
+          "howItWorks": "Abasebenzi baya emisebenzini ekude, basebenze izinsuku ezilandelanayo (ibhulokhi yomsebenzi), bese bebuyela ekhaya ukuze baphumule isikhathi eside (ibhulokhi yokuphumula)",
           "examples": [
-            "8/6 (i-WA evamile)",
+            "8/6 (okuvamile)",
             "14/14 (isikhathi esilinganayo)",
-            "21/7 (amasayithi akude)",
+            "21/7 (imisebenzi ekude)",
             "28/14 (umjikelezo omude)"
           ],
-          "regions": ["i-Australia", "i-Canada", "Izimayini zomhlaba ezikude"],
+          "regions": ["i-Australia", "i-Canada", "Imisebenzi yomhlaba ekude"],
           "pros": [
-            "Isikhathi esingeziwe ekhaya",
-            "Izinga lokukhokha eliphakeme",
-            "Ilungele amasayithi akude",
-            "Amabhulokhi angabikezelwa"
+            "Isikhathi eside ekhaya",
+            "Izinga lokukhokha eliphezulu",
+            "Kuhle emisebenzini ekude",
+            "Amabhulokhi abikezelwayo"
           ],
           "cons": [
             "Ukude nomndeni isikhathi eside",
@@ -295,11 +311,11 @@
     },
     "title_named": "Lusebenza kanjani uhlelo lwakho, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Lokhu kukhombisa u-Ellie ngqo ukuthi ukuphi kumjikelezo wakho - akukho ukuqagela futhi",
-      "wrong_alarm": "Uma usetha lokhu kahle u-Ellie uzobeka yonke i-alamu eshifini elifanele",
-      "days_off": "Lokhu kukhombisa u-Ellie ukuthi izinsuku zakho zokuphumula ziwela nini ukuze uhlele kusenesikhathi",
-      "family": "U-Ellie uzokwazisa ngezikhathi obungezaphuthelwa uma eselwazi uhlelo lwakho",
-      "mental_math": "Ngemva kwalokhu u-Ellie uzokubalela konke"
+      "cycle_lost": "Lokhu kukhombisa u- Ryvro ngqo ukuthi ukuphi kumjikelezo wakho - akukho ukuqagela futhi",
+      "wrong_alarm": "Uma usetha lokhu kahle u- Ryvro uzobeka yonke i-alamu eshifini elifanele",
+      "days_off": "Lokhu kukhombisa u- Ryvro ukuthi izinsuku zakho zokuphumula ziwela nini ukuze uhlele kusenesikhathi",
+      "family": "U- Ryvro uzokwazisa ngezikhathi obungezaphuthelwa uma eselwazi uhlelo lwakho",
+      "mental_math": "Ngemva kwalokhu u- Ryvro uzokubalela konke"
     },
     "countryHint": "Kuvamile e-{{country}}"
   },
@@ -307,28 +323,28 @@
     "saveFailed": "Yehlulekile ukulondoloza idatha yakho. Sicela uzame futhi.",
     "features": {
       "reminders": "Izikhumbuzi ze-smart shift",
-      "remindersDesc": "Ungalokothi uphuthelwe ukubizwa — izikhumbuzi ezihlakaniphile ezijwayelana ne-roster swing yakho",
+      "remindersDesc": "Ungalokothi uphuthelwe ukudlulisa umsebenzi, ukubizwa, noma ukuqala kusenesikhathi — izikhumbuzi ezihlakaniphile ezijwayelana nokujikeleza kwakho",
       "sleep": "Ukulandelela ukulala nemininingwane",
       "sleepDesc": "Lungiselela ukuphumula kwakho phakathi kwamashifu ngezibalo zokulala eziqondene nawe",
       "fatigue": "Ukuqapha ukukhathala",
-      "fatigueDesc": "Qaphela ingozi yokukhathala kumashifu amade — kubalulekile kuphepha engaphansi komhlaba",
+      "fatigueDesc": "Qaphela ingozi yokukhathala kumashifu amade — kubalulekile emsebenzini odingayo",
       "team": "Ukuxhumana kweqembu",
       "teamDesc": "Bona ishejuli yeqembu lakho futhi uhlanganise ukunikezela kalula",
       "balance": "Ibhalansi yokuphila komsebenzi",
-      "balanceDesc": "Hlala unempilo phakathi kwama-FIFO swings nge-routine ne-wellness tracking",
+      "balanceDesc": "Hlala unempilo phakathi kwamabhulokhi amashifu ngokulandela i-routine nenhlalakahle",
       "earnings": "Isibali samaholo",
-      "earningsDesc": "Bala izibonelelo zesite, i-FIFO loadings, nokungeziwe ngokuzenzakalelayo",
+      "earningsDesc": "Linganisela amahora amashifu, izibonelelo, kanye nesikhathi esengeziwe kumashejuli ajikelezayo",
       "meals": "Ukudla & hydration",
-      "mealsDesc": "Hlala ugcwele amanzi nonamandla ngamashifu amahora ayi-12 engaphansi komhlaba"
+      "mealsDesc": "Hlala ugcwele amanzi nonamandla ngezinsuku ezinde, amashifu asebusuku, izinsuku zokuhamba, nokubizwa"
     },
     "featureHint": "Thepha i-chip yesici ukuze ubone imininingwane eyengeziwe.",
-    "featuresTitle": "Ongakwenza ngo-Ellie",
+    "featuresTitle": "Ongakwenza ngo- Ryvro",
     "getStartedA11yHint": "Thepha ukuze uqale ukusebenzisa uhlelo lokusebenza",
-    "getStartedA11yLabel": "Qala ngo-Ellie",
+    "getStartedA11yLabel": "Qala ngo- Ryvro",
     "loading": "Yakha ikhalenda lika-roster wakho...",
     "retryA11yHint": "Thepha ukuze uzame ukulondoloza idatha yakho futhi",
     "retryA11yLabel": "Zama futhi ukulondoloza idatha yakho",
-    "subtitle": "Siyakwamukela ku-Ellie",
+    "subtitle": "Siyakwamukela ku- Ryvro",
     "summary": {
       "company": "Inkampani",
       "cycle": "Umjikelezo",
@@ -345,12 +361,12 @@
       "startDate": "Usuku okuqalwa ngalo",
       "title": "Iphrofayela yakho",
       "workPattern": "Iphethini Yomsebenzi",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Usuku lonke",
+      "notTimed": "Akukho sikhathi",
+      "rosterTypeUniversal": "Ishejuli ejwayelekile",
+      "universalShiftSystem": "Amashifu angokwezifiso ajwayelekile",
+      "scheduleEngine": "Injini yeshejuli",
+      "scheduleType": "Uhlobo lweshejuli"
     },
     "title": "Konke sekumi ngomumo.",
     "tryAgain": "Zama futhi",
@@ -373,7 +389,7 @@
         "shiftPattern": "Iphethini yamashifu",
         "fifoConfiguration": "Ukucushwa kwe-FIFO",
         "customPatternConfiguration": "Ukucushwa kwephethini yangokwezifiso",
-        "phaseOffset": "Ukushintsha kwesigaba",
+        "phaseOffset": "Indawo yamanje",
         "startDate": "Usuku lokuqala",
         "shiftTimes": "Izikhathi zamashifu"
       }
@@ -394,8 +410,8 @@
       "decline": "Hhayi manje"
     },
     "title_named": "{{name}}, konke sekumi ngomumo.",
-    "setupReady": "Irosta yakho ye-{{setup}} isilungile.",
-    "reminderPromise": "Ellie izokukhumbuza ngaphambi kweshifu ngayinye."
+    "setupReady": "Ishejuli yakho ye-{{setup}} isilungile.",
+    "reminderPromise": "Ryvro izokukhumbuza ngaphambi kweshifu ngayinye."
   },
   "phaseSelector": {
     "hints": {
@@ -467,7 +483,7 @@
       "swingConfig": "Lungiselela ukuhlukana kwakho kwe-swing",
       "block": "Ukuphi kumjikelezo wakho we-FIFO?",
       "dayWithinBlock": "Iluphi usuku lwe-{{blockTitle}} okulo?",
-      "block_named": "Ingabe usemsebenzini noma usekhaya manje, {{name}}?"
+      "block_named": "Ingabe usebhulokhini yomsebenzi noma yokuphumula manje, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swayiphela kwesokudla ukuze ukhethe iphethini yakho yesivimbeli somsebenzi, kwesokunxele ukuze uthole inketho elandelayo, noma phezulu ukuze uthole ulwazi",
@@ -488,7 +504,7 @@
       "straightNights": {
         "title": "Ubusuku obuqondile",
         "description": "Ibhulokhi yakho yomsebenzi isebenzisa amashifu ebusuku kuphela.",
-        "quickInfo": "Sebenzisa lokhu lapho abasebenzi besizinda behlala emashifu ebusuku ukuze basebenze ngokugcwele."
+        "quickInfo": "Sebenzisa lokhu lapho amaqembu ehlala kumashifu asebusuku kuyo yonke ibhulokhi yomsebenzi."
       },
       "swing": {
         "title": "I-Swing roster",
@@ -498,16 +514,16 @@
     },
     "blocks": {
       "work": {
-        "title": "Esizeni (Emsebenzini)",
-        "descriptionDay": "Okwamanje usendaweni yemayini endaweni yakho yomsebenzi weshifu yosuku",
-        "descriptionNight": "Okwamanje usendaweni yezimayini endaweni yakho yomsebenzi weshifu yasebusuku",
-        "descriptionNeutral": "Okwamanje usendaweni yezimayini endaweni yakho yomsebenzi",
+        "title": "Ibhulokhi yomsebenzi",
+        "descriptionDay": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi weshifu yosuku",
+        "descriptionNight": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi weshifu yasebusuku",
+        "descriptionNeutral": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi",
         "quickInfoDay": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala kusukela kubhulokhi yakho yomsebenzi weshifu yosuku.",
         "quickInfoNight": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala ukusuka kubhulokhi yakho yomsebenzi weshifu yasebusuku.",
         "quickInfoNeutral": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala ukusuka kubhulokhi yakho yamanje yomsebenzi."
       },
       "rest": {
-        "title": "Ekhaya (Ekuphumuleni)",
+        "title": "Ibhulokhi yokuphumula",
         "description": "Okwamanje usekhaya endaweni yakho yokuphumula",
         "quickInfo": "Lokhu kunciphisa umjikelezo wakho ngobude bebhulokhi yakho yomsebenzi kuqala."
       }
@@ -529,9 +545,9 @@
       },
       "defaultDayTitle": "Usuku {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Ngosuku lokuqala ebuyela endaweni",
-        "firstNightAtSite": "Ubusuku bokuqala bubuyela endaweni",
-        "firstShiftAtSite": "Ukushintsha kokuqala emuva endaweni",
+        "firstDayAtSite": "Usuku lokuqala lwebhulokhi yakho yomsebenzi",
+        "firstNightAtSite": "Ishifu yasebusuku yokuqala yebhulokhi yakho yomsebenzi",
+        "firstShiftAtSite": "Ishifu yokuqala yebhulokhi yakho yomsebenzi",
         "lastDayBeforeHome": "Ngosuku lokugcina ngaphambi kokundiza ekhaya",
         "lastNightBeforeHome": "Izolo ebusuku ishifu ngaphambi kokundizela ekhaya",
         "lastShiftBeforeHome": "Ishifu yokugcina ngaphambi kokundizela ekhaya",
@@ -541,12 +557,12 @@
       },
       "rest": {
         "firstDayAtHome": "Usuku lokuqala ngibuyele ekhaya",
-        "lastDayBeforeSite": "Ngosuku lokugcina ngaphambi kokubuyela esizeni",
+        "lastDayBeforeSite": "Usuku lokugcina ngaphambi kwebhulokhi yomsebenzi elandelayo",
         "dayOfRestBlock": "Usuku {{dayNumber}} lwebhulokhi yakho yokuphumula"
       },
       "swing": {
         "dayShiftTitle": "Usuku Lokushintsha Kosuku {{dayNumber}}",
-        "firstDayShiftAtSite": "Usuku lokuqala lokubuyela endaweni",
+        "firstDayShiftAtSite": "Ishifu yosuku yokuqala yebhulokhi yakho yomsebenzi",
         "finalDayShiftBeforeNights": "Ukushintsha usuku lokugcina ngaphambi kokushintshela ebusuku",
         "dayShiftDayDescription": "Usuku lweshifu yosuku {{dayNumber}} lwebhulogi yakho yomsebenzi",
         "nightShiftTitle": "Usuku lweshifu yasebusuku {{dayNumber}}",
@@ -562,7 +578,7 @@
           "afternoon": "Ntambama",
           "off": "Vala"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} usuku {{dayNumber}}",
         "description": "Ishifthi {{shiftType}} {{dayNumber}} yokulandelana kwakho okwenziwe ngokwezifiso"
       }
     },
@@ -698,7 +714,7 @@
     },
     "guidance": {
       "aboutTitle": "Mayelana nezikhathi zamashifu",
-      "aboutBody": "Ukuzungezisa kwakho kwe-{{patternName}} kuhlala kunjalo, kodwa sidinga izikhathi zakho zokuqala zeshifu ukuze u-Ellie akwazi ukulandelela amahora futhi akwazise ngaphambi kokuhamba ngakunye.",
+      "aboutBody": "Ukuzungezisa kwakho kwe-{{patternName}} kuhlala kunjalo, kodwa sidinga izikhathi zakho zokuqala zeshifu ukuze u- Ryvro akwazi ukulandelela amahora futhi akwazise ngaphambi kokuhamba ngakunye.",
       "hint": "Sebenzisa isikhathi sokuqala esiseduzane manje. Ungayishuna kamuva kuzilungiselelo.",
       "definitions": {
         "twoShiftTitle": "Usuku vs Night:",
@@ -763,8 +779,8 @@
       "label": "Uvamise ukungena ngasiphi isikhathi?",
       "helper": "Sebenzisa ifomethi yamahora angu-12 (isb., 6:00 AM)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "ekuseni",
+        "pm": "ntambama"
       }
     },
     "validation": {
@@ -937,10 +953,10 @@
         "swingWorkBlock": "Ibhulokhi yomsebenzi we-swing",
         "customWorkBlock": "Ibhulokhi yomsebenzi owenziwe ngokwezifiso"
       },
-      "ratioLabel": "Indawo eya ekhaya isigqi",
+      "ratioLabel": "Isigqi somsebenzi ukuya ekuphumuleni",
       "restLabel": "Ukuphumula: {{restBlockDays}} izinsuku",
-      "siteDays": "izinsuku zesayithi",
-      "subtitle": "{{workBlockDays}} izinsuku endaweni, bese {{restBlockDays}} izinsuku ekhaya",
+      "siteDays": "izinsuku zebhulokhi yomsebenzi",
+      "subtitle": "{{workBlockDays}} izinsuku zebhulokhi yomsebenzi, bese {{restBlockDays}} izinsuku zokuphumula",
       "swingSplit": "Ukuhlukaniswa kwe-Swing: {{daysOnDayShift}} izinsuku zokushintsha kosuku + {{daysOnNightShift}} izinsuku zokushintsha ebusuku",
       "title": "Ukubuka kuqala kwakho kwe-FIFO Rotation",
       "workLabel": "Umsebenzi: {{workBlockDays}} izinsuku",
@@ -965,38 +981,38 @@
     "saveHintValid": "{{workBlockDays}} umsebenzi wezinsuku, {{restBlockDays}} izinsuku zokuphumula",
     "sliders": {
       "daysAtHome": "Izinsuku Ekhaya (Ibhulokhi Yokuphumula)",
-      "daysAtSite": "Izinsuku Esayithini (Ibhulokhi Yomsebenzi)",
+      "daysAtSite": "Izinsuku zebhulokhi yomsebenzi",
       "daysOnDayShift": "Izinsuku eshifini lasemini",
       "daysOnNightShift": "Izinsuku eshifini yasebusuku"
     },
     "slidersTitle": "Setha Iphethini Yakho ye-FIFO",
-    "subtitle": "Setha ibhulokhi yakho ekusayithi, ibhulokhi yasekhaya, nesitayela seshifu yebhulokhi yomsebenzi ukuze uthole ishejuli efanelana nomjikelezo wesayithi lakho.",
+    "subtitle": "Isinyathelo 1: Setha izinsuku zebhulokhi yomsebenzi nezinsuku zokuphumula. Isinyathelo 2: Khetha ukuthi amashifu asebenza kanjani phakathi kwebhulokhi yomsebenzi.",
     "subtitleSecondary": "Ibhulokhi yomsebenzi, ibhulokhi yokuphumula nohlukaniso lwephethini",
-    "success": "Ukusethwa okuqinile kwe-FIFO. {{workBlockDays}} izinsuku endaweni, bese {{restBlockDays}} izinsuku ekhaya.",
+    "success": "Ukusethwa okuqinile kwe-FIFO. {{workBlockDays}} izinsuku zebhulokhi yomsebenzi, bese {{restBlockDays}} izinsuku zokuphumula.",
     "swingSubtitle": "Hlukanisa ibhulokhi yakho yomsebenzi phakathi kwamashifu emini nasebusuku.",
     "swingTitle": "Ukucushwa kwe-Swing",
     "swingTotal": "Isamba sokuhlukaniswa: {{swingTotal}}/{{workBlockDays}} izinsuku",
-    "tip": "Ithiphu: Qondanisa ibhulokhi yakho yasekhaya nezidingo zokutholwa kanye nezohambo. Amaphethini e-FIFO asebenza kangcono uma ibhulokhi esele iyinde ngokwanele ukuthi ingasethwa kabusha ngaphambi kokuthi isayithi lakho elilandelayo liqalise.",
+    "tip": "Ithiphu: Qondanisa ibhulokhi yakho yasekhaya nezidingo zokululama kanye nohambo. Amaphethini e-FIFO asebenza kangcono uma ibhulokhi yokuphumula yinde ngokwanele ngaphambi kwebhulokhi yomsebenzi elandelayo.",
     "title": "Yakha i-FIFO Rotation Yakho",
     "validation": {
       "blocksMinimum": "Amabhlokhi omsebenzi nezindawo zokuphumula kufanele ngayinye ibe okungenani usuku olungu-1.",
       "swingMismatch": "Ukuhlukaniswa kwe-Swing kufanele kulingane nezinsuku ezingu-{{workBlockDays}} ngaphambi kokulondoloza."
     },
     "warning": "Lolu hlelo lunzima ({{workPercentage}}% umsebenzi). Cabangela ukulingana nezinsuku eziningi zasekhaya uma ukukhathala kuba yinkinga.",
-    "workPatternSubtitle": "Ahlelwa kanjani amashifu akho ngenkathi usendaweni?",
+    "workPatternSubtitle": "Khetha ukuthi amashifu asebenza kanjani phakathi kwebhulokhi yomsebenzi.",
     "workPatternTitle": "Iphethini Yomsebenzi Ngesikhathi Sokuvimbela Umsebenzi",
     "workPatterns": {
       "straight-days": {
         "title": "Izinsuku Eziqondile",
-        "description": "Amashifu osuku lokusebenza kuphela kulo lonke ibhulokhi yomsebenzi (isb., 7am-7pm)"
+        "description": "Zonke izinsuku zebhulokhi yomsebenzi zingamashifu osuku."
       },
       "straight-nights": {
         "title": "Ubusuku obuqondile",
-        "description": "Amashifu okusebenza ebusuku alo lonke ibhulokhi yomsebenzi (isb., 7pm-7am)"
+        "description": "Zonke izinsuku zebhulokhi yomsebenzi zingamashifu asebusuku."
       },
       "swing": {
         "title": "I-Swing Roster",
-        "description": "Shintshanisa amashifu emini kanye namashifu ebusuku ngesikhathi sokuvimba umsebenzi"
+        "description": "Ibhulokhi yomsebenzi ihlanganisa amashifu osuku nawasebusuku."
       },
       "custom": {
         "title": "Ukulandelana okwenziwe ngokwezifiso",
@@ -1064,7 +1080,7 @@
   "chatMessage": {
     "skipped": "Kweqiwe",
     "a11y": {
-      "botMessage": "Umlayezo ka-Ellie: {{content}}",
+      "botMessage": "Umlayezo ka- Ryvro: {{content}}",
       "userMessage": "Umlayezo wakho: {{content}}",
       "longPressToEdit": "Cindezela isikhathi eside ukuze uhlele"
     }
@@ -1101,7 +1117,6 @@
   "ahaMoment": {
     "headline": "Izinyanga zakho ezi-3 ezizayo, sezihleliwe.",
     "subheadline": "Nansi imibono yangaphambili yezinyanga zakho ezi-3 ezizayo. Akusekho ukuqagela ekhanda.",
-    "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
     "ctaPrimary": "Qala isivivinyo samahhala",
     "ctaSecondary": "noma weqe — isonto lamanje kuphela, akukho unyaka ogcwele",
     "stats": {
@@ -1128,7 +1143,7 @@
       "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?",
       "startBack": "Ngiqala nini futhi?"
     },
-    "buttonLabel": "Sawubona Ellie",
+    "buttonLabel": "Sawubona Ryvro",
     "headline_named": "Amashifu ka-{{name}}, asehleliwe.",
     "ctaSecondaryA11y": "Yeqa isivivinyo — kugcinelwe isonto lamanje kuphela, akukho ukubukwa komnyaka ogcwele",
     "painCallback": {
@@ -1139,11 +1154,12 @@
       "mental_math": "Akusekho ukubala ngeminwe."
     },
     "previewLabel": "UKUBUKA KWEZINYANGA EZINGU-3 EZIZAYO",
-    "checkingAccess": "Kuhlolwa ukufinyelela…"
+    "checkingAccess": "Kuhlolwa ukufinyelela…",
+    "ryvroTitle": "Buza u- Ryvro nge-roster yakho"
   },
   "painHook": {
     "title": "Yini enzima kakhulu ngohlelo lwakho manje?",
-    "subtitle": "Sizokwenza Ellie ihambisane nalokho okubaluleke kakhulu kuwe.",
+    "subtitle": "Sizokwenza Ryvro ihambisane nalokho okubaluleke kakhulu kuwe.",
     "options": {
       "cycle_lost": "Ngiyadideka ukuthi ngikuphi kumjikelezo wami",
       "wrong_alarm": "Sengike ngamisa i-alamu yeshifu engalungile",
@@ -1191,12 +1207,12 @@
       "placeholder": "Uhlelo Lwami"
     },
     "anchorDate": {
-      "label": "Usuku lwankolo",
-      "hint": "Ulandelwano luyaphinda kusukela kulolu suku"
+      "label": "Usuku lokuqondanisa isheduli",
+      "hint": "Khetha usuku lwangempela u-Ryvro okufanele aluqondanise nomjikelezo wakho"
     },
     "phaseOffset": {
-      "label": "Usuku lwamanje emjikelezo",
-      "hint": "0 = ukuqala komjikelezo"
+      "label": "Ukuphi emjikelezweni?",
+      "hint": "Sebenzisa 1 entweni yokuqala kulandelano, 2 kweyesibili, njalo njalo"
     },
     "ai": {
       "sectionTitle": "Umsizi we-AI",
@@ -1239,7 +1255,24 @@
       "discardDraft": "Lahla umswenko",
       "followUp": "Landela...",
       "send": "Thumela",
-      "invalid": "Impendulo ye-AI ayisebenzi. Zama futhi."
+      "invalid": "Impendulo ye-AI ayisebenzi. Zama futhi.",
+      "aiDraft": "Okusalungiswa kwe-AI",
+      "clarificationBanner": "Ngidinga ulwazi oluncane olwengeziwe ukuze ngakhe lokhu ngokunembile",
+      "summary": "Engikuqondile",
+      "questionsForYou": "Imibuzo yakho",
+      "headsUp": "Qaphela",
+      "sequencePreview": "Ukubuka kuqala ukulandelana",
+      "dayA11y": "Usuku {{day}}: {{name}}",
+      "cycleLength_one": "Umjikelezo wosuku olu-{{count}}",
+      "cycleLength_other": "Umjikelezo wezinsuku ezi-{{count}}",
+      "followUpLabel": "Buza umbuzo olandelayo",
+      "followUpPlaceholder": "isb. Kwenze kube amashifu amahora angu-8",
+      "followUpA11y": "Umbuzo olandelayo we-AI",
+      "sendFollowUpA11y": "Thumela okulandelayo",
+      "useDraftA11y": "Sebenzisa lokhu okusalungiswa kwe-AI",
+      "editManuallyA11y": "Hlela uhlelo ngesandla esikhundleni salokho",
+      "discardDraftA11y": "Lahla okusalungiswa kwe-AI",
+      "cycleLength": "Umjikelezo wezinsuku ezi-{{count}}"
     },
     "palette": {
       "title": "Izikhathi Zeshifu",
@@ -1247,7 +1280,24 @@
       "usageCount_one": "{{count}} ukusetshenziswa",
       "usageCount_other": "{{count}} ukusetshenziswa",
       "deleteBlocked": "Iyasetshenziswa",
-      "deleteBlockedMessage": "Lolu hlobo loshifu lusetshenziswa {{count}} izikhathi ohlelweni. Susa lezo zingeniso kuqala noma zishintshe."
+      "deleteBlockedMessage": "Lolu hlobo loshifu lusetshenziswa {{count}} izikhathi ohlelweni. Susa lezo zingeniso kuqala noma zishintshe.",
+      "createNewA11y": "Dala uhlobo olusha lweshifti",
+      "newType": "Uhlobo olusha",
+      "emptyTitle": "Azikho izinhlobo zamashifti okwamanje.",
+      "emptyMessage": "Thepha Uhlobo olusha ukuze udale ishifti yakho yokuqala.",
+      "cannotDeleteTitle": "Akukwazi ukusulwa",
+      "cannotDeleteMessage": "\"{{name}}\" isetshenziswa izikhathi ezingu-{{count}} kulandelwano lwakho. Yisuse kulandelwano kuqala.",
+      "cannotDeleteMessage_one": "\"{{name}}\" isetshenziswa izikhathi ezingu-{{count}} kulandelwano lwakho. Yisuse kulandelwano kuqala.",
+      "cannotDeleteMessage_other": "\"{{name}}\" isetshenziswa izikhathi ezingu-{{count}} kulandelwano lwakho. Yisuse kulandelwano kuqala.",
+      "ok": "OK",
+      "deleteTitle": "Susa \"{{name}}\"?",
+      "deleteMessage": "Lolu hlobo lweshifti luzosuswa unomphela.",
+      "cancelDelete": "Khansela",
+      "confirmDelete": "Susa",
+      "addToSequenceA11y": "Engeza {{name}} kulandelwano",
+      "editA11y": "Hlela {{name}}",
+      "deleteA11y": "Susa {{name}}",
+      "deleteBlockedHint": "Akukwazi ukusulwa ngoba kusetshenziswa kulandelwano"
     },
     "canvas": {
       "title": "Ulandelwano",
@@ -1261,7 +1311,21 @@
       "duplicate": "Phindaphinda",
       "insertBefore": "Faka ngaphambi",
       "insertAfter": "Faka ngemuva",
-      "delete": "Susa"
+      "delete": "Susa",
+      "emptyTitle": "Awekho amashifu kulandelwano",
+      "emptySubtitle": "Engeza izinhlobo zamashifu ngezansi, bese uthinta Engeza ishifu ukuze wakhe umjikelezo wakho.",
+      "noShiftTypesTitle": "Azikho izinhlobo zamashifu",
+      "noShiftTypesMessage": "Dala uhlobo loshifu kuqala usebenzisa iphalethi engezansi.",
+      "addShiftA11y": "Engeza ishifu kulandelwano",
+      "addBlockA11y": "Engeza ibhulokhi ephindaphindwayo kulandelwano",
+      "modalAddRepeated": "Engeza ibhulokhi ephindaphindwayo",
+      "modalChooseShift": "Khetha uhlobo loshifu",
+      "modalInsertBefore": "Faka ngaphambi kosuku {{day}}",
+      "modalInsertAfter": "Faka ngemva kosuku {{day}}",
+      "repeatCountLabel": "Inani lokuphinda:",
+      "repeatInputA11y": "Inani lokuphindaphinda",
+      "repeatTimes": "izikhathi",
+      "definitionUsedTimes": "isetshenziswe {{count}} izikhathi"
     },
     "inspector": {
       "titleCreate": "Uhlobo loshifu olusha",
@@ -1292,7 +1356,7 @@
       "countsAsNight": "Ibala njengoshifu wasebusuku",
       "color": "Umbala",
       "icon": "Isithonjana",
-      "location": "Indawo",
+      "location": "Indawo yokusebenza (ongakukhetha)",
       "save": "Londoloza",
       "delete": "Susa uhlobo",
       "deleteConfirm": {
@@ -1300,7 +1364,50 @@
         "message": "Lesi senzo asinakubuyiselwa.",
         "confirm": "Susa",
         "cancel": "Khansela"
-      }
+      },
+      "nameRequiredTitle": "Igama liyadingeka",
+      "nameRequiredMessage": "Sicela ufake igama lalolu hlobo loshifu.",
+      "timesRequiredTitle": "Izikhathi ziyadingeka",
+      "timesRequiredMessage": "Setha isikhathi sokuqala nesokuphela soshifu onesikhathi.",
+      "colorA11y": "Umbala {{color}}",
+      "customColorPlaceholder": "I-hex yangokwezifiso (isb. FF5722)",
+      "customColorA11y": "Ikhodi ye-hex yombala wangokwezifiso",
+      "iconA11y": "Isithonjana: {{icon}}",
+      "countsAsWorkHint": "Kufakwa ezibalweni zezinsuku zomsebenzi",
+      "countsAsWorkA11y": "Iswishi yokubalwa njengosuku lomsebenzi",
+      "countsAsNightHint": "Kuthinta izibalo zamashifu asebusuku",
+      "countsAsNightA11y": "Iswishi yokubalwa njengeshifu yasebusuku",
+      "locationPlaceholder": "isb. Isibhedlela, idepho, ifektri, isiteshi",
+      "locationA11y": "Igama lendawo yomsebenzi",
+      "remindersTitle": "Izikhumbuzi zalolu shifu",
+      "remindersDisabled": "Izinhlobo zoshifu zokuphumula nekhefu azihleleli izikhumbuzi zangaphambi koshifu.",
+      "reminderRulesTitle": "Imithetho yezikhumbuzi",
+      "reminderRulesHint": "Le mithetho isebenza kuphela kulolu hlobo loshifu.",
+      "reminderProfileA11y": "Igama lephrofayela yezikhumbuzi",
+      "firstReminder": "Isikhumbuzi sokuqala",
+      "firstReminderA11y": "Amahora ngaphambi koshifu esikhumbuzini sokuqala",
+      "hoursBefore": "amahora ngaphambi",
+      "prepTime": "Isikhathi sokulungiselela",
+      "prepTimeA11y": "Amaminithi okulungiselela ngaphambi koshifu",
+      "minutes": "amaminithi",
+      "travelTime": "Isikhathi sokuhamba",
+      "travelTimeA11y": "Amaminithi okuhamba ngaphambi koshifu",
+      "imminentReminderTitle": "Isexwayiso semizuzu engu-15",
+      "imminentReminderHint": "Thumela isikhumbuzi sokugcina ngaphambi nje kokuqala",
+      "imminentReminderA11y": "Iswishi yesikhumbuzi semizuzu engu-15",
+      "briefingReminderTitle": "Isikhumbuzi se-briefing",
+      "briefingReminderHint": "Phatha isikhumbuzi semizuzu engu-15 njengokulungiselela okubalulekile",
+      "briefingReminderA11y": "Iswishi yesikhumbuzi se-briefing",
+      "fatigueAwareTitle": "Isikhathi esibheka ukukhathala",
+      "fatigueAwareHint": "Hambisa izikhumbuzi zokulungiselela ngaphambili uma ingozi yokukhathala iphezulu",
+      "fatigueAwareA11y": "Iswishi yezikhumbuzi ezibheka ukukhathala",
+      "postShiftCheckinTitle": "Ukuhlola ngemva koshifu",
+      "postShiftCheckinHint": "Buza ukuthi ushifu uhambe kanjani ihora elilodwa ngemva kokuphela",
+      "postShiftCheckinA11y": "Iswishi yokuhlola ngemva koshifu",
+      "travelRemindersTitle": "Izikhumbuzi zokuhamba",
+      "travelRemindersHint": "Sebenzisa lolu shifu ezikhumbuzini zokungena nokuphuma",
+      "travelRemindersA11y": "Iswishi yezikhumbuzi zokuhamba",
+      "saveA11y": "Londoloza uhlobo loshifu"
     },
     "preview": {
       "title": "Ukubuka Kuqala",
@@ -1310,7 +1417,8 @@
       "today": "Namuhla",
       "anchor": "Ankolo",
       "empty": "Awekho amanani okubuka kuqala.",
-      "errors": "Ukubuka kuqala akungaboniswa ngenxa yamaphutha."
+      "errors": "Ukubuka kuqala akungaboniswa ngenxa yamaphutha.",
+      "errorHint": "Lungisa inkinga egqanyisiwe ngenhla, bese ukubuka kuqala kwekhalenda kuzovela lapha."
     },
     "validation": {
       "errorTitle_one": "{{count}} iphutha",
@@ -1319,7 +1427,19 @@
       "warningTitle_other": "{{count}} izexwayiso",
       "fix": "Lungisa",
       "review": "Hlola",
-      "dismiss": "Yekela"
+      "dismiss": "Yekela",
+      "fixBeforeSaving": "Lungisa izinkinga ezingu-{{count}} ngaphambi kokulondoloza",
+      "fixBeforeSaving_one": "Lungisa inkinga engu-{{count}} ngaphambi kokulondoloza",
+      "fixBeforeSaving_other": "Lungisa izinkinga ezingu-{{count}} ngaphambi kokulondoloza",
+      "reviewBeforeSaving": "Izexwayiso ezingu-{{count}} - hlola ngaphambi kokulondoloza",
+      "reviewBeforeSaving_one": "Isexwayiso esingu-{{count}} - hlola ngaphambi kokulondoloza",
+      "reviewBeforeSaving_other": "Izexwayiso ezingu-{{count}} - hlola ngaphambi kokulondoloza",
+      "toggleA11y": "{{headline}}. Thepha ukuze {{state}} uhlu.",
+      "expand": "uvule",
+      "collapse": "uvale",
+      "warningsHeader": "Izexwayiso:",
+      "dismissWarnings": "Lahla izexwayiso",
+      "dismissWarningsA11y": "Lahla izexwayiso"
     },
     "saveResult": {
       "success": "Uhlelo luye walondolozwa",

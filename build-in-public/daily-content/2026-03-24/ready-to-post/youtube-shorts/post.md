@@ -13,7 +13,7 @@
 
 Wrong assumption: if the translation is correct, onboarding is clear.
 
-In Ellie, the real problem showed up in layout pressure. Long-language CTA text wrapped and weakened trust at the paywall and key onboarding steps.
+In Ryvro, the real problem showed up in layout pressure. Long-language CTA text wrapped and weakened trust at the paywall and key onboarding steps.
 
 So we made three product moves: shorten high-impact CTA copy, harden layout behavior for tall and long strings, and add tests where trust can break silently.
 
@@ -32,7 +32,7 @@ Which onboarding screen loses users fastest in your app?
 
 A small wording/layout bug can look like a big trust bug.
 
-Today’s Ellie pass focused on first-minute confidence across languages:
+Today’s Ryvro pass focused on first-minute confidence across languages:
 
 - CTA clarity updates in 11 locales
 - safer layout behavior in onboarding and paywall
@@ -40,4 +40,4 @@ Today’s Ellie pass focused on first-minute confidence across languages:
 
 Built by a miner for shift workers.
 
-#ellieapp #youtubeshorts #shiftwork #productdesign #localization #ux
+#ryvro #youtubeshorts #shiftwork #productdesign #localization #ux

@@ -13,9 +13,9 @@
 
 ## Story Fit
 
-- Chapter: when Ellie removed the heaviest decision from the top of setup
+- Chapter: when Ryvro removed the heaviest decision from the top of setup
 - Hook: People rarely quit onboarding on slide one. They quit where confidence drops.
-- Proof line: Ellie restructured setup to one-question-at-a-time, rebuilt the pattern picker interaction, and shipped the pass with 11 locale updates plus 32 tests touched.
+- Proof line: Ryvro restructured setup to one-question-at-a-time, rebuilt the pattern picker interaction, and shipped the pass with 11 locale updates plus 32 tests touched.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

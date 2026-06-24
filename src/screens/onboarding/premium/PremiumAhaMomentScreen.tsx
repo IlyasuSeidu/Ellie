@@ -1,930 +1,478 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   Easing,
-  FadeIn,
   FadeInDown,
-  FadeInUp,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withSequence,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useTranslation } from 'react-i18next';
-import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PremiumButton } from '@/components/onboarding/premium';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
-import { buildShiftCycle, getShiftDaysInRange, getShiftStatistics } from '@/utils/shiftUtils';
-import { Analytics } from '@/utils/analytics';
-import { theme } from '@/utils/theme';
-import {
-  formatLocalizedDate,
-  formatLocalizedNumber,
-  formatLocalizedTime,
-} from '@/utils/i18nFormat';
-import { PremiumButton } from '@/components/onboarding/premium';
-import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
-import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
-import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
-import { VoiceAssistantModal } from '@/components/voice';
+import { ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
-import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
-import { appStateStorageService } from '@/services/AppStateStorageService';
+import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
+import type { ShiftDay, UniversalShiftSchedule } from '@/types';
+import { Analytics } from '@/utils/analytics';
+import { formatShiftTime } from '@/utils/profileUtils';
+import { calculateUniversalShiftDay } from '@/utils/universalShiftUtils';
 
-type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
+type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'AhaMoment'>;
 
-const SHIFT_DOT_COLOR: Record<string, string> = {
-  day: '#2196F3',
-  night: '#651FFF',
-  morning: '#F59E0B',
-  afternoon: '#06B6D4',
-};
+const RYVRO_COLORS = {
+  void: '#02070b',
+  ink: '#07121a',
+  panel: 'rgba(8, 22, 31, 0.84)',
+  panelStrong: 'rgba(13, 34, 48, 0.96)',
+  cyan: '#20f4dc',
+  blue: '#147cff',
+  silver: '#d6e7f2',
+  muted: '#9db2c2',
+  line: 'rgba(191, 231, 255, 0.2)',
+  error: '#ff8a80',
+} as const;
 
-const MAX_PREVIEW_MONTHS = 3;
-const AHA_MOMENT_ANALYTICS_STEP = 11;
-const AHA_PAIN_CALLBACKS: Record<NonNullable<OnboardingData['painPoint']>, string> = {
-  cycle_lost: 'ahaMoment.painCallback.cycle_lost',
-  wrong_alarm: 'ahaMoment.painCallback.wrong_alarm',
-  days_off: 'ahaMoment.painCallback.days_off',
-  family: 'ahaMoment.painCallback.family',
-  mental_math: 'ahaMoment.painCallback.mental_math',
-};
+function toDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function fromDateKey(dateKey: string): Date {
+  const [year, month, day] = dateKey.split('-').map(Number);
+  return new Date(year ?? 1970, (month ?? 1) - 1, day ?? 1);
+}
+
+function addDays(date: Date, days: number): Date {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function formatDisplayDate(dateKey: string): string {
+  return new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  }).format(fromDateKey(dateKey));
+}
+
+function stripShiftSuffix(name: string): string {
+  return name.replace(/\s+shift$/i, '').trim();
+}
+
+function getShiftName(day: ShiftDay | null): string {
+  if (!day) return 'No shift found';
+  if (day.universal?.definitionName) return stripShiftSuffix(day.universal.definitionName);
+  if (day.shiftType === 'off') return 'Off';
+  return day.shiftType.charAt(0).toUpperCase() + day.shiftType.slice(1);
+}
+
+function getShiftTimeLabel(day: ShiftDay | null): string {
+  if (
+    !day?.universal?.startTime ||
+    !day.universal.endTime ||
+    day.universal.timePolicy !== 'timed'
+  ) {
+    return day?.shiftType === 'off' ? 'Rest day' : 'Time not set';
+  }
+
+  return `${formatShiftTime(day.universal.startTime)} to ${formatShiftTime(day.universal.endTime)}`;
+}
+
+function findNextWorkShift(schedule?: UniversalShiftSchedule): ShiftDay | null {
+  if (!schedule) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let offset = 0; offset < 90; offset += 1) {
+    const date = addDays(today, offset);
+    const day = calculateUniversalShiftDay(date, schedule);
+    if (day.shiftType !== 'off' && day.isWorkDay) {
+      return day;
+    }
+  }
+
+  return null;
+}
 
 export const PremiumAhaMomentScreen: React.FC = () => {
-  const { t } = useTranslation('onboarding');
-  const { data } = useOnboarding();
-  const { user } = useAuth();
-  const { isPro, isLoading: subscriptionLoading } = useSubscription();
-  const { openModalWithQuery, openModal } = useVoiceAssistant();
   const navigation = useNavigation<NavigationProp>();
-  const [showPaywall, setShowPaywall] = React.useState(false);
-  const [monthOffset, setMonthOffset] = React.useState(0);
+  const insets = useSafeAreaInsets();
+  const { data } = useOnboarding();
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
+  const { state: voiceState } = useVoiceAssistant();
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [voiceAttemptStarted, setVoiceAttemptStarted] = useState(false);
 
-  // ── Pulse animation for Hey Ellie button ────────────────────────────────────
-  const pulseScale = useSharedValue(1);
-  const pulseStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulseScale.value }] }));
+  const schedule = data.universalSchedule;
+  const todayKey = toDateKey(new Date());
+  const todayShift = useMemo(
+    () => (schedule ? calculateUniversalShiftDay(fromDateKey(todayKey), schedule) : null),
+    [schedule, todayKey]
+  );
+  const nextWorkShift = useMemo(() => findNextWorkShift(schedule), [schedule]);
+  const heroShift = todayShift?.isWorkDay ? todayShift : nextWorkShift;
+  const heroLabel = todayShift?.isWorkDay ? 'Today' : 'Next work shift';
+  const query = todayShift?.isWorkDay ? 'What shift am I on today?' : 'When is my next shift?';
+
+  const contentOpacity = useSharedValue(0);
+  const contentTranslateY = useSharedValue(26);
+  const orbitRotation = useSharedValue(0);
+  const micScale = useSharedValue(1);
 
   useEffect(() => {
-    pulseScale.value = withRepeat(
-      withSequence(
-        withTiming(1.025, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
-        withTiming(1.0, { duration: 1200, easing: Easing.inOut(Easing.ease) })
-      ),
+    Analytics.onboardingStepViewed('aha_moment', ONBOARDING_STEPS.AHA_MOMENT, {
+      schedule_name: schedule?.name ?? null,
+      platform: Platform.OS,
+    });
+
+    contentOpacity.value = withTiming(1, { duration: 420, easing: Easing.out(Easing.cubic) });
+    contentTranslateY.value = withSpring(0, { damping: 18, stiffness: 170 });
+    orbitRotation.value = withRepeat(
+      withTiming(360, { duration: 12000, easing: Easing.linear }),
       -1,
       false
     );
-  }, [pulseScale]);
-
-  // ── Shift data ───────────────────────────────────────────────────────────────
-  const shiftCycle = useMemo(() => buildShiftCycle(data), [data]);
-
-  const today = useMemo(() => {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d;
-  }, []);
-
-  const yearStart = useMemo(() => new Date(today.getFullYear(), 0, 1), [today]);
-  const yearEnd = useMemo(() => {
-    const end = new Date(today);
-    end.setDate(end.getDate() + 364);
-    return end;
-  }, [today]);
-
-  const shiftDays = useMemo(() => {
-    if (!shiftCycle) return [];
-    return getShiftDaysInRange(yearStart, yearEnd, shiftCycle);
-  }, [shiftCycle, yearStart, yearEnd]);
-
-  const displayDate = useMemo(() => {
-    const d = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
-    return { year: d.getFullYear(), month: d.getMonth() };
-  }, [today, monthOffset]);
-
-  const displayShiftDays = useMemo(() => {
-    const { year, month } = displayDate;
-    const prefix = `${year}-${String(month + 1).padStart(2, '0')}-`;
-    return shiftDays.filter((d) => d.date.startsWith(prefix));
-  }, [shiftDays, displayDate]);
-
-  const stats = useMemo(() => {
-    if (!shiftCycle) return null;
-    return getShiftStatistics(yearStart, yearEnd, shiftCycle);
-  }, [shiftCycle, yearStart, yearEnd]);
-
-  const todayStr = useMemo(() => today.toISOString().split('T')[0], [today]);
-
-  const nextShift = useMemo(
-    () => shiftDays.find((d) => d.shiftType !== 'off' && d.date > todayStr),
-    [shiftDays, todayStr]
-  );
-  const nextShiftDate = useMemo(
-    () => (nextShift ? new Date(`${nextShift.date}T00:00:00`) : null),
-    [nextShift]
-  );
-  const nextShiftDaysAway = useMemo(() => {
-    if (!nextShiftDate) return null;
-    return Math.ceil((nextShiftDate.getTime() - today.getTime()) / 86_400_000);
-  }, [nextShiftDate, today]);
-
-  const nextDayOff = useMemo(
-    () => shiftDays.find((d) => d.shiftType === 'off' && d.date > todayStr),
-    [shiftDays, todayStr]
-  );
-  const nextDayOffDate = useMemo(
-    () => (nextDayOff ? new Date(`${nextDayOff.date}T00:00:00`) : null),
-    [nextDayOff]
-  );
-  const nextDayOffDaysAway = useMemo(() => {
-    if (!nextDayOffDate) return null;
-    return Math.ceil((nextDayOffDate.getTime() - today.getTime()) / 86_400_000);
-  }, [nextDayOffDate, today]);
-
-  const totalWorkDays = shiftDays.filter((day) => day.isWorkDay).length;
-
-  const shiftDotColor = nextShift
-    ? (nextShift.universal?.color ?? SHIFT_DOT_COLOR[nextShift.shiftType] ?? SHIFT_DOT_COLOR.day)
-    : SHIFT_DOT_COLOR.day;
-
-  const suggestionQueries = useMemo(
-    () => [
-      t('ahaMoment.suggestions.startBack', { defaultValue: 'When do I start back?' }),
-      t('ahaMoment.suggestions.nextDayOff', { defaultValue: "When's my next day off?" }),
-      t('ahaMoment.suggestions.nightShiftsThisMonth', {
-        defaultValue: 'How many night shifts this month?',
-      }),
-    ],
-    [t]
-  );
-
-  const nextDayOffLabel = (() => {
-    if (nextDayOffDaysAway === null) return '—';
-    if (nextDayOffDaysAway === 0) {
-      return String(t('ahaMoment.relative.today', { defaultValue: 'Today' }));
-    }
-    if (nextDayOffDaysAway === 1) {
-      return String(t('ahaMoment.relative.tomorrowShort', { defaultValue: 'Tmrw' }));
-    }
-    return String(
-      t('ahaMoment.relative.inDaysShort', {
-        defaultValue: '{{days}}d',
-        days: nextDayOffDaysAway,
-      })
+    micScale.value = withRepeat(
+      withSequence(
+        withTiming(1.06, { duration: 1050, easing: Easing.inOut(Easing.ease) }),
+        withTiming(1, { duration: 1050, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      true
     );
-  })();
+  }, [contentOpacity, contentTranslateY, micScale, orbitRotation, schedule?.name]);
 
-  const nextShiftTimes = useMemo(() => {
-    if (!nextShift || nextShift.shiftType === 'off') return null;
-    if (nextShift.universal?.startTime && nextShift.universal?.endTime) {
-      return {
-        startTime: nextShift.universal.startTime,
-        endTime: nextShift.universal.endTime,
-      };
+  const contentAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: contentOpacity.value,
+    transform: [{ translateY: contentTranslateY.value }],
+  }));
+
+  const orbitAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${orbitRotation.value}deg` }],
+  }));
+
+  const micAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: micScale.value }],
+  }));
+
+  const showPaywallNow = () => {
+    if (isPro) {
+      navigation.navigate('Completion');
+      return;
     }
-    return (
-      getShiftTimesFromData(data).find((shiftTime) => shiftTime.type === nextShift.shiftType) ??
-      null
-    );
-  }, [data, nextShift]);
+    setShowPaywall(true);
+  };
 
-  const nextShiftTimeLabel = useMemo(() => {
-    if (!nextShiftTimes) return null;
-    return `${formatLocalizedTime(nextShiftTimes.startTime)} – ${formatLocalizedTime(nextShiftTimes.endTime)}`;
-  }, [nextShiftTimes]);
+  const handleTasteVoice = () => {
+    if (subscriptionLoading) return;
 
-  const painCallback = useMemo(() => {
-    if (!data.painPoint) return null;
-    const callbackKey = AHA_PAIN_CALLBACKS[data.painPoint];
-    return callbackKey ? String(t(callbackKey as never)) : null;
-  }, [data.painPoint, t]);
-
-  const analyticsMetadata = useMemo(
-    () => ({
-      schedule_name: data.universalSchedule?.name ?? null,
-      pain_point: data.painPoint ?? null,
-      country: data.country ?? null,
-      platform: Platform.OS,
-    }),
-    [data.country, data.painPoint, data.universalSchedule?.name]
-  );
-
-  // ── Analytics ────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    Analytics.onboardingStepViewed('aha_moment', AHA_MOMENT_ANALYTICS_STEP, {
-      schedule_name: data.universalSchedule?.name ?? null,
-      pain_point: data.painPoint ?? null,
+    setVoiceAttemptStarted(true);
+    Analytics.ahaMomentVoiceTried(query, {
+      schedule_name: schedule?.name ?? null,
+      trigger_source: 'aha_moment',
     });
-    // AhaMoment is the paywall priming step — the real-data calendar and stats
-    // build the belief state that makes the paywall feel like the natural next step.
-    Analytics.paywallPrimingViewed({
-      priming_screen: 'aha_moment',
-      schedule_name: data.universalSchedule?.name ?? null,
-      pain_point: data.painPoint ?? null,
-      platform: Platform.OS,
+    navigation.navigate('VoiceAssistantTaste', {
+      autoStart: true,
+      showBackButton: true,
+      voiceOnly: true,
     });
-    void appStateStorageService.getInstallStartedAt().then((ts) => {
-      if (!ts) return;
-      if (!Number.isFinite(ts) || ts <= 0) return;
-      Analytics.ahaMomentReached(Math.floor((Date.now() - ts) / 1000), analyticsMetadata);
-    });
-  }, [analyticsMetadata, data.painPoint, data.universalSchedule?.name]);
+  };
 
-  const handleDismissPaywall = () => {
+  const handlePaywallComplete = () => {
     setShowPaywall(false);
     navigation.navigate('Completion');
   };
 
-  const handlePrimaryTap = () => {
-    Analytics.track('paywall_transition_started', {
-      trigger_screen: 'aha_moment',
-      schedule_name: data.universalSchedule?.name ?? null,
-      pain_point: data.painPoint ?? null,
-    });
-    setShowPaywall(true);
-  };
-
-  const handleHeyEllieTap = (query?: string) => {
-    if (subscriptionLoading) {
-      return;
-    }
-
-    if (!isPro) {
-      handlePrimaryTap();
-      return;
-    }
-
-    if (query) {
-      openModalWithQuery(query);
-      return;
-    }
-
-    openModal();
-  };
-
-  const handleSecondaryTap = () => {
-    Analytics.track('aha_moment_secondary_tapped', {
-      schedule_name: data.universalSchedule?.name ?? null,
-      pain_point: data.painPoint ?? null,
-      platform: Platform.OS,
-    });
-    Analytics.paywallDeclined({
-      trigger_source: 'aha_moment',
-      schedule_name: data.universalSchedule?.name ?? null,
-      pain_point: data.painPoint ?? null,
-    });
-    // Persist decline timestamp so the dashboard can surface a recovery nudge later.
-    void appStateStorageService.setPaywallDeclinedAt(Date.now(), user?.uid ?? null);
-    navigation.navigate('Completion');
-  };
-
-  const isHeyEllieUnavailable = subscriptionLoading;
-
-  // ── Render ───────────────────────────────────────────────────────────────────
   return (
-    <View style={styles.container}>
-      <ProgressHeader
-        currentStep={ONBOARDING_STEPS.AHA_MOMENT}
-        totalSteps={TOTAL_ONBOARDING_STEPS}
+    <View style={styles.container} testID="aha-moment-screen">
+      <LinearGradient
+        colors={[RYVRO_COLORS.ink, RYVRO_COLORS.void, '#000204']}
+        locations={[0, 0.58, 1]}
+        style={StyleSheet.absoluteFill}
       />
+      <View style={styles.cyanGlow} />
+      <View style={styles.blueGlow} />
+      <Animated.View style={[styles.orbit, orbitAnimatedStyle]} pointerEvents="none" />
 
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* ── Headline ── */}
-        <Animated.View entering={FadeIn.duration(350)} style={styles.padded}>
-          <Text style={styles.headline}>
-            {data.name
-              ? t('ahaMoment.headline_named', {
-                  defaultValue: "{{name}}'s shifts, mapped.",
-                  name: data.name,
-                })
-              : t('ahaMoment.headline', { defaultValue: 'Your shifts, mapped.' })}
-          </Text>
-          <Text style={styles.subheadline}>
-            {t('ahaMoment.subheadline', {
-              defaultValue:
-                "Here's a preview of your next 3 months. No second-guessing, just a clear schedule.",
-            })}
-          </Text>
-          {painCallback ? <Text style={styles.painCallback}>{painCallback}</Text> : null}
-        </Animated.View>
-
-        {/* ── Next Shift Hero Card ── */}
-        {nextShiftDate && nextShift && (
-          <Animated.View entering={FadeInDown.delay(120).duration(400)} style={styles.padded}>
-            <View style={styles.heroCard}>
-              <View style={styles.heroLeft}>
-                <Text style={styles.heroEyebrow}>
-                  {t('ahaMoment.nextShiftLabel', { defaultValue: 'YOUR NEXT SHIFT' })}
-                </Text>
-                <Text style={styles.heroDay}>
-                  {formatLocalizedDate(nextShiftDate, { weekday: 'long' })}
-                </Text>
-                <Text style={styles.heroFullDate}>
-                  {formatLocalizedDate(nextShiftDate, {
-                    day: 'numeric',
-                    month: 'long',
-                  })}
-                </Text>
-                {nextShiftTimeLabel ? (
-                  <Text style={styles.heroTimeRange}>{nextShiftTimeLabel}</Text>
-                ) : null}
-                <View style={styles.heroRow}>
-                  <View style={[styles.heroBadge, { backgroundColor: shiftDotColor + '26' }]}>
-                    <View style={[styles.heroBadgeDot, { backgroundColor: shiftDotColor }]} />
-                    <Text style={[styles.heroBadgeText, { color: shiftDotColor }]}>
-                      {String(
-                        t('ahaMoment.shiftBadge', {
-                          defaultValue: '{{shiftName}} shift',
-                          shiftName:
-                            nextShift.universal?.definitionName ??
-                            t(`shiftTime.shiftLabels.${nextShift.shiftType}Title`, {
-                              defaultValue: (
-                                nextShift.shiftType.charAt(0).toUpperCase() +
-                                nextShift.shiftType.slice(1)
-                              ).replace('_', ' '),
-                            }),
-                        })
-                      )}
-                    </Text>
-                  </View>
-                  {nextShiftDaysAway !== null && nextShiftDaysAway > 0 && (
-                    <Text style={styles.heroCountdown}>
-                      {nextShiftDaysAway === 1
-                        ? t('ahaMoment.countdown.tomorrow', { defaultValue: 'tomorrow' })
-                        : t('ahaMoment.countdown.inDays', {
-                            defaultValue: 'in {{days}} days',
-                            days: nextShiftDaysAway,
-                          })}
-                    </Text>
-                  )}
-                </View>
-              </View>
-
-              <View style={[styles.heroRight, { borderColor: shiftDotColor + '40' }]}>
-                <Text style={[styles.heroBigDate, { color: shiftDotColor }]}>
-                  {formatLocalizedNumber(nextShiftDate.getDate())}
-                </Text>
-                <Text style={[styles.heroMonth, { color: shiftDotColor }]}>
-                  {formatLocalizedDate(nextShiftDate, { month: 'short' }).toUpperCase()}
-                </Text>
-              </View>
-            </View>
+      <Animated.View
+        style={[
+          styles.content,
+          contentAnimatedStyle,
+          {
+            paddingTop: Math.max(insets.top + 24, 50),
+            paddingBottom: Math.max(insets.bottom + 28, 46),
+          },
+        ]}
+      >
+        <View style={styles.hero}>
+          <Animated.View style={[styles.micShell, micAnimatedStyle]}>
+            <LinearGradient
+              colors={[RYVRO_COLORS.cyan, RYVRO_COLORS.blue]}
+              style={styles.micGradient}
+            >
+              <Ionicons name="mic" size={38} color={RYVRO_COLORS.void} />
+            </LinearGradient>
           </Animated.View>
-        )}
 
-        {/* ── Dashboard Calendar ── */}
-        <Animated.View entering={FadeInDown.delay(250).duration(450)}>
-          <View style={styles.calendarPreviewHeader}>
-            <Text style={styles.calendarPreviewLabel}>
-              {t('ahaMoment.previewLabel', {
-                defaultValue: 'PREVIEW OF YOUR NEXT 3 MONTHS',
-              })}
-            </Text>
+          <Text style={styles.headline}>Ryvro is ready.</Text>
+          <Text style={styles.support}>Try one voice question. Then unlock Ryvro Pro.</Text>
+        </View>
+
+        <Animated.View entering={FadeInDown.delay(180).duration(420)} style={styles.shiftCard}>
+          <View style={styles.shiftHeader}>
+            <Text style={styles.cardLabel}>{heroLabel}</Text>
+            <Ionicons name="checkmark-circle" size={22} color={RYVRO_COLORS.cyan} />
           </View>
-          <MonthlyCalendarCard
-            year={displayDate.year}
-            month={displayDate.month}
-            shiftDays={displayShiftDays}
-            onPreviousMonth={() => setMonthOffset((o) => Math.max(0, o - 1))}
-            onNextMonth={() => setMonthOffset((o) => Math.min(MAX_PREVIEW_MONTHS - 1, o + 1))}
-            shiftCycle={shiftCycle ?? undefined}
-            animationDelay={250}
-          />
-
-          <View style={styles.monthDots}>
-            {Array.from({ length: MAX_PREVIEW_MONTHS }).map((_, i) => (
-              <View key={i} style={[styles.monthDot, i === monthOffset && styles.monthDotActive]} />
-            ))}
+          <Text style={styles.shiftName}>{getShiftName(heroShift)}</Text>
+          <Text style={styles.shiftDate}>
+            {heroShift ? formatDisplayDate(heroShift.date) : 'Schedule saved'}
+          </Text>
+          <View style={styles.timeRow}>
+            <Ionicons name="time-outline" size={18} color={RYVRO_COLORS.cyan} />
+            <Text style={styles.timeText}>{getShiftTimeLabel(heroShift)}</Text>
           </View>
         </Animated.View>
 
-        {/* ── Stats 2×2 grid ── */}
-        <Animated.View entering={FadeInDown.delay(380).duration(380)} style={styles.padded}>
-          <View style={styles.statsCard}>
-            <View style={styles.statsTopAccent} />
-
-            <View style={styles.statsRow}>
-              <View style={styles.statCell}>
-                <Text style={styles.statValue}>{formatLocalizedNumber(totalWorkDays)}</Text>
-                <Text style={styles.statLabel}>
-                  {t('ahaMoment.stats.workDays', { defaultValue: 'Work Days' })}
-                </Text>
-              </View>
-              <View style={styles.statVertDivider} />
-              <View style={styles.statCell}>
-                <Text style={styles.statValue}>{formatLocalizedNumber(stats?.daysOff ?? 0)}</Text>
-                <Text style={styles.statLabel}>
-                  {t('ahaMoment.stats.daysOff', { defaultValue: 'Days Off' })}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.statsHorizDivider} />
-
-            <View style={styles.statsRow}>
-              <View style={styles.statCell}>
-                <Text style={styles.statValue}>
-                  {formatLocalizedNumber(stats?.nightShifts ?? 0)}
-                </Text>
-                <Text style={styles.statLabel}>
-                  {t('ahaMoment.stats.nightShifts', { defaultValue: 'Night Shifts' })}
-                </Text>
-              </View>
-              <View style={styles.statVertDivider} />
-              <View style={styles.statCell}>
-                <Text
-                  style={[
-                    styles.statValue,
-                    nextDayOffDaysAway !== null && { color: theme.colors.sacredGold },
-                  ]}
-                >
-                  {nextDayOffLabel}
-                </Text>
-                <Text style={styles.statLabel}>
-                  {t('ahaMoment.stats.nextDayOff', { defaultValue: 'Next Day Off' })}
-                </Text>
-              </View>
-            </View>
-          </View>
+        <Animated.View entering={FadeInDown.delay(260).duration(420)} style={styles.askCard}>
+          <Text style={styles.askLabel}>Try asking</Text>
+          <Text style={styles.askText}>{`"${query}"`}</Text>
         </Animated.View>
 
-        {/* ── Primary CTA ── */}
-        <Animated.View
-          entering={FadeInUp.delay(480).duration(380)}
-          style={[styles.padded, styles.ctaSection]}
-        >
+        <View style={styles.bottomPanel}>
           <PremiumButton
-            title={t('ahaMoment.ctaPrimary', {
-              defaultValue: 'Start Free Trial',
-            })}
-            onPress={handlePrimaryTap}
+            title={
+              subscriptionLoading
+                ? 'Checking Ryvro...'
+                : voiceAttemptStarted && voiceState === 'listening'
+                  ? 'Listening...'
+                  : voiceAttemptStarted
+                    ? 'Try Ryvro'
+                    : 'Try Ryvro'
+            }
+            onPress={handleTasteVoice}
+            disabled={subscriptionLoading || voiceState === 'listening'}
             variant="primary"
             size="large"
-            titleNumberOfLines={1}
-            testID="aha-moment-primary-cta"
+            primaryGradientColors={[RYVRO_COLORS.cyan, RYVRO_COLORS.blue]}
+            icon={
+              subscriptionLoading ? (
+                <ActivityIndicator size="small" color={RYVRO_COLORS.void} />
+              ) : (
+                <Ionicons name="mic-circle" size={28} color={RYVRO_COLORS.void} />
+              )
+            }
+            iconPosition="right"
+            style={styles.primaryButton}
+            contentStyle={styles.primaryButtonContent}
+            textStyle={styles.primaryButtonText}
+            testID="aha-moment-voice-taste"
           />
-        </Animated.View>
 
-        {/* ── Hey Ellie card ── */}
-        <Animated.View entering={FadeInDown.delay(540).duration(380)} style={styles.padded}>
-          <View style={styles.ellieCard}>
-            <View style={styles.ellieTopAccent} />
-
-            {/* Header */}
-            <View style={styles.ellieHeader}>
-              <View style={styles.ellieHeaderIcon}>
-                <Ionicons name="mic" size={18} color={theme.colors.sacredGold} />
-              </View>
-              <View>
-                <Text style={styles.ellieTitle}>
-                  {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ellie' })}
-                </Text>
-                <Text style={styles.ellieSubtitle}>
-                  {isHeyEllieUnavailable
-                    ? t('ahaMoment.checkingAccess', { defaultValue: 'Checking access…' })
-                    : t('ahaMoment.tryAsking', { defaultValue: 'Try asking…' })}
-                </Text>
-              </View>
-            </View>
-
-            {/* Suggestion rows */}
-            <View style={styles.ellieChips}>
-              {suggestionQueries.map((query, index) => (
-                <TouchableOpacity
-                  key={query}
-                  activeOpacity={0.7}
-                  style={[
-                    styles.ellieChip,
-                    index < suggestionQueries.length - 1 && styles.ellieChipBorder,
-                    isHeyEllieUnavailable && styles.ellieChipDisabled,
-                  ]}
-                  disabled={isHeyEllieUnavailable}
-                  accessibilityState={{ disabled: isHeyEllieUnavailable }}
-                  onPress={() => {
-                    Analytics.ahaMomentVoiceTried(query, {
-                      schedule_name: data.universalSchedule?.name ?? null,
-                      pain_point: data.painPoint ?? null,
-                    });
-                    handleHeyEllieTap(query);
-                  }}
-                >
-                  <Ionicons
-                    name="mic-outline"
-                    size={14}
-                    color={theme.colors.sacredGold}
-                    style={styles.ellieChipMic}
-                  />
-                  <Text style={styles.ellieChipText}>{query}</Text>
-                  <Ionicons name="chevron-forward" size={15} color={theme.colors.shadow} />
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            {/* Hey Ellie mic button */}
-            <Animated.View style={[styles.ellieButtonWrapper, pulseStyle]}>
-              <TouchableOpacity
-                activeOpacity={0.88}
-                disabled={isHeyEllieUnavailable}
-                onPress={() => {
-                  Analytics.ahaMomentVoiceTried('manual_mic', {
-                    schedule_name: data.universalSchedule?.name ?? null,
-                    pain_point: data.painPoint ?? null,
-                  });
-                  handleHeyEllieTap();
-                }}
-              >
-                <LinearGradient
-                  colors={['rgba(180,83,9,0.22)', 'rgba(180,83,9,0.07)']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={[
-                    styles.ellieButtonGradient,
-                    isHeyEllieUnavailable && styles.ellieButtonGradientDisabled,
-                  ]}
-                >
-                  {isHeyEllieUnavailable ? (
-                    <ActivityIndicator size="small" color={theme.colors.sacredGold} />
-                  ) : (
-                    <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
-                  )}
-                  <Text style={styles.ellieButtonLabel}>
-                    {t('ahaMoment.buttonLabel', { defaultValue: 'Hey Ellie' })}
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </Animated.View>
-          </View>
-        </Animated.View>
-
-        {/* ── Secondary CTA ── */}
-        <Animated.View entering={FadeInUp.delay(620).duration(380)} style={styles.padded}>
           <TouchableOpacity
-            onPress={handleSecondaryTap}
-            style={styles.secondaryLinkMinimal}
-            testID="aha-moment-secondary-cta"
-            accessibilityLabel={t('ahaMoment.ctaSecondaryA11y', {
-              defaultValue: 'Continue with limited access, no free trial',
-            })}
+            onPress={showPaywallNow}
+            activeOpacity={0.8}
+            style={styles.secondaryButton}
+            testID="aha-moment-show-paywall"
           >
-            <Text style={styles.secondaryLinkMinimalText}>
-              {t('ahaMoment.ctaSecondary', {
-                defaultValue: 'or continue with limited access',
-              })}
-            </Text>
+            <Text style={styles.secondaryText}>Unlock Ryvro Pro</Text>
           </TouchableOpacity>
-        </Animated.View>
-      </ScrollView>
+        </View>
+      </Animated.View>
 
-      {showPaywall && (
+      {showPaywall ? (
         <PaywallScreen
-          onDismiss={handleDismissPaywall}
+          onDismiss={handlePaywallComplete}
           onboardingData={data}
           entryPoint="aha_moment"
+          allowDismiss={false}
         />
-      )}
-
-      {/* Hey Ellie modal — only mounted on this screen during onboarding */}
-      <VoiceAssistantModal />
+      ) : null}
     </View>
   );
 };
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.deepVoid,
+    backgroundColor: RYVRO_COLORS.void,
   },
-  scroll: {
-    paddingTop: 8,
-    paddingBottom: 48,
+  cyanGlow: {
+    position: 'absolute',
+    top: -100,
+    left: -110,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: 'rgba(32, 244, 220, 0.16)',
   },
-  padded: {
-    paddingHorizontal: theme.spacing.lg,
+  blueGlow: {
+    position: 'absolute',
+    top: 126,
+    right: -140,
+    width: 340,
+    height: 340,
+    borderRadius: 170,
+    backgroundColor: 'rgba(20, 124, 255, 0.16)',
   },
-
-  // ── Headline ──
-  headline: {
-    fontSize: 30,
-    fontWeight: '800',
-    color: theme.colors.paper,
-    marginTop: 8,
-    marginBottom: 6,
-    textAlign: 'center',
-  },
-  subheadline: {
-    fontSize: 15,
-    color: theme.colors.dust,
-    lineHeight: 22,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  painCallback: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: theme.colors.paleGold,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-
-  // ── Hero card ──
-  heroCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 18,
+  orbit: {
+    position: 'absolute',
+    top: 188,
+    alignSelf: 'center',
+    width: 286,
+    height: 286,
+    borderRadius: 143,
     borderWidth: 1,
-    borderColor: theme.colors.sacredGold + '35',
-    padding: 16,
-    marginBottom: 12,
+    borderColor: 'rgba(32, 244, 220, 0.12)',
+    borderRightColor: 'rgba(20, 124, 255, 0.45)',
   },
-  heroLeft: {
+  content: {
     flex: 1,
-    paddingRight: 12,
+    paddingHorizontal: 24,
   },
-  heroEyebrow: {
-    fontSize: 10,
+  hero: {
+    alignItems: 'center',
+    paddingTop: 34,
+  },
+  micShell: {
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    padding: 8,
+    backgroundColor: 'rgba(32, 244, 220, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(32, 244, 220, 0.24)',
+  },
+  micGradient: {
+    flex: 1,
+    borderRadius: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headline: {
+    marginTop: 22,
+    color: RYVRO_COLORS.silver,
+    fontSize: 44,
+    lineHeight: 50,
+    fontWeight: '900',
+    textAlign: 'center',
+  },
+  support: {
+    marginTop: 12,
+    color: RYVRO_COLORS.muted,
+    fontSize: 19,
+    lineHeight: 27,
     fontWeight: '700',
-    color: theme.colors.sacredGold,
-    letterSpacing: 1.5,
-    marginBottom: 4,
+    textAlign: 'center',
   },
-  heroDay: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: theme.colors.paper,
+  shiftCard: {
+    marginTop: 30,
+    padding: 20,
+    borderRadius: 28,
+    backgroundColor: RYVRO_COLORS.panel,
+    borderWidth: 1,
+    borderColor: RYVRO_COLORS.line,
+  },
+  shiftHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cardLabel: {
+    color: RYVRO_COLORS.cyan,
+    fontSize: 13,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  shiftName: {
+    marginTop: 12,
+    color: RYVRO_COLORS.silver,
+    fontSize: 34,
+    lineHeight: 39,
+    fontWeight: '900',
+  },
+  shiftDate: {
+    marginTop: 6,
+    color: RYVRO_COLORS.muted,
+    fontSize: 17,
     lineHeight: 24,
-  },
-  heroFullDate: {
-    fontSize: 14,
-    color: theme.colors.dust,
-    marginBottom: 4,
-    marginTop: 1,
-  },
-  heroTimeRange: {
-    fontSize: 14,
     fontWeight: '700',
-    color: theme.colors.paper,
-    marginBottom: 10,
   },
-  heroRow: {
+  timeRow: {
+    marginTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    flexWrap: 'wrap',
   },
-  heroBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 9,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  heroBadgeDot: {
-    width: 5,
-    height: 5,
-    borderRadius: 999,
-  },
-  heroBadgeText: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.3,
-  },
-  heroCountdown: {
-    fontSize: 12,
-    color: theme.colors.shadow,
-  },
-  heroRight: {
-    alignItems: 'center',
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 14,
-    borderWidth: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    minWidth: 64,
-  },
-  heroBigDate: {
-    fontSize: 36,
-    fontWeight: '800',
-    lineHeight: 40,
-  },
-  heroMonth: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 1.2,
-    marginTop: 2,
-  },
-
-  calendarPreviewHeader: {
-    paddingHorizontal: 24,
-    marginBottom: 10,
-  },
-  calendarPreviewLabel: {
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 1.4,
-    textTransform: 'uppercase',
-    color: theme.colors.paleGold,
-  },
-
-  // ── Month dots ──
-  monthDots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 8,
-    marginBottom: 4,
-  },
-  monthDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: theme.colors.softStone,
-  },
-  monthDotActive: {
-    width: 18,
-    backgroundColor: theme.colors.sacredGold,
-  },
-
-  // ── Stats 2×2 grid ──
-  statsCard: {
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.07)',
-    overflow: 'hidden',
-    marginTop: 10,
-    marginBottom: 4,
-  },
-  statsTopAccent: {
-    height: 2,
-    backgroundColor: theme.colors.sacredGold,
-    opacity: 0.35,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-  statCell: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 18,
-    paddingHorizontal: 8,
-  },
-  statValue: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: theme.colors.paper,
-    lineHeight: 32,
-  },
-  statLabel: {
-    fontSize: 11,
-    color: theme.colors.dust,
-    marginTop: 4,
-    textAlign: 'center',
-    lineHeight: 14,
-  },
-  statVertDivider: {
-    width: 1,
-    backgroundColor: 'rgba(255,255,255,0.07)',
-    marginVertical: 12,
-  },
-  statsHorizDivider: {
-    height: 1,
-    backgroundColor: 'rgba(255,255,255,0.07)',
-    marginHorizontal: 16,
-  },
-
-  // ── Hey Ellie card ──
-  ellieCard: {
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.07)',
-    overflow: 'hidden',
-    marginTop: 12,
-    marginBottom: 4,
-  },
-  ellieTopAccent: {
-    height: 2,
-    backgroundColor: theme.colors.sacredGold,
-    opacity: 0.2,
-  },
-  ellieHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingHorizontal: 18,
-    paddingTop: 18,
-    paddingBottom: 14,
-  },
-  ellieHeaderIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(180,83,9,0.12)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(180,83,9,0.25)',
-  },
-  ellieTitle: {
+  timeText: {
+    color: RYVRO_COLORS.silver,
     fontSize: 17,
-    fontWeight: '700',
-    color: theme.colors.paper,
-    lineHeight: 21,
+    fontWeight: '800',
   },
-  ellieSubtitle: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    marginTop: 1,
-  },
-  ellieChips: {
-    marginHorizontal: 14,
-    borderRadius: 14,
-    backgroundColor: 'rgba(180,83,9,0.05)',
+  askCard: {
+    marginTop: 14,
+    padding: 18,
+    borderRadius: 24,
+    backgroundColor: RYVRO_COLORS.panelStrong,
     borderWidth: 1,
-    borderColor: 'rgba(180,83,9,0.14)',
-    overflow: 'hidden',
-    marginBottom: 16,
+    borderColor: 'rgba(32, 244, 220, 0.22)',
   },
-  ellieChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 13,
-    paddingHorizontal: 14,
-  },
-  ellieChipDisabled: {
-    opacity: 0.45,
-  },
-  ellieChipBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(180,83,9,0.10)',
-  },
-  ellieChipMic: {
-    marginRight: 10,
-  },
-  ellieChipText: {
-    flex: 1,
-    fontSize: 15,
-    color: theme.colors.paper,
-  },
-  ellieButtonWrapper: {
-    paddingBottom: 18,
-    paddingHorizontal: 14,
-  },
-  ellieButtonGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 30,
-    borderWidth: 1.5,
-    borderColor: theme.colors.sacredGold + '80',
-  },
-  ellieButtonGradientDisabled: {
-    opacity: 0.5,
-  },
-  ellieButtonLabel: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: theme.colors.sacredGold,
-    letterSpacing: 0.4,
-  },
-
-  // ── CTAs ──
-  ctaSection: {
-    marginTop: 12,
-  },
-  secondaryLinkMinimal: {
-    minHeight: 44,
-    justifyContent: 'center',
-    marginTop: 10,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  secondaryLinkMinimalText: {
-    fontSize: 13,
-    color: '#78716C',
+  askLabel: {
+    color: RYVRO_COLORS.muted,
+    fontSize: 14,
+    fontWeight: '800',
     textAlign: 'center',
+  },
+  askText: {
+    marginTop: 7,
+    color: RYVRO_COLORS.silver,
+    fontSize: 20,
+    lineHeight: 27,
+    fontWeight: '900',
+    textAlign: 'center',
+  },
+  bottomPanel: {
+    marginTop: 'auto',
+    paddingTop: 24,
+  },
+  primaryButton: {
+    width: '100%',
+  },
+  primaryButtonContent: {
+    minHeight: 72,
+  },
+  primaryButtonText: {
+    color: RYVRO_COLORS.void,
+    fontSize: 22,
+    fontWeight: '900',
+  },
+  secondaryButton: {
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  secondaryText: {
+    color: RYVRO_COLORS.muted,
+    fontSize: 16,
+    fontWeight: '800',
   },
 });

@@ -3,7 +3,7 @@
 **1/**
 If the first real choice in your app feels like paperwork, people quit before the product earns a single point of trust.
 
-That is the problem I was solving today on Ellie.
+That is the problem I was solving today on Ryvro.
 
 ---
 
@@ -26,7 +26,7 @@ I rebuilt the shift pattern step as swipeable cards. Recognition instead of reca
 ---
 
 **4/**
-The same session, I reworked the introduction flow so it asks one thing at a time — conversational, not administrative. And I tightened the welcome screen so Ellie frames itself as a premium shift companion from the first moment, not a form to fill out.
+The same session, I reworked the introduction flow so it asks one thing at a time — conversational, not administrative. And I tightened the welcome screen so Ryvro frames itself as a premium shift companion from the first moment, not a form to fill out.
 
 Every one of those changes is the same decision: make the interaction match how the user already thinks.
 
@@ -42,7 +42,7 @@ Onboarding trust is not built in the copy. It is built in the motion, the sequen
 ---
 
 **6/**
-I am a miner building Ellie for shift workers — starting with mining, built to go further.
+I am a miner building Ryvro for shift workers — starting with mining, built to go further.
 
 What onboarding step still feels like paperwork in most apps you use?
 

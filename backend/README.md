@@ -47,4 +47,7 @@ npm run firebase:deploy:functions
 
 After deploy, update app `.env`:
 
-- `ELLIE_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ellieBrain`
+- `RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain`
+- `SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription`
+
+New Ryvro builds do not accept `ELLIE_BRAIN_URL` or deploy an `ellieBrain` compatibility endpoint.

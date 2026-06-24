@@ -13,7 +13,7 @@
 
 Most shift apps lose people at the roster picker, not at login.
 
-I watched that moment in Ellie: people had already committed, then hit one heavy decision and slowed down.
+I watched that moment in Ryvro: people had already committed, then hit one heavy decision and slowed down.
 
 So I changed the flow to one question at a time, then rebuilt pattern selection into swipeable choices that feel lighter to compare.
 
@@ -27,7 +27,7 @@ What part of onboarding makes you pause and second-guess?
 
 The dangerous screen was not signup. It was the roster choice.
 
-Today in Ellie: one-question-at-a-time setup + swipeable pattern picker so shift workers can decide faster with less friction.
+Today in Ryvro: one-question-at-a-time setup + swipeable pattern picker so shift workers can decide faster with less friction.
 
 Proof: 11 locales updated and 32 tests touched around the flow.
 
@@ -35,8 +35,8 @@ Built by a miner for shift workers.
 
 What step still feels too heavy in most onboarding flows?
 
-#ellieapp #shiftwork #mining #buildinpublic #productdesign #tiktokbuilds
+#ryvro #shiftwork #shiftworkers #buildinpublic #productdesign #tiktokbuilds
 
 ## Optional Builder Turn
 
-I build Ellie after shifts, so I optimize for tired-brain clarity, not demo polish.
+I build Ryvro after shifts, so I optimize for tired-brain clarity, not demo polish.

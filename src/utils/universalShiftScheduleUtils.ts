@@ -13,6 +13,8 @@ import {
   computeScheduleFingerprint,
   generateShiftId,
 } from '@/utils/universalShiftUtils';
+import { formatTimeForDisplay } from '@/utils/shiftTimeUtils';
+import { theme } from '@/utils/theme';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -86,13 +88,7 @@ function formatTime(value?: string): string {
   if (!value) return '';
   const minutes = parseMinutes(value);
   if (minutes === null) return value;
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  const suffix = hours >= 12 ? 'PM' : 'AM';
-  const hour12 = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-  return mins === 0
-    ? `${hour12} ${suffix}`
-    : `${hour12}:${String(mins).padStart(2, '0')} ${suffix}`;
+  return formatTimeForDisplay(value);
 }
 
 function normalizeDefinition(
@@ -261,7 +257,7 @@ export function getShiftDisplayModel(day: ShiftDay): ShiftDisplayModel {
     return {
       title: day.universal.definitionName,
       subtitle: subtitleParts.join(' • '),
-      color: day.universal.color,
+      color: day.universal.countsAsWork ? theme.colors.sacredGold : theme.colors.dust,
       icon: day.universal.icon,
       timeLabel,
       accessibilityLabel: `${day.date}: ${day.universal.definitionName}${
@@ -279,7 +275,7 @@ export function getShiftDisplayModel(day: ShiftDay): ShiftDisplayModel {
   return {
     title: day.shiftType === 'off' ? 'Off' : `${day.shiftType} shift`,
     subtitle: day.isWorkDay ? 'Work shift' : 'Rest day',
-    color: day.isWorkDay ? '#2196F3' : '#78716c',
+    color: day.isWorkDay ? '#20f4dc' : '#5f7484',
     icon: day.shiftType === 'night' ? 'moon' : day.shiftType === 'off' ? 'home' : 'sunny',
     timeLabel: '',
     accessibilityLabel: `${day.date}: ${day.shiftType}`,

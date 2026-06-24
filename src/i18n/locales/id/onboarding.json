@@ -7,7 +7,8 @@
       "freeTrial": "Uji coba gratis",
       "noCard": "Tanpa kartu kredit",
       "cancelAnytime": "Batalkan kapan saja"
-    }
+    },
+    "getStartedHint": "Mulai menyiapkan jadwal Anda"
   },
   "common": {
     "swipeHint": "Gesek ke kanan untuk memilih, ke kiri untuk melihat berikutnya, atau ke atas untuk info lebih lanjut",
@@ -30,16 +31,29 @@
     },
     "cancel": "Batal"
   },
+  "e2eSwipeControls": {
+    "status": "Simulasi",
+    "statusWithAction": "Simulasi • {{action}}",
+    "select": "Pilih",
+    "nextA11y": "Pindah ke opsi berikutnya",
+    "selectA11y": "Pilih opsi saat ini",
+    "infoA11y": "Buka informasi opsi",
+    "actions": {
+      "select": "pilih",
+      "next": "berikutnya",
+      "info": "informasi"
+    }
+  },
   "intro": {
-    "welcome": "Selamat datang di Ellie! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
+    "welcome": "Selamat datang di Ryvro! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
     "askName": "Siapa namamu?",
-    "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran Anda di lokasi?",
+    "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran kerja shift Anda?",
     "askCompany": "Baik. Anda bekerja di perusahaan mana? (opsional)",
     "askCountry": "Hampir selesai! Di negara mana Anda tinggal?",
     "allSet": "Sempurna! Anda sudah siap, {{name}}. Mari konfigurasikan kalender shift Anda.",
     "placeholders": {
       "name": "Masukkan nama Anda",
-      "occupation": "mis. Operator truk, Juru las, Teknisi listrik",
+      "occupation": "mis. Perawat, petugas keamanan, operator pabrik",
       "company": "Masukkan nama perusahaan",
       "country": "Masukkan negara Anda"
     },
@@ -58,16 +72,18 @@
       "countryTooShort": "Negara harus terdiri dari minimal 2 karakter",
       "countryTooLong": "Negara tidak boleh melebihi 100 karakter"
     },
-    "skipCompany": "Lewati"
+    "skipCompany": "Lewati",
+    "continue": "Lanjutkan",
+    "continueHint": "Pindah ke langkah onboarding berikutnya"
   },
   "shiftSystem": {
-    "title": "Berapa Banyak Pergeseran yang Dijalankan Situs Anda?",
-    "title_named": "Hai {{name}}, berapa banyak shift yang dijalankan situs Anda?",
+    "title": "Berapa banyak shift yang dijalankan tempat kerja Anda?",
+    "title_named": "Hai {{name}}, berapa banyak shift yang dijalankan tempat kerja Anda?",
     "reviewAgain": "Harap tinjau kembali sistem untuk menentukan pilihan Anda",
     "reviewButton": "Sistem Tinjauan",
     "continueButton": "Melanjutkan",
     "closeButton": "Menutup",
-    "instruction": "Pilih cara situs Anda beroperasi—kami akan membuat kalender Anda dari sini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
+    "instruction": "Pilih cara tim Anda beroperasi—kami akan membuat kalender Anda dari sini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
     "endState": {
       "selectedTitle": "Mengerti! Kami akan menyiapkan kalender Anda untuk ini.",
       "reviewedTitle": "Anda telah melihat semua {{count}} sistem shift!",
@@ -77,7 +93,7 @@
       "2-shift": {
         "title": "2 Shift (12 jam)",
         "schedule": "Siang & malam",
-        "description": "Tambang Anda menjalankan dua shift masing-masing 12 jam—satu di siang hari, satu lagi di malam hari",
+        "description": "Tempat kerja Anda menjalankan dua shift masing-masing 12 jam—satu di siang hari, satu lagi di malam hari",
         "details": {
           "workRestRatio": "12 jam aktif, 12 jam libur",
           "useCases": ["Situs penambangan", "Minyak & gas", "Operasi 24/7", "Pekerjaan jarak jauh"],
@@ -100,9 +116,9 @@
         "details": {
           "workRestRatio": "8 jam aktif, 16 jam nonaktif",
           "useCases": [
-            "Tambang bawah tanah",
+            "Tim produksi",
             "Pabrik pengolahan",
-            "Infrastruktur tambang",
+            "Infrastruktur operasi",
             "Operasi 24/7"
           ],
           "pros": [
@@ -130,13 +146,13 @@
       "reviewedSubtitle": "Tidak melihat milikmu? Anda dapat membuat yang khusus, atau melihat lagi",
       "reviewedTitle": "Itu saja {{count}} rotasi yang kami punya!"
     },
-    "instruction": "Pilih rotasi yang digunakan di lokasi tambang Anda—kami akan membuat kalender Anda dari ini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
+    "instruction": "Pilih rotasi yang digunakan tempat kerja Anda—kami akan membuat kalender Anda dari ini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
     "title": "Bagaimana Rotasi Rostermu?",
     "cards": {
       "4-4-4": {
         "name": "4-4-4 Rotasi",
         "schedule": "4 hari • 4 malam • 4 libur",
-        "description": "Bekerja 4 shift hari, lalu 4 shift malam, lalu mendapat libur 4 hari yang umum untuk lokasi fly-in fly-out"
+        "description": "Bekerja 4 shift siang, lalu 4 shift malam, lalu 4 hari libur — umum untuk tim 24/7 dan FIFO"
       },
       "7-7-7": {
         "name": "7-7-7 Rotasi",
@@ -150,7 +166,7 @@
       },
       "5-5-5": {
         "name": "5-5-5 Rotasi",
-        "schedule": "5 hari • 5 malam • diskon 5",
+        "schedule": "5 hari • 5 malam • 5 hari libur",
         "description": "Bekerja 5 shift hari, lalu 5 shift malam, lalu 5 hari libur – jalan tengah yang baik"
       },
       "3-3-3": {
@@ -160,8 +176,8 @@
       },
       "10-10-10": {
         "name": "10-10-10 Rotasi",
-        "schedule": "10 hari • 10 malam • diskon 10",
-        "description": "Perubahan panjang 10 hari, 10 malam, lalu 10 malam akan memaksimalkan waktu Anda di rumah"
+        "schedule": "10 hari • 10 malam • 10 hari libur",
+        "description": "Rotasi panjang 10 shift hari, 10 shift malam, lalu 10 hari libur untuk memaksimalkan waktu Anda di rumah"
       },
       "continental": {
         "name": "Rotasi Kontinental",
@@ -176,42 +192,42 @@
       "custom": {
         "name": "Rotasi Kustom",
         "schedule": "Anda memilih",
-        "description": "Situs Anda menggunakan sesuatu yang berbeda? Bangun rotasi Anda sendiri di sini"
+        "description": "Tempat kerja Anda memakai pola yang berbeda? Bangun rotasi Anda sendiri di sini"
       },
       "fifo-8-6": {
-        "name": "__TK1__ 8/6",
+        "name": "FIFO 8/6",
         "schedule": "8 hari kerja • 6 hari di rumah",
-        "description": "Bekerja 8 hari berturut-turut di lokasi, lalu 6 hari di rumah-populer di penambangan WA"
+        "description": "Bekerja 8 hari blok kerja berturut-turut, lalu 6 hari istirahat — umum untuk tim jarak jauh dan FIFO"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (Waktu Genap)",
         "schedule": "1 minggu kerja • 1 minggu di rumah",
-        "description": "Satu minggu di lokasi, satu minggu di rumah dengan keseimbangan 50/50 yang sempurna"
+        "description": "Satu minggu kerja, satu minggu istirahat — keseimbangan 50/50 yang baik"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14 (Waktu Genap)",
         "schedule": "2 minggu bekerja • 2 minggu di rumah",
-        "description": "Dua minggu di tempat, dua minggu di rumah—keseimbangan kehidupan kerja dan kehidupan yang sempurna"
+        "description": "Dua minggu kerja, dua minggu istirahat — ritme kerja/istirahat seimbang"
       },
       "fifo-14-7": {
-        "name": "__TK1__ 14/7 (2:1)",
+        "name": "FIFO 14/7 (2:1)",
         "schedule": "2 minggu kerja • 1 minggu di rumah",
-        "description": "Dua minggu di lokasi, satu minggu di rumah-potensi penghasilan tinggi"
+        "description": "Dua minggu kerja, satu minggu istirahat — untuk blok kerja lebih panjang"
       },
       "fifo-21-7": {
-        "name": "__TK1__ 21/7 (3:1)",
+        "name": "FIFO 21/7 (3:1)",
         "schedule": "3 minggu kerja • 1 minggu di rumah",
-        "description": "Tiga minggu di lokasi, satu minggu di rumah-untuk pengoperasian yang sangat jarak jauh"
+        "description": "Tiga minggu kerja, satu minggu istirahat — untuk operasi sangat jauh"
       },
       "fifo-28-14": {
-        "name": "__TK1__ 28/14 (2:1)",
+        "name": "FIFO 28/14 (2:1)",
         "schedule": "4 minggu bekerja • 2 minggu di rumah",
-        "description": "Empat minggu di lokasi, dua minggu di rumah-untuk lokasi terpencil jarak jauh"
+        "description": "Empat minggu kerja, dua minggu istirahat — untuk operasi jarak jauh panjang"
       },
       "fifo-custom": {
         "name": "FIFO khusus",
         "schedule": "Bangun milik Anda sendiri",
-        "description": "Situs FIFO Anda menggunakan daftar nama yang unik? Konfigurasikan blok kerja/istirahat Anda sendiri"
+        "description": "Tim FIFO Anda memakai roster unik? Atur blok kerja/istirahat sendiri"
       }
     },
     "title_named": "Apa polamu, {{name}}?",
@@ -263,20 +279,20 @@
       "fifo": {
         "title": "FIFO / Daftar Ayunan",
         "subtitle": "Blok kerja • Blok rumah",
-        "description": "Anda bekerja beberapa hari berturut-turut di tempat, lalu mendapat perpanjangan waktu di rumah",
+        "description": "Anda bekerja hari blok kerja berturut-turut, lalu mendapat waktu istirahat lebih panjang di rumah",
         "details": {
-          "howItWorks": "Pekerja terbang ke lokasi terpencil, bekerja selama beberapa hari berturut-turut (blok kerja), kemudian terbang pulang untuk istirahat lebih lama (blok istirahat)",
+          "howItWorks": "Pekerja bepergian ke operasi jarak jauh, bekerja beberapa hari berturut-turut (blok kerja), lalu pulang untuk istirahat lebih panjang (blok istirahat)",
           "examples": [
-            "8/6 (WA umum)",
-            "14/14 (waktu genap)",
-            "21/7 (situs jarak jauh)",
+            "8/6 (umum)",
+            "14/14 (waktu seimbang)",
+            "21/7 (operasi jarak jauh)",
             "28/14 (siklus panjang)"
           ],
-          "regions": ["Australia Barat", "Kanada", "Penambangan global jarak jauh"],
+          "regions": ["Australia", "Kanada", "Operasi global jarak jauh"],
           "pros": [
-            "Perpanjangan waktu di rumah",
-            "Tingkat gaji yang lebih tinggi",
-            "Bagus untuk situs jarak jauh",
+            "Waktu lebih panjang di rumah",
+            "Tarif bayaran lebih tinggi",
+            "Baik untuk operasi jarak jauh",
             "Blok yang dapat diprediksi"
           ],
           "cons": [
@@ -290,11 +306,11 @@
     },
     "title_named": "Bagaimana roster Anda bekerja, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Ini memberi tahu Ellie tepat di posisi mana Anda berada dalam siklus - tidak perlu menebak lagi",
-      "wrong_alarm": "Atur ini dengan benar dan Ellie akan memasang setiap alarm untuk shift yang tepat",
-      "days_off": "Ini menunjukkan kepada Ellie kapan hari libur Anda jatuh agar Anda bisa merencanakan lebih awal",
-      "family": "Ellie akan memberi tahu Anda tentang acara yang biasanya terlewat begitu ia mengetahui roster Anda",
-      "mental_math": "Setelah ini, Ellie yang akan menghitung semuanya untuk Anda"
+      "cycle_lost": "Ini memberi tahu Ryvro tepat di posisi mana Anda berada dalam siklus - tidak perlu menebak lagi",
+      "wrong_alarm": "Atur ini dengan benar dan Ryvro akan memasang setiap alarm untuk shift yang tepat",
+      "days_off": "Ini menunjukkan kepada Ryvro kapan hari libur Anda jatuh agar Anda bisa merencanakan lebih awal",
+      "family": "Ryvro akan memberi tahu Anda tentang acara yang biasanya terlewat begitu ia mengetahui roster Anda",
+      "mental_math": "Setelah ini,Ryvro yang akan menghitung semuanya untuk Anda"
     },
     "countryHint": "Umum di {{country}}"
   },
@@ -306,24 +322,24 @@
       "sleep": "Pelacakan & wawasan tidur",
       "sleepDesc": "Optimalkan istirahat Anda di antara giliran kerja dengan analisis tidur yang dipersonalisasi",
       "fatigue": "Pemantauan kelelahan",
-      "fatigueDesc": "Pantau risiko kelelahan pada shift panjang — kritis untuk keselamatan bawah tanah",
+      "fatigueDesc": "Pantau risiko kelelahan pada shift panjang — penting untuk pekerjaan yang menuntut",
       "team": "Koordinasi tim",
       "teamDesc": "Lihat jadwal kru Anda dan koordinasikan serah terima dengan lancar",
       "balance": "Keseimbangan kehidupan kerja",
-      "balanceDesc": "Tetap sehat di antara swing FIFO dengan pelacakan rutinitas dan kesehatan",
+      "balanceDesc": "Tetap sehat di antara blok shift dengan pelacakan rutinitas dan kesehatan",
       "earnings": "Kalkulator penghasilan",
-      "earningsDesc": "Hitung tunjangan lokasi, muatan FIFO, dan lembur secara otomatis",
+      "earningsDesc": "Perkirakan jam shift, tunjangan, dan lembur di jadwal bergilir",
       "meals": "Makanan & hidrasi",
-      "mealsDesc": "Tetap terhidrasi dan berenergi selama shift bawah tanah 12 jam"
+      "mealsDesc": "Tetap terhidrasi dan berenergi selama hari panjang, shift malam, hari perjalanan, dan panggilan kerja"
     },
     "featureHint": "Ketuk chip fitur untuk melihat detail selengkapnya.",
-    "featuresTitle": "Apa yang dapat kamu lakukan dengan Ellie",
+    "featuresTitle": "Apa yang dapat kamu lakukan dengan Ryvro",
     "getStartedA11yHint": "Ketuk untuk mulai menggunakan aplikasi",
-    "getStartedA11yLabel": "Mulailah dengan Ellie",
+    "getStartedA11yLabel": "Mulailah dengan Ryvro",
     "loading": "Membuat kalender roster Anda...",
     "retryA11yHint": "Ketuk untuk mencoba menyimpan data Anda lagi",
     "retryA11yLabel": "Coba lagi simpan data Anda",
-    "subtitle": "Selamat datang di Ellie",
+    "subtitle": "Selamat datang di Ryvro",
     "summary": {
       "company": "Perusahaan",
       "cycle": "Siklus",
@@ -340,12 +356,12 @@
       "startDate": "Tanggal Mulai",
       "title": "Profil Anda",
       "workPattern": "Pola Kerja",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Sepanjang hari",
+      "notTimed": "Tanpa waktu",
+      "rosterTypeUniversal": "Jadwal universal",
+      "universalShiftSystem": "Shift kustom universal",
+      "scheduleEngine": "Mesin jadwal",
+      "scheduleType": "Jenis jadwal"
     },
     "title": "Semua sudah siap.",
     "tryAgain": "Coba Lagi",
@@ -368,7 +384,7 @@
         "shiftPattern": "Pola Shift",
         "fifoConfiguration": "Konfigurasi FIFO",
         "customPatternConfiguration": "Konfigurasi Pola Kustom",
-        "phaseOffset": "Offset Fase",
+        "phaseOffset": "Posisi saat ini",
         "startDate": "Tanggal Mulai",
         "shiftTimes": "Waktu Shift"
       }
@@ -389,8 +405,8 @@
       "decline": "Nanti saja"
     },
     "title_named": "{{name}}, semua sudah siap.",
-    "setupReady": "Roster {{setup}} Anda sudah siap.",
-    "reminderPromise": "Ellie akan mengingatkan Anda sebelum setiap shift."
+    "setupReady": "Jadwal {{setup}} Anda sudah siap.",
+    "reminderPromise": "Ryvro akan mengingatkan Anda sebelum setiap shift."
   },
   "phaseSelector": {
     "hints": {
@@ -462,7 +478,7 @@
       "swingConfig": "Konfigurasikan ayunan Anda",
       "block": "Di manakah Anda dalam siklus FIFO Anda?",
       "dayWithinBlock": "Anda berada di hari {{blockTitle}} yang mana?",
-      "block_named": "Apakah Anda sedang di lokasi atau di rumah sekarang, {{name}}?"
+      "block_named": "Apakah Anda sedang berada di blok kerja atau blok istirahat sekarang, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Gesek ke kanan untuk memilih pola blok kerja Anda, ke kiri untuk opsi berikutnya, atau ke atas untuk info",
@@ -483,7 +499,7 @@
       "straightNights": {
         "title": "Malam Lurus",
         "description": "Blok kerja Anda hanya menjalankan shift malam.",
-        "quickInfo": "Gunakan ini ketika kru lokasi tetap bekerja pada shift malam selama satu blok pekerjaan penuh."
+        "quickInfo": "Gunakan ini saat kru tetap pada shift malam selama seluruh blok kerja."
       },
       "swing": {
         "title": "Mengayun",
@@ -493,7 +509,7 @@
     },
     "blocks": {
       "work": {
-        "title": "Di Lokasi (Bekerja)",
+        "title": "Blok Kerja",
         "descriptionDay": "Anda saat ini berada di lokasi tambang pada blok kerja shift harian Anda",
         "descriptionNight": "Anda saat ini berada di lokasi tambang di blok kerja shift malam Anda",
         "descriptionNeutral": "Anda saat ini berada di lokasi tambang di blok pekerjaan Anda",
@@ -502,7 +518,7 @@
         "quickInfoNeutral": "Ini berarti siklus Anda mulai dihitung dari blok pekerjaan Anda saat ini."
       },
       "rest": {
-        "title": "Di Rumah (Istirahat)",
+        "title": "Blok Istirahat",
         "description": "Anda saat ini berada di rumah di blok istirahat Anda",
         "quickInfo": "Ini mengimbangi siklus Anda dengan panjang blok pekerjaan Anda terlebih dahulu."
       }
@@ -524,9 +540,9 @@
       },
       "defaultDayTitle": "Hari {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Hari pertama kembali ke lokasi",
-        "firstNightAtSite": "Shift malam pertama kembali ke lokasi",
-        "firstShiftAtSite": "Shift pertama kembali ke lokasi",
+        "firstDayAtSite": "Hari pertama blok kerja Anda",
+        "firstNightAtSite": "Shift malam pertama blok kerja Anda",
+        "firstShiftAtSite": "Shift pertama blok kerja Anda",
         "lastDayBeforeHome": "Hari terakhir sebelum terbang pulang",
         "lastNightBeforeHome": "Shift tadi malam sebelum terbang pulang",
         "lastShiftBeforeHome": "Shift terakhir sebelum terbang pulang",
@@ -536,12 +552,12 @@
       },
       "rest": {
         "firstDayAtHome": "Hari pertama kembali ke rumah",
-        "lastDayBeforeSite": "Hari terakhir sebelum kembali ke lokasi",
+        "lastDayBeforeSite": "Hari terakhir sebelum blok kerja berikutnya",
         "dayOfRestBlock": "Hari {{dayNumber}} blok istirahat Anda"
       },
       "swing": {
         "dayShiftTitle": "Hari Shift Hari {{dayNumber}}",
-        "firstDayShiftAtSite": "Shift hari pertama kembali ke lokasi",
+        "firstDayShiftAtSite": "Shift siang pertama blok kerja Anda",
         "finalDayShiftBeforeNights": "Pergeseran hari terakhir sebelum beralih ke malam hari",
         "dayShiftDayDescription": "Hari shift hari {{dayNumber}} blok kerja Anda",
         "nightShiftTitle": "Shift Malam Siang {{dayNumber}}",
@@ -557,7 +573,7 @@
           "afternoon": "Sore",
           "off": "Libur"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} hari {{dayNumber}}",
         "description": "Shift {{shiftType}} {{dayNumber}} dari urutan khusus Anda"
       }
     },
@@ -693,7 +709,7 @@
     },
     "guidance": {
       "aboutTitle": "Tentang waktu shift",
-      "aboutBody": "Rotasi {{patternName}} Anda tetap sama, namun kami memerlukan waktu mulai shift Anda sehingga Ellie dapat melacak jam kerja dan memberi tahu Anda sebelum setiap shift.",
+      "aboutBody": "Rotasi {{patternName}} Anda tetap sama, namun kami memerlukan waktu mulai shift Anda sehingga Ryvro dapat melacak jam kerja dan memberi tahu Anda sebelum setiap shift.",
       "hint": "Gunakan waktu mulai terdekat sekarang. Anda dapat menyempurnakannya nanti di pengaturan.",
       "definitions": {
         "twoShiftTitle": "Siang vs Malam:",
@@ -758,8 +774,8 @@
       "label": "Jam berapa biasanya Anda masuk?",
       "helper": "Gunakan format 12 jam (misalnya, 06.00)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "pagi",
+        "pm": "malam"
       }
     },
     "validation": {
@@ -833,7 +849,7 @@
         "stats": "Siklus 8 hari - 2D/2N/4O"
       },
       "pitman": {
-        "name": "manusia pit",
+        "name": "Pitman",
         "stats": "Siklus 7 hari - 2H/2N/3O"
       }
     },
@@ -932,10 +948,10 @@
         "swingWorkBlock": "Blok kerja swing",
         "customWorkBlock": "Blok kerja khusus"
       },
-      "ratioLabel": "Irama situs ke rumah",
+      "ratioLabel": "Ritme kerja ke istirahat",
       "restLabel": "Istirahat: {{restBlockDays}} hari",
-      "siteDays": "hari situs",
-      "subtitle": "{{workBlockDays}} hari di lokasi, lalu {{restBlockDays}} hari di rumah",
+      "siteDays": "hari blok kerja",
+      "subtitle": "{{workBlockDays}} hari blok kerja, lalu {{restBlockDays}} hari istirahat",
       "swingSplit": "Perpecahan ayunan: {{daysOnDayShift}} hari shift siang + {{daysOnNightShift}} hari shift malam",
       "title": "Pratinjau Rotasi FIFO Anda",
       "workLabel": "Pekerjaan: {{workBlockDays}} hari",
@@ -960,38 +976,38 @@
     "saveHintValid": "{{workBlockDays}} hari kerja, {{restBlockDays}} hari istirahat",
     "sliders": {
       "daysAtHome": "Hari-hari di Rumah (Blok Istirahat)",
-      "daysAtSite": "Hari di Lokasi (Blok Kerja)",
+      "daysAtSite": "Hari blok kerja",
       "daysOnDayShift": "Pergeseran Hari demi Hari",
       "daysOnNightShift": "Siang di Shift Malam"
     },
     "slidersTitle": "Siapkan Pola FIFO Anda",
-    "subtitle": "Tetapkan gaya shift blok di lokasi, blok rumah, dan blok kerja untuk jadwal yang sesuai dengan siklus situs Anda.",
+    "subtitle": "Langkah 1: Atur hari blok kerja dan hari istirahat. Langkah 2: Pilih bagaimana shift berjalan selama blok kerja.",
     "subtitleSecondary": "Blok Kerja, Blok Istirahat & Pemisahan Pola",
-    "success": "Pengaturan FIFO yang solid. {{workBlockDays}} hari di lokasi, lalu {{restBlockDays}} hari di rumah.",
+    "success": "Pengaturan FIFO yang solid. {{workBlockDays}} hari blok kerja, lalu {{restBlockDays}} hari istirahat.",
     "swingSubtitle": "Bagi blok kerja Anda antara shift siang dan malam.",
     "swingTitle": "Konfigurasi Ayunan",
     "swingTotal": "Total pembagian: {{swingTotal}}/{{workBlockDays}} hari",
-    "tip": "Tip: Sesuaikan blok rumah Anda dengan tuntutan pemulihan dan perjalanan. Pola FIFO bekerja paling baik ketika blok sisanya cukup panjang untuk direset sebelum situs Anda berikutnya dijalankan.",
+    "tip": "Tip: Sesuaikan blok rumah Anda dengan kebutuhan pemulihan dan perjalanan. Pola FIFO bekerja paling baik ketika blok istirahat cukup panjang untuk reset sebelum blok kerja berikutnya.",
     "title": "Bangun Rotasi FIFO Anda",
     "validation": {
       "blocksMinimum": "Blok kerja dan istirahat masing-masing harus minimal 1 hari.",
       "swingMismatch": "Pembagian ayunan harus sama dengan {{workBlockDays}} hari sebelum disimpan."
     },
     "warning": "Daftar ini berat ({{workPercentage}}% berhasil). Pertimbangkan untuk menyeimbangkan dengan lebih banyak hari di rumah jika kelelahan menjadi masalah.",
-    "workPatternSubtitle": "Bagaimana pengaturan shift Anda selama berada di lokasi?",
+    "workPatternSubtitle": "Pilih bagaimana shift berjalan selama blok kerja.",
     "workPatternTitle": "Pola Kerja Selama Blok Kerja",
     "workPatterns": {
       "straight-days": {
         "title": "Hari Lurus",
-        "description": "Shift hari kerja hanya untuk seluruh blok kerja (misalnya, pukul 07.00-19.00)"
+        "description": "Semua hari blok kerja adalah shift siang."
       },
       "straight-nights": {
         "title": "Malam Lurus",
-        "description": "Shift malam kerja hanya untuk seluruh blok kerja (misalnya, pukul 19.00-07.00)"
+        "description": "Semua hari blok kerja adalah shift malam."
       },
       "swing": {
         "title": "Daftar Ayunan",
-        "description": "Bergantian antara shift siang dan shift malam selama blok kerja"
+        "description": "Blok kerja mencakup shift siang dan shift malam."
       },
       "custom": {
         "title": "Urutan khusus",
@@ -1059,7 +1075,7 @@
   "chatMessage": {
     "skipped": "Dilewati",
     "a11y": {
-      "botMessage": "Pesan Ellie: {{content}}",
+      "botMessage": "Pesan Ryvro: {{content}}",
       "userMessage": "Pesan Anda: {{content}}",
       "longPressToEdit": "Tekan lama untuk mengedit"
     }
@@ -1096,7 +1112,6 @@
   "ahaMoment": {
     "headline": "3 bulan Anda berikutnya, sudah dipetakan.",
     "subheadline": "Ini pratinjau 3 bulan berikutnya untuk Anda. Tidak perlu menebak-nebak lagi di kepala.",
-    "heyEllieTitle": "Tanya Ellie tentang roster Anda",
     "ctaPrimary": "Mulai uji coba gratis",
     "ctaSecondary": "atau lewati — hanya minggu ini, tanpa setahun penuh",
     "stats": {
@@ -1123,7 +1138,7 @@
       "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?",
       "startBack": "Kapan saya mulai kerja lagi?"
     },
-    "buttonLabel": "Hai Ellie",
+    "buttonLabel": "Hai Ryvro",
     "headline_named": "Shift {{name}}, sudah dipetakan.",
     "ctaSecondaryA11y": "Lewati uji coba — terbatas hanya minggu ini, tanpa tampilan setahun penuh",
     "painCallback": {
@@ -1134,11 +1149,12 @@
       "mental_math": "Tidak perlu lagi menghitung dengan jari."
     },
     "previewLabel": "PRATINJAU 3 BULAN BERIKUTNYA",
-    "checkingAccess": "Memeriksa akses…"
+    "checkingAccess": "Memeriksa akses…",
+    "ryvroTitle": "Tanya Ryvro tentang roster Anda"
   },
   "painHook": {
     "title": "Apa bagian tersulit dari roster Anda saat ini?",
-    "subtitle": "Kami akan menyesuaikan Ellie dengan hal yang paling penting bagi Anda.",
+    "subtitle": "Kami akan menyesuaikan Ryvro dengan hal yang paling penting bagi Anda.",
     "options": {
       "cycle_lost": "Saya kehilangan jejak posisi saya dalam siklus",
       "wrong_alarm": "Saya pernah memasang alarm untuk shift yang salah",
@@ -1186,12 +1202,12 @@
       "placeholder": "Jadwal Saya"
     },
     "anchorDate": {
-      "label": "Tanggal jangkar",
-      "hint": "Urutan diulang dari tanggal ini"
+      "label": "Tanggal pencocokan jadwal",
+      "hint": "Pilih tanggal nyata yang harus Ryvro cocokkan dengan rotasi Anda"
     },
     "phaseOffset": {
-      "label": "Hari saat ini dalam siklus",
-      "hint": "0 = awal siklus"
+      "label": "Di mana posisi Anda dalam rotasi?",
+      "hint": "Gunakan 1 untuk item pertama dalam urutan, 2 untuk yang kedua, dan seterusnya"
     },
     "ai": {
       "sectionTitle": "Asisten AI",
@@ -1234,7 +1250,24 @@
       "discardDraft": "Buang draf",
       "followUp": "Tindak lanjut...",
       "send": "Kirim",
-      "invalid": "Respons AI tidak valid. Coba lagi."
+      "invalid": "Respons AI tidak valid. Coba lagi.",
+      "aiDraft": "Draf AI",
+      "clarificationBanner": "Saya perlu sedikit info lagi agar jadwal ini akurat",
+      "summary": "Yang saya pahami",
+      "questionsForYou": "Pertanyaan untuk Anda",
+      "headsUp": "Perhatian",
+      "sequencePreview": "Pratinjau urutan",
+      "dayA11y": "Hari {{day}}: {{name}}",
+      "cycleLength_one": "Siklus {{count}} hari",
+      "cycleLength_other": "Siklus {{count}} hari",
+      "followUpLabel": "Ajukan tindak lanjut",
+      "followUpPlaceholder": "cth. Jadikan shift 8 jam saja",
+      "followUpA11y": "Pertanyaan tindak lanjut untuk AI",
+      "sendFollowUpA11y": "Kirim tindak lanjut",
+      "useDraftA11y": "Gunakan draf AI ini",
+      "editManuallyA11y": "Edit jadwal secara manual saja",
+      "discardDraftA11y": "Buang draf AI",
+      "cycleLength": "Siklus {{count}} hari"
     },
     "palette": {
       "title": "Tipe Shift",
@@ -1242,7 +1275,24 @@
       "usageCount_one": "{{count}} penggunaan",
       "usageCount_other": "{{count}} penggunaan",
       "deleteBlocked": "Sedang digunakan",
-      "deleteBlockedMessage": "Tipe shift ini digunakan {{count}} kali dalam urutan. Hapus entri tersebut terlebih dahulu atau gantikan."
+      "deleteBlockedMessage": "Tipe shift ini digunakan {{count}} kali dalam urutan. Hapus entri tersebut terlebih dahulu atau gantikan.",
+      "createNewA11y": "Buat tipe shift baru",
+      "newType": "Tipe baru",
+      "emptyTitle": "Belum ada tipe shift.",
+      "emptyMessage": "Ketuk Tipe baru untuk membuat shift pertama Anda.",
+      "cannotDeleteTitle": "Tidak dapat menghapus",
+      "cannotDeleteMessage": "\"{{name}}\" digunakan {{count}} kali dalam urutan Anda. Hapus dari urutan terlebih dahulu.",
+      "cannotDeleteMessage_one": "\"{{name}}\" digunakan {{count}} kali dalam urutan Anda. Hapus dari urutan terlebih dahulu.",
+      "cannotDeleteMessage_other": "\"{{name}}\" digunakan {{count}} kali dalam urutan Anda. Hapus dari urutan terlebih dahulu.",
+      "ok": "OK",
+      "deleteTitle": "Hapus \"{{name}}\"?",
+      "deleteMessage": "Tipe shift ini akan dihapus permanen.",
+      "cancelDelete": "Batal",
+      "confirmDelete": "Hapus",
+      "addToSequenceA11y": "Tambahkan {{name}} ke urutan",
+      "editA11y": "Edit {{name}}",
+      "deleteA11y": "Hapus {{name}}",
+      "deleteBlockedHint": "Tidak dapat dihapus karena digunakan dalam urutan"
     },
     "canvas": {
       "title": "Urutan",
@@ -1256,7 +1306,21 @@
       "duplicate": "Duplikat",
       "insertBefore": "Sisipkan sebelum",
       "insertAfter": "Sisipkan setelah",
-      "delete": "Hapus"
+      "delete": "Hapus",
+      "emptyTitle": "Belum ada shift dalam urutan",
+      "emptySubtitle": "Tambahkan tipe shift di bawah, lalu ketuk Tambah shift untuk membangun siklus Anda.",
+      "noShiftTypesTitle": "Belum ada tipe shift",
+      "noShiftTypesMessage": "Buat tipe shift terlebih dahulu menggunakan palet di bawah.",
+      "addShiftA11y": "Tambahkan shift ke urutan",
+      "addBlockA11y": "Tambahkan blok berulang ke urutan",
+      "modalAddRepeated": "Tambahkan blok berulang",
+      "modalChooseShift": "Pilih tipe shift",
+      "modalInsertBefore": "Sisipkan sebelum hari {{day}}",
+      "modalInsertAfter": "Sisipkan setelah hari {{day}}",
+      "repeatCountLabel": "Jumlah pengulangan:",
+      "repeatInputA11y": "Jumlah pengulangan",
+      "repeatTimes": "kali",
+      "definitionUsedTimes": "digunakan {{count}} kali"
     },
     "inspector": {
       "titleCreate": "Tipe shift baru",
@@ -1264,7 +1328,7 @@
       "name": "Nama",
       "namePlaceholder": "mis. Shift siang",
       "kind": {
-        "label": "Tipe",
+        "label": "Jenis",
         "work": "Kerja",
         "off": "Libur",
         "travel": "Perjalanan",
@@ -1287,7 +1351,7 @@
       "countsAsNight": "Dihitung sebagai shift malam",
       "color": "Warna",
       "icon": "Ikon",
-      "location": "Lokasi",
+      "location": "Lokasi kerja (opsional)",
       "save": "Simpan",
       "delete": "Hapus tipe",
       "deleteConfirm": {
@@ -1295,7 +1359,50 @@
         "message": "Tindakan ini tidak dapat dibatalkan.",
         "confirm": "Hapus",
         "cancel": "Batal"
-      }
+      },
+      "nameRequiredTitle": "Nama wajib diisi",
+      "nameRequiredMessage": "Masukkan nama untuk tipe shift ini.",
+      "timesRequiredTitle": "Waktu wajib diisi",
+      "timesRequiredMessage": "Atur waktu mulai dan selesai untuk shift berjadwal.",
+      "colorA11y": "Warna {{color}}",
+      "customColorPlaceholder": "Hex kustom (mis. FF5722)",
+      "customColorA11y": "Kode hex warna kustom",
+      "iconA11y": "Ikon: {{icon}}",
+      "countsAsWorkHint": "Disertakan dalam statistik hari kerja",
+      "countsAsWorkA11y": "Sakelar dihitung sebagai hari kerja",
+      "countsAsNightHint": "Mempengaruhi statistik shift malam",
+      "countsAsNightA11y": "Sakelar dihitung sebagai shift malam",
+      "locationPlaceholder": "mis. Rumah sakit, depo, pabrik, stasiun",
+      "locationA11y": "Nama lokasi kerja",
+      "remindersTitle": "Pengingat untuk shift ini",
+      "remindersDisabled": "Tipe shift libur dan cuti tidak menjadwalkan pengingat pra-shift.",
+      "reminderRulesTitle": "Aturan pengingat",
+      "reminderRulesHint": "Aturan ini hanya berlaku untuk tipe shift ini.",
+      "reminderProfileA11y": "Nama profil pengingat",
+      "firstReminder": "Pengingat pertama",
+      "firstReminderA11y": "Jam sebelum shift untuk pengingat pertama",
+      "hoursBefore": "jam sebelumnya",
+      "prepTime": "Waktu persiapan",
+      "prepTimeA11y": "Menit persiapan sebelum shift",
+      "minutes": "menit",
+      "travelTime": "Waktu perjalanan",
+      "travelTimeA11y": "Menit perjalanan sebelum shift",
+      "imminentReminderTitle": "Peringatan 15 menit",
+      "imminentReminderHint": "Kirim pengingat terakhir tepat sebelum mulai",
+      "imminentReminderA11y": "Sakelar pengingat 15 menit",
+      "briefingReminderTitle": "Pengingat briefing",
+      "briefingReminderHint": "Anggap pengingat 15 menit sebagai persiapan briefing penting",
+      "briefingReminderA11y": "Sakelar pengingat briefing",
+      "fatigueAwareTitle": "Waktu sadar kelelahan",
+      "fatigueAwareHint": "Majukan pengingat persiapan saat risiko kelelahan tinggi",
+      "fatigueAwareA11y": "Sakelar pengingat sadar kelelahan",
+      "postShiftCheckinTitle": "Check-in setelah shift",
+      "postShiftCheckinHint": "Tanyakan bagaimana shift berjalan satu jam setelah selesai",
+      "postShiftCheckinA11y": "Sakelar check-in setelah shift",
+      "travelRemindersTitle": "Pengingat perjalanan",
+      "travelRemindersHint": "Gunakan shift ini dalam pengingat berangkat dan pulang",
+      "travelRemindersA11y": "Sakelar pengingat perjalanan",
+      "saveA11y": "Simpan tipe shift"
     },
     "preview": {
       "title": "Pratinjau",
@@ -1305,7 +1412,8 @@
       "today": "Hari ini",
       "anchor": "Jangkar",
       "empty": "Tidak ada data pratinjau yang tersedia.",
-      "errors": "Pratinjau tidak dapat ditampilkan karena terdapat kesalahan."
+      "errors": "Pratinjau tidak dapat ditampilkan karena terdapat kesalahan.",
+      "errorHint": "Perbaiki masalah yang disorot di atas, lalu pratinjau kalender akan muncul di sini."
     },
     "validation": {
       "errorTitle_one": "{{count}} kesalahan",
@@ -1314,7 +1422,19 @@
       "warningTitle_other": "{{count}} peringatan",
       "fix": "Perbaiki",
       "review": "Tinjau",
-      "dismiss": "Abaikan"
+      "dismiss": "Abaikan",
+      "fixBeforeSaving": "Perbaiki {{count}} masalah sebelum menyimpan",
+      "fixBeforeSaving_one": "Perbaiki {{count}} masalah sebelum menyimpan",
+      "fixBeforeSaving_other": "Perbaiki {{count}} masalah sebelum menyimpan",
+      "reviewBeforeSaving": "{{count}} peringatan - tinjau sebelum menyimpan",
+      "reviewBeforeSaving_one": "{{count}} peringatan - tinjau sebelum menyimpan",
+      "reviewBeforeSaving_other": "{{count}} peringatan - tinjau sebelum menyimpan",
+      "toggleA11y": "{{headline}}. Ketuk untuk {{state}} daftar.",
+      "expand": "membuka",
+      "collapse": "menutup",
+      "warningsHeader": "Peringatan:",
+      "dismissWarnings": "Tutup peringatan",
+      "dismissWarningsA11y": "Tutup peringatan"
     },
     "saveResult": {
       "success": "Jadwal tersimpan",

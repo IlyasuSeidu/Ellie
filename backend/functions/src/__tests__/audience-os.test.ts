@@ -4,20 +4,21 @@ import {
   AUDIENCE_AGENT_CATALOG,
   buildDailyAudienceRun,
   buildOpenClawAudienceConfig,
-  ellieAudienceAdapter,
+  ryvroAudienceAdapter,
   getMissingProductOnboardingFields,
   PRODUCT_ONBOARDING_QUESTIONS,
   type AudienceLead,
   type ProductManifest,
   type RawLeadInput,
 } from '../audience-os';
+import { classifyShiftWorkerPersona, planNextResearchMessage } from '../research-funnel';
 
-const ellieManifest: ProductManifest = {
-  productId: 'ellie',
-  name: 'Ellie',
-  category: 'miner shift certainty app',
+const ryvroManifest: ProductManifest = {
+  productId: 'ryvro',
+  name: 'Ryvro',
+  category: 'shift-work schedule certainty app',
   oneSentencePositioning:
-    'Ellie gives mining shift workers fast confidence about their next shift, next block, and future roster dates without mental math.',
+    'Ryvro gives FIFO crews, healthcare teams, security staff, transport operators, hospitality workers, manufacturing crews, miners, and other shift workers fast confidence about their next shift, next block, and future roster dates without mental math.',
   targetAudience: [
     {
       personaId: 'underground-production-operator',
@@ -25,6 +26,20 @@ const ellieManifest: ProductManifest = {
       titles: ['Jumbo operator', 'Bogger operator'],
       corePains: ['Losing track of where they are in the cycle'],
       bestHooks: ['Do you ever need to double-check if tomorrow is days, nights, or off?'],
+    },
+    {
+      personaId: 'healthcare-rotating-clinician',
+      label: 'Healthcare Rotating Clinician',
+      titles: ['Registered nurse', 'Paramedic'],
+      corePains: ['Keeping nights, handovers, and days off straight'],
+      bestHooks: ['Do you ever double-check whether tomorrow is a day, night, or off?'],
+    },
+    {
+      personaId: 'transport-logistics-shift-worker',
+      label: 'Transport And Logistics Shift Worker',
+      titles: ['Driver', 'Ground crew'],
+      corePains: ['Tracking early starts, depot changes, and rotating rest days'],
+      bestHooks: ['How often do you check your next early start more than once?'],
     },
   ],
   currentStrengths: ['Rotating and FIFO roster support', 'Future-date shift lookup'],
@@ -44,7 +59,7 @@ const ellieManifest: ProductManifest = {
     day4: 'When do you need the answer fastest?',
     day5: 'How far ahead do you need confidence?',
     day6: 'What would a good tool need to answer instantly?',
-    day7Qualified: 'We are building Ellie around exactly this pain. Want early access?',
+    day7Qualified: 'We are building Ryvro around exactly this pain. Want early access?',
   },
   activationGoals: ['Get the user to confirm their next shift correctly.'],
   conversionOffers: ['Early access upgrade'],
@@ -58,7 +73,7 @@ const ellieManifest: ProductManifest = {
     primaryAudienceOutcome: 'Know the next shift and next block instantly without mental math.',
     primaryConversionEvent: 'User upgrades to premium after using shift lookup and reminders.',
     activationMoment: 'User confirms their next shift correctly and enables reminders.',
-    retentionMoment: 'User uses Ellie repeatedly before each swing or planning event.',
+    retentionMoment: 'User uses Ryvro repeatedly before each swing or planning event.',
     geographyFocus: ['Australia', 'Ghana'],
     languageSupport: ['English'],
     supportChannels: ['Email support', 'WhatsApp help'],
@@ -79,9 +94,9 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
   const rawLeads: RawLeadInput[] = [
     {
       externalId: 'alpha-1',
-      fullName: 'Ayo Miner',
-      jobTitle: 'Bogger operator',
-      company: 'Gold Ridge',
+      fullName: 'Ayo Mensah',
+      jobTitle: 'Registered nurse',
+      company: 'Ridge Hospital',
       country: 'Ghana',
       sourceType: 'opt_in_form',
       sourceLabel: 'LinkedIn form',
@@ -124,7 +139,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
   const existingLeads: AudienceLead[] = [
     {
       leadId: 'activated-user',
-      productId: 'ellie',
+      productId: 'ryvro',
       stage: 'intro_sent',
       sequenceDay: 7,
       profile: {
@@ -174,7 +189,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
     },
     {
       leadId: 'paid-user',
-      productId: 'ellie',
+      productId: 'ryvro',
       stage: 'activated',
       sequenceDay: 7,
       profile: {
@@ -226,15 +241,15 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
 
   const result = buildDailyAudienceRun(
     {
-      manifest: ellieManifest,
+      manifest: ryvroManifest,
       rawLeads,
       leads: existingLeads,
       now: '2026-04-25T08:00:00.000Z',
     },
-    ellieAudienceAdapter
+    ryvroAudienceAdapter
   );
 
-  assert.equal(result.manifest.productId, 'ellie');
+  assert.equal(result.manifest.productId, 'ryvro');
   assert.equal(result.ingestedLeads.length, 1);
   assert.equal(result.leadSnapshots.length, 3);
   assert.ok(result.tasks.some((task) => task.agentId === 'conversation-operator'));
@@ -246,6 +261,100 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
   assert.ok(result.sheetWorkbook.tabs.some((sheet) => sheet.name === 'Leads_Master'));
   assert.ok(result.leadSnapshots.some((lead) => lead.personalizationSummary?.includes('Goals:')));
   assert.ok(result.brief.leadCount >= 3);
+});
+
+test('Ryvro audience classifier covers broad shift-worker launch personas', () => {
+  assert.equal(
+    classifyShiftWorkerPersona({
+      leadId: 'nurse-1',
+      jobTitle: 'Registered nurse',
+      stage: 'opted_in',
+      sequenceDay: 1,
+      consecutiveMisses: 0,
+      contact: { optInStatus: 'opted_in' },
+      signals: {
+        rosterTypeHint: 'rotating',
+        rosterComplexity: 'high',
+        problemFitSignals: ['wrong alarms'],
+        replyCount: 1,
+        substantiveReplyCount: 1,
+        painSeverity: 'medium',
+        buyingReadiness: 'curious',
+        wantsCrewScheduling: false,
+        wantsPlannedFeaturesOnly: false,
+      },
+      lastPainSummary: 'Nights, ward handover, and days off are hard to track.',
+    }).personaId,
+    'healthcare-rotating-clinician'
+  );
+
+  assert.equal(
+    classifyShiftWorkerPersona({
+      leadId: 'transport-1',
+      jobTitle: 'Rail ground crew',
+      stage: 'opted_in',
+      sequenceDay: 1,
+      consecutiveMisses: 0,
+      contact: { optInStatus: 'opted_in' },
+      signals: {
+        rosterTypeHint: 'rotating',
+        rosterComplexity: 'high',
+        problemFitSignals: ['early starts'],
+        replyCount: 1,
+        substantiveReplyCount: 1,
+        painSeverity: 'medium',
+        buyingReadiness: 'curious',
+        wantsCrewScheduling: false,
+        wantsPlannedFeaturesOnly: false,
+      },
+      lastPainSummary: 'Depot changes and early starts keep changing.',
+    }).personaId,
+    'transport-logistics-shift-worker'
+  );
+});
+
+test('research sequence has Day 1 hooks for every launch persona', () => {
+  const baseLead = {
+    leadId: 'persona-sequence',
+    stage: 'opted_in' as const,
+    sequenceDay: 1,
+    consecutiveMisses: 0,
+    contact: { optInStatus: 'opted_in' as const, email: 'lead@getryvro.com' },
+    signals: {
+      rosterTypeHint: 'rotating' as const,
+      rosterComplexity: 'high' as const,
+      problemFitSignals: ['wrong alarms', 'manual counting', 'future planning'],
+      replyCount: 2,
+      substantiveReplyCount: 2,
+      painSeverity: 'medium' as const,
+      buyingReadiness: 'curious' as const,
+      wantsCrewScheduling: false,
+      wantsPlannedFeaturesOnly: false,
+    },
+  };
+
+  const expectedPrompts = {
+    'underground-production-operator': 'days, nights, or off',
+    'fifo-field-worker': 'next swing in',
+    'maintenance-trades-miner': 'start times',
+    'process-plant-control-room-operator': 'same roster for ages',
+    'healthcare-rotating-clinician': 'handovers',
+    'security-operations-officer': 'patrol blocks',
+    'transport-logistics-shift-worker': 'depot changes',
+    'hospitality-manufacturing-shift-worker': 'split shifts',
+    'crew-lead-supervisor': 'coverage gaps',
+  } as const;
+
+  for (const [personaId, expectedText] of Object.entries(expectedPrompts)) {
+    const plan = planNextResearchMessage({
+      ...baseLead,
+      personaId: personaId as keyof typeof expectedPrompts,
+    });
+
+    assert.equal(plan.action, 'send_question');
+    assert.equal(plan.messageDay, 1);
+    assert.match(plan.message ?? '', new RegExp(expectedText, 'i'));
+  }
 });
 
 test('OpenClaw config includes shared skills, agents, and hook routing', () => {
@@ -270,8 +379,8 @@ test('agent catalog includes trust governor and lead generation ownership', () =
 
 test('product onboarding questionnaire and manifest completeness helpers are available', () => {
   assert.ok(PRODUCT_ONBOARDING_QUESTIONS.length > 10);
-  assert.deepEqual(getMissingProductOnboardingFields(ellieManifest), []);
-  assert.deepEqual(getMissingProductOnboardingFields({ ...ellieManifest, onboarding: undefined }), [
+  assert.deepEqual(getMissingProductOnboardingFields(ryvroManifest), []);
+  assert.deepEqual(getMissingProductOnboardingFields({ ...ryvroManifest, onboarding: undefined }), [
     'onboarding',
   ]);
 });

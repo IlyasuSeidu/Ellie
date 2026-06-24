@@ -38,7 +38,7 @@
     "off": "Rus en herlaai!"
   },
   "fifo": {
-    "onSite": "On-site rooster aktief",
+    "onSite": "Werkblok aktief",
     "homeBlock": "Tuisblok aktief",
     "workBlock": "Werk",
     "restBlock": "Rus",
@@ -104,10 +104,10 @@
       "example2": "Wanneer is my volgende dag af?",
       "example3": "Hoeveel nagskofte hierdie maand?",
       "tryAsking": "Probeer vra:",
-      "suggestionA11y": "Vra vir Ellie: {{query}}"
+      "suggestionA11y": "Vra vir Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Ellie het mikrofoontoegang nodig om jou vrae te hoor.",
+      "notice": "Ryvro het mikrofoontoegang nodig om jou vrae te hoor.",
       "grant": "Gee toestemming",
       "grantA11y": "Gee mikrofoontoestemming",
       "requestA11y": "Versoek mikrofoontoestemming"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat",
       "sayWakeWordOrTap": "Sê \"{{wakeWordPhrase}}\" of tik op die mikrofoon",
       "askAnother": "Tik die mikrofoon om nog 'n vraag te vra",
-      "askEllie": "Tik die mikrofoon om Ellie te vra",
-      "typeOrGrantMic": "Tik hieronder of gee mikrofoontoegang om te praat"
+      "typeOrGrantMic": "Tik hieronder of gee mikrofoontoegang om te praat",
+      "askRyvro": "Tik die mikrofoon om Ryvro te vra"
     },
     "errors": {
       "default": "Iets het verkeerd geloop",
-      "permissionDeniedIos": "Mikrofoontoegang geweier. Aktiveer in Instellings > Ellie.",
+      "permissionDeniedIos": "Mikrofoontoegang geweier. Aktiveer in Instellings > Ryvro.",
       "permissionDenied": "Mikrofoontoegang geweier. Gee asseblief toestemming.",
       "network": "Gaan jou verbinding na en probeer weer.",
       "recognition": "Ek het dit nie gevang nie. Probeer asseblief weer.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "Hou op luister. Dubbeltik om klaar te praat.",
       "processing": "Verwerk tans jou vraag. Wag asseblief.",
-      "speaking": "Ellie praat. Dubbeltik om te stop.",
+      "speaking": "Ryvro praat. Dubbeltik om te stop.",
       "error": "Fout: {{message}}. Dubbeltik om weer te probeer.",
-      "idle": "Vra vir Ellie 'n vraag. Dubbeltik om te begin praat."
+      "idle": "Vra vir Ryvro 'n vraag. Dubbeltik om te begin praat."
     },
     "partialTranscriptA11y": "Jy sê: {{text}}",
-    "processingInline": "Ellie dink...",
+    "processingInline": "Ryvro dink...",
     "retryHint": "Tik die mikrofoon om weer te probeer",
     "requestRef": "Verw: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Jy het gesê: {{text}}",
-      "assistantSaidA11y": "Ellie het gesê: {{text}}"
+      "assistantSaidA11y": "Ryvro het gesê: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Mikrofoontoestemming word vir Hey Ellie vereis. Tik die mikrofoon om te praat.",
+      "microphonePermissionRequired": "Mikrofoontoestemming word vir Hey Ryvro vereis. Tik die mikrofoon om te praat.",
       "wakeWordUnavailableTapToTalk": "Wekwoord onbeskikbaar, tik die mikrofoon om te praat."
     },
     "offlineFallback": {
@@ -170,18 +170,18 @@
       "startBack": "Jy begin weer werk op {{date}}.",
       "patternSummaryRotating": "Jou patroon is {{dayCount}} dagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
       "patternSummaryThreeShift": "Jou patroon is {{morningCount}} oggendskofte, {{afternoonCount}} middagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
-      "patternSummaryFifo": "Jou patroon is {{workDays}} dae op die terrein en dan {{restDays}} afdae.",
+      "patternSummaryFifo": "Jou patroon is {{workDays}} werksdae en dan {{restDays}} afdae.",
       "unsupportedWithNextShift": "Ek kan dit nog nie heeltemal vanlyn beantwoord nie, maar ek ken steeds jou gestoorde rooster. Jou volgende werkskof is {{shiftType}} op {{date}}. Probeer vra oor môre, jou volgende afdag, nagskofte hierdie maand, of jou patroon.",
       "unsupportedGeneric": "Ek kan dit nog nie heeltemal vanlyn beantwoord nie, maar ek kan steeds help met jou gestoorde rooster. Probeer vra oor môre, jou volgende afdag, nagskofte hierdie maand, of jou patroon."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Vanlyn steminvoer is tans nie op hierdie toestel beskikbaar nie.",
-      "audioUnavailable": "Klankantwoorde is tans nie beskikbaar nie. Jy kan steeds Ellie se antwoord lees."
+      "audioUnavailable": "Klankantwoorde is tans nie beskikbaar nie. Jy kan steeds Ryvro se antwoord lees."
     },
     "offlineHint": "Vanlyn antwoorde is beperk tot eenvoudige rooster-vrae wat op hierdie toestel gestoor is.",
     "composer": {
-      "placeholder": "Tik ’n vraag vir Ellie",
-      "a11y": "Tik ’n vraag vir Ellie",
+      "placeholder": "Tik ’n vraag vir Ryvro",
+      "a11y": "Tik ’n vraag vir Ryvro",
       "sendA11y": "Stuur getikte vraag"
     }
   },
@@ -190,10 +190,10 @@
     "schedule": "Skedule",
     "stats": "Statistieke",
     "profile": "Profiel",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Maak Ellie-stemassistent oop",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openVoiceAssistantA11y": "Maak Ryvro-stemassistent oop",
+    "openProPlansA11y": "Bekyk Pro-planne",
+    "voiceAssistantLoadingA11y": "Kontroleer toegang tot stemassistent",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Instellings",
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "Hoe het dit gegaan?",
-        "body": "Hoe was jou {{shiftType}}? Teken jou energievlak in Ellie aan."
+        "body": "Hoe was jou {{shiftType}}? Teken jou energievlak in Ryvro aan."
       },
       "fatigue": {
         "title": "Kritieke moegheidswaarskuwing",
@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Reis-uit dag",
           "body": "Vandag gaan jy huis toe. Voltooi jou oorhandiging, pak jou toerusting en reis veilig."
         },
         "tomorrow": {
           "title": "Reisdag môre",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Jy reis more vir jou {{shiftType}}. Pak jou toerusting en kontroleer jou dokumente vanaand."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} oor in {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "{{time}} oor in hierdie skof",
     "untilStarts": "{{time}} totdat {{shiftName}} begin",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} totdat hierdie skof begin",
     "until": "{{time}} tot {{shiftName}}",
     "tomorrow": "{{shiftName}} môre",
     "daysUntil": "{{days}} dae tot {{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "Hoe was jou energie op hierdie skof?",
     "energy": {
       "high": "Hoog",
-      "medium": "Medium",
+      "medium": "Medium energie",
       "low": "Laag"
     },
     "notesLabel": "Notas (opsioneel)",
@@ -319,12 +319,12 @@
     "submit": "Stoor inklok"
   },
   "onboardingChecklist": {
-    "title": "Kry die meeste uit Ellie",
+    "title": "Kry die meeste uit Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Stel jou skedule op",
       "shiftTimes": "Voeg jou skoftye by",
       "profile": "Voltooi jou profiel",
-      "askEllie": "Vra vir Ellie ’n vraag"
+      "askRyvro": "Vra vir Ryvro ’n vraag"
     },
     "actions": {
       "doIt": "Doen dit",

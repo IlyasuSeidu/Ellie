@@ -24,7 +24,7 @@ That is the standard I held today across all three moments.
 
 4/ The clearest proof is the language experience.
 
-Ellie supports 11 languages. Finishing that layer only matters if every version reads instantly on first contact.
+Ryvro supports 11 languages. Finishing that layer only matters if every version reads instantly on first contact.
 
 Today the last confusing edges came out. Eleven languages tightened. The experience now reads the way the product was always supposed to feel.
 

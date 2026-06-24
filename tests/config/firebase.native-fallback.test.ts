@@ -246,7 +246,7 @@ describe('firebase native module fallback', () => {
       getApp: () => mockNativeApp,
       initializeApp: () => mockNativeApp,
     }));
-    jest.doMock('@react-native-firebase/auth/lib/modular', () => ({
+    jest.doMock('@react-native-firebase/auth', () => ({
       getAuth: nativeGetAuth,
     }));
     jest.doMock('@react-native-firebase/firestore', () => ({
@@ -276,6 +276,79 @@ describe('firebase native module fallback', () => {
     expect(errorSpy).not.toHaveBeenCalledWith(
       'Failed to initialize Firebase Auth:',
       expect.anything()
+    );
+  });
+
+  it('uses the Ryvro JS sidecar app name for Storage and Functions in native builds', () => {
+    process.env.NODE_ENV = 'development';
+    delete process.env.JEST_WORKER_ID;
+    seedRequiredConfigEnv();
+
+    const mockNativeApp = { name: '[DEFAULT]', options: {} };
+    const mockNativeAuth = { currentUser: null };
+    const mockNativeFirestore = {};
+    const mockStorage = {};
+    const mockFunctions = {};
+
+    const jsGetApps = jest.fn(() => []);
+    const jsInitializeApp = jest.fn(() => ({ name: '__RYVRO_JS_SERVICES__', options: {} }));
+    const getStorage = jest.fn(() => mockStorage);
+    const getFunctions = jest.fn(() => mockFunctions);
+
+    jest.doMock('react-native', () => ({
+      Platform: {
+        OS: 'ios',
+        select: (config: Record<string, unknown>) => config.ios ?? config.default,
+      },
+      NativeModules: {
+        RNFBAppModule: {},
+        RNFBAuthModule: {},
+        RNFBFirestoreModule: {},
+      },
+    }));
+
+    jest.doMock('@react-native-firebase/app', () => ({
+      getApps: () => [mockNativeApp],
+      getApp: () => mockNativeApp,
+      initializeApp: () => mockNativeApp,
+    }));
+    jest.doMock('@react-native-firebase/auth', () => ({
+      getAuth: jest.fn(() => mockNativeAuth),
+    }));
+    jest.doMock('@react-native-firebase/firestore', () => ({
+      getFirestore: jest.fn(() => mockNativeFirestore),
+      getPersistentCacheIndexManager: jest.fn(() => null),
+    }));
+    jest.doMock('firebase/app', () => ({
+      initializeApp: jsInitializeApp,
+      getApps: jsGetApps,
+    }));
+    jest.doMock('firebase/storage', () => ({
+      getStorage,
+    }));
+    jest.doMock('firebase/functions', () => ({
+      getFunctions,
+    }));
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const firebaseConfig = require('@/config/firebase');
+    const instances = firebaseConfig.initializeFirebase();
+
+    expect(instances.storage).toBe(mockStorage);
+    expect(instances.functions).toBe(mockFunctions);
+    expect(jsInitializeApp).toHaveBeenCalledWith(
+      expect.objectContaining({
+        apiKey: 'test-api-key',
+        projectId: 'test-project',
+      }),
+      '__RYVRO_JS_SERVICES__'
+    );
+    expect(jsInitializeApp).not.toHaveBeenCalledWith(expect.anything(), '__ELLIE_JS_SERVICES__');
+    expect(getStorage).toHaveBeenCalledWith(
+      expect.objectContaining({ name: '__RYVRO_JS_SERVICES__' })
+    );
+    expect(getFunctions).toHaveBeenCalledWith(
+      expect.objectContaining({ name: '__RYVRO_JS_SERVICES__' })
     );
   });
 });

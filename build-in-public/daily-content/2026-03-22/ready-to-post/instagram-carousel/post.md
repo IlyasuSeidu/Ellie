@@ -11,7 +11,7 @@
 ### Slide Copy
 
 1. Readable is not relatable.
-2. Ellie already had working shift math. People still hesitated in onboarding copy.
+2. Ryvro already had working shift math. People still hesitated in onboarding copy.
 3. Tradeoff: add more explanation screens, or make existing screens clearer.
 4. I chose clarity across three touchpoints: pattern setup, Aha preview, paywall handoff.
 5. New throughline: set your roster once, preview upcoming shifts clearly.
@@ -20,7 +20,7 @@
 
 ### Caption
 
-Case study from today’s Ellie pass:
+Case study from today’s Ryvro pass:
 
 The core scheduling logic was fine. The wording across onboarding moments was not aligned.
 
@@ -30,4 +30,4 @@ Result: a cleaner path from effort to payoff for shift workers.
 
 Built from real mining-shift routines.
 
-#ellieapp #shiftwork #uxwriting #productdesign #carousel
+#ryvro #shiftwork #uxwriting #productdesign #carousel

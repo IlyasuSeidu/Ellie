@@ -87,7 +87,7 @@ const validScheduleDraft: UniversalShiftSchedule = {
       countsAsWork: false,
       countsAsNight: false,
       countsForStats: true,
-      color: '#78716c',
+      color: '#5f7484',
       icon: 'home',
     },
   ],
@@ -177,6 +177,8 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
 
     expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('not_configured');
     expect(result.scheduleDraft?.sequence).toHaveLength(8);
     expect(mockFetch).not.toHaveBeenCalled();
   });
@@ -200,7 +202,9 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     abortError.name = 'AbortError';
     mockFetch.mockRejectedValue(abortError);
 
-    await expect(parseShiftScheduleDescription(makeRequest())).rejects.toMatchObject({
+    await expect(
+      parseShiftScheduleDescription(makeRequest('unknown pattern'))
+    ).rejects.toMatchObject({
       code: 'TIMEOUT',
     });
   });
@@ -216,9 +220,48 @@ describe('parseShiftScheduleDescription - error conditions', () => {
   it('throws SERVER_ERROR on a 500 response', async () => {
     mockFetch.mockReturnValue(fetchError(500));
 
-    await expect(parseShiftScheduleDescription(makeRequest())).rejects.toMatchObject({
+    await expect(
+      parseShiftScheduleDescription(makeRequest('unknown pattern'))
+    ).rejects.toMatchObject({
       code: 'SERVER_ERROR',
     });
+  });
+
+  it('falls back to the built-in parser when a 500 response interrupts a recognizable prompt', async () => {
+    mockFetch.mockReturnValue(fetchError(500));
+
+    const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
+
+    expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('server_error');
+    expect(result.scheduleDraft?.aiDraftMeta?.parserSource).toBe('local_fallback');
+    expect(result.scheduleDraft?.aiDraftMeta?.fallbackReason).toBe('server_error');
+    expect(result.warnings).toContain(
+      'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.'
+    );
+  });
+
+  it('falls back to the built-in parser when a timeout interrupts a recognizable prompt', async () => {
+    const abortError = new Error('The user aborted a request.');
+    abortError.name = 'AbortError';
+    mockFetch.mockRejectedValue(abortError);
+
+    const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
+
+    expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('timeout');
+  });
+
+  it('falls back to the built-in parser when a network error interrupts a recognizable prompt', async () => {
+    mockFetch.mockRejectedValue(new Error('Network request failed'));
+
+    const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
+
+    expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('network_error');
   });
 
   it('throws SERVER_ERROR on a 400 response', async () => {
@@ -239,6 +282,8 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     );
 
     expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('not_found');
     expect(result.scheduleDraft?.source).toBe('ai');
     expect(result.scheduleDraft?.sequence).toHaveLength(7);
     expect(result.scheduleDraft?.shiftDefinitions.map((definition) => definition.name)).toEqual([
@@ -256,7 +301,7 @@ describe('parseShiftScheduleDescription - error conditions', () => {
       crossesMidnight: true,
     });
     expect(result.warnings).toContain(
-      'AI parser endpoint was unavailable, so Ellie used the built-in pattern parser.'
+      'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.'
     );
   });
 
@@ -294,6 +339,92 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     expect(result.assumptions).toContain(
       'Lined up the cycle so the requested current shift lands on the match-from date.'
     );
+  });
+
+  it('does not count days off as day shifts when parsing early late night patterns', async () => {
+    mockFetch.mockReturnValue(fetchError(404));
+
+    const result = await parseShiftScheduleDescription(
+      makeRequest(
+        'Airport worker: 2 early shifts 5am to 1pm, 2 late shifts 1pm to 9pm, 2 night shifts 9pm to 5am, then 4 days off. Start today on the first late shift.'
+      )
+    );
+
+    expect(result.status).toBe('draft');
+    expect(result.scheduleDraft?.sequence).toHaveLength(10);
+    expect(result.scheduleDraft?.phaseOffset).toBe(2);
+    expect(result.scheduleDraft?.shiftDefinitions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'Day Shift', startTime: '05:00', endTime: '13:00' }),
+        expect.objectContaining({ name: 'Evening Shift', startTime: '13:00', endTime: '21:00' }),
+        expect.objectContaining({
+          name: 'Night Shift',
+          startTime: '21:00',
+          endTime: '05:00',
+          crossesMidnight: true,
+        }),
+        expect.objectContaining({ name: 'Off' }),
+      ])
+    );
+
+    const countByName = new Map<string, number>();
+    const definitionsById = new Map(
+      (result.scheduleDraft?.shiftDefinitions ?? []).map((definition) => [
+        definition.id,
+        definition.name,
+      ])
+    );
+    for (const item of result.scheduleDraft?.sequence ?? []) {
+      const name = definitionsById.get(item.shiftDefinitionId) ?? 'Unknown';
+      countByName.set(name, (countByName.get(name) ?? 0) + 1);
+    }
+
+    expect(countByName.get('Day Shift')).toBe(2);
+    expect(countByName.get('Evening Shift')).toBe(2);
+    expect(countByName.get('Night Shift')).toBe(2);
+    expect(countByName.get('Off')).toBe(4);
+  });
+
+  it('covers the built-in fallback parser across broad shift-worker industries', async () => {
+    mockShiftScheduleParser.url = '';
+    const industryPrompts = [
+      'Nurse schedule: 2 day shifts 7am to 7pm, 2 night shifts 7pm to 7am, then 3 off.',
+      'Security guard: 4 days, 4 nights, 4 off.',
+      'Paramedic rota: 1 day shift, 1 night shift, then 4 days off.',
+      'Factory operator: 2 mornings, 2 afternoons, 2 nights, then 4 off.',
+      'Rail controller: 3 early shifts, 3 late shifts, 3 nights, then 5 off.',
+      'Airport ground crew: 2 early shifts 5am to 1pm, 2 late shifts 1pm to 9pm, then 2 off.',
+      'Hotel front desk: 5 evenings, 2 off.',
+      'Retail supervisor: 5 day shifts, 2 rest days.',
+      'Warehouse picker: 4 nights, 3 off.',
+      'Logistics dispatcher: 2 days, 2 nights, 4 off.',
+      'Offshore technician: 14 days on, 14 days off.',
+      'Mining FIFO operator: 7 days, 7 nights, 14 off.',
+      'Power plant operator: 3 days, 3 nights, 6 off.',
+      'Data center technician: 4 day shifts, 4 night shifts, 4 off.',
+      'Cleaning team lead: 6 nights, 3 off.',
+      'Contact center team: 5 late shifts, 2 off.',
+      'Broadcast engineer: 2 days, 2 on call, 3 off.',
+      'Port worker: 2 travel days, 10 day shifts, 4 off.',
+      'Construction shutdown crew: 12 days on, 2 days off.',
+      'Training week: 3 training days, 1 on-call day, then 3 leave days.',
+    ];
+
+    const parsedResults = await Promise.all(
+      industryPrompts.map((prompt) => parseShiftScheduleDescription(makeRequest(prompt)))
+    );
+
+    expect(parsedResults).toHaveLength(20);
+    for (const result of parsedResults) {
+      expect(result.status).toBe('draft');
+      expect(result.scheduleDraft?.source).toBe('ai');
+      expect(result.scheduleDraft?.shiftDefinitions.length).toBeGreaterThan(0);
+      expect(result.scheduleDraft?.sequence.length).toBeGreaterThan(0);
+      expect(result.warnings).toContain(
+        'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.'
+      );
+    }
+    expect(mockFetch).not.toHaveBeenCalled();
   });
 
   it('throws MALFORMED_RESPONSE when response.json() throws', async () => {
@@ -356,7 +487,9 @@ describe('parseShiftScheduleDescription - error conditions', () => {
   it('throws NETWORK_ERROR on a generic fetch network failure', async () => {
     mockFetch.mockRejectedValue(new TypeError('Failed to fetch'));
 
-    await expect(parseShiftScheduleDescription(makeRequest())).rejects.toMatchObject({
+    await expect(
+      parseShiftScheduleDescription(makeRequest('unknown pattern'))
+    ).rejects.toMatchObject({
       code: 'NETWORK_ERROR',
     });
   });

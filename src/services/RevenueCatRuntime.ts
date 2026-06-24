@@ -13,6 +13,12 @@ type RevenueCatUnavailableReason = 'missing_native_module' | 'missing_api_key';
 
 let cachedRuntime: RevenueCatRuntime | null | undefined;
 
+const isE2ETestMode = (): boolean => {
+  const extras = getExpoExtraConfig();
+  const flag = extras.E2E_TEST_MODE ?? process.env.E2E_TEST_MODE;
+  return flag === true || flag === '1' || flag === 'true';
+};
+
 const getNativeMissingHint = (error: unknown): string | null => {
   const message = error instanceof Error ? error.message : String(error ?? '');
   const normalized = message.toLowerCase();
@@ -62,14 +68,21 @@ const firstNonEmptyString = (...candidates: unknown[]): string => {
   return '';
 };
 
-const isPlaceholderRevenueCatKey = (candidate: string): boolean => {
+const isPlaceholderRevenueCatKey = (
+  candidate: string,
+  options: { allowTestStoreKey?: boolean } = {}
+): boolean => {
   const normalized = candidate.trim();
 
   if (normalized.length === 0) {
     return true;
   }
 
-  if (/^(appl|goog|test|amaz|stripe)_[xX]+$/.test(normalized)) {
+  if (!options.allowTestStoreKey && /^test_/i.test(normalized)) {
+    return true;
+  }
+
+  if (/^(appl|goog|amaz|stripe)_[xX]+$/.test(normalized)) {
     return true;
   }
 
@@ -80,9 +93,14 @@ const isPlaceholderRevenueCatKey = (candidate: string): boolean => {
   return false;
 };
 
-const getUsableRevenueCatKey = (...candidates: unknown[]): string => {
+const isDebugIosRuntime = (): boolean => Platform.OS === 'ios' && __DEV__;
+
+const getUsableRevenueCatKey = (
+  candidates: unknown[],
+  options: { allowTestStoreKey?: boolean } = {}
+): string => {
   const key = firstNonEmptyString(...candidates);
-  if (!key || isPlaceholderRevenueCatKey(key)) {
+  if (!key || isPlaceholderRevenueCatKey(key, options)) {
     return '';
   }
 
@@ -90,6 +108,10 @@ const getUsableRevenueCatKey = (...candidates: unknown[]): string => {
 };
 
 export const getRevenueCatRuntime = (): RevenueCatRuntime | null => {
+  if (isE2ETestMode()) {
+    return null;
+  }
+
   if (cachedRuntime !== undefined) {
     return cachedRuntime;
   }
@@ -115,7 +137,7 @@ export const getRevenueCatRuntime = (): RevenueCatRuntime | null => {
     if (__DEV__ && nativeMissingHint) {
       // Keep development guidance explicit while preventing runtime crashes.
       console.warn(
-        `[RevenueCat] Native module unavailable (${nativeMissingHint}). Rebuild and reinstall a development/production client that includes react-native-purchases.`
+        `[RevenueCat] Ryvro Pro native purchase module is unavailable in this runtime (${nativeMissingHint}).`
       );
     }
 
@@ -126,10 +148,28 @@ export const getRevenueCatRuntime = (): RevenueCatRuntime | null => {
 export const isRevenueCatAvailable = (): boolean => getRevenueCatRuntime() !== null;
 
 export const getRevenueCatApiKey = (): string => {
+  if (isE2ETestMode()) {
+    return '';
+  }
+
   const extras = getExpoExtraConfig();
 
+  const debugTestStoreKey = getUsableRevenueCatKey(
+    [
+      extras.REVENUECAT_TEST_STORE_KEY,
+      extras.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY,
+      process.env.REVENUECAT_TEST_STORE_KEY,
+      process.env.EXPO_PUBLIC_REVENUECAT_TEST_STORE_KEY,
+    ],
+    { allowTestStoreKey: true }
+  );
+
+  if (isDebugIosRuntime() && debugTestStoreKey) {
+    return debugTestStoreKey;
+  }
+
   if (Platform.OS === 'ios') {
-    return getUsableRevenueCatKey(
+    return getUsableRevenueCatKey([
       extras.REVENUECAT_IOS_KEY,
       extras.EXPO_PUBLIC_REVENUECAT_IOS_KEY,
       extras.REVENUECAT_API_KEY,
@@ -137,11 +177,11 @@ export const getRevenueCatApiKey = (): string => {
       process.env.REVENUECAT_IOS_KEY,
       process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY,
       process.env.REVENUECAT_API_KEY,
-      process.env.EXPO_PUBLIC_REVENUECAT_API_KEY
-    );
+      process.env.EXPO_PUBLIC_REVENUECAT_API_KEY,
+    ]);
   }
 
-  return getUsableRevenueCatKey(
+  return getUsableRevenueCatKey([
     extras.REVENUECAT_ANDROID_KEY,
     extras.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY,
     extras.REVENUECAT_API_KEY,
@@ -149,8 +189,8 @@ export const getRevenueCatApiKey = (): string => {
     process.env.REVENUECAT_ANDROID_KEY,
     process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY,
     process.env.REVENUECAT_API_KEY,
-    process.env.EXPO_PUBLIC_REVENUECAT_API_KEY
-  );
+    process.env.EXPO_PUBLIC_REVENUECAT_API_KEY,
+  ]);
 };
 
 export const getRevenueCatAvailability = (): {

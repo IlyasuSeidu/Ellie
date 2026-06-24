@@ -16,7 +16,7 @@
 - Chapter: the day clarity started reading faster
 - Hook: Technical correctness is not enough if minute-one trust is weak.
 - Proof line: Setup choices started carrying cleanly from screen to screen, the calendar and phase steps became easier to place inside real roster life, and the schedule answer had stronger shift and date logic underneath it.
-- Builder overlay: I am a miner building Ellie for shift workers. The point is turning real shift-work pain into clear product decisions.
+- Builder overlay: I am a miner building Ryvro for shift workers. The point is turning real shift-work pain into clear product decisions.
 
 ## Asset Needs
 

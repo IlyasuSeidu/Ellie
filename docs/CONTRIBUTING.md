@@ -1,6 +1,6 @@
-# Contributing to Ellie
+# Contributing to Ryvro
 
-Thank you for your interest in contributing to Ellie! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to Ryvro! This document provides guidelines and instructions for contributing to the project.
 
 ## Table of Contents
 
@@ -50,14 +50,14 @@ Ensure you have the following installed:
 2. Clone your fork locally:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Ellie.git
-cd Ellie
+git clone https://github.com/YOUR_USERNAME/ryvro.git
+cd ryvro
 ```
 
 3. Add upstream remote:
 
 ```bash
-git remote add upstream https://github.com/IlyasuSeidu/Ellie.git
+git remote add upstream https://github.com/IlyasuSeidu/ryvro.git
 ```
 
 4. Install dependencies:
@@ -696,4 +696,4 @@ Feel free to reach out:
 - Tag maintainers in PR comments
 - Check existing documentation
 
-Thank you for contributing to Ellie!
+Thank you for contributing to Ryvro!

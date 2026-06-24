@@ -10,7 +10,7 @@
 
 1. Most product trust leaks happen between screens, not inside screens.
 
-2. In Ellie, we saw it in handoffs between onboarding, reminders, voice assistant, and subscription paths.
+2. In Ryvro, we saw it in handoffs between onboarding, reminders, voice assistant, and subscription paths.
 
 3. So today we prioritized behavioral continuity: setup state carryover + tighter shift/date logic.
 
@@ -22,11 +22,11 @@
 
 ## Short Version
 
-Trust leaks between screens. Today in Ellie we fixed setup continuity and shift/date reliability across onboarding, reminders, voice, and subscription flows. 11 locales + 27 tests touched. Biggest trust leak in your product?
+Trust leaks between screens. Today in Ryvro we fixed setup continuity and shift/date reliability across onboarding, reminders, voice, and subscription flows. 11 locales + 27 tests touched. Biggest trust leak in your product?
 
 ## Builder Variation
 
-1. I build Ellie after mine shifts, so my default question is: will this still feel reliable when someone is tired and rushing?
+1. I build Ryvro after mine shifts, so my default question is: will this still feel reliable when someone is tired and rushing?
 
 2. Today’s answer was to stabilize transitions, not add features.
 

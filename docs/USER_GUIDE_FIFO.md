@@ -1,22 +1,24 @@
 # FIFO User Guide
 
+## Status
+
+Historical guide. This is not the current Ryvro product flow. The current app concept is: configure your shift once, ask Ryvro by voice, and get the right shift answer instantly.
+
 ## What FIFO means
 
 FIFO rosters split your cycle into:
 
-- **Work block**: consecutive days on-site
-- **Rest block**: consecutive days at home/off
+- **Work block**: consecutive days working
+- **Rest block**: consecutive days off or away from scheduled shifts
 
 Examples: `8/6`, `7/7`, `14/14`, `14/7`.
 
-## Setting up FIFO in Ellie
+## Setting up FIFO in Ryvro
 
-1. During onboarding, choose **FIFO / Swing Roster**.
-2. Pick a preset FIFO pattern or **Custom FIFO**.
-3. Set your current position using the FIFO phase selector:
-   - Work block day X
-   - Rest block day X
-4. Set your cycle start date and shift times.
+1. Open the Universal Shift Builder from onboarding or Settings.
+2. Choose the mining/FIFO template, describe your roster to the AI builder, or build it manually.
+3. Set the work block, rest block, current block day, shift times, colors, icons, reminders, and optional work-location details in the builder preview.
+4. Save the schedule after the calendar preview matches your real roster.
 
 ## Reading the dashboard
 

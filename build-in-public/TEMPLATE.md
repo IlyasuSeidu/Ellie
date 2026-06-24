@@ -1,6 +1,6 @@
 # Build-in-Public Content Generation Template
 
-This template captures the prompt structure used to generate build-in-public documentation for Ellie. Use this prompt whenever a feature or screen is fully built to create consistent, comprehensive documentation.
+This template captures the prompt structure used to generate build-in-public documentation for Ryvro. Use this prompt whenever a feature or screen is fully built to create consistent, comprehensive documentation.
 
 ---
 
@@ -18,7 +18,7 @@ Use this template when:
 ## The Prompt
 
 ```
-Ellie is an app that helps mining shift workers manage complex rotating shift schedules during multi-week work cycles so they can clearly see when they're working day shifts, night shifts, or off days and plan their lives accordingly.
+Ryvro is an app that helps mining shift workers manage complex rotating shift schedules during multi-week work cycles so they can clearly see when they're working day shifts, night shifts, or off days and plan their lives accordingly.
 
 Job role: Individual Surface and Underground hard rock miner
 
@@ -101,7 +101,7 @@ Create a dedicated folder for that and also always put the files in that folder 
 
 [INSERT SPECIFIC FEATURE DETAILS HERE]
 
-Do not forget to update the README of Ellie on Github
+Do not forget to update the README of Ryvro on Github
 ```
 
 ---

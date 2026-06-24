@@ -38,7 +38,7 @@
     "off": "Istirahat dan isi ulang!"
   },
   "fifo": {
-    "onSite": "Daftar di tempat aktif",
+    "onSite": "Blok kerja aktif",
     "homeBlock": "Blok rumah aktif",
     "workBlock": "Bekerja",
     "restBlock": "Istirahat",
@@ -104,10 +104,10 @@
       "example2": "Kapan hari libur saya berikutnya?",
       "example3": "Berapa banyak shift malam bulan ini?",
       "tryAsking": "Coba tanyakan:",
-      "suggestionA11y": "Tanya Ellie: {{query}}"
+      "suggestionA11y": "Tanya Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Ellie memerlukan akses mikrofon untuk mendengarkan pertanyaan Anda.",
+      "notice": "Ryvro memerlukan akses mikrofon untuk mendengarkan pertanyaan Anda.",
       "grant": "Berikan Izin",
       "grantA11y": "Berikan izin mikrofon",
       "requestA11y": "Minta izin mikrofon"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara",
       "sayWakeWordOrTap": "Ucapkan \"{{wakeWordPhrase}}\" atau ketuk mikrofon",
       "askAnother": "Ketuk mikrofon untuk mengajukan pertanyaan lain",
-      "askEllie": "Ketuk mikrofon untuk bertanya pada Ellie",
-      "typeOrGrantMic": "Ketik di bawah atau beri akses mikrofon untuk berbicara"
+      "typeOrGrantMic": "Ketik di bawah atau beri akses mikrofon untuk berbicara",
+      "askRyvro": "Ketuk mikrofon untuk bertanya pada Ryvro"
     },
     "errors": {
       "default": "Ada yang tidak beres",
-      "permissionDeniedIos": "Akses mikrofon ditolak. Aktifkan di Pengaturan > Ellie.",
+      "permissionDeniedIos": "Akses mikrofon ditolak. Aktifkan di Pengaturan > Ryvro.",
       "permissionDenied": "Akses mikrofon ditolak. Mohon izin.",
       "network": "Periksa koneksi Anda dan coba lagi.",
       "recognition": "Saya tidak menangkapnya. Silakan coba lagi.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "Berhenti mendengarkan. Ketuk dua kali untuk menyelesaikan pembicaraan.",
       "processing": "Memproses pertanyaan Anda. Harap tunggu.",
-      "speaking": "Ellie sedang berbicara. Ketuk dua kali untuk berhenti.",
+      "speaking": "Ryvro sedang berbicara. Ketuk dua kali untuk berhenti.",
       "error": "Kesalahan: {{message}}. Ketuk dua kali untuk mencoba lagi.",
-      "idle": "Ajukan pertanyaan pada Ellie. Ketuk dua kali untuk mulai berbicara."
+      "idle": "Ajukan pertanyaan pada Ryvro. Ketuk dua kali untuk mulai berbicara."
     },
     "partialTranscriptA11y": "Anda mengatakan: {{text}}",
-    "processingInline": "Ellie sedang berpikir...",
+    "processingInline": "Ryvro sedang berpikir...",
     "retryHint": "Ketuk mikrofon untuk mencoba lagi",
     "requestRef": "Referensi: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Anda berkata: {{text}}",
-      "assistantSaidA11y": "Ellie berkata: {{text}}"
+      "assistantSaidA11y": "Ryvro berkata: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ellie. Ketuk mikrofon untuk berbicara.",
+      "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ryvro. Ketuk mikrofon untuk berbicara.",
       "wakeWordUnavailableTapToTalk": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara."
     },
     "offlineFallback": {
@@ -170,18 +170,18 @@
       "startBack": "Kamu mulai kerja lagi pada {{date}}.",
       "patternSummaryRotating": "Polamu adalah {{dayCount}} shift siang, {{nightCount}} shift malam, lalu {{offCount}} hari libur.",
       "patternSummaryThreeShift": "Polamu adalah {{morningCount}} shift pagi, {{afternoonCount}} shift sore, {{nightCount}} shift malam, lalu {{offCount}} hari libur.",
-      "patternSummaryFifo": "Polamu adalah {{workDays}} hari di site, lalu {{restDays}} hari libur.",
+      "patternSummaryFifo": "Polamu adalah {{workDays}} hari kerja, lalu {{restDays}} hari libur.",
       "unsupportedWithNextShift": "Saya belum bisa menjawab itu sepenuhnya secara offline, tetapi saya masih mengetahui roster tersimpan Anda. Shift kerja Anda berikutnya adalah {{shiftType}} pada {{date}}. Coba tanyakan tentang besok, hari libur berikutnya, shift malam bulan ini, atau pola Anda.",
       "unsupportedGeneric": "Saya belum bisa menjawab itu sepenuhnya secara offline, tetapi saya masih bisa membantu dengan roster tersimpan Anda. Coba tanyakan tentang besok, hari libur berikutnya, shift malam bulan ini, atau pola Anda."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Input suara offline tidak tersedia di perangkat ini saat ini.",
-      "audioUnavailable": "Balasan audio sedang tidak tersedia. Anda masih bisa membaca jawaban Ellie."
+      "audioUnavailable": "Balasan audio sedang tidak tersedia. Anda masih bisa membaca jawaban Ryvro."
     },
     "offlineHint": "Jawaban offline terbatas pada pertanyaan roster sederhana yang tersimpan di perangkat ini.",
     "composer": {
-      "placeholder": "Ketik pertanyaan untuk Ellie",
-      "a11y": "Ketik pertanyaan untuk Ellie",
+      "placeholder": "Ketik pertanyaan untuk Ryvro",
+      "a11y": "Ketik pertanyaan untuk Ryvro",
       "sendA11y": "Kirim pertanyaan tertulis"
     }
   },
@@ -190,10 +190,10 @@
     "schedule": "Jadwal",
     "stats": "Statistik",
     "profile": "Profil",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Buka asisten suara Ellie",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openVoiceAssistantA11y": "Buka asisten suara Ryvro",
+    "openProPlansA11y": "Lihat paket Pro",
+    "voiceAssistantLoadingA11y": "Memeriksa akses asisten suara",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Pengaturan",
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "Bagaimana tadi?",
-        "body": "Bagaimana {{shiftType}} Anda? Catat tingkat energi Anda di Ellie."
+        "body": "Bagaimana {{shiftType}} Anda? Catat tingkat energi Anda di Ryvro."
       },
       "fatigue": {
         "title": "Peringatan kelelahan kritis",
@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Hari berangkat",
           "body": "Hari ini Anda pulang. Selesaikan serah terima, kemasi perlengkapan, dan bepergian dengan aman."
         },
         "tomorrow": {
           "title": "Besok hari perjalanan",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Anda berangkat besok untuk {{shiftType}}. Siapkan perlengkapan dan cek dokumen Anda malam ini."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} tersisa di {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "{{time}} tersisa di shift ini",
     "untilStarts": "{{time}} hingga {{shiftName}} dimulai",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} sampai shift ini dimulai",
     "until": "{{time}} hingga {{shiftName}}",
     "tomorrow": "{{shiftName}} besok",
     "daysUntil": "{{days}} hari hingga {{shiftName}}",
@@ -319,12 +319,12 @@
     "submit": "Simpan check-in"
   },
   "onboardingChecklist": {
-    "title": "Dapatkan manfaat maksimal dari Ellie",
+    "title": "Dapatkan manfaat maksimal dari Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Atur jadwal Anda",
       "shiftTimes": "Tambahkan jam shift Anda",
       "profile": "Lengkapi profil Anda",
-      "askEllie": "Ajukan pertanyaan ke Ellie"
+      "askRyvro": "Ajukan pertanyaan ke Ryvro"
     },
     "actions": {
       "doIt": "Lakukan",

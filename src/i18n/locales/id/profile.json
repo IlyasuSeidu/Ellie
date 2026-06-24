@@ -3,7 +3,8 @@
     "personalInfo": "Informasi Pribadi",
     "workOverview": "Ikhtisar Pekerjaan",
     "shiftSettings": "Pengaturan Pergeseran",
-    "smartReminders": "Pengingat cerdas"
+    "smartReminders": "Pengingat cerdas",
+    "legalSupport": "Bantuan dan Legal"
   },
   "fields": {
     "name": "Nama",
@@ -16,7 +17,7 @@
   },
   "stats": {
     "dayCycle": "Siklus Hari",
-    "workRest": "Pekerjaan : Istirahat",
+    "workRest": "Pekerjaan: Istirahat",
     "perShift": "Per giliran"
   },
   "language": {
@@ -52,7 +53,7 @@
     "nightShift": "Pergeseran Malam",
     "flyIn": "Terbang Masuk",
     "flyOut": "Terbang Keluar",
-    "site": "Lokasi",
+    "site": "Lokasi kerja",
     "dayStart": "Awal Hari",
     "dayEnd": "Akhir Hari",
     "nightStart": "Mulai Malam",
@@ -61,7 +62,7 @@
     "afternoonStart": "Mulai Sore",
     "workBlock": "Blok Kerja",
     "restBlock": "Blok Istirahat",
-    "siteName": "Nama Situs (opsional)",
+    "siteName": "Lokasi kerja (opsional)",
     "flyInDay": "Hari Terbang",
     "flyOutDay": "Hari Terbang",
     "cycleReferenceDate": "Tanggal referensi siklus",
@@ -108,7 +109,7 @@
       "fifoBlock": "BLOK FIFO",
       "workPattern": "POLA KERJA",
       "customSequence": "URUTAN KUSTOM",
-      "siteDetails": "DETAIL SITUS",
+      "siteDetails": "DETAIL LOKASI KERJA",
       "travelDays": "HARI PERJALANAN (OPSIONAL)",
       "scheduleAnchor": "AWAL & POSISI ROSTER",
       "customPattern": "POLA KUSTOM"
@@ -180,7 +181,7 @@
           "subtitle": "siklus 10 hari"
         },
         "PITMAN": {
-          "name": "manusia pit",
+          "name": "Pitman",
           "subtitle": "siklus 7 hari"
         },
         "CUSTOM": {
@@ -188,11 +189,11 @@
           "subtitle": "Bangun milik Anda sendiri"
         },
         "FIFO_7_7": {
-          "name": "7/7 __TK1__",
+          "name": "7/7 FIFO",
           "subtitle": "siklus 14 hari"
         },
         "FIFO_8_6": {
-          "name": "8/6 __TK1__",
+          "name": "8/6 FIFO",
           "subtitle": "siklus 14 hari"
         },
         "FIFO_14_14": {
@@ -200,15 +201,15 @@
           "subtitle": "siklus 28 hari"
         },
         "FIFO_14_7": {
-          "name": "14/7 __TK1__",
+          "name": "14/7 FIFO",
           "subtitle": "siklus 21 hari"
         },
         "FIFO_21_7": {
-          "name": "21/7 __TK1__",
+          "name": "21/7 FIFO",
           "subtitle": "siklus 28 hari"
         },
         "FIFO_28_14": {
-          "name": "28/14 __TK1__",
+          "name": "28/14 FIFO",
           "subtitle": "siklus 42 hari"
         },
         "FIFO_CUSTOM": {
@@ -247,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Kali",
-      "workDaysOnSite": "{{count}} hari di lokasi",
-      "restDaysAtHome": "{{count}} hari di rumah",
+      "workDaysOnSite": "{{count}} hari blok kerja",
+      "restDaysAtHome": "{{count}} hari istirahat",
       "empty": "Tidak ada konfigurasi shift yang disetel",
       "footer": "Pengaturan shift dapat diperbarui di Pengaturan"
     },
@@ -273,10 +274,10 @@
       "timing": "WAKTU",
       "doNotDisturb": "JANGAN GANGGU",
       "adaptive": "ADAPTIF",
-      "travel": "Travel blocks"
+      "travel": "Blok perjalanan"
     },
     "units": {
-      "hoursShort": "{{value}} j",
+      "hoursShort": "{{value}} jam",
       "minutesShort": "{{value}} mnt",
       "none": "Tidak ada"
     },
@@ -291,7 +292,7 @@
       },
       "commute": {
         "label": "Waktu perjalanan",
-        "sublabel": "Berapa lama perjalanan ke site"
+        "sublabel": "Berapa lama perjalanan ke lokasi kerja Anda"
       },
       "imminent": {
         "label": "Peringatan 15 menit",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Pengingat cerdas aktif",
       "body": "Jika ini masuk, pengingat cerdas Anda sedang bekerja."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Dukungan",
+      "hint": "Dapatkan bantuan untuk akun atau jadwal Anda",
+      "a11y": "Buka dukungan Ryvro"
+    },
+    "deleteAccount": {
+      "title": "Hapus akun",
+      "hint": "Minta penghapusan akun dan data aplikasi",
+      "a11y": "Buka penghapusan akun Ryvro"
+    },
+    "privacy": {
+      "title": "Kebijakan privasi",
+      "hint": "Cara Ryvro menangani data Anda",
+      "a11y": "Buka kebijakan privasi Ryvro"
+    },
+    "terms": {
+      "title": "Ketentuan layanan",
+      "hint": "Ketentuan langganan dan penggunaan aplikasi",
+      "a11y": "Buka ketentuan layanan Ryvro"
     }
   }
 }

@@ -14,15 +14,8 @@ import {
 } from '@/utils/shiftUtils';
 import { getShiftScheduleFingerprint } from '@/utils/universalShiftScheduleUtils';
 import { logger } from '@/utils/logger';
+import { CACHE_PREFIXES, CACHE_TTL_MS } from '@/config/cacheConfig';
 import { IStorageService } from './StorageService';
-
-/**
- * Cache configuration
- */
-const CACHE_CONFIG = {
-  PREFIX: 'shifts',
-  MAX_AGE_MS: 30 * 24 * 60 * 60 * 1000, // 30 days
-};
 
 function getUniversalShiftHours(shift: ShiftDay): number | null {
   const universal = shift.universal;
@@ -237,7 +230,7 @@ export class ShiftDataService {
    * Invalidate cached shifts for a user
    */
   async invalidateCache(userId: string): Promise<void> {
-    const prefix = `${CACHE_CONFIG.PREFIX}:${userId}:`;
+    const prefix = `${CACHE_PREFIXES.shifts}:${userId}:`;
     await this.storage.clearPrefix(prefix);
     logger.info('Cache invalidated for user', { userId });
   }
@@ -309,7 +302,11 @@ export class ShiftDataService {
         const [year, month] = monthKey.split('-').map(Number);
         const cacheKey = this.getCacheKey(userId, year, month);
 
-        await this.storage.set(cacheKey, { shifts: monthShifts, cycle }, CACHE_CONFIG.MAX_AGE_MS);
+        await this.storage.set(
+          cacheKey,
+          { shifts: monthShifts, cycle },
+          CACHE_TTL_MS.shiftSchedules
+        );
       }
 
       logger.debug('Shifts cached', {
@@ -326,7 +323,7 @@ export class ShiftDataService {
    * Generate cache key for a month
    */
   private getCacheKey(userId: string, year: number, month: number): string {
-    return `${CACHE_CONFIG.PREFIX}:${userId}:${year}-${month}`;
+    return `${CACHE_PREFIXES.shifts}:${userId}:${year}-${month}`;
   }
 
   /**

@@ -41,6 +41,7 @@
       "googlePlayServicesUnavailable": "Izinsiza ze-Google Play azitholakali kule divayisi.",
       "googleMissingIdToken": "Ukungena ngemvume kwe-Google akukwazanga ukuqedelwa. Sicela uzame futhi.",
       "appleMissingIdentityToken": "Ukungena ngemvume kwe-Apple akukwazanga ukuqedelwa. Sicela uzame futhi.",
+      "appleUnavailable": "Ukungena nge-Apple akutholakali kule divayisi. Sebenzisa i-Google noma i-imeyili.",
       "actionSignInFailed": "Ayikwazi ukungena ngemvume njengamanje. Sicela uzame futhi.",
       "actionSignUpFailed": "Ayikwazi ukudala i-akhawunti yakho njengamanje. Sicela uzame futhi.",
       "actionSocialSignInFailed": "Ukungena ngemvume komphakathi akutholakali okwamanje. Sicela uzame ukungena ngemvume nge-imeyili.",
@@ -87,7 +88,7 @@
     "label": "Ulimi",
     "selector": "Khetha Ulimi",
     "restartRequiredTitle": "Ukuqala kabusha Kudingeka",
-    "restartRequiredMessage": "Sicela uqale kabusha u-Ellie ukuze usebenzise izinguquko zesiqondisindlela solimi.",
+    "restartRequiredMessage": "Sicela uqale kabusha u- Ryvro ukuze usebenzise izinguquko zesiqondisindlela solimi.",
     "names": {
       "en": "IsiNgisi (IsiNgisi)",
       "es": "ISpanishi (Isi-Español)",
@@ -131,7 +132,8 @@
       "apple": "Qhubeka nge-Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
+      "appLogoLabel": "Ryvro app logo",
       "subtitle": "Ngena ku-akhawunti yakho",
       "forgotPassword": "Ukhohlwe iphasiwedi?",
       "primaryButton": "Ngena",
@@ -141,7 +143,7 @@
     },
     "signUp": {
       "title": "Dala i-akhawunti",
-      "subtitle": "Qala ukulandelela amashifu akho nge-Ellie",
+      "subtitle": "Qala ukulandelela amashifu akho nge- Ryvro",
       "passwordHint": "Okungenani izinhlamvu eziyi-8, uhlamvu olukhulu nenombolo",
       "confirmPasswordLabel": "Qinisekisa iphasiwedi",
       "confirmPasswordPlaceholder": "Phinda iphasiwedi",
@@ -174,7 +176,7 @@
       "title": "Irosta yakho isilungile.",
       "subtitle": "Yivule ngemali encane kunekhofi.",
       "features": {
-        "askSchedule": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
+        "askSchedule": "Buza okuthi \"Hey Ryvro\" noma yini ngohlelo lwakho",
         "fullYear": "Bona unyaka wakho wonke — ishifu ngayinye, inyanga nenyanga",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
@@ -203,19 +205,19 @@
       "noCard": "Alikho ikhadi lesikweletu elidingekayo · Khansela noma nini",
       "restorePurchases": "Buyisela Okuthengiwe",
       "privacyPolicy": "Inqubomgomo yobumfihlo",
-      "socialProof": "Kuthenjwa ngabavukuzi abangaphansi komhlaba, ama-opharetha e-FIFO, nabasebenzi berosta ejikelezayo.",
+      "socialProof": "Yakhelwe amaqembu e-FIFO, ezempilo, ezokuphepha, ezokuthutha, ukukhiqiza, ihospitality, nawo wonke amaqembu amashifu.",
       "testimonials": [
         {
-          "quote": "Ngibhukhe izindiza zami ngokwe-swing yami izinyanga ngaphambi kwesikhathi ngaphandle kokushayela i-HR.",
-          "author": "Sarah K., umsebenzi wemayini ongaphansi komhlaba — amashifu ajikeleza amahora ayi-12"
+          "quote": "Ngibona yonke i-swing, iviki lohambo, ne-R&R ngaphandle kokubala kusuka esithombeni serosta.",
+          "author": "I-opharetha ye-FIFO — irosta 14/14"
         },
         {
-          "quote": "Ngikhombise unkosikazi wami irosta yesayithi yonke ngomzuzu ongaphansi kweyodwa.",
-          "author": "Dave L., umshini wokubhola — irosta ye-FIFO"
+          "quote": "Umndeni wami ungahlela ngezinsuku zami nobusuku bami ngaphandle kokulinda ukuthi ngibheke i-spreadsheet.",
+          "author": "Umsebenzi weshifu ejikelezayo — iphethini 4/4"
         },
         {
-          "quote": "Ngibhukhe izindiza ngokwe-swing yami izinyanga ezi-3 ngaphambili ngaphandle kokushayela i-HR.",
-          "author": "Jason M., umshayeli weloli lomgodi — i-FIFO 7/7"
+          "quote": "I-builder efanayo iphatha irosta yethu engajwayelekile nezinguquko zesikhathi esisodwa.",
+          "author": "Umsebenzi we-operations — ukujikeleza ngokwezifiso"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
@@ -228,7 +230,7 @@
         "chargedToday": "Ukukhokhiswa namuhla"
       },
       "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
-      "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
+      "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i- Ryvro",
       "termsOfService": "Imigomo",
       "trialBadge": "ISILINGO SAMAHHALA · AKUKHO MALI NAMUHLA",
       "trialBadgePaid": "BHALISA NAMUHLA · KHANSELA NOMA NINI",
@@ -247,27 +249,27 @@
       "billingDisclosureWeekly": "Ukukhokhiswa ngo-{{price}}/iviki, njalo ngeviki. Khansela noma nini ku-Izilungiselelo.",
       "billingDisclosureAnnualDirect": "Uzokhokhiswa u-{{price}} namuhla. Kuvuselelwa minyaka yonke. Khansela noma nini ku-Izilungiselelo.",
       "billingDisclosureMonthlyDirect": "Uzokhokhiswa u-{{price}} namuhla. Kuvuselelwa nyanga zonke. Khansela noma nini ku-Izilungiselelo.",
-      "purchaseSuccessContinue": "Qhubeka uye ku-Ellie",
+      "purchaseSuccessContinue": "Qhubeka uye ku- Ryvro",
       "restorePurchasesSuccess": "Ukuthenga kubuyiselwe — wamukelekile ku-Pro!",
       "restorePurchasesNotFound": "Akukho ukuthenga kwangaphambilini okutholakele kule akhawunti.",
       "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi.",
       "ctaOffline": "Xhuma ukuze ubhalise",
       "purchaseSuccessPaid": "Ukubhalisa kwakho kuyasebenza",
       "billingDisclosureTrialGeneric": "Isilingo sakho samahhala siqala namuhla. Khansela noma nini ku-Settings ngaphambi kokuthi ukuqoqwa kwemali kuqale. Izibhaliso zivuselelwa ngokuzenzakalela.",
-      "unavailable": "Okubhaliselwe akutholakali kule build yohlelo lokusebenza. Faka i-build yakamuva ye-EAS yokuthuthukisa noma yokukhiqiza.",
-      "unconfigured": "Okubhaliselwe akukalungiselelwa kule build. Engeza ukhiye we-RevenueCat SDK endaweni yokwakha bese wakhe kabusha."
+      "unavailable": "I-Ryvro Pro ayitholakali manje. Buyekeza i-Ryvro noma uxhumane nosekelayo uma lokhu kuqhubeka.",
+      "unconfigured": "I-Ryvro Pro ayikatholakali. Buyekeza i-Ryvro noma uxhumane nosekelayo uma lokhu kuqhubeka."
     },
     "profile": {
-      "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
-      "rowUpgradeA11y": "Thuthukela ku-__TK1__ Pro",
-      "activeLabel": "__TK1__ Pro — Iyasebenza ✓",
-      "upgradeLabel": "Thuthukela ku-__TK1__ Pro",
-      "activeHint": "Ikhalenda eligcwele · Sawubona __TK1__ umsizi wezwi",
+      "rowActiveA11y": "Ryvro Ukubhalisa okusebenzayo kwe-Pro",
+      "rowUpgradeA11y": "Thuthukela ku-Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Iyasebenza ✓",
+      "upgradeLabel": "Thuthukela ku-Ryvro Pro",
+      "activeHint": "Ikhalenda eligcwele · Sawubona Ryvro umsizi wezwi",
       "upgradeHint": "Amaphakeji aqala ku-$6.99/ngenyanga noma ku-$49.99/ngonyaka",
       "customerCenterError": "Ukuphathwa kokubhalisela akutholakali manje. Sicela uzame futhi."
     },
     "padlock": {
-      "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"
+      "a11yLabel": "Thuthukela ku-Ryvro Pro ukuze ubone ikhalenda eligcwele"
     },
     "recoveryNudge": {
       "title": "Usekufinyeleleni okulinganiselwe",
@@ -289,5 +291,10 @@
   },
   "offlineBanner": {
     "message": "Awuxhunyiwe. Idatha yamashifu akho isatholakala."
+  },
+  "syncStatus": {
+    "pending": "{{count}} isibuyekezo silondolozwe kudivayisi. Sizovumelaniswa uma usuxhumekile.",
+    "syncing": "Kuvumelaniswa {{count}} isibuyekezo esilondoloziwe.",
+    "failed": "{{count}} isibuyekezo sidinga ukubuyekezwa ngaphambi kokuvumelaniswa."
   }
 }

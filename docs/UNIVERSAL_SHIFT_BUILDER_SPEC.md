@@ -2,9 +2,9 @@
 
 ## Status
 
-Implementation specification for the current universal-only Ellie shift system.
+Historical implementation specification for the old universal-builder-first Ryvro shift system. This is not the current user-facing product flow.
 
-The app is not live, so the legacy rotating/FIFO configuration system has been removed from the product flow. The Universal Shift Builder is now the single shift setup surface for onboarding and settings. Any remaining legacy names in helper files are temporary compatibility shims and should not be expanded into new product behavior.
+The current app concept is: configure your shift once, ask Ryvro by voice, and get the right shift answer instantly. The underlying schedule engine may still use universal schedule helpers, but the old Universal Shift Builder should not be treated as the primary setup or settings experience.
 
 ## Product Goal
 
@@ -154,7 +154,7 @@ Required behavior:
 
 ## Calendar Import/Export
 
-Calendar import/export connects Ellie schedules with outside calendar products without creating a second schedule model.
+Calendar import/export connects Ryvro schedules with outside calendar products without creating a second schedule model.
 
 Required export behavior:
 
@@ -165,7 +165,8 @@ Required export behavior:
 - Overnight shifts must export an end date on the following calendar day.
 - All-day/off/leave shifts must export date-only events.
 - Event `SUMMARY` must use the universal shift definition name.
-- Event metadata must preserve Ellie shift id, color, icon, kind, and schedule name where possible through standard text fields and `X-ELLIE-*` fields.
+- Event metadata must preserve Ryvro shift id, color, icon, kind, and schedule name where possible through standard text fields and `X-RYVRO-*` fields.
+- Import should still read legacy `X-ELLIE-*` fields as a compatibility fallback, but every new export must write `X-RYVRO-*`.
 - Export must block invalid schedules instead of producing a misleading calendar.
 - The app must share the generated `.ics` file through the native share sheet so users can send it to Google Calendar, Apple Calendar, Outlook, email, files, or any calendar-compatible destination.
 
@@ -282,7 +283,7 @@ Universal shift metadata must flow into:
 - Dashboard current shift card.
 - Monthly calendar.
 - Upcoming shifts.
-- Schedule screen placeholders or future schedule screen.
+- Internal Schedule surfaces or future schedule screen.
 - Smart reminders.
 - Voice assistant prompts and tools.
 - Offline fallback answers.

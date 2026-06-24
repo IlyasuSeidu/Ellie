@@ -105,11 +105,11 @@ There is a lazy version of this story: build the logic, then build the look.
 
 That is not quite right either.
 
-Building Ellie's onboarding meant making a structural decision early — the schedule answer, the state layer, and the date handling had to be solid before the visible screens made any promises.
+Building Ryvro's onboarding meant making a structural decision early — the schedule answer, the state layer, and the date handling had to be solid before the visible screens made any promises.
 
 When the onboarding components arrived — the guided flow, the animated inputs, the live shift preview — they landed on top of something that was already trustworthy.
 
-That order matters because Ellie will eventually answer one question for a miner before a 5 a.m. alarm:
+That order matters because Ryvro will eventually answer one question for a miner before a 5 a.m. alarm:
 
 _What shift am I on tomorrow?_
 
@@ -117,7 +117,7 @@ If the answer underneath is shaky, no welcome screen saves you.
 
 What do you build for trust before you build for appearance?
 
-Built by a miner for shift workers. — Ellie
+Built by a miner for shift workers. — Ryvro
 
 ---
 

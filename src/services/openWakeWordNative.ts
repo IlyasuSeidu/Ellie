@@ -73,13 +73,13 @@ let openWakeWordPackage: OpenWakeWordPackageLike | null = null;
 
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  openWakeWordPackage = require('ellie-openwakeword') as OpenWakeWordPackageLike;
+  openWakeWordPackage = require('ryvro-openwakeword') as OpenWakeWordPackageLike;
 } catch (error) {
   try {
     // Fallback to local module source path for in-repo development.
     openWakeWordPackage =
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('../../modules/ellie-openwakeword/src') as OpenWakeWordPackageLike;
+      require('../../modules/ryvro-openwakeword/src') as OpenWakeWordPackageLike;
   } catch (fallbackError) {
     logger.warn('OpenWakeWord native module is unavailable in this runtime', {
       error: error instanceof Error ? error.message : String(error),

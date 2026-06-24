@@ -23,6 +23,7 @@ const SENSITIVE_KEYS = new Set([
   'full_name',
   'id_token',
   'last_name',
+  'location_name',
   'message',
   'mining_site',
   'name',
@@ -39,6 +40,9 @@ const SENSITIVE_KEYS = new Set([
   'token',
   'transcript',
   'transcription',
+  'work_location',
+  'work_location_name',
+  'workplace',
 ]);
 
 export type AnalyticsCategory =
@@ -155,6 +159,11 @@ export interface DailyAnalyticsSummary {
     unsupportedQuestions: number;
     topUnsupportedIntents: { intent: string; count: number }[];
   };
+  setup: {
+    countsByIndustry: Record<string, number>;
+    countsByTemplate: Record<string, number>;
+    countsByScheduleSource: Record<string, number>;
+  };
   quality: {
     errorEvents: number;
     apiErrorRate: number | null;
@@ -180,6 +189,9 @@ export interface DailyIntelligenceReport {
   offlineUnsupportedQuestions: number;
   topOfflineUnsupportedIntents: { intent: string; count: number }[];
   platformBreakdown: Record<string, number>;
+  industryBreakdown: Record<string, number>;
+  templateBreakdown: Record<string, number>;
+  scheduleSourceBreakdown: Record<string, number>;
 }
 
 export type AiDecisionType =
@@ -511,6 +523,9 @@ function createReport(
     offlineUnsupportedQuestions: summary.offline.unsupportedQuestions,
     topOfflineUnsupportedIntents: summary.offline.topUnsupportedIntents,
     platformBreakdown: summary.countsByPlatform,
+    industryBreakdown: summary.setup.countsByIndustry,
+    templateBreakdown: summary.setup.countsByTemplate,
+    scheduleSourceBreakdown: summary.setup.countsByScheduleSource,
   };
 }
 
@@ -522,6 +537,9 @@ export function buildDailyAnalyticsSummary(
   const countsByCategory: Record<string, number> = {};
   const countsByEvent: Record<string, number> = {};
   const countsByPlatform: Record<string, number> = {};
+  const countsByIndustry: Record<string, number> = {};
+  const countsByTemplate: Record<string, number> = {};
+  const countsByScheduleSource: Record<string, number> = {};
   const actors = new Set<string>();
   const stepViews: Record<string, number> = {};
   const stepCompletions: Record<string, number> = {};
@@ -559,6 +577,23 @@ export function buildDailyAnalyticsSummary(
     }
 
     const name = event.eventName.toLowerCase();
+    const industry = stringParam(event.params, [
+      'industry',
+      'industry_segment',
+      'template_industry',
+    ]);
+    if (industry) {
+      increment(countsByIndustry, industry);
+    }
+    const templateId = stringParam(event.params, ['template_id', 'templateId', 'template']);
+    if (templateId) {
+      increment(countsByTemplate, templateId);
+    }
+    const scheduleSource = stringParam(event.params, ['schedule_source', 'source']);
+    if (scheduleSource) {
+      increment(countsByScheduleSource, scheduleSource);
+    }
+
     if (name === 'onboarding_started') onboardingStarted += 1;
     if (name === 'onboarding_completed') onboardingCompleted += 1;
     if (name === 'onboarding_step_viewed') {
@@ -693,6 +728,11 @@ export function buildDailyAnalyticsSummary(
       handledAnswers: offlineHandled,
       unsupportedQuestions: offlineUnsupported,
       topUnsupportedIntents: topEntries(unsupportedIntents, 20),
+    },
+    setup: {
+      countsByIndustry,
+      countsByTemplate,
+      countsByScheduleSource,
     },
     quality: {
       errorEvents,
